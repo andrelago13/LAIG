@@ -27,10 +27,11 @@ MySceneGraph.prototype.onXMLReady=function()
 	var rootElement = this.reader.xmlDoc.documentElement;
 	
 	// Here should go the calls for different functions to parse the various blocks
-	var error = this.parseGlobalsExample(rootElement);
-
-	if (error != null) {
-		this.onXMLError(error);
+	var errors = [];
+	var error = this.parseGlobalsExample(errors, rootElement);
+	console.log("Num errors: " + errors.length);
+	if (errors.length > 0) {
+		this.onXMLError(errors);
 		return;
 	}	
 
@@ -45,30 +46,30 @@ MySceneGraph.prototype.onXMLReady=function()
 /*
  * Example of method that parses elements of one block and stores information in a specific data structure
  */
-MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
+MySceneGraph.prototype.parseGlobalsExample= function(errors, rootElement) {
 	
 	var elems =  rootElement.getElementsByTagName('globals');
 	if (elems == null) {
-		return "globals element is missing.";
+		errors.push("globals element is missing.");
 	}
 
 	if (elems.length != 1) {
-		return "either zero or more than one 'globals' element found.";
+		errors.push("either zero or more than one 'globals' element found.");
 	}
 
 	// various examples of different types of access
 	var globals = elems[0];
-	this.background = this.reader.getRGBA(globals, 'background');
+/*	this.background = this.reader.getRGBA(globals, 'background');
 	this.drawmode = this.reader.getItem(globals, 'drawmode', ["fill","line","point"]);
 	this.cullface = this.reader.getItem(globals, 'cullface', ["back","front","none", "frontandback"]);
 	this.cullorder = this.reader.getItem(globals, 'cullorder', ["ccw","cw"]);
 
 	console.log("Globals read from file: {background=" + this.background + ", drawmode=" + this.drawmode + ", cullface=" + this.cullface + ", cullorder=" + this.cullorder + "}");
-
-	var tempList=rootElement.getElementsByTagName('list');
+*/
+	/*var tempList=rootElement.getElementsByTagName('list');
 
 	if (tempList == null  || tempList.length==0) {
-		return "list element is missing.";
+		errors.push("list element is missing.");
 	}
 	
 	this.list=[];
@@ -81,7 +82,7 @@ MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
 		// process each element and store its information
 		this.list[e.id]=e.attributes.getNamedItem("coords").value;
 		console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
-	};
+	};*/
 
 };
 	
@@ -89,8 +90,10 @@ MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
  * Callback to be executed on any read error
  */
  
-MySceneGraph.prototype.onXMLError=function (message) {
-	console.error("XML Loading Error: "+message);	
+MySceneGraph.prototype.onXMLError=function (errors) {
+	for (var i = 0; i < errors.length; i++)
+		console.error("XML Loading Error: "+ errors[i]);
+	
 	this.loadedOk=false;
 };
 
