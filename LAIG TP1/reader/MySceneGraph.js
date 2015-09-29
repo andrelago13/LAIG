@@ -17,7 +17,7 @@ function MySceneGraph(filename, scene) {
 
 	this.reader.open('scenes/'+filename, this);  
 
-	this.initials = null;
+	this.initials = [];
 }
 
 /*
@@ -59,17 +59,51 @@ MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
 	elems = this.parseRequiredElement(errors, warnings, rootElement, 'INITIALS', 1);
 	if (elems == null) return;
 	var initials = elems[0];
-	
-	var elems = this.parseRequiredElement(errors, warnings, initials, 'frustum', 1);
-	if (elems == null) return;
-	var frustum = elems[0];
-	var near = this.parseRequiredAttribute(errors, warnings, frustum, 'near', 'ff');
-	if (near == null)
-		console.log("ERRRRROR");
-	console.log('Read frustum with value ' + near);
+
+	elems = this.parseRequiredElement(errors, warnings, initials, 'frustum', 1);
+	if (elems != null)
+	{
+		var frustum = elems[0];
+		this.initials["frustum"] = [];
+		this.initials["frustum"]["near"] = this.parseRequiredAttribute(errors, warnings, frustum, 'near', 'ff');
+		this.initials["frustum"]["far"] = this.parseRequiredAttribute(errors, warnings, frustum, 'far', 'ff');
+	}
+
+	var axisList = ["x", "y", "z"];
+
+	elems = this.parseRequiredElement(errors, warnings, initials, 'translate', 1);
+	if (elems != null)
+	{
+		var translate = elems[0];
+		this.initials["translate"] = [];
+		for (var i = 0; i < axisList.length; i++)
+			this.initials["translate"][axisList[i]] = this.parseRequiredAttribute(errors, warnings, translate, axisList[i], 'ff');
+	}
+
+	elems = this.parseRequiredElement(errors, warnings, initials, 'rotation', 3);
+	if (elems != null)
+	{
+		this.initials["rotation"] = [];
+		for (var i = 0; i < 3; i++)
+		{
+			var rotation = elems[i];
+			var axis = this.parseRequiredAttribute(errors, warnings, rotation, 'axis', 'cc', axisList);
+			if (this.initials["rotation"][axis] != null)
+				warnings.push("rotation of '" + axis + "' axis already defined, updating its value.");
+			this.initials["rotation"][axis] = this.parseRequiredAttribute(errors, warnings, rotation, 'angle', 'ff');
+		}
+		for (var i = 0; i < 3; i++)
+		{
+			if (this.initials["rotation"][axisList[i]] == null)
+			{
+				warnings.push("rotation of '" + axis + "' axis not defined, setting it to 0.");
+				this.initials["rotation"][axisList[i]] = 0;
+			}
+		}
+	}
 }
 
-MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, element, name, type)
+MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, element, name, type, opts)
 {
 	if (!this.reader.hasAttribute(element, name))
 	{
@@ -85,10 +119,10 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, elemen
 		break;
 	default:
 		attribute = this.reader.getString(element, name, false);
-		break;
+	break;
 	}
 	if (attribute == null)
-		errors.push(name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'.");
+		errors.push("'" + name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'.");
 	return attribute;
 }
 
