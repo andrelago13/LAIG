@@ -16,6 +16,8 @@ function MySceneGraph(filename, scene) {
 	 */
 
 	this.reader.open('scenes/'+filename, this);  
+
+	this.initials = null;
 }
 
 /*
@@ -47,17 +49,28 @@ MySceneGraph.prototype.parse= function(errors, rootElement) {
 		errors.push("The document root node should be 'SCENE'");
 		return;
 	}
+	this.parseInitials(errors, rootElement);
 }
 
-MySceneGraph.prototype.parse= function(errors, rootElement) {
-	var initials =  rootElement.getElementsByTagName('INITIALS');
-	if (initials == null) {
-		errors.push("'INITIALS' element is missing.");
-	}
+MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
+	var initials = this.parseRequiredElement(errors, rootElement, 'INITIALS', 1);
+	if (initials == null) return;
 
-	if (initials.length != 1) {
-		errors.push("either zero or more than one 'INITIALS' element found.");
+}
+
+MySceneGraph.prototype.parseRequiredElement= function(errors, parent, elementName, numExpected)
+{
+	var element = parent.getElementsByTagName(elementName);
+	if (element == null) {
+		errors.push("'" + elementname + "' element is missing.");
+		return null;
 	}
+	if (element.length != numExpected)
+	{
+		errors.push("either zero or more than one '" + elementName + "' element found.");
+		return null;
+	}
+	return element;
 }
 
 /*
