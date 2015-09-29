@@ -1,4 +1,4 @@
-<SCENaE>
+<SCENE>
 
 <INITIALS>
     <frustum near="ff" far="ff"/>                      <!-- frustum planes-->
