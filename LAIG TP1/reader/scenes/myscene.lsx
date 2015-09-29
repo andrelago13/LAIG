@@ -1,7 +1,7 @@
 <SCENE>
 
 <INITIALS>
-    <frustum near="ff" far="ff"/>                      <!-- frustum planes-->
+    <frustum near="11" far="ff"/>                      <!-- frustum planes-->
     <translate x="ff" y="ff" z="ff" />                 <!-- initial translate -->
     <rotation axis="cc" angle="ff" />                  <!-- initial rotation 3 -->
     <rotation axis="cc" angle="ff" />                  <!-- initial rotation 2 -->

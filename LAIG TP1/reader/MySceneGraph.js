@@ -30,7 +30,8 @@ MySceneGraph.prototype.onXMLReady=function()
 
 	// Here should go the calls for different functions to parse the various blocks
 	var errors = [];
-	this.parse(errors, rootElement);
+	var warnings = [];
+	this.parse(errors, warnings, rootElement);
 	console.log("Num errors: " + errors.length);
 	if (errors.length > 0) {
 		this.onXMLError(errors);
@@ -43,22 +44,55 @@ MySceneGraph.prototype.onXMLReady=function()
 	this.scene.onGraphLoaded();
 };
 
-MySceneGraph.prototype.parse= function(errors, rootElement) {
+MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 	if (rootElement.nodeName != 'SCENE')
 	{
 		errors.push("The document root node should be 'SCENE'");
 		return;
 	}
-	this.parseInitials(errors, rootElement);
+	//this.parseInitials(errors, rootElement);
+	this.parseInitials(errors, warnings, rootElement);
 }
 
-MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
-	var initials = this.parseRequiredElement(errors, rootElement, 'INITIALS', 1);
-	if (initials == null) return;
-
+MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
+	var elems = [];
+	elems = this.parseRequiredElement(errors, warnings, rootElement, 'INITIALS', 1);
+	if (elems == null) return;
+	var initials = elems[0];
+	
+	var elems = this.parseRequiredElement(errors, warnings, initials, 'frustum', 1);
+	if (elems == null) return;
+	var frustum = elems[0];
+	var near = this.parseRequiredAttribute(errors, warnings, frustum, 'near', 'ff');
+	if (near == null)
+		console.log("ERRRRROR");
+	console.log('Read frustum with value ' + near);
 }
 
-MySceneGraph.prototype.parseRequiredElement= function(errors, parent, elementName, numExpected)
+MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, element, name, type)
+{
+	if (!this.reader.hasAttribute(element, name))
+	{
+		errors.push("could not read '" + name + "' attribute of '" + element.nodeName + "' element.");
+		return;
+	}
+	var attribute = null;
+	switch (type)
+	{
+	case "ff":
+		attribute = this.reader.getFloat(element, name, false);
+		if (isNaN(attribute)) attribute = null;
+		break;
+	default:
+		attribute = this.reader.getString(element, name, false);
+		break;
+	}
+	if (attribute == null)
+		errors.push(name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'.");
+	return attribute;
+}
+
+MySceneGraph.prototype.parseRequiredElement= function(errors, warnings, parent, elementName, numExpected)
 {
 	var element = parent.getElementsByTagName(elementName);
 	if (element == null) {
@@ -76,7 +110,7 @@ MySceneGraph.prototype.parseRequiredElement= function(errors, parent, elementNam
 /*
  * Example of method that parses elements of one block and stores information in a specific data structure
  */
-MySceneGraph.prototype.parseGlobalsExample= function(errors, rootElement) {
+MySceneGraph.prototype.parseGlobalsExample= function(errors, warnings, rootElement) {
 
 	/*var elems =  rootElement.getElementsByTagName('globals');
 	if (elems == null) {
