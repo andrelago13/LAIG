@@ -313,9 +313,10 @@ MySceneGraph.prototype.parseElement= function(errors, warnings, parent, elementN
 		errors.push("'" + elementname + "' element is missing.");
 		return null;
 	}
+	
 	if ((element.length < minNum && minNum != 0) || (element.length > maxNum && maxNum != 0))
 	{
-		errors.push("either zero or more than one '" + elementName + "' element found.");
+		errors.push("illegal ammount of '" + elementName + "' element found.");
 		if (minNum == maxNum)
 			errors.push("expected " + minNum + " '" + elementName + "' element" + (minNum != 1 ? "s" : "") + " but found " + element.length + ".");
 		else
