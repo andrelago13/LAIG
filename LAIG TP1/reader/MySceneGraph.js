@@ -19,6 +19,7 @@ function MySceneGraph(filename, scene) {
 
 	this.initials = [];
 	this.illumination = [];
+	this.lights = [];
 }
 
 /*
@@ -51,18 +52,18 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 		errors.push("The document root node should be 'SCENE'");
 		return;
 	}
-	//this.parseInitials(errors, rootElement);
 	this.parseInitials(errors, warnings, rootElement);
 	this.parseIllumination(errors, warnings, rootElement);
+	this.parseLights(errors, warnings, rootElement);
 }
 
 MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
 	var elems = [];
-	elems = this.parseRequiredElement(errors, warnings, rootElement, 'INITIALS', 1);
+	elems = this.parseElement(errors, warnings, rootElement, 'INITIALS', 1, 1);
 	if (elems == null) return;
 	var initials = elems[0];
 
-	elems = this.parseRequiredElement(errors, warnings, initials, 'frustum', 1);
+	elems = this.parseElement(errors, warnings, initials, 'frustum', 1, 1);
 	if (elems != null)
 	{
 		var frustum = elems[0];
@@ -73,7 +74,7 @@ MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
 
 	var axisList = ["x", "y", "z"];
 
-	elems = this.parseRequiredElement(errors, warnings, initials, 'translate', 1);
+	elems = this.parseElement(errors, warnings, initials, 'translate', 1, 1);
 	if (elems != null)
 	{
 		var translate = elems[0];
@@ -82,11 +83,11 @@ MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
 			this.initials["translate"][axisList[i]] = this.parseRequiredAttribute(errors, warnings, translate, axisList[i], 'ff');
 	}
 
-	elems = this.parseRequiredElement(errors, warnings, initials, 'rotation', 3);
+	elems = this.parseElement(errors, warnings, initials, 'rotation', 0, 0);
 	if (elems != null)
 	{
 		this.initials["rotation"] = [];
-		for (var i = 0; i < 3; i++)
+		for (var i = 0; i < elems[i]; i++)
 		{
 			var rotation = elems[i];
 			var axis = this.parseRequiredAttribute(errors, warnings, rotation, 'axis', 'cc', axisList);
@@ -104,7 +105,7 @@ MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
 		}
 	}
 
-	elems = this.parseRequiredElement(errors, warnings, initials, 'scale', 1);
+	elems = this.parseElement(errors, warnings, initials, 'scale', 1, 1);
 	if (elems != null)
 	{
 		var scale = elems[0];
@@ -115,24 +116,24 @@ MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
 		}
 	}
 
-	elems = this.parseRequiredElement(errors, warnings, initials, 'reference', 1);
+	elems = this.parseElement(errors, warnings, initials, 'reference', 1, 1);
 	if (elems != null)
 	{
 		var reference = elems[0];
-		this.initials["reference"] = this.parseRequiredAttribute(errors, warnings, rotation, 'length', 'ff');
+		this.initials["reference"] = this.parseRequiredAttribute(errors, warnings, reference, 'length', 'ff');
 	}
 }
 
 MySceneGraph.prototype.parseIllumination= function(errors, warnings, rootElement)
 {
 	var elems = [];
-	elems = this.parseRequiredElement(errors, warnings, rootElement, 'ILLUMINATION', 1);
+	elems = this.parseElement(errors, warnings, rootElement, 'ILLUMINATION', 1, 1);
 	if (elems == null) return;
 	var illumination = elems[0];
 
 	var rgbaList = ["r", "g", "b", "a"];
 
-	elems = this.parseRequiredElement(errors, warnings, illumination, 'ambient', 1);
+	elems = this.parseElement(errors, warnings, illumination, 'ambient', 1, 1);
 	if (elems != null)
 	{
 		var ambient = elems[0];
@@ -143,14 +144,14 @@ MySceneGraph.prototype.parseIllumination= function(errors, warnings, rootElement
 		}
 	}
 
-	elems = this.parseRequiredElement(errors, warnings, illumination, 'doubleside', 1);
+	elems = this.parseElement(errors, warnings, illumination, 'doubleside', 1, 1);
 	if (elems != null)
 	{
 		var doubleside = elems[0];
 		this.illumination["doubleside"] = this.parseRequiredAttribute(errors, warnings, doubleside, 'value', 'tt');
 	}
-	
-	elems = this.parseRequiredElement(errors, warnings, illumination, 'background', 1);
+
+	elems = this.parseElement(errors, warnings, illumination, 'background', 1, 1);
 	if (elems != null)
 	{
 		var background = elems[0];
@@ -158,6 +159,79 @@ MySceneGraph.prototype.parseIllumination= function(errors, warnings, rootElement
 		for (var i = 0; i < 3; i++)
 		{
 			this.illumination["background"][rgbaList[i]] = this.parseRequiredAttribute(errors, warnings, background, rgbaList[i], 'ff');
+		}
+	}
+}
+
+MySceneGraph.prototype.parseLights= function(errors, warnings, rootElement)
+{
+	var elems = [];
+	elems = this.parseElement(errors, warnings, rootElement, 'LIGHTS', 1, 1);
+	if (elems == null) return;
+	var lights = elems[0];
+
+	var xyzwList = ["x", "y", "z", "w"];
+	var rgbaList = ["r", "g", "b", "a"];
+
+	elems = this.parseElement(errors, warnings, lights, 'LIGHT', 0, 0);
+	if (elems != null)
+	{
+		var lights = elems;
+		for (var i = 0; i < lights.length; i++) // Para cada fonte de luz
+		{
+			this.lights[i] = [];
+			this.lights[i]["id"] = this.parseRequiredAttribute(errors, warnings, lights[i], 'id', 'ss');
+
+			elems = this.parseElement(errors, warnings, lights[i], 'enable', 1, 1);
+			if (elems != null)
+			{
+				var enable = elems[0];
+				this.lights[i]["enable"] = this.parseRequiredAttribute(errors, warnings, enable, 'value', 'tt');
+			}
+
+			elems = this.parseElement(errors, warnings, lights[i], 'position', 1, 1);
+			if (elems != null)
+			{
+				var position = elems[0];
+				this.lights[i]["position"] = [];
+				for (var j = 0; j < 3; j++)
+				{
+					this.lights[i]["position"][xyzwList[j]] = this.parseRequiredAttribute(errors, warnings, position, xyzwList[j], 'ff');
+				}
+			}
+			
+			elems = this.parseElement(errors, warnings, lights[i], 'ambient', 1, 1);
+			if (elems != null)
+			{
+				var ambient = elems[0];
+				this.lights[i]["ambient"] = [];
+				for (var j = 0; j < 3; j++)
+				{
+					this.lights[i]["ambient"][rgbaList[j]] = this.parseRequiredAttribute(errors, warnings, ambient, rgbaList[j], 'ff');
+				}
+			}
+			
+			elems = this.parseElement(errors, warnings, lights[i], 'diffuse', 1, 1);
+			if (elems != null)
+			{
+				var diffuse = elems[0];
+				this.lights[i]["diffuse"] = [];
+				for (var j = 0; j < 3; j++)
+				{
+					this.lights[i]["diffuse"][rgbaList[j]] = this.parseRequiredAttribute(errors, warnings, diffuse, rgbaList[j], 'ff');
+				}
+			}
+			
+			elems = this.parseElement(errors, warnings, lights[i], 'specular', 1, 1);
+			if (elems != null)
+			{
+				var specular = elems[0];
+				this.lights[i]["specular"] = [];
+				for (var j = 0; j < 3; j++)
+				{
+					this.lights[i]["specular"][rgbaList[j]] = this.parseRequiredAttribute(errors, warnings, specular, rgbaList[j], 'ff');
+				}
+			}
 		}
 	}
 }
@@ -188,16 +262,20 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, elemen
 	return attribute;
 }
 
-MySceneGraph.prototype.parseRequiredElement= function(errors, warnings, parent, elementName, numExpected)
+MySceneGraph.prototype.parseElement= function(errors, warnings, parent, elementName, minNum, maxNum)
 {
 	var element = parent.getElementsByTagName(elementName);
 	if (element == null) {
 		errors.push("'" + elementname + "' element is missing.");
 		return null;
 	}
-	if (element.length != numExpected)
+	if ((element.length < minNum && minNum != 0) || (element.length > maxNum && maxNum != 0))
 	{
 		errors.push("either zero or more than one '" + elementName + "' element found.");
+		if (minNum == maxNum)
+			errors.push("expected " + minNum + " '" + elementName + "' element" + (minNum != 1 ? "s" : "") + " but found " + element.length + ".");
+		else
+			errors.push("found " + element.length + " '" + elementName + "' element" + (minNum != 1 ? "s" : "") + " but expected between " + minNum + " and " + maxNum + ".");
 		return null;
 	}
 	return element;
