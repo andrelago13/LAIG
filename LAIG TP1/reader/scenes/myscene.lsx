@@ -1,30 +1,30 @@
 <SCENE>
 
 <INITIALS>
-    <frustum near="11" far="ff"/>                      <!-- frustum planes-->
-    <translate x="ff" y="ff" z="ff" />                 <!-- initial translate -->
-    <rotation axis="cc" angle="ff" />                  <!-- initial rotation 3 -->
-    <rotation axis="cc" angle="ff" />                  <!-- initial rotation 2 -->
-    <rotation axis="cc" angle="ff" />                  <!-- initial rotation 1 -->
-    <scale sx="ff" sy="ff" sz="ff" />                  <!-- initial scaling -->
-    <reference length="ff" />                          <!-- axis length; "0" means no axis-->
+    <frustum near="0.1" far="300"/>                      <!-- frustum planes-->
+    <translate x="0" y="0" z="0" />                 <!-- initial translate -->
+    <rotation axis="x" angle="0" />                  <!-- initial rotation 3 -->
+    <rotation axis="y" angle="0" />                  <!-- initial rotation 2 -->
+    <rotation axis="z" angle="0" />                  <!-- initial rotation 1 -->
+    <scale sx="0" sy="0" sz="0" />                  <!-- initial scaling -->
+    <reference length="1" />                          <!-- axis length; "0" means no axis-->
 </INITIALS>
 
 
 <ILLUMINATION>
-    <ambient r="ff" g="ff" b="ff" a="ff" />            <!-- global ambient -->
-    <doubleside value="tt" />                          <!-- double or single side illum. -->
-    <background r="ff" g="ff" b="ff" a="ff" />         <!-- background color -->
+    <ambient r="0" g="0" b="0" a="0" />            <!-- global ambient -->
+    <doubleside value="1" />                          <!-- double or single side illum. -->
+    <background r="0" g="0" b="0" a="0" />         <!-- background color -->
 </ILLUMINATION>
 
 
 <LIGHTS>
-    <LIGHT id="ss">                                    <!-- light identifier -->
-        <enable value ="tt" />                         <!-- enable/disable -->
-        <position x="ff" y="ff" z="ff" w="ff" />       <!-- light position -->
-        <ambient r="ff" g="ff" b="ff" a="ff" />        <!-- ambient component -->
-        <diffuse r="ff" g="ff" b="ff" a="ff" />        <!-- diffuse component -->
-        <specular r="ff" g="ff" b="ff" a="ff" />       <!-- specular component -->
+    <LIGHT id="1">                                    <!-- light identifier -->
+        <enable value ="1" />                         <!-- enable/disable -->
+        <position x="1" y="1" z="1" w="1" />       <!-- light position -->
+        <ambient r="1" g="1" b="1" a="1" />        <!-- ambient component -->
+        <diffuse r="1" g="1" b="1" a="1" />        <!-- diffuse component -->
+        <specular r="1" g="1" b="1" a="1" />       <!-- specular component -->
     </LIGHT>
 
     <!-- NOTE: this block "LIGHT" must be repeated as necessary with different "id" -->
@@ -33,9 +33,9 @@
 
 
 <TEXTURES>
-    <TEXTURE id="ss">
-        <file path="ss" />                             <!-- path to file -->
-        <amplif_factor s="ff" t="ff" />                <!-- x/s, y/t -->
+    <TEXTURE id="1">
+        <file path="error.jpg" />                             <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
 
     <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
