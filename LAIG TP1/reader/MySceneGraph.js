@@ -39,11 +39,18 @@ MySceneGraph.prototype.onXMLReady=function()
 	if (errors.length > 0) {
 		this.onXMLError(errors);
 		return;
-	}	
+	}
+	
+	// TODO análise dos warnings
 
 	this.loadedOk=true;
+	
+	if(warnings.length > 0) {
+		this.onXMLWarning(warnings);
+	}
 
-	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
+	// As the graph loaded ok, signal the scene so that any additional initialization depending on 
+	// the graph can take place
 	this.scene.onGraphLoaded();
 };
 
@@ -371,5 +378,13 @@ MySceneGraph.prototype.onXMLError=function (errors) {
 
 	this.loadedOk=false;
 };
+
+MySceneGraph.prototype.onXMLWarning=function (warnings) {
+	for (var i = 0; i < warnings.length; i++)
+		console.log("XML Loading Warning: "+ warnings[i]);
+	
+	if(this.loadedOk)
+		console.log("Execution continuing with possible errors.")
+}
 
 
