@@ -21,6 +21,9 @@ function MySceneGraph(filename, scene) {
 	this.illumination = [];
 	this.lights = [];
 	this.textures = [];
+	this.materials = [];
+	this.leaves = [];
+	this.nodes = [];
 }
 
 /*
@@ -39,11 +42,16 @@ MySceneGraph.prototype.onXMLReady=function()
 	if (errors.length > 0) {
 		this.onXMLError(errors);
 		return;
-	}	
-
+	}
+	
 	this.loadedOk=true;
+	
+	if(warnings.length > 0) {
+		this.onXMLWarning(warnings);
+	}
 
-	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
+	// As the graph loaded ok, signal the scene so that any additional initialization depending on 
+	// the graph can take place
 	this.scene.onGraphLoaded();
 };
 
@@ -57,6 +65,9 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 	this.parseIllumination(errors, warnings, rootElement);
 	this.parseLights(errors, warnings, rootElement);
 	this.parseTextures(errors, warnings, rootElement);
+	this.parseMaterials(errors, warnings, rootElement);
+	this.parseLeaves(errors, warnings, rootElement);
+	this.parseNodes(errors, warnings, rootElement);
 }
 
 MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
@@ -273,6 +284,258 @@ MySceneGraph.prototype.parseTextures= function(errors, warnings, rootElement)
 	}
 }
 
+MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
+	
+	var elems = [];
+	elems = this.parseElement(errors, warnings, rootElement, 'MATERIALS', 1, 1);
+	if (elems == null) return;
+	var materials = elems[0];
+
+	elems = this.parseElement(errors, warnings, materials, 'MATERIAL', 0, 0);
+	if (elems != null)
+	{
+		var materials = elems;
+		for (var i = 0; i < materials.length; i++) // Para cada textura
+		{
+			this.materials[i] = [];
+			var id = this.parseRequiredAttribute(errors, warnings, materials[i], 'id', 'ss');
+			
+			// Check if material id already exists. If so, continue to next one and add error
+			var duplicate = false;
+			for(var j = 0; j < this.materials.length - 1; j++) {
+				if(this.materials[j]["id"] == id) {
+					warnings.push("duplicate MATERIAL id '" + id + "' found. Only the first will be considered.");
+					duplicate = true;
+					break;
+				}
+			}
+			if(duplicate)
+				continue;
+			this.materials[i]["id"] = id;
+			
+			elems = this.parseElement(errors, warnings, materials[i], 'shininess', 1, 1);
+			if(elems != null) {
+				var enable = elems[0];
+				this.materials[i]["shininess"] = this.parseRequiredAttribute(errors, warnings, enable, 'value', 'ff');
+			}
+			
+			var attributes = ["specular", "diffuse", "ambient", "emission"];
+			var attributes_arg = ['specular', 'diffuse', 'ambient', 'emission'];
+			var rgba = ["r", "g", "b", "a"];
+			var rgba_arg = ['r', 'g', 'b', 'a'];
+			
+			for(var att = 0; att < attributes.length; att++) {
+				elems = this.parseElement(errors, warnings, materials[i], attributes_arg[att], 1, 1);
+				if(elems != null) {
+					var enable = elems[0];
+					this.materials[i][attributes[arg]] = [];
+					for(var value = 0; value < rgba.length; value++) {
+						this.materials[i][attributes[arg]] = this.parseRequiredAttribute(errors, warnings, enable, rgba_arg[value], 'ff');
+					}
+				}
+			}
+			
+			// TODO if the above code for cycle does not work, delete and uncomment below
+			
+			/*elems = this.parseElement(errors, warnings, materials[i], 'specular', 1, 1);
+			if(elems != null) {
+				var enable = elems[0];
+				this.materials[i]["specular"] = [];
+				this.materials[i]["specular"]["r"] = this.parseRequiredAttribute(errors, warnings, enable, 'r', 'ff');
+				this.materials[i]["specular"]["g"] = this.parseRequiredAttribute(errors, warnings, enable, 'g', 'ff');
+				this.materials[i]["specular"]["b"] = this.parseRequiredAttribute(errors, warnings, enable, 'b', 'ff');
+				this.materials[i]["specular"]["a"] = this.parseRequiredAttribute(errors, warnings, enable, 'a', 'ff');
+			}
+			
+			elems = this.parseElement(errors, warnings, materials[i], 'diffuse', 1, 1);
+			if(elems != null) {
+				var enable = elems[0];
+				this.materials[i]["diffuse"] = [];
+				this.materials[i]["diffuse"]["r"] = this.parseRequiredAttribute(errors, warnings, enable, 'r', 'ff');
+				this.materials[i]["diffuse"]["g"] = this.parseRequiredAttribute(errors, warnings, enable, 'g', 'ff');
+				this.materials[i]["diffuse"]["b"] = this.parseRequiredAttribute(errors, warnings, enable, 'b', 'ff');
+				this.materials[i]["diffuse"]["a"] = this.parseRequiredAttribute(errors, warnings, enable, 'a', 'ff');
+			}
+			
+			elems = this.parseElement(errors, warnings, materials[i], 'ambient', 1, 1);
+			if(elems != null) {
+				var enable = elems[0];
+				this.materials[i]["ambient"] = [];
+				this.materials[i]["ambient"]["r"] = this.parseRequiredAttribute(errors, warnings, enable, 'r', 'ff');
+				this.materials[i]["ambient"]["g"] = this.parseRequiredAttribute(errors, warnings, enable, 'g', 'ff');
+				this.materials[i]["ambient"]["b"] = this.parseRequiredAttribute(errors, warnings, enable, 'b', 'ff');
+				this.materials[i]["ambient"]["a"] = this.parseRequiredAttribute(errors, warnings, enable, 'a', 'ff');
+			}
+			
+			elems = this.parseElement(errors, warnings, materials[i], 'emission', 1, 1);
+			if(elems != null) {
+				var enable = elems[0];
+				this.materials[i]["emission"] = [];
+				this.materials[i]["emission"]["r"] = this.parseRequiredAttribute(errors, warnings, enable, 'r', 'ff');
+				this.materials[i]["emission"]["g"] = this.parseRequiredAttribute(errors, warnings, enable, 'g', 'ff');
+				this.materials[i]["emission"]["b"] = this.parseRequiredAttribute(errors, warnings, enable, 'b', 'ff');
+				this.materials[i]["emission"]["a"] = this.parseRequiredAttribute(errors, warnings, enable, 'a', 'ff');
+			}*/
+			
+		}
+	}
+}
+
+MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
+	
+	var elems = [];
+	elems = this.parseElement(errors, warnings, rootElement, 'LEAVES', 1, 1);
+	if (elems == null) return;
+	var leaves = elems[0];
+
+	elems = this.parseElement(errors, warnings, materials, 'LEAF', 0, 0);
+	if (elems != null)
+	{
+		var leaves = elems;
+		for (var i = 0; i < leaves.length; i++) // Para cada textura
+		{
+			this.leaves[i] = [];
+			var id = this.parseRequiredAttribute(errors, warnings, leaves[i], 'id', 'ss');
+			
+			// Check if leaf id already exists. If so, continue to next one and add error
+			var duplicate = false;
+			for(var j = 0; j < this.leaves.length - 1; j++) {
+				if(this.leaves[j]["id"] == id) {
+					warnings.push("duplicate MATERIAL id '" + id + "' found. Only the first will be considered.");
+					duplicate = true;
+					break;
+				}
+			}
+			if(duplicate)
+				continue;
+			this.leaves[i]["id"] = id;
+			
+			elems = this.parseRequiredAttribute(errors, warnings, leaves[i], 'type', 'ss');
+			var args = this.parseRequiredAttribute(errors, warnings, leaves[i], 'args', 'ss');
+			args = args.split(' ');
+			if(elems != null) {
+				this.leaves[i]["type"] = elems[0];
+				if(elems[0] == "rectangle") {
+					if(args.length == 4) {
+						// TODO passar as variáveis tipo left-top-x para um lugar tipo definido numa classe, o mesmo para os outros tipos
+						this.leaves[i]["left-top-x"] = parseInt(args[0]);
+						this.leaves[i]["left-top-y"] = parseInt(args[1]);
+						this.leaves[i]["right-bottom-x"] = parseInt(args[2]);
+						this.leaves[i]["right-bottom-x"] = parseInt(args[3]);
+						
+						if(isNaN(this.leaves[i]["left-top-x"]) || isNaN(this.leaves[i]["left-top-y"]) || 
+								isNaN(this.leaves[i]["right-bottom-x"]) || isNaN(this.leaves[i]["right-bottom-y"])) {
+							errors.push("invalid argumens for leaf '" + id + "' of type " + elems[0] + ".");
+							return;
+						}
+						
+					} else {
+						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems[0] + ".");
+						return;
+					}
+				} else if (elems[0] == "cylinder") {
+					if(args.length == 5) {
+						this.leaves[i]["height"] = parseFloat(args[0]);
+						this.leaves[i]["bottom-radius"] = parseFloat(args[1]);
+						this.leaves[i]["top-radius"] = parseFloat(args[2]);
+						this.leaves[i]["sections-per-height"] = parseInt(args[3]);
+						this.leaves[i]["parts-per-section"] = parseInt(args[4]);
+						
+						if(isNaN(this.leaves[i]["height"]) || isNaN(this.leaves[i]["bottom-radius"]) ||
+								isNaN(this.leaves[i]["top-radius"]) || isNaN(this.leaves[i]["sections-per-height"]) ||
+								isNaN(this.leaves[i]["parts-per-section"])) {
+							errors.push("invalid argumens for leaf '" + id + "' of type " + elems[0] + ".");
+							return;
+						}
+						
+					} else {
+						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems[0] + ".");
+						return;
+					}					
+				} else if (elems[0] == "sphere") {
+					if(args.length == 3) {
+						this.leaves[i]["radius"] = parseFloat(args[0]);
+						this.leaves[i]["parts-along-radius"] = parseInt(args[0]);
+						this.leaves[i]["parts-per-section"] = parseInt(args[0]);
+						
+						if(isNaN(this.leaves[i]["radius"]) || isNaN(this.leaves[i]["parts-along-radiu"]) ||
+								isNaN(this.leaves[i]["parts-per-section"])) {
+							errors.push("invalid argumens for leaf '" + id + "' of type " + elems[0] + ".");
+							return;
+						}
+					} else {
+						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems[0] + ".");
+						return;
+					}					
+				} else if (elems[0] == "triangle") {
+					if(args.length == 9) {
+						this.leaves[i]["v1-x"] = parseFloat(args[0]);
+						this.leaves[i]["v1-y"] = parseFloat(args[1]);
+						this.leaves[i]["v1-z"] = parseFloat(args[2]);
+						this.leaves[i]["v2-x"] = parseFloat(args[3]);
+						this.leaves[i]["v2-y"] = parseFloat(args[4]);
+						this.leaves[i]["v2-z"] = parseFloat(args[5]);
+						this.leaves[i]["v3-x"] = parseFloat(args[6]);
+						this.leaves[i]["v3-y"] = parseFloat(args[7]);
+						this.leaves[i]["v3-z"] = parseFloat(args[8]);
+						
+						if(isNaN(this.leaves[i]["v1-x"]) || isNaN(this.leaves[i]["v1-y"]) || isNaN(this.leaves[i]["v1-z"])
+								|| isNaN(this.leaves[i]["v2-x"]) || isNaN(this.leaves[i]["v2-y"]) ||
+								isNaN(this.leaves[i]["v2-z"]) || isNaN(this.leaves[i]["v3-x"]) || isNaN(this.leaves[i]["v3-y"])
+								|| isNaN(this.leaves[i]["v3-z"])) {
+							errors.push("invalid argumens for leaf '" + id + "' of type " + elems[0] + ".");
+							return;
+						}
+					} else {
+						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems[0] + ".");
+						return;
+					}
+				} else {
+					errors.push("illegal LEAF type '" + elems[0] + "' found.");
+					return;
+				}
+				
+			} else {
+				continue;
+			}			
+		}
+	}
+}
+
+MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
+	
+	var elems = [];
+	elems = this.parseElement(errors, warnings, rootElement, 'NODES', 1, 1);
+	if(elems != null) {
+		var root = this.parseElement(errors, warnings, elems[0], 'ROOT', 1, 1);
+		if(root == null)
+			return;
+		this.nodes["root-id"] = this.parseRequiredAttribute(errors, warnings, root, 'id', 'ss');
+		if(this.nodes["root-id"] == null)
+			return;
+		
+		elems = this.parseElement(errors, warnings, elems[0], 'NODE', 0, 0);
+		if(elems != null) {
+			for(var i = 0; i < elems.length; i++) {
+				var id = this.parseRequiredAttribute(errors, warnings, elems[i], 'id', 'ss');
+				if(id == null) {
+					continue;
+				}
+				
+				// TODO usar getElements para retirar as transformações, parseElement para material e textura
+				// TODO ler descendentes
+				
+			}
+			
+			
+		}
+		
+		
+		// TODO verificar se nó root existe e se não há falhas nos id's de descendentes, materiais, texturas
+	}
+}
+
+
 MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, element, name, type, opts)
 {
 	if (!this.reader.hasAttribute(element, name))
@@ -306,9 +569,10 @@ MySceneGraph.prototype.parseElement= function(errors, warnings, parent, elementN
 		errors.push("'" + elementname + "' element is missing.");
 		return null;
 	}
+	
 	if ((element.length < minNum && minNum != 0) || (element.length > maxNum && maxNum != 0))
 	{
-		errors.push("either zero or more than one '" + elementName + "' element found.");
+		errors.push("illegal ammount of '" + elementName + "' element found.");
 		if (minNum == maxNum)
 			errors.push("expected " + minNum + " '" + elementName + "' element" + (minNum != 1 ? "s" : "") + " but found " + element.length + ".");
 		else
@@ -317,6 +581,7 @@ MySceneGraph.prototype.parseElement= function(errors, warnings, parent, elementN
 	}
 	return element;
 }
+
 
 /*
  * Example of method that parses elements of one block and stores information in a specific data structure
@@ -361,6 +626,7 @@ MySceneGraph.prototype.parseGlobalsExample= function(errors, warnings, rootEleme
 
 };
 
+
 /*
  * Callback to be executed on any read error
  */
@@ -372,4 +638,11 @@ MySceneGraph.prototype.onXMLError=function (errors) {
 	this.loadedOk=false;
 };
 
+MySceneGraph.prototype.onXMLWarning=function (warnings) {
+	for (var i = 0; i < warnings.length; i++)
+		console.log("XML Loading Warning: "+ warnings[i]);
+	
+	if(this.loadedOk)
+		console.log("Execution continuing with possible errors.")
+}
 
