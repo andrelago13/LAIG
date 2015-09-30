@@ -20,6 +20,7 @@ function MySceneGraph(filename, scene) {
 	this.initials = [];
 	this.illumination = [];
 	this.lights = [];
+	this.textures = [];
 }
 
 /*
@@ -55,6 +56,7 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 	this.parseInitials(errors, warnings, rootElement);
 	this.parseIllumination(errors, warnings, rootElement);
 	this.parseLights(errors, warnings, rootElement);
+	this.parseTextures(errors, warnings, rootElement);
 }
 
 MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
@@ -199,7 +201,7 @@ MySceneGraph.prototype.parseLights= function(errors, warnings, rootElement)
 					this.lights[i]["position"][xyzwList[j]] = this.parseRequiredAttribute(errors, warnings, position, xyzwList[j], 'ff');
 				}
 			}
-			
+
 			elems = this.parseElement(errors, warnings, lights[i], 'ambient', 1, 1);
 			if (elems != null)
 			{
@@ -210,7 +212,7 @@ MySceneGraph.prototype.parseLights= function(errors, warnings, rootElement)
 					this.lights[i]["ambient"][rgbaList[j]] = this.parseRequiredAttribute(errors, warnings, ambient, rgbaList[j], 'ff');
 				}
 			}
-			
+
 			elems = this.parseElement(errors, warnings, lights[i], 'diffuse', 1, 1);
 			if (elems != null)
 			{
@@ -221,7 +223,7 @@ MySceneGraph.prototype.parseLights= function(errors, warnings, rootElement)
 					this.lights[i]["diffuse"][rgbaList[j]] = this.parseRequiredAttribute(errors, warnings, diffuse, rgbaList[j], 'ff');
 				}
 			}
-			
+
 			elems = this.parseElement(errors, warnings, lights[i], 'specular', 1, 1);
 			if (elems != null)
 			{
@@ -231,6 +233,41 @@ MySceneGraph.prototype.parseLights= function(errors, warnings, rootElement)
 				{
 					this.lights[i]["specular"][rgbaList[j]] = this.parseRequiredAttribute(errors, warnings, specular, rgbaList[j], 'ff');
 				}
+			}
+		}
+	}
+}
+
+MySceneGraph.prototype.parseTextures= function(errors, warnings, rootElement)
+{
+	var elems = [];
+	elems = this.parseElement(errors, warnings, rootElement, 'TEXTURES', 1, 1);
+	if (elems == null) return;
+	var textures = elems[0];
+
+	elems = this.parseElement(errors, warnings, textures, 'TEXTURE', 0, 0);
+	if (elems != null)
+	{
+		var textures = elems;
+		for (var i = 0; i < textures.length; i++) // Para cada textura
+		{
+			this.textures[i] = [];
+			this.textures[i]["id"] = this.parseRequiredAttribute(errors, warnings, textures[i], 'id', 'ss');
+
+			elems = this.parseElement(errors, warnings, textures[i], 'file', 1, 1);
+			if (elems != null)
+			{
+				var enable = elems[0];
+				this.textures[i]["file"] = this.parseRequiredAttribute(errors, warnings, enable, 'path', 'ss');
+			}
+			
+			elems = this.parseElement(errors, warnings, textures[i], 'amplif_factor', 1, 1);
+			if (elems != null)
+			{
+				var enable = elems[0];
+				this.textures[i]["amplif_factor"] = [];
+				this.textures[i]["amplif_factor"]["s"] = this.parseRequiredAttribute(errors, warnings, enable, 's', 'ff');
+				this.textures[i]["amplif_factor"]["t"] = this.parseRequiredAttribute(errors, warnings, enable, 't', 'ff');
 			}
 		}
 	}
