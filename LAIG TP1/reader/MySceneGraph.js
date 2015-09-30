@@ -18,6 +18,7 @@ function MySceneGraph(filename, scene) {
 	this.reader.open('scenes/'+filename, this);  
 
 	this.initials = [];
+	this.illumination = [];
 }
 
 /*
@@ -52,6 +53,7 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 	}
 	//this.parseInitials(errors, rootElement);
 	this.parseInitials(errors, warnings, rootElement);
+	this.parseIllumination(errors, warnings, rootElement);
 }
 
 MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
@@ -101,6 +103,63 @@ MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
 			}
 		}
 	}
+
+	elems = this.parseRequiredElement(errors, warnings, initials, 'scale', 1);
+	if (elems != null)
+	{
+		var scale = elems[0];
+		this.initials["scale"] = [];
+		for (var i = 0; i < 3; i++)
+		{
+			this.initials["scale"]["s" + axisList[i]] = this.parseRequiredAttribute(errors, warnings, scale, 's' + axisList[i], 'ff');
+		}
+	}
+
+	elems = this.parseRequiredElement(errors, warnings, initials, 'reference', 1);
+	if (elems != null)
+	{
+		var reference = elems[0];
+		this.initials["reference"] = this.parseRequiredAttribute(errors, warnings, rotation, 'length', 'ff');
+	}
+}
+
+MySceneGraph.prototype.parseIllumination= function(errors, warnings, rootElement)
+{
+	var elems = [];
+	elems = this.parseRequiredElement(errors, warnings, rootElement, 'ILLUMINATION', 1);
+	if (elems == null) return;
+	var illumination = elems[0];
+
+	var rgbaList = ["r", "g", "b", "a"];
+
+	elems = this.parseRequiredElement(errors, warnings, illumination, 'ambient', 1);
+	if (elems != null)
+	{
+		var ambient = elems[0];
+		this.illumination["ambient"] = [];
+		for (var i = 0; i < 3; i++)
+		{
+			this.illumination["ambient"][rgbaList[i]] = this.parseRequiredAttribute(errors, warnings, ambient, rgbaList[i], 'ff');
+		}
+	}
+
+	elems = this.parseRequiredElement(errors, warnings, illumination, 'doubleside', 1);
+	if (elems != null)
+	{
+		var doubleside = elems[0];
+		this.illumination["doubleside"] = this.parseRequiredAttribute(errors, warnings, doubleside, 'value', 'tt');
+	}
+	
+	elems = this.parseRequiredElement(errors, warnings, illumination, 'background', 1);
+	if (elems != null)
+	{
+		var background = elems[0];
+		this.illumination["background"] = [];
+		for (var i = 0; i < 3; i++)
+		{
+			this.illumination["background"][rgbaList[i]] = this.parseRequiredAttribute(errors, warnings, background, rgbaList[i], 'ff');
+		}
+	}
 }
 
 MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, element, name, type, opts)
@@ -116,6 +175,9 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, elemen
 	case "ff":
 		attribute = this.reader.getFloat(element, name, false);
 		if (isNaN(attribute)) attribute = null;
+		break;
+	case "tt":
+		attribute = this.reader.getBoolean(element, name, false);
 		break;
 	default:
 		attribute = this.reader.getString(element, name, false);
