@@ -22,6 +22,7 @@ function MySceneGraph(filename, scene) {
 	this.lights = [];
 	this.textures = [];
 	this.materials = [];
+	this.leaves = [];
 }
 
 /*
@@ -64,6 +65,7 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 	this.parseLights(errors, warnings, rootElement);
 	this.parseTextures(errors, warnings, rootElement);
 	this.parseMaterials(errors, warnings, rootElement);
+	this.parseLeaves(errors, warnings, rootElement);
 }
 
 MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
@@ -312,7 +314,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 			elems = this.parseElement(errors, warnings, materials[i], 'shininess', 1, 1);
 			if(elems != null) {
 				var enable = elems[0];
-				this.materials[i]["shininess"] = this.parseRequiredAttribute(errors, warnings, enable, 'value')
+				this.materials[i]["shininess"] = this.parseRequiredAttribute(errors, warnings, enable, 'value', 'ff');
 			}
 			
 			var attributes = ["specular", "diffuse", "ambient", "emission"];
@@ -377,6 +379,127 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 	}
 }
 
+MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
+	
+	var elems = [];
+	elems = this.parseElement(errors, warnings, rootElement, 'LEAVES', 1, 1);
+	if (elems == null) return;
+	var leaves = elems[0];
+
+	elems = this.parseElement(errors, warnings, materials, 'LEAF', 0, 0);
+	if (elems != null)
+	{
+		var leaves = elems;
+		for (var i = 0; i < leaves.length; i++) // Para cada textura
+		{
+			this.leaves[i] = [];
+			var id = this.parseRequiredAttribute(errors, warnings, leaves[i], 'id', 'ss');
+			
+			// Check if leaf id already exists. If so, continue to next one and add error
+			var duplicate = false;
+			for(var j = 0; j < this.leaves.length - 1; j++) {
+				if(this.leaves[j]["id"] == id) {
+					warnings.push("duplicate MATERIAL id '" + id + "' found. Only the first will be considered.");
+					duplicate = true;
+					break;
+				}
+			}
+			if(duplicate)
+				continue;
+			this.leaves[i]["id"] = id;
+			
+			elems = this.parseRequiredAttribute(errors, warnings, leaves[i], 'type', 'ss');
+			var args = this.parseRequiredAttribute(errors, warnings, leaves[i], 'args', 'ss');
+			args = args.split(' ');
+			if(elems != null) {
+				this.leaves[i]["type"] = elems[0];
+				if(elems[0] == "rectangle") {
+					if(args.length == 4) {
+						// TODO passar as variáveis tipo left-top-x para um lugar tipo definido numa classe, o mesmo para os outros tipos
+						this.leaves[i]["left-top-x"] = parseInt(args[0]);
+						this.leaves[i]["left-top-y"] = parseInt(args[1]);
+						this.leaves[i]["right-bottom-x"] = parseInt(args[2]);
+						this.leaves[i]["right-bottom-x"] = parseInt(args[3]);
+						
+						if(isNaN(this.leaves[i]["left-top-x"]) || isNaN(this.leaves[i]["left-top-y"]) || 
+								isNaN(this.leaves[i]["right-bottom-x"]) || isNaN(this.leaves[i]["right-bottom-y"])) {
+							errors.push("invalid argumens for leaf '" + id + "' of type " + elems[0] + ".");
+							return;
+						}
+						
+					} else {
+						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems[0] + ".");
+						return;
+					}
+				} else if (elems[0] == "cylinder") {
+					if(args.length == 5) {
+						this.leaves[i]["height"] = parseFloat(args[0]);
+						this.leaves[i]["bottom-radius"] = parseFloat(args[1]);
+						this.leaves[i]["top-radius"] = parseFloat(args[2]);
+						this.leaves[i]["sections-per-height"] = parseInt(args[3]);
+						this.leaves[i]["parts-per-section"] = parseInt(args[4]);
+						
+						if(isNaN(this.leaves[i]["height"]) || isNaN(this.leaves[i]["bottom-radius"]) ||
+								isNaN(this.leaves[i]["top-radius"]) || isNaN(this.leaves[i]["sections-per-height"]) ||
+								isNaN(this.leaves[i]["parts-per-section"])) {
+							errors.push("invalid argumens for leaf '" + id + "' of type " + elems[0] + ".");
+							return;
+						}
+						
+					} else {
+						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems[0] + ".");
+						return;
+					}					
+				} else if (elems[0] == "sphere") {
+					if(args.length == 3) {
+						this.leaves[i]["radius"] = parseFloat(args[0]);
+						this.leaves[i]["parts-along-radius"] = parseInt(args[0]);
+						this.leaves[i]["parts-per-section"] = parseInt(args[0]);
+						
+						if(isNaN(this.leaves[i]["radius"]) || isNaN(this.leaves[i]["parts-along-radiu"]) ||
+								isNaN(this.leaves[i]["parts-per-section"])) {
+							errors.push("invalid argumens for leaf '" + id + "' of type " + elems[0] + ".");
+							return;
+						}
+					} else {
+						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems[0] + ".");
+						return;
+					}					
+				} else if (elems[0] == "triangle") {
+					if(args.length == 9) {
+						this.leaves[i]["v1-x"] = parseFloat(args[0]);
+						this.leaves[i]["v1-y"] = parseFloat(args[1]);
+						this.leaves[i]["v1-z"] = parseFloat(args[2]);
+						this.leaves[i]["v2-x"] = parseFloat(args[3]);
+						this.leaves[i]["v2-y"] = parseFloat(args[4]);
+						this.leaves[i]["v2-z"] = parseFloat(args[5]);
+						this.leaves[i]["v3-x"] = parseFloat(args[6]);
+						this.leaves[i]["v3-y"] = parseFloat(args[7]);
+						this.leaves[i]["v3-z"] = parseFloat(args[8]);
+						
+						if(isNaN(this.leaves[i]["v1-x"]) || isNaN(this.leaves[i]["v1-y"]) || isNaN(this.leaves[i]["v1-z"])
+								|| isNaN(this.leaves[i]["v2-x"]) || isNaN(this.leaves[i]["v2-y"]) ||
+								isNaN(this.leaves[i]["v2-z"]) || isNaN(this.leaves[i]["v3-x"]) || isNaN(this.leaves[i]["v3-y"])
+								|| isNaN(this.leaves[i]["v3-z"])) {
+							errors.push("invalid argumens for leaf '" + id + "' of type " + elems[0] + ".");
+							return;
+						}
+					} else {
+						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems[0] + ".");
+						return;
+					}
+				} else {
+					errors.push("illegal LEAF type '" + elems[0] + "' found.");
+					return;
+				}
+				
+			} else {
+				continue;
+			}			
+		}
+	}
+}
+
 MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, element, name, type, opts)
 {
 	if (!this.reader.hasAttribute(element, name))
@@ -423,6 +546,7 @@ MySceneGraph.prototype.parseElement= function(errors, warnings, parent, elementN
 	return element;
 }
 
+
 /*
  * Example of method that parses elements of one block and stores information in a specific data structure
  */
@@ -465,6 +589,7 @@ MySceneGraph.prototype.parseGlobalsExample= function(errors, warnings, rootEleme
 	};*/
 
 };
+
 
 /*
  * Callback to be executed on any read error
