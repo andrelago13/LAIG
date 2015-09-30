@@ -23,6 +23,7 @@ function MySceneGraph(filename, scene) {
 	this.textures = [];
 	this.materials = [];
 	this.leaves = [];
+	this.nodes = [];
 }
 
 /*
@@ -66,6 +67,7 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 	this.parseTextures(errors, warnings, rootElement);
 	this.parseMaterials(errors, warnings, rootElement);
 	this.parseLeaves(errors, warnings, rootElement);
+	this.parseNodes(errors, warnings, rootElement);
 }
 
 MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
@@ -499,6 +501,40 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 		}
 	}
 }
+
+MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
+	
+	var elems = [];
+	elems = this.parseElement(errors, warnings, rootElement, 'NODES', 1, 1);
+	if(elems != null) {
+		var root = this.parseElement(errors, warnings, elems[0], 'ROOT', 1, 1);
+		if(root == null)
+			return;
+		this.nodes["root-id"] = this.parseRequiredAttribute(errors, warnings, root, 'id', 'ss');
+		if(this.nodes["root-id"] == null)
+			return;
+		
+		elems = this.parseElement(errors, warnings, elems[0], 'NODE', 0, 0);
+		if(elems != null) {
+			for(var i = 0; i < elems.length; i++) {
+				var id = this.parseRequiredAttribute(errors, warnings, elems[i], 'id', 'ss');
+				if(id == null) {
+					continue;
+				}
+				
+				// TODO usar getElements para retirar as transformações, parseElement para material e textura
+				// TODO ler descendentes
+				
+			}
+			
+			
+		}
+		
+		
+		// TODO verificar se nó root existe e se não há falhas nos id's de descendentes, materiais, texturas
+	}
+}
+
 
 MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, element, name, type, opts)
 {
