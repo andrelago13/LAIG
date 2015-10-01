@@ -539,16 +539,18 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 				var mat_id = parseRequiredAttribute(errors, warnings, material[0], 'id', 'ss');
 				if(mat_id == null)
 					continue;
-				var found = false;
-				for(var j = 0; j < this.materials.length; j++) {
-					if(this.materials[j]["id"] == mat_id) {
-						found = true;
-						break;
+				if(mat_id != "null") {
+					var found = false;
+					for(var j = 0; j < this.materials.length; j++) {
+						if(this.materials[j]["id"] == mat_id) {
+							found = true;
+							break;
+						}
 					}
-				}
-				if(!found) {
-					errors.push("MATERIAL id '" + mat_id + "' not found in NODE '" + id + "'");
-					continue;
+					if(!found) {
+						errors.push("MATERIAL id '" + mat_id + "' not found in NODE '" + id + "'");
+						continue;
+					}
 				}
 				
 				var texture = parseElement(errors, warnings, elems[i], 'TEXTURE', 1, 1);
@@ -557,29 +559,46 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 				var tex_id = parseRequiredAttribute(errors, warnings, texture[0], 'id', 'ss');
 				if(tex_id == null)
 					continue;
-				var found = false;
-				for(var j = 0; j < this.textures.length; j++) {
-					if(this.textures[j]["id"] == tex_id) {
-						found = true;
-						break;
+				if(tex_id != "null" && tex_id != "clear") {
+					var found = false;
+					for(var j = 0; j < this.textures.length; j++) {
+						if(this.textures[j]["id"] == tex_id) {
+							found = true;
+							break;
+						}
 					}
-				}
-				if(!found) {
-					errors.push("TEXTURE id '" + tex_id + "' not found in NODE '" + id + "'");
-					continue;
+					if(!found) {
+						errors.push("TEXTURE id '" + tex_id + "' not found in NODE '" + id + "'");
+						continue;
+					}
 				}
 				
 				
 				// TODO usar getElements para retirar as transformações
-				// TODO ler descendentes
 				
+				var transforms = [];
+				var elements = elems[0].getElements();
+				
+				for(var j = 0; j < elements.length; j++) {
+					
+				}
+				
+				// TODO ler descendentes, must have more than one
+				
+				var descendants = this.parseElement(errors, warnings, elems[0], 'DESCENDANTS', 1, 1);
+				if(descendants == null)
+					continue;
+				
+				descendants = this.parseElement(errors, warnings, descendants[0], 'DESCENDANT', 0, 0);
+				
+				// TODO add node to graph
 			}
 			
 			
 		}
 		
 		
-		// TODO verificar se nó root existe e se não há falhas nos id's de descendentes, materiais, texturas
+		// TODO verificar se nó root existe e se não há falhas nos id's de descendentes
 	}
 }
 
