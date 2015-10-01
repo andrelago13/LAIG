@@ -335,6 +335,8 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 				}
 			}
 			
+			// FIXME para ver se um elemento já está no array basta ver se está undefined
+			
 			// TODO if the above code for cycle does not work, delete and uncomment below
 			
 			/*elems = this.parseElement(errors, warnings, materials[i], 'specular', 1, 1);
