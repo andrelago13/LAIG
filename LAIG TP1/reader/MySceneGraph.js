@@ -390,7 +390,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 	if (elems == null) return;
 	var leaves = elems[0];
 
-	elems = this.parseElement(errors, warnings, materials, 'LEAF', 0, 0);
+	elems = this.parseElement(errors, warnings, leaves, 'LEAF', 0, 0);
 	if (elems != null)
 	{
 		var leaves = elems;
