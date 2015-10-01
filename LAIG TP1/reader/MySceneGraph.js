@@ -514,7 +514,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		var root = this.parseElement(errors, warnings, elems[0], 'ROOT', 1, 1);
 		if(root == null)
 			return;
-		this.nodes["root-id"] = this.parseRequiredAttribute(errors, warnings, root, 'id', 'ss');
+		this.nodes["root-id"] = this.parseRequiredAttribute(errors, warnings, root[0], 'id', 'ss');
 		if(this.nodes["root-id"] == null)
 			return;
 		
