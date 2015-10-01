@@ -538,6 +538,16 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 				}
 				if(duplicate)
 					continue;
+
+				for(var j = 0; j < this.leaves.length; j++) {
+					if(this.leaves[j]["id"] == id) {
+						warnings.push("NODE id '" + id + "' already used as LEAF id. The NODE will not be considered");
+						duplicate = true;
+						break;
+					}
+				}
+				if(duplicate)
+					continue;
 				
 				// GET NODE'S MATERIAL ID
 				var material = parseElement(errors, warnings, elems[i], 'MATERIAL', 1, 1);
@@ -666,8 +676,8 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		}
 		
 	}
+	
 }
-
 
 MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, element, name, type, opts)
 {
@@ -715,7 +725,6 @@ MySceneGraph.prototype.parseElement= function(errors, warnings, parent, elementN
 	return element;
 }
 
-
 /*
  * Example of method that parses elements of one block and stores information in a specific data structure
  */
@@ -758,7 +767,6 @@ MySceneGraph.prototype.parseGlobalsExample= function(errors, warnings, rootEleme
 	};*/
 
 };
-
 
 /*
  * Callback to be executed on any read error
