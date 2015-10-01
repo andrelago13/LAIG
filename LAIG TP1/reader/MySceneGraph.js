@@ -507,6 +507,8 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'NODES', 1, 1);
 	if(elems != null) {
+		
+		// GET ROOT NODE ID
 		var root = this.parseElement(errors, warnings, elems[0], 'ROOT', 1, 1);
 		if(root == null)
 			return;
@@ -514,9 +516,13 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		if(this.nodes["root-id"] == null)
 			return;
 		
+		// GET NORMAL NODES
 		elems = this.parseElement(errors, warnings, elems[0], 'NODE', 0, 0);
 		if(elems != null) {
+			// for every node
 			for(var i = 0; i < elems.length; i++) {
+				
+				// GET NODE ID AND CHECK IF IT ALREADY EXISTS
 				var id = this.parseRequiredAttribute(errors, warnings, elems[i], 'id', 'ss');
 				if(id == null) {
 					continue;
@@ -533,6 +539,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 				if(duplicate)
 					continue;
 				
+				// GET NODE'S MATERIAL ID
 				var material = parseElement(errors, warnings, elems[i], 'MATERIAL', 1, 1);
 				if(material == null)
 					continue;
@@ -553,6 +560,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 					}
 				}
 				
+				// GET NODE'S TEXTURE ID
 				var texture = parseElement(errors, warnings, elems[i], 'TEXTURE', 1, 1);
 				if(texture == null)
 					continue;
@@ -583,8 +591,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 					
 				}
 				
-				// LEITURA DOS DESCENDENTES
-				
+				// GET NODE DESCENDANTS
 				var descendants = this.parseElement(errors, warnings, elems[0], 'DESCENDANTS', 1, 1);
 				if(descendants == null)
 					continue;
@@ -609,6 +616,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 					continue;
 				}
 				
+				// ADD NODE TO NODE LIST
 				this.nodes[i]["id"] = id;
 				this.nodes[i]["material"] = mat_id;
 				this.nodes[i]["texture"] = tex_id;
@@ -616,7 +624,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 				this.nodes[i]["descendants"] = desc;
 			}
 			
-			// TODO verificar se nó root existe e se não há falhas nos id's de descendentes
+			// CHECK IF ROOT NODE EXISTS
 			var found = false;
 			for(var i = 0; i < this.nodes.length; i++) {
 				if(this.nodes[i]["id"] == this.nodes["root-id"]) {
@@ -629,6 +637,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 				return;
 			}
 			
+			// CHECK IF ALL DESCENDANTS OF ALL NODES EXIST
 			var error = false;
 			for(var i = 0; i < this.nodes.length; i++) {
 				var desc = this.nodes[i]["descendants"];
