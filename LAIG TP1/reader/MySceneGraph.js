@@ -638,7 +638,6 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 			}
 			
 			// CHECK IF ALL DESCENDANTS OF ALL NODES EXIST
-			var error = false;
 			for(var i = 0; i < this.nodes.length; i++) {
 				var desc = this.nodes[i]["descendants"];
 				for(var j = 0; j < desc.length; j++) {
@@ -650,7 +649,16 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 						}
 					}
 					if(!found) {
-						errors.push("DESCENDANT '" + desc[j] + "' not found in NODE list");
+						for(var k = 0; k < this.leaves.length; k++) {
+							if(this.leaves[k]["id"] == desc[j]) {
+								found = true;
+								break;
+							}
+						}
+					}
+					
+					if(!found) {
+						errors.push("DESCENDANT '" + desc[j] + "' not found in NODES or LEAVES list");
 					}
 				}
 				
