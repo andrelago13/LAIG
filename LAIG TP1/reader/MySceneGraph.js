@@ -328,9 +328,9 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 				elems = this.parseElement(errors, warnings, materials[i], attributes_arg[att], 1, 1);
 				if(elems != null) {
 					var enable = elems[0];
-					this.materials[i][attributes[arg]] = [];
+					this.materials[i][attributes[att]] = [];
 					for(var value = 0; value < rgba.length; value++) {
-						this.materials[i][attributes[arg]] = this.parseRequiredAttribute(errors, warnings, enable, rgba_arg[value], 'ff');
+						this.materials[i][attributes[att]] = this.parseRequiredAttribute(errors, warnings, enable, rgba_arg[value], 'ff');
 					}
 				}
 			}
