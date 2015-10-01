@@ -522,7 +522,55 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 					continue;
 				}
 				
-				// TODO usar getElements para retirar as transformações, parseElement para material e textura
+				var duplicate = false;
+				for(var j = 0; j < this.nodes.length; j++) {
+					if(this.nodes[j]["id"] == id) {
+						warnings.push("duplicate NODE id '" + id + "' found. Only the first will be considered.");
+						duplicate = true;
+						break;
+					}
+				}
+				if(duplicate)
+					continue;
+				
+				var material = parseElement(errors, warnings, elems[i], 'MATERIAL', 1, 1);
+				if(material == null)
+					continue;
+				var mat_id = parseRequiredAttribute(errors, warnings, material[0], 'id', 'ss');
+				if(mat_id == null)
+					continue;
+				var found = false;
+				for(var j = 0; j < this.materials.length; j++) {
+					if(this.materials[j]["id"] == mat_id) {
+						found = true;
+						break;
+					}
+				}
+				if(!found) {
+					errors.push("MATERIAL id '" + mat_id + "' not found in NODE '" + id + "'");
+					continue;
+				}
+				
+				var texture = parseElement(errors, warnings, elems[i], 'TEXTURE', 1, 1);
+				if(texture == null)
+					continue;
+				var tex_id = parseRequiredAttribute(errors, warnings, texture[0], 'id', 'ss');
+				if(tex_id == null)
+					continue;
+				var found = false;
+				for(var j = 0; j < this.textures.length; j++) {
+					if(this.textures[j]["id"] == tex_id) {
+						found = true;
+						break;
+					}
+				}
+				if(!found) {
+					errors.push("TEXTURE id '" + tex_id + "' not found in NODE '" + id + "'");
+					continue;
+				}
+				
+				
+				// TODO usar getElements para retirar as transformações
 				// TODO ler descendentes
 				
 			}
