@@ -583,7 +583,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 					
 				}
 				
-				// TODO ler descendentes, must have more than one
+				// LEITURA DOS DESCENDENTES
 				
 				var descendants = this.parseElement(errors, warnings, elems[0], 'DESCENDANTS', 1, 1);
 				if(descendants == null)
@@ -591,14 +591,63 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 				
 				descendants = this.parseElement(errors, warnings, descendants[0], 'DESCENDANT', 0, 0);
 				
-				// TODO add node to graph
+				if(descendants == null) {
+					continue;
+				}
+				
+				var desc = [];
+				
+				for(var j = 0; j < descendants.length; j++) {
+					var desc_id = this.parseRequiredAttribute(errors, warnings, descendants[0], 'id', 'ss');
+					if(desc_id == null)
+						continue;
+					desc.push(desc_id);
+				}
+				
+				if(desc.length < 1) {
+					errors.push("NODE '" + id + "' must have at least one valid descendant id");
+					continue;
+				}
+				
+				this.nodes[i]["id"] = id;
+				this.nodes[i]["material"] = mat_id;
+				this.nodes[i]["texture"] = tex_id;
+				this.nodes[i]["transforms"] = [];	// TODO complete
+				this.nodes[i]["descendants"] = desc;
 			}
 			
+			// TODO verificar se nó root existe e se não há falhas nos id's de descendentes
+			var found = false;
+			for(var i = 0; i < this.nodes.length; i++) {
+				if(this.nodes[i]["id"] == this.nodes["root-id"]) {
+					found = true;
+					break;
+				}
+			}
+			if(!found) {
+				errors.push("no NODE with id of ROOT node ('" + this.nodes["root-id"] + "') was found");
+				return;
+			}
 			
+			var error = false;
+			for(var i = 0; i < this.nodes.length; i++) {
+				var desc = this.nodes[i]["descendants"];
+				for(var j = 0; j < desc.length; j++) {
+					var found = false;
+					for(var k = 0; k < this.nodes.length; k++) {
+						if(this.nodes[k]["id"] == desc[j]) {
+							found = true;
+							break;
+						}
+					}
+					if(!found) {
+						errors.push("DESCENDANT '" + desc[j] + "' not found in NODE list");
+					}
+				}
+				
+			}			
 		}
 		
-		
-		// TODO verificar se nó root existe e se não há falhas nos id's de descendentes
 	}
 }
 
