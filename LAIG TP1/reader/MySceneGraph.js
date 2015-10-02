@@ -335,7 +335,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 				}
 			}
 			
-			// FIXME para ver se um elemento já está no array basta ver se está undefined
+			// TODO para ver se um elemento já está no array basta ver se está undefined
 			
 			// TODO if the above code for cycle does not work, delete and uncomment below
 			
@@ -672,11 +672,13 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 				}
 				
 				// ADD NODE TO NODE LIST
-				this.nodes[i]["id"] = id;
-				this.nodes[i]["material"] = mat_id;
-				this.nodes[i]["texture"] = tex_id;
-				this.nodes[i]["transforms"] = [];	// TODO complete
-				this.nodes[i]["descendants"] = desc;
+				var pos = this.nodes.length;
+				this.nodes[pos] = [];
+				this.nodes[pos]["id"] = id;
+				this.nodes[pos]["material"] = mat_id;
+				this.nodes[pos]["texture"] = tex_id;
+				this.nodes[pos]["transforms"] = transforms;
+				this.nodes[pos]["descendants"] = desc;
 			}
 			
 			// CHECK IF ROOT NODE EXISTS
