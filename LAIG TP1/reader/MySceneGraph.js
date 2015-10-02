@@ -335,7 +335,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 
 MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 	
-	// TODO clean code
+	// TODO code cleanup necessary
 	
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'LEAVES', 1, 1);
@@ -370,7 +370,6 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 		switch(elems) {
 		case "rectangle":
 			if(args.length == 4) {
-				// TODO passar as variáveis tipo left-top-x para um lugar tipo definido numa classe, o mesmo para os outros tipos
 				leaf["left-top-x"] = parseInt(args[0]);
 				leaf["left-top-y"] = parseInt(args[1]);
 				leaf["right-bottom-x"] = parseInt(args[2]);
@@ -462,8 +461,6 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 
 MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 	
-	// FIXME passar id para chave do array
-	
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'NODES', 1, 1);
 	if(elems == null)
@@ -506,13 +503,6 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		var mat_id = parseRequiredAttribute(errors, warnings, material[0], 'id', 'ss');
 		if(mat_id == null)
 			continue;
-		// TODO extract to validate method
-		if(mat_id != "null") {
-			if(typeof this.materials[mat_id] == 'undefined') {
-				errors.push("MATERIAL id '" + mat_id + "' not found for NODE '" + id + "'");
-				continue;
-			}
-		}
 		
 		// GET NODE'S TEXTURE ID
 		var texture = parseElement(errors, warnings, elems[i], 'TEXTURE', 1, 1);
@@ -521,13 +511,6 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		var tex_id = parseRequiredAttribute(errors, warnings, texture[0], 'id', 'ss');
 		if(tex_id == null)
 			continue;
-		// TODO extract to validate method
-		if(tex_id != "null" && tex_id != "clear") {
-			if(typeof this.textures["id"] == 'undefined') {
-				errors.push("TEXTURE id '" + tex_id + "' not found for NODE '" + id + "'");
-				continue;				
-			}
-		}
 		
 		var transforms = [];
 		var elements = elems[0].getElements();
@@ -612,48 +595,47 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		node["transforms"] = transforms;
 		node["descendants"] = desc;
 		this.nodes[id] = node;
+	}		
+}
+
+MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
+	
+	var init_err_len = errors.length;
+	
+	// CHECK IF ROOT NODE EXISTS
+	if(typeof this.nodes[this.rootNode] == 'undefined') {
+		errors.push("no NODE with id of ROOT node ('" + this.nodes["root-id"] + "') was found");
 	}
 	
-	// TODO extract to validade method
-	// CHECK IF ROOT NODE EXISTS
-	var found = false;
-	for(var i = 0; i < this.nodes.length; i++) {
-		if(this.nodes[i]["id"] == this.nodes["root-id"]) {
-			found = true;
-			break;
-		}
-	}
-	if(!found) {
-		errors.push("no NODE with id of ROOT node ('" + this.nodes["root-id"] + "') was found");
-		return;
-	}
-
-	// TODO extract to validade method
-	// CHECK IF ALL DESCENDANTS OF ALL NODES EXIST
-	for(var i = 0; i < this.nodes.length; i++) {
+	// CHECK IF LINKS IN NODES ARE VALID
+	for (var i in this.nodes) {
+		// CHECK IF ALL DESCENDANTS EXIST
 		var desc = this.nodes[i]["descendants"];
 		for(var j = 0; j < desc.length; j++) {
-			var found = false;
-			for(var k = 0; k < this.nodes.length; k++) {
-				if(this.nodes[k]["id"] == desc[j]) {
-					found = true;
-					break;
-				}
-			}
-			if(!found) {
-				for(var k = 0; k < this.leaves.length; k++) {
-					if(this.leaves[k]["id"] == desc[j]) {
-						found = true;
-						break;
-					}
-				}
-			}
-			
-			if(!found) {
-				errors.push("DESCENDANT '" + desc[j] + "' not found in NODES or LEAVES list");
+			if(typeof this.nodes[desc[j]] == 'undefined' && typeof this.leaves[desc[j]] == 'undefined') {
+				errors.push("DESCENDANT '" + desc[j] + "' of NODE '" + i + "' not found in NODES or LEAVES list");
 			}
 		}
-	}			
+		
+		// CHECK IF TEXTURE EXISTS
+		var tex_id = this.nodes[i]["texture"];
+		if(typeof this.textures[tex_id] == 'undefined') {
+			errors.push("TEXTURE id '" + tex_id + "' not found for NODE '" + id + "'");
+			continue;				
+		}
+		
+		// CHECK IF MATERIAL EXISTS
+		var mat_id = this.nodes[i]["material"];
+		if(typeof this.materials[mat_id] == 'undefined') {
+			errors.push("MATERIAL id '" + mat_id + "' not found for NODE '" + id + "'");
+			continue;
+		}
+	}
+	
+	if(errors.length > init_err_len)
+		return false;
+	
+	return true;
 }
 
 MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, element, name, type, opts)
