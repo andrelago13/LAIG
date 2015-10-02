@@ -295,7 +295,6 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 	if (elems == null)
 		return;
 	
-	var finalmaterials = [];
 	var materials = elems;
 	for (var i = 0; i < materials.length; i++) // Para cada textura
 	{
@@ -303,7 +302,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 		var id = this.parseRequiredAttribute(errors, warnings, materials[i], 'id', 'ss');
 		
 		// Check if material id already exists. If so, continue to next one and add warning
-		if (typeof this.materials[id] == 'undefined') {
+		if (typeof this.materials[id] != 'undefined') {
 			warnings.push("duplicate MATERIAL id '" + id + "' found. Only the first will be considered.");
 			continue;
 		}
@@ -335,7 +334,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 
 MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 	
-	// FIXME passar id para chave do array
+	// TODO clean code
 	
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'LEAVES', 1, 1);
@@ -343,116 +342,120 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 	var leaves = elems[0];
 
 	elems = this.parseElement(errors, warnings, leaves, 'LEAF', 0, 0);
-	if (elems != null)
+	if (elems == null)
+		return;
+	
+	var leaves = elems;
+	for (var i = 0; i < leaves.length; i++) // Para cada textura
 	{
-		var leaves = elems;
-		for (var i = 0; i < leaves.length; i++) // Para cada textura
-		{
-			this.leaves[i] = [];
-			var id = this.parseRequiredAttribute(errors, warnings, leaves[i], 'id', 'ss');
+		var leaf = [];
+		var id = this.parseRequiredAttribute(errors, warnings, leaves[i], 'id', 'ss');
+		
+		// Check if leaf id already exists. If so, continue to next one and add error
+		if (typeof this.leaves[id] != 'undefined') {
+			warnings.push("duplicate MATERIAL id '" + id + "' found. Only the first will be considered.");
+			continue;
+		}
+		
+		elems = this.parseRequiredAttribute(errors, warnings, leaves[i], 'type', 'ss');
+		var args = this.parseRequiredAttribute(errors, warnings, leaves[i], 'args', 'ss');
+		args = args.split(' ');
+		if(elems == null)
+			continue;
 			
-			// Check if leaf id already exists. If so, continue to next one and add error
-			var duplicate = false;
-			for(var j = 0; j < this.leaves.length - 1; j++) {
-				if(this.leaves[j]["id"] == id) {
-					warnings.push("duplicate MATERIAL id '" + id + "' found. Only the first will be considered.");
-					duplicate = true;
-					break;
-				}
-			}
-			if(duplicate)
-				continue;
-			this.leaves[i]["id"] = id;
-			
-			elems = this.parseRequiredAttribute(errors, warnings, leaves[i], 'type', 'ss');
-			var args = this.parseRequiredAttribute(errors, warnings, leaves[i], 'args', 'ss');
-			args = args.split(' ');
-			if(elems != null) {
-				this.leaves[i]["type"] = elems;
-				if(elems == "rectangle") {
-					if(args.length == 4) {
-						// TODO passar as variáveis tipo left-top-x para um lugar tipo definido numa classe, o mesmo para os outros tipos
-						this.leaves[i]["left-top-x"] = parseInt(args[0]);
-						this.leaves[i]["left-top-y"] = parseInt(args[1]);
-						this.leaves[i]["right-bottom-x"] = parseInt(args[2]);
-						this.leaves[i]["right-bottom-x"] = parseInt(args[3]);
-						
-						if(isNaN(this.leaves[i]["left-top-x"]) || isNaN(this.leaves[i]["left-top-y"]) || 
-								isNaN(this.leaves[i]["right-bottom-x"]) || isNaN(this.leaves[i]["right-bottom-y"])) {
-							errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
-							return;
-						}
-						
-					} else {
-						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
-						return;
-					}
-				} else if (elems == "cylinder") {
-					if(args.length == 5) {
-						this.leaves[i]["height"] = parseFloat(args[0]);
-						this.leaves[i]["bottom-radius"] = parseFloat(args[1]);
-						this.leaves[i]["top-radius"] = parseFloat(args[2]);
-						this.leaves[i]["sections-per-height"] = parseInt(args[3]);
-						this.leaves[i]["parts-per-section"] = parseInt(args[4]);
-						
-						if(isNaN(this.leaves[i]["height"]) || isNaN(this.leaves[i]["bottom-radius"]) ||
-								isNaN(this.leaves[i]["top-radius"]) || isNaN(this.leaves[i]["sections-per-height"]) ||
-								isNaN(this.leaves[i]["parts-per-section"])) {
-							errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
-							return;
-						}
-						
-					} else {
-						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
-						return;
-					}					
-				} else if (elems == "sphere") {
-					if(args.length == 3) {
-						this.leaves[i]["radius"] = parseFloat(args[0]);
-						this.leaves[i]["parts-along-radius"] = parseInt(args[0]);
-						this.leaves[i]["parts-per-section"] = parseInt(args[0]);
-						
-						if(isNaN(this.leaves[i]["radius"]) || isNaN(this.leaves[i]["parts-along-radiu"]) ||
-								isNaN(this.leaves[i]["parts-per-section"])) {
-							errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
-							return;
-						}
-					} else {
-						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
-						return;
-					}					
-				} else if (elems == "triangle") {
-					if(args.length == 9) {
-						this.leaves[i]["v1-x"] = parseFloat(args[0]);
-						this.leaves[i]["v1-y"] = parseFloat(args[1]);
-						this.leaves[i]["v1-z"] = parseFloat(args[2]);
-						this.leaves[i]["v2-x"] = parseFloat(args[3]);
-						this.leaves[i]["v2-y"] = parseFloat(args[4]);
-						this.leaves[i]["v2-z"] = parseFloat(args[5]);
-						this.leaves[i]["v3-x"] = parseFloat(args[6]);
-						this.leaves[i]["v3-y"] = parseFloat(args[7]);
-						this.leaves[i]["v3-z"] = parseFloat(args[8]);
-						
-						if(isNaN(this.leaves[i]["v1-x"]) || isNaN(this.leaves[i]["v1-y"]) || isNaN(this.leaves[i]["v1-z"])
-								|| isNaN(this.leaves[i]["v2-x"]) || isNaN(this.leaves[i]["v2-y"]) ||
-								isNaN(this.leaves[i]["v2-z"]) || isNaN(this.leaves[i]["v3-x"]) || isNaN(this.leaves[i]["v3-y"])
-								|| isNaN(this.leaves[i]["v3-z"])) {
-							errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
-							return;
-						}
-					} else {
-						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
-						return;
-					}
-				} else {
-					errors.push("illegal LEAF type '" + elems + "' found.");
+		leaf["type"] = elems;
+		var invalid_type = false;
+		
+		switch(elems) {
+		case "rectangle":
+			if(args.length == 4) {
+				// TODO passar as variáveis tipo left-top-x para um lugar tipo definido numa classe, o mesmo para os outros tipos
+				leaf["left-top-x"] = parseInt(args[0]);
+				leaf["left-top-y"] = parseInt(args[1]);
+				leaf["right-bottom-x"] = parseInt(args[2]);
+				leaf["right-bottom-x"] = parseInt(args[3]);
+				
+				if(isNaN(leaf["left-top-x"]) || isNaN(leaf["left-top-y"]) || 
+						isNaN(leaf["right-bottom-x"]) || isNaN(leaf["right-bottom-y"])) {
+					errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
 					return;
 				}
 				
 			} else {
-				continue;
-			}			
+				errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
+				return;
+			}
+			break;
+		case "cylinder":
+			if(args.length == 5) {
+				leaf["height"] = parseFloat(args[0]);
+				leaf["bottom-radius"] = parseFloat(args[1]);
+				leaf["top-radius"] = parseFloat(args[2]);
+				leaf["sections-per-height"] = parseInt(args[3]);
+				leaf["parts-per-section"] = parseInt(args[4]);
+				
+				if(isNaN(leaf["height"]) || isNaN(leaf["bottom-radius"]) ||
+						isNaN(leaf["top-radius"]) || isNaN(leaf["sections-per-height"]) ||
+						isNaN(leaf["parts-per-section"])) {
+					errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
+					return;
+				}
+				
+			} else {
+				errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
+				return;
+			}
+			break;
+		case "sphere":
+			break;
+			if(args.length == 3) {
+				leaf["radius"] = parseFloat(args[0]);
+				leaf["parts-along-radius"] = parseInt(args[0]);
+				leaf["parts-per-section"] = parseInt(args[0]);
+				
+				if(isNaN(leaf["radius"]) || isNaN(leaf["parts-along-radiu"]) ||
+						isNaN(leaf["parts-per-section"])) {
+					errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
+					return;
+				}
+			} else {
+				errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
+				return;
+			}
+		case "triangle":
+			break;
+			if(args.length == 9) {
+				leaf["v1-x"] = parseFloat(args[0]);
+				leaf["v1-y"] = parseFloat(args[1]);
+				leaf["v1-z"] = parseFloat(args[2]);
+				leaf["v2-x"] = parseFloat(args[3]);
+				leaf["v2-y"] = parseFloat(args[4]);
+				leaf["v2-z"] = parseFloat(args[5]);
+				leaf["v3-x"] = parseFloat(args[6]);
+				leaf["v3-y"] = parseFloat(args[7]);
+				leaf["v3-z"] = parseFloat(args[8]);
+				
+				if(isNaN(leaf["v1-x"]) || isNaN(leaf["v1-y"]) || isNaN(leaf["v1-z"])
+						|| isNaN(leaf["v2-x"]) || isNaN(leaf["v2-y"]) ||
+						isNaN(leaf["v2-z"]) || isNaN(leaf["v3-x"]) || isNaN(leaf["v3-y"])
+						|| isNaN(leaf["v3-z"])) {
+					errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
+					return;
+				}
+			} else {
+				errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
+				return;
+			}
+		default:
+			errors.push("illegal LEAF type '" + elems + "' found.");
+			invalid_type = true;
+			break;
 		}
+		
+		if(invalid_type)
+			continue;
+		
+		this.leaves[id] = leaf;
 	}
 }
 
