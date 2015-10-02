@@ -598,9 +598,55 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 				
 				var transforms = [];
 				var elements = elems[0].getElements();
+				var translation_attributes = ["x", "y", "z"];
+				var translation_types = ["ff", "ff", "ff"];
+				var rotation_attributes = ["axis", "angle"];
+				var rotation_types = ["cc", "ff"];
+				var scale_attributes = ["sx", "sy", "sz"];
+				var scale_types = ["ff", "ff", "ff"];
 				
 				for(var j = 0; j < elements.length; j++) {
+					var type = null;
+					var attributes = null;
+					var types = null;
 					
+					switch(elements[j].nodeName) {
+					case "TRANSLATION":
+						type = "TRANSLATION";
+						attributes = transform_attributes;
+						types = transform_types;
+						break;
+					case "ROTATION":
+						type = "ROTATION";
+						attributes = rotation_attributes;
+						types = rotations_types;
+						break;
+					case "SCALE":
+						type = "SCALE";
+						attributes = scale_attributes;
+						types = scale_types;
+						break;
+					default:
+						break;	
+					}
+					
+					if(type != null) {
+						var transform = [];
+						transform["id"] = type;
+						var error = false;
+						
+						for(var i = 0; i < attributes.length; i++) {
+							transform[attributes[i]] = this.parseRequiredAttribute(errors, warnings, elements[j], attributes[i], types[i]);
+							if(transform[attributes[i]] == null) {
+								error = true;
+								break;
+							}
+						}
+						
+						if(error)
+							continue;
+						transforms.push(transform);
+					}
 				}
 				
 				// GET NODE DESCENDANTS
