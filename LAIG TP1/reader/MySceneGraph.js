@@ -292,98 +292,50 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 	var materials = elems[0];
 
 	elems = this.parseElement(errors, warnings, materials, 'MATERIAL', 0, 0);
-	if (elems != null)
+	if (elems == null)
+		return;
+	
+	var finalmaterials = [];
+	var materials = elems;
+	for (var i = 0; i < materials.length; i++) // Para cada textura
 	{
-		var materials = elems;
-		for (var i = 0; i < materials.length; i++) // Para cada textura
-		{
-			this.materials[i] = [];
-			var id = this.parseRequiredAttribute(errors, warnings, materials[i], 'id', 'ss');
-			
-			// Check if material id already exists. If so, continue to next one and add error
-			var duplicate = false;
-			for(var j = 0; j < this.materials.length - 1; j++) {
-				if(this.materials[j]["id"] == id) {
-					warnings.push("duplicate MATERIAL id '" + id + "' found. Only the first will be considered.");
-					duplicate = true;
-					break;
-				}
-			}
-			if(duplicate)
-				continue;
-			this.materials[i]["id"] = id;
-			
-			elems = this.parseElement(errors, warnings, materials[i], 'shininess', 1, 1);
+		var material = [];
+		var id = this.parseRequiredAttribute(errors, warnings, materials[i], 'id', 'ss');
+		
+		// Check if material id already exists. If so, continue to next one and add warning
+		if (typeof this.materials[id] == 'undefined') {
+			warnings.push("duplicate MATERIAL id '" + id + "' found. Only the first will be considered.");
+			continue;
+		}
+		
+		elems = this.parseElement(errors, warnings, materials[i], 'shininess', 1, 1);
+		if(elems==null)
+			continue;
+		material["shininess"] = this.parseRequiredAttribute(errors, warnings, elems[0], 'value', 'ff');
+		
+		var attributes = ["specular", "diffuse", "ambient", "emission"];
+		var rgba = ["r", "g", "b", "a"];
+		
+		for(var att = 0; att < attributes.length; att++) {
+			elems = this.parseElement(errors, warnings, materials[i], attributes[att], 1, 1);
 			if(elems != null) {
-				var enable = elems[0];
-				this.materials[i]["shininess"] = this.parseRequiredAttribute(errors, warnings, enable, 'value', 'ff');
-			}
-			
-			var attributes = ["specular", "diffuse", "ambient", "emission"];
-			var attributes_arg = ['specular', 'diffuse', 'ambient', 'emission'];
-			var rgba = ["r", "g", "b", "a"];
-			var rgba_arg = ['r', 'g', 'b', 'a'];
-			
-			for(var att = 0; att < attributes.length; att++) {
-				elems = this.parseElement(errors, warnings, materials[i], attributes_arg[att], 1, 1);
-				if(elems != null) {
-					var enable = elems[0];
-					this.materials[i][attributes[att]] = [];
-					for(var value = 0; value < rgba.length; value++) {
-						this.materials[i][attributes[att]] = this.parseRequiredAttribute(errors, warnings, enable, rgba_arg[value], 'ff');
+				material[attributes[att]] = [];
+				for(var value = 0; value < rgba.length; value++) {
+					material[attributes[att]][value] = this.parseRequiredAttribute(errors, warnings, elems[0], rgba_arg[value], 'ff');
+					if(material[attributes[att]][value] == null) {
+						material[attributes[att]][value] = 0;
 					}
 				}
 			}
-			
-			// TODO para ver se um elemento já está no array basta ver se está undefined
-			
-			// TODO if the above code for cycle does not work, delete and uncomment below
-			
-			/*elems = this.parseElement(errors, warnings, materials[i], 'specular', 1, 1);
-			if(elems != null) {
-				var enable = elems[0];
-				this.materials[i]["specular"] = [];
-				this.materials[i]["specular"]["r"] = this.parseRequiredAttribute(errors, warnings, enable, 'r', 'ff');
-				this.materials[i]["specular"]["g"] = this.parseRequiredAttribute(errors, warnings, enable, 'g', 'ff');
-				this.materials[i]["specular"]["b"] = this.parseRequiredAttribute(errors, warnings, enable, 'b', 'ff');
-				this.materials[i]["specular"]["a"] = this.parseRequiredAttribute(errors, warnings, enable, 'a', 'ff');
-			}
-			
-			elems = this.parseElement(errors, warnings, materials[i], 'diffuse', 1, 1);
-			if(elems != null) {
-				var enable = elems[0];
-				this.materials[i]["diffuse"] = [];
-				this.materials[i]["diffuse"]["r"] = this.parseRequiredAttribute(errors, warnings, enable, 'r', 'ff');
-				this.materials[i]["diffuse"]["g"] = this.parseRequiredAttribute(errors, warnings, enable, 'g', 'ff');
-				this.materials[i]["diffuse"]["b"] = this.parseRequiredAttribute(errors, warnings, enable, 'b', 'ff');
-				this.materials[i]["diffuse"]["a"] = this.parseRequiredAttribute(errors, warnings, enable, 'a', 'ff');
-			}
-			
-			elems = this.parseElement(errors, warnings, materials[i], 'ambient', 1, 1);
-			if(elems != null) {
-				var enable = elems[0];
-				this.materials[i]["ambient"] = [];
-				this.materials[i]["ambient"]["r"] = this.parseRequiredAttribute(errors, warnings, enable, 'r', 'ff');
-				this.materials[i]["ambient"]["g"] = this.parseRequiredAttribute(errors, warnings, enable, 'g', 'ff');
-				this.materials[i]["ambient"]["b"] = this.parseRequiredAttribute(errors, warnings, enable, 'b', 'ff');
-				this.materials[i]["ambient"]["a"] = this.parseRequiredAttribute(errors, warnings, enable, 'a', 'ff');
-			}
-			
-			elems = this.parseElement(errors, warnings, materials[i], 'emission', 1, 1);
-			if(elems != null) {
-				var enable = elems[0];
-				this.materials[i]["emission"] = [];
-				this.materials[i]["emission"]["r"] = this.parseRequiredAttribute(errors, warnings, enable, 'r', 'ff');
-				this.materials[i]["emission"]["g"] = this.parseRequiredAttribute(errors, warnings, enable, 'g', 'ff');
-				this.materials[i]["emission"]["b"] = this.parseRequiredAttribute(errors, warnings, enable, 'b', 'ff');
-				this.materials[i]["emission"]["a"] = this.parseRequiredAttribute(errors, warnings, enable, 'a', 'ff');
-			}*/
-			
 		}
+		
+		this.materials[id] = material;
 	}
 }
 
 MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
+	
+	// FIXME passar id para chave do array
 	
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'LEAVES', 1, 1);
@@ -505,6 +457,8 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 }
 
 MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
+	
+	// FIXME passar id para chave do array
 	
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'NODES', 1, 1);
