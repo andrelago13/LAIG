@@ -593,9 +593,6 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 					}
 				}
 				
-				
-				// TODO usar getElements para retirar as transformações
-				
 				var transforms = [];
 				var elements = elems[0].getElements();
 				var translation_attributes = ["x", "y", "z"];
