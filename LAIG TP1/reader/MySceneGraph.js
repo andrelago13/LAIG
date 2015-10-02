@@ -366,6 +366,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 			
 		leaf["type"] = elems;
 		var invalid_type = false;
+		var triangle_args = ["v1-x", "v1-y", "v1-z", "v2-x", "v2-y", "v2-z", "v3-x", "v3-y", "v3-z"];
 		
 		switch(elems) {
 		case "rectangle":
@@ -378,12 +379,14 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 				if(isNaN(leaf["left-top-x"]) || isNaN(leaf["left-top-y"]) || 
 						isNaN(leaf["right-bottom-x"]) || isNaN(leaf["right-bottom-y"])) {
 					errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
-					return;
+					invalid_type = true;
+					break;;
 				}
 				
 			} else {
 				errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
-				return;
+				invalid_type = true;
+				break;;
 			}
 			break;
 		case "cylinder":
@@ -394,16 +397,17 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 				leaf["sections-per-height"] = parseInt(args[3]);
 				leaf["parts-per-section"] = parseInt(args[4]);
 				
-				if(isNaN(leaf["height"]) || isNaN(leaf["bottom-radius"]) ||
-						isNaN(leaf["top-radius"]) || isNaN(leaf["sections-per-height"]) ||
-						isNaN(leaf["parts-per-section"])) {
+				if(isNaN(leaf["height"]) || isNaN(leaf["bottom-radius"]) || isNaN(leaf["top-radius"]) ||
+						isNaN(leaf["sections-per-height"]) || isNaN(leaf["parts-per-section"])) {
 					errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
-					return;
+					invalid_type = true;
+					break;;
 				}
 				
 			} else {
 				errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
-				return;
+				invalid_type = true;
+				break;
 			}
 			break;
 		case "sphere":
@@ -413,38 +417,39 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 				leaf["parts-along-radius"] = parseInt(args[0]);
 				leaf["parts-per-section"] = parseInt(args[0]);
 				
-				if(isNaN(leaf["radius"]) || isNaN(leaf["parts-along-radiu"]) ||
-						isNaN(leaf["parts-per-section"])) {
+				if(isNaN(leaf["radius"]) || isNaN(leaf["parts-along-radiu"]) || isNaN(leaf["parts-per-section"])) {
 					errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
-					return;
+					invalid_type = true;
+					break;
 				}
 			} else {
 				errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
-				return;
+				invalid_type = true;
+				break;
 			}
 		case "triangle":
 			break;
 			if(args.length == 9) {
-				leaf["v1-x"] = parseFloat(args[0]);
-				leaf["v1-y"] = parseFloat(args[1]);
-				leaf["v1-z"] = parseFloat(args[2]);
-				leaf["v2-x"] = parseFloat(args[3]);
-				leaf["v2-y"] = parseFloat(args[4]);
-				leaf["v2-z"] = parseFloat(args[5]);
-				leaf["v3-x"] = parseFloat(args[6]);
-				leaf["v3-y"] = parseFloat(args[7]);
-				leaf["v3-z"] = parseFloat(args[8]);
+				for(var temp = 0; temp < triangle_args.length; temp++) {
+					leaf[triangle_args[temp]] = parseFloat(args[temp]);
+				}
 				
-				if(isNaN(leaf["v1-x"]) || isNaN(leaf["v1-y"]) || isNaN(leaf["v1-z"])
-						|| isNaN(leaf["v2-x"]) || isNaN(leaf["v2-y"]) ||
-						isNaN(leaf["v2-z"]) || isNaN(leaf["v3-x"]) || isNaN(leaf["v3-y"])
-						|| isNaN(leaf["v3-z"])) {
+				var err_found = false;
+				for(var temp = 0; temp < triangle_args.length; temp++) {
+					if(isNaN(leaf[triangle_args[temp]])) {
+						err_found = true;
+						break;
+					}
+				}
+				if(err_found) {
 					errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
-					return;
+					invalid_type = true;
+					break;
 				}
 			} else {
 				errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
-				return;
+				invalid_type = true;
+				break;
 			}
 		default:
 			errors.push("illegal LEAF type '" + elems + "' found.");
