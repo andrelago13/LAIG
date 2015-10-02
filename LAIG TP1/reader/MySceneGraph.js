@@ -416,8 +416,8 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 			var args = this.parseRequiredAttribute(errors, warnings, leaves[i], 'args', 'ss');
 			args = args.split(' ');
 			if(elems != null) {
-				this.leaves[i]["type"] = elems[0];
-				if(elems[0] == "rectangle") {
+				this.leaves[i]["type"] = elems;
+				if(elems == "rectangle") {
 					if(args.length == 4) {
 						// TODO passar as variáveis tipo left-top-x para um lugar tipo definido numa classe, o mesmo para os outros tipos
 						this.leaves[i]["left-top-x"] = parseInt(args[0]);
@@ -427,15 +427,15 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 						
 						if(isNaN(this.leaves[i]["left-top-x"]) || isNaN(this.leaves[i]["left-top-y"]) || 
 								isNaN(this.leaves[i]["right-bottom-x"]) || isNaN(this.leaves[i]["right-bottom-y"])) {
-							errors.push("invalid argumens for leaf '" + id + "' of type " + elems[0] + ".");
+							errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
 							return;
 						}
 						
 					} else {
-						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems[0] + ".");
+						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
 						return;
 					}
-				} else if (elems[0] == "cylinder") {
+				} else if (elems == "cylinder") {
 					if(args.length == 5) {
 						this.leaves[i]["height"] = parseFloat(args[0]);
 						this.leaves[i]["bottom-radius"] = parseFloat(args[1]);
@@ -446,15 +446,15 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 						if(isNaN(this.leaves[i]["height"]) || isNaN(this.leaves[i]["bottom-radius"]) ||
 								isNaN(this.leaves[i]["top-radius"]) || isNaN(this.leaves[i]["sections-per-height"]) ||
 								isNaN(this.leaves[i]["parts-per-section"])) {
-							errors.push("invalid argumens for leaf '" + id + "' of type " + elems[0] + ".");
+							errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
 							return;
 						}
 						
 					} else {
-						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems[0] + ".");
+						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
 						return;
 					}					
-				} else if (elems[0] == "sphere") {
+				} else if (elems == "sphere") {
 					if(args.length == 3) {
 						this.leaves[i]["radius"] = parseFloat(args[0]);
 						this.leaves[i]["parts-along-radius"] = parseInt(args[0]);
@@ -462,14 +462,14 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 						
 						if(isNaN(this.leaves[i]["radius"]) || isNaN(this.leaves[i]["parts-along-radiu"]) ||
 								isNaN(this.leaves[i]["parts-per-section"])) {
-							errors.push("invalid argumens for leaf '" + id + "' of type " + elems[0] + ".");
+							errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
 							return;
 						}
 					} else {
-						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems[0] + ".");
+						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
 						return;
 					}					
-				} else if (elems[0] == "triangle") {
+				} else if (elems == "triangle") {
 					if(args.length == 9) {
 						this.leaves[i]["v1-x"] = parseFloat(args[0]);
 						this.leaves[i]["v1-y"] = parseFloat(args[1]);
@@ -485,15 +485,15 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 								|| isNaN(this.leaves[i]["v2-x"]) || isNaN(this.leaves[i]["v2-y"]) ||
 								isNaN(this.leaves[i]["v2-z"]) || isNaN(this.leaves[i]["v3-x"]) || isNaN(this.leaves[i]["v3-y"])
 								|| isNaN(this.leaves[i]["v3-z"])) {
-							errors.push("invalid argumens for leaf '" + id + "' of type " + elems[0] + ".");
+							errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
 							return;
 						}
 					} else {
-						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems[0] + ".");
+						errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
 						return;
 					}
 				} else {
-					errors.push("illegal LEAF type '" + elems[0] + "' found.");
+					errors.push("illegal LEAF type '" + elems + "' found.");
 					return;
 				}
 				
