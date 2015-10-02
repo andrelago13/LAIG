@@ -45,7 +45,7 @@
 
 <MATERIALS>
     <MATERIAL id="ss">                                  
-        <shininess value="ff" />
+        <shininess value="2" />
         <specular r="ff" g="ff" b="ff" a="ff" />        <!-- specular reflection -->
         <diffuse r="ff" g="ff" b="ff" a="ff" />         <!-- diffuse reflection -->
         <ambient r="ff" g="ff" b="ff" a="ff" />         <!-- ambient reflection -->

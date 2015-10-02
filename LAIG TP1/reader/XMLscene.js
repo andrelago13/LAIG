@@ -56,6 +56,9 @@ XMLscene.prototype.onGraphLoaded = function ()
 {
 	this.gl.clearColor(0, 0, 0, 1);
 	this.initLights();
+	// TODO decode materials
+	// TODO decode leaves
+	// TODO decode nodes
 };
 
 XMLscene.prototype.display = function () {
