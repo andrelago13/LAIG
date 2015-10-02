@@ -691,16 +691,22 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, elemen
 	var attribute = null;
 	switch (type)
 	{
+	case "cc":
+		attribute = this.reader.getItem(element, name, ["x", "y", "z"], false);
+		break;
 	case "ff":
 		attribute = this.reader.getFloat(element, name, false);
 		if (isNaN(attribute)) attribute = null;
+		break;
+	case "ss":
+		attribute = this.reader.getString(element, name, false);
 		break;
 	case "tt":
 		attribute = this.reader.getBoolean(element, name, false);
 		break;
 	default:
 		attribute = this.reader.getString(element, name, false);
-	break;
+		break;
 	}
 	if (attribute == null)
 		errors.push("'" + name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'.");
@@ -717,7 +723,6 @@ MySceneGraph.prototype.parseElement= function(errors, warnings, parent, elementN
 	
 	if ((element.length < minNum && minNum != 0) || (element.length > maxNum && maxNum != 0))
 	{
-		errors.push("illegal ammount of '" + elementName + "' element found.");
 		if (minNum == maxNum)
 			errors.push("expected " + minNum + " '" + elementName + "' element" + (minNum != 1 ? "s" : "") + " but found " + element.length + ".");
 		else
@@ -726,49 +731,6 @@ MySceneGraph.prototype.parseElement= function(errors, warnings, parent, elementN
 	}
 	return element;
 }
-
-/*
- * Example of method that parses elements of one block and stores information in a specific data structure
- */
-MySceneGraph.prototype.parseGlobalsExample= function(errors, warnings, rootElement) {
-
-	/*var elems =  rootElement.getElementsByTagName('globals');
-	if (elems == null) {
-		errors.push("globals element is missing.");
-	}
-
-	if (elems.length != 1) {
-		errors.push("either zero or more than one 'globals' element found.");
-	}
-
-	// various examples of different types of access
-	var globals = elems[0];*/
-	/*	this.background = this.reader.getRGBA(globals, 'background');
-	this.drawmode = this.reader.getItem(globals, 'drawmode', ["fill","line","point"]);
-	this.cullface = this.reader.getItem(globals, 'cullface', ["back","front","none", "frontandback"]);
-	this.cullorder = this.reader.getItem(globals, 'cullorder', ["ccw","cw"]);
-
-	console.log("Globals read from file: {background=" + this.background + ", drawmode=" + this.drawmode + ", cullface=" + this.cullface + ", cullorder=" + this.cullorder + "}");
-	 */
-	/*var tempList=rootElement.getElementsByTagName('list');
-
-	if (tempList == null  || tempList.length==0) {
-		errors.push("list element is missing.");
-	}
-
-	this.list=[];
-	// iterate over every element
-	var nnodes=tempList[0].children.length;
-	for (var i=0; i< nnodes; i++)
-	{
-		var e=tempList[0].children[i];
-
-		// process each element and store its information
-		this.list[e.id]=e.attributes.getNamedItem("coords").value;
-		console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
-	};*/
-
-};
 
 /*
  * Callback to be executed on any read error
