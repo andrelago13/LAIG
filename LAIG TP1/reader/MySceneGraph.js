@@ -287,6 +287,9 @@ MySceneGraph.prototype.parseTextures= function(errors, warnings, rootElement)
 
 MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 	
+	var attributes = ["specular", "diffuse", "ambient", "emission"];
+	var rgba = ["r", "g", "b", "a"];
+	
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'MATERIALS', 1, 1);
 	if (elems == null) return;
@@ -297,7 +300,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 		return;
 	
 	var materials = elems;
-	for (var i = 0; i < materials.length; i++) // Para cada textura
+	for (var i = 0; i < materials.length; i++) // For each material
 	{
 		var material = [];
 		var id = this.parseRequiredAttribute(errors, warnings, materials[i], 'id', 'ss');
@@ -313,15 +316,12 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 			continue;
 		material["shininess"] = this.parseRequiredAttribute(errors, warnings, elems[0], 'value', 'ff');
 		
-		var attributes = ["specular", "diffuse", "ambient", "emission"];
-		var rgba = ["r", "g", "b", "a"];
-		
 		for(var att = 0; att < attributes.length; att++) {
 			elems = this.parseElement(errors, warnings, materials[i], attributes[att], 1, 1);
 			if(elems != null) {
 				material[attributes[att]] = [];
 				for(var value = 0; value < rgba.length; value++) {
-					material[attributes[att]][value] = this.parseRequiredAttribute(errors, warnings, elems[0], rgba_arg[value], 'ff');
+					material[attributes[att]][value] = this.parseRequiredAttribute(errors, warnings, elems[0], rgba[value], 'ff');
 					if(material[attributes[att]][value] == null) {
 						material[attributes[att]][value] = 0;
 					}
@@ -335,7 +335,16 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 
 MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 	
-	// TODO code cleanup necessary
+	var all_args = [];
+	var all_func = [];
+	all_args["rectangle"] = ["left-top-x", "left-top-y", "right-bottom-x", "right-bottom-y"];
+	all_func["rectangle"] = [parseFloat, parseFloat, parseFloat, parseFloat];
+	all_args["cylinder"] = ["height", "bottom-radius", "top-radius", "sections-per-height", "parts-per-section"];
+	all_func["cylinder"] = [parseFloat, parseFloat, parseFloat, parseInt, parseInt];
+	all_args["sphere"] = ["radius", "parts-along-radius", "parts-per-section"];
+	all_func["sphere"] = [parseFloat, parseInt, parseInt];
+	all_args["triangle"] = ["v1-x", "v1-y", "v1-z", "v2-x", "v2-y", "v2-z", "v3-x", "v3-y", "v3-z"];
+	all_func["triangle"] = [parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat];
 	
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'LEAVES', 1, 1);
@@ -347,7 +356,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 		return;
 	
 	var leaves = elems;
-	for (var i = 0; i < leaves.length; i++) // Para cada textura
+	for (var i = 0; i < leaves.length; i++) // For each leaf
 	{
 		var leaf = [];
 		var id = this.parseRequiredAttribute(errors, warnings, leaves[i], 'id', 'ss');
@@ -363,108 +372,43 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 		args = args.split(' ');
 		if(elems == null)
 			continue;
-			
-		leaf["type"] = elems;
-		var invalid_type = false;
-		var triangle_args = ["v1-x", "v1-y", "v1-z", "v2-x", "v2-y", "v2-z", "v3-x", "v3-y", "v3-z"];
 		
-		switch(elems) {
-		case "rectangle":
-			if(args.length == 4) {
-				leaf["left-top-x"] = parseInt(args[0]);
-				leaf["left-top-y"] = parseInt(args[1]);
-				leaf["right-bottom-x"] = parseInt(args[2]);
-				leaf["right-bottom-x"] = parseInt(args[3]);
-				
-				if(isNaN(leaf["left-top-x"]) || isNaN(leaf["left-top-y"]) || 
-						isNaN(leaf["right-bottom-x"]) || isNaN(leaf["right-bottom-y"])) {
-					errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
-					invalid_type = true;
-					break;;
-				}
-				
-			} else {
-				errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
-				invalid_type = true;
-				break;;
-			}
-			break;
-		case "cylinder":
-			if(args.length == 5) {
-				leaf["height"] = parseFloat(args[0]);
-				leaf["bottom-radius"] = parseFloat(args[1]);
-				leaf["top-radius"] = parseFloat(args[2]);
-				leaf["sections-per-height"] = parseInt(args[3]);
-				leaf["parts-per-section"] = parseInt(args[4]);
-				
-				if(isNaN(leaf["height"]) || isNaN(leaf["bottom-radius"]) || isNaN(leaf["top-radius"]) ||
-						isNaN(leaf["sections-per-height"]) || isNaN(leaf["parts-per-section"])) {
-					errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
-					invalid_type = true;
-					break;;
-				}
-				
-			} else {
-				errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
-				invalid_type = true;
-				break;
-			}
-			break;
-		case "sphere":
-			break;
-			if(args.length == 3) {
-				leaf["radius"] = parseFloat(args[0]);
-				leaf["parts-along-radius"] = parseInt(args[0]);
-				leaf["parts-per-section"] = parseInt(args[0]);
-				
-				if(isNaN(leaf["radius"]) || isNaN(leaf["parts-along-radiu"]) || isNaN(leaf["parts-per-section"])) {
-					errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
-					invalid_type = true;
-					break;
-				}
-			} else {
-				errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
-				invalid_type = true;
-				break;
-			}
-		case "triangle":
-			break;
-			if(args.length == 9) {
-				for(var temp = 0; temp < triangle_args.length; temp++) {
-					leaf[triangle_args[temp]] = parseFloat(args[temp]);
-				}
-				
-				var err_found = false;
-				for(var temp = 0; temp < triangle_args.length; temp++) {
-					if(isNaN(leaf[triangle_args[temp]])) {
-						err_found = true;
-						break;
-					}
-				}
-				if(err_found) {
-					errors.push("invalid argumens for leaf '" + id + "' of type " + elems + ".");
-					invalid_type = true;
-					break;
-				}
-			} else {
-				errors.push("illegal number of arguments for leaf '" + id + "' of type " + elems + ".");
-				invalid_type = true;
-				break;
-			}
-		default:
+		if(typeof all_args[elems] == 'undefined') {
 			errors.push("illegal LEAF type '" + elems + "' found.");
-			invalid_type = true;
 			break;
+		}	
+		leaf["type"] = elems;
+		
+		if(args.length != all_args[elems].length) {
+			errors.push("illegal number of arguments for leaf '" + id + "' of type '" + elems + "'.");
+			continue;
 		}
 		
-		if(invalid_type)
+		var err_found = false;
+		for(var temp = 0; temp < all_args[elems].length; temp++) {
+			leaf[all_args[elems][temp]] = (all_func[elems])[temp](args[temp]);
+			if(isNaN(leaf[all_args[elems][temp]])) {
+				err_found = true;
+				break;
+			}
+		}
+		if(err_found) {
+			errors.push("invalid argumens for leaf '" + id + "' of type '" + elems + "'.");
 			continue;
-		
+		}
+				
 		this.leaves[id] = leaf;
 	}
 }
 
 MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
+	
+	var translation_attributes = ["x", "y", "z"];
+	var translation_types = ["ff", "ff", "ff"];
+	var rotation_attributes = ["axis", "angle"];
+	var rotation_types = ["cc", "ff"];
+	var scale_attributes = ["sx", "sy", "sz"];
+	var scale_types = ["ff", "ff", "ff"];
 	
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'NODES', 1, 1);
@@ -519,12 +463,8 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		
 		var transforms = [];
 		var elements = elems[0].getElements();
-		var translation_attributes = ["x", "y", "z"];
-		var translation_types = ["ff", "ff", "ff"];
-		var rotation_attributes = ["axis", "angle"];
-		var rotation_types = ["cc", "ff"];
-		var scale_attributes = ["sx", "sy", "sz"];
-		var scale_types = ["ff", "ff", "ff"];
+		
+		// TODO same cleanup necessary as in leaves
 		
 		for(var j = 0; j < elements.length; j++) {
 			var type = null;
@@ -622,16 +562,16 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 			}
 		}
 		
-		// CHECK IF TEXTURE EXISTS
+		// CHECK IF TEXTURE EXISTS (except "null" and "clear")
 		var tex_id = this.nodes[i]["texture"];
-		if(typeof this.textures[tex_id] == 'undefined') {
+		if(tex_id != "null" && tex_id != "clear" && typeof this.textures[tex_id] == 'undefined') {
 			errors.push("TEXTURE id '" + tex_id + "' not found for NODE '" + id + "'");
 			continue;				
 		}
 		
-		// CHECK IF MATERIAL EXISTS
+		// CHECK IF MATERIAL EXISTS (except "null")
 		var mat_id = this.nodes[i]["material"];
-		if(typeof this.materials[mat_id] == 'undefined') {
+		if(mat_id != "null" && typeof this.materials[mat_id] == 'undefined') {
 			errors.push("MATERIAL id '" + mat_id + "' not found for NODE '" + id + "'");
 			continue;
 		}
