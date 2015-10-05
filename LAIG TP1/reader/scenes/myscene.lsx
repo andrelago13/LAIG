@@ -13,7 +13,6 @@
 
 <ILLUMINATION>
     <ambient r="0" g="0" b="0" a="0" />            <!-- global ambient -->
-    <doubleside value="1" />                          <!-- double or single side illum. -->
     <background r="0" g="0" b="0" a="0" />         <!-- background color -->
 </ILLUMINATION>
 
