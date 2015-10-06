@@ -438,12 +438,13 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 
 MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 
-	var translation_attributes = ["x", "y", "z"];
-	var translation_types = ["ff", "ff", "ff"];
-	var rotation_attributes = ["axis", "angle"];
-	var rotation_types = ["cc", "ff"];
-	var scale_attributes = ["sx", "sy", "sz"];
-	var scale_types = ["ff", "ff", "ff"];
+	var all_attributes = []; var all_types = [];
+	all_attributes["TRANSLATION"] = ["x", "y", "z"];
+	all_types["TRANSLATION"] = ["ff", "ff", "ff"];
+	all_attributes["ROTATION"] = ["axis", "angle"];
+	all_types["ROTATION"] = ["cc", "ff"];
+	all_attributes["SCALE"] = ["sx", "sy", "sz"];
+	all_types["SCALE"] = ["ff", "ff", "ff"];
 
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'NODES', 1, 1);
@@ -499,50 +500,28 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		var transforms = [];
 		var elements = elems[0].childNodes;
 
-		// TODO same cleanup necessary as in leaves
-
 		for(var j = 0; j < elements.length; j++) {
-			var type = null;
-			var attributes = null;
-			var types = null;
+			var type = elements[j].nodeName;
+			if(typeof all_types[type] == 'undefined')
+				continue;
 
-			switch(elements[j].nodeName) {
-			case "TRANSLATION":
-				type = "TRANSLATION";
-				attributes = translation_attributes;
-				types = translation_types;
-				break;
-			case "ROTATION":
-				type = "ROTATION";
-				attributes = rotation_attributes;
-				types = rotation_types;
-				break;
-			case "SCALE":
-				type = "SCALE";
-				attributes = scale_attributes;
-				types = scale_types;
-				break;
-			default:
-				break;	
-			}
+			var transform = [];
+			transform["type"] = type;
+			var error = false;
 
-			if(type != null) {
-				var transform = [];
-				transform["id"] = type;
-				var error = false;
-
-				for(var i = 0; i < attributes.length; i++) {
-					transform[attributes[i]] = this.parseRequiredAttribute(errors, warnings, elements[j], attributes[i], types[i]);
-					if(transform[attributes[i]] == null) {
-						error = true;
-						break;
-					}
+			for(var i = 0; i < all_attributes[type].length; i++) {
+				var att = all_attributes[type][i];
+				var t = all_types[type][i];
+				transform[att] = this.parseRequiredAttribute(errors, warnings, elements[j], att, t);
+				if(transform[att] == null) {
+					error = true;
+					break;
 				}
-
-				if(error)
-					continue;
-				transforms.push(transform);
 			}
+			
+			if(error)
+				continue;
+			transforms.push(transform);
 		}
 
 		// GET NODE DESCENDANTS
