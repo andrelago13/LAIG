@@ -39,17 +39,15 @@ MySceneGraph.prototype.onXMLReady=function()
 	var errors = [];
 	var warnings = [];
 	this.parse(errors, warnings, rootElement);
-	console.log("Num errors: " + errors.length);
+	if(warnings.length > 0) {
+		this.onXMLWarning(warnings);
+	}
 	if (errors.length > 0) {
 		this.onXMLError(errors);
 		return;
 	}
-	
+
 	this.loadedOk=true;
-	
-	if(warnings.length > 0) {
-		this.onXMLWarning(warnings);
-	}
 
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on 
 	// the graph can take place
@@ -62,13 +60,50 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 		errors.push("The document root node should be 'SCENE'");
 		return;
 	}
-	this.parseInitials(errors, warnings, rootElement);
-	this.parseIllumination(errors, warnings, rootElement);
-	this.parseLights(errors, warnings, rootElement);
-	this.parseTextures(errors, warnings, rootElement);
-	this.parseMaterials(errors, warnings, rootElement);
-	this.parseLeaves(errors, warnings, rootElement);
-	this.parseNodes(errors, warnings, rootElement);
+	var blocks = ["INITIALS", "ILLUMINATION", "LIGHTS", "TEXTURES", "MATERIALS", "LEAVES", "NODES"];
+	var blockPos = Array.apply(null, Array(blocks.length)).map(Number.prototype.valueOf, -1);
+	var currPos = 0;
+	var elements = rootElement.childNodes;
+	for (var i = 0; i < elements.length; i++)
+	{
+		if (typeof elements[i].tagName === 'undefined')
+			continue;
+		var index = blocks.indexOf(elements[i].tagName);
+		if (index == -1) warnings.push("unknown block '" + elements[i].tagName + "'.");
+		else if (blockPos[index] != -1) warnings.push("block '" + elements[i].tagName + "' defined multiple times.");
+		else blockPos[index] = currPos++;
+	}
+
+	for (var i = 0; i < blocks.length; i++)
+	{
+		if (blockPos[i] == -1)
+		{
+			warnings.push("block '" + blocks[i] + "' not found.");
+			break;
+		}
+		if (blockPos[i] != i)
+			warnings.push("wrong block order for block '" + blocks[i] + "', it should be number " + (i + 1) + ".");
+
+		var elems = [];
+		elems = this.parseElement(errors, warnings, rootElement, blocks[i], 1, 1);
+		if (elems == null) break;
+		this.parseBlock(errors, warnings, rootElement, i);
+	}
+}
+
+MySceneGraph.prototype.parseBlock= function(errors, warnings, element, blockID)
+{
+	switch (blockID)
+	{
+	case 0: return this.parseInitials(errors, warnings, element);
+	case 1: return this.parseIllumination(errors, warnings, element);
+	case 2: return this.parseLights(errors, warnings, element);
+	case 3: return this.parseTextures(errors, warnings, element);
+	case 4: return this.parseMaterials(errors, warnings, element);
+	case 5: return this.parseLeaves(errors, warnings, element);
+	case 6: return this.parseNodes(errors, warnings, element);
+	default: return;
+	}
 }
 
 MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
@@ -272,7 +307,7 @@ MySceneGraph.prototype.parseTextures= function(errors, warnings, rootElement)
 				var enable = elems[0];
 				this.textures[i]["file"] = this.parseRequiredAttribute(errors, warnings, enable, 'path', 'ss');
 			}
-			
+
 			elems = this.parseElement(errors, warnings, textures[i], 'amplif_factor', 1, 1);
 			if (elems != null)
 			{
@@ -286,10 +321,10 @@ MySceneGraph.prototype.parseTextures= function(errors, warnings, rootElement)
 }
 
 MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
-	
+
 	var attributes = ["specular", "diffuse", "ambient", "emission"];
 	var rgba = ["r", "g", "b", "a"];
-	
+
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'MATERIALS', 1, 1);
 	if (elems == null) return;
@@ -298,24 +333,24 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 	elems = this.parseElement(errors, warnings, materials, 'MATERIAL', 0, 0);
 	if (elems == null)
 		return;
-	
+
 	var materials = elems;
 	for (var i = 0; i < materials.length; i++) // For each material
 	{
 		var material = [];
 		var id = this.parseRequiredAttribute(errors, warnings, materials[i], 'id', 'ss');
-		
+
 		// Check if material id already exists. If so, continue to next one and add warning
 		if (typeof this.materials[id] != 'undefined') {
 			warnings.push("duplicate MATERIAL id '" + id + "' found. Only the first will be considered.");
 			continue;
 		}
-		
+
 		elems = this.parseElement(errors, warnings, materials[i], 'shininess', 1, 1);
 		if(elems==null)
 			continue;
 		material["shininess"] = this.parseRequiredAttribute(errors, warnings, elems[0], 'value', 'ff');
-		
+
 		for(var att = 0; att < attributes.length; att++) {
 			elems = this.parseElement(errors, warnings, materials[i], attributes[att], 1, 1);
 			if(elems != null) {
@@ -328,13 +363,13 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 				}
 			}
 		}
-		
+
 		this.materials[id] = material;
 	}
 }
 
 MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
-	
+
 	var all_args = [];
 	var all_func = [];
 	all_args["rectangle"] = ["left-top-x", "left-top-y", "right-bottom-x", "right-bottom-y"];
@@ -345,7 +380,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 	all_func["sphere"] = [parseFloat, parseInt, parseInt];
 	all_args["triangle"] = ["v1-x", "v1-y", "v1-z", "v2-x", "v2-y", "v2-z", "v3-x", "v3-y", "v3-z"];
 	all_func["triangle"] = [parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat];
-	
+
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'LEAVES', 1, 1);
 	if (elems == null) return;
@@ -354,36 +389,36 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 	elems = this.parseElement(errors, warnings, leaves, 'LEAF', 0, 0);
 	if (elems == null)
 		return;
-	
+
 	var leaves = elems;
 	for (var i = 0; i < leaves.length; i++) // For each leaf
 	{
 		var leaf = [];
 		var id = this.parseRequiredAttribute(errors, warnings, leaves[i], 'id', 'ss');
-		
+
 		// Check if leaf id already exists. If so, continue to next one and add error
 		if (typeof this.leaves[id] != 'undefined') {
 			warnings.push("duplicate MATERIAL id '" + id + "' found. Only the first will be considered.");
 			continue;
 		}
-		
+
 		elems = this.parseRequiredAttribute(errors, warnings, leaves[i], 'type', 'ss');
 		var args = this.parseRequiredAttribute(errors, warnings, leaves[i], 'args', 'ss');
 		args = args.split(' ');
 		if(elems == null)
 			continue;
-		
+
 		if(typeof all_args[elems] == 'undefined') {
 			errors.push("illegal LEAF type '" + elems + "' found.");
 			break;
 		}	
 		leaf["type"] = elems;
-		
+
 		if(args.length != all_args[elems].length) {
 			errors.push("illegal number of arguments for leaf '" + id + "' of type '" + elems + "'.");
 			continue;
 		}
-		
+
 		var err_found = false;
 		for(var temp = 0; temp < all_args[elems].length; temp++) {
 			leaf[all_args[elems][temp]] = (all_func[elems])[temp](args[temp]);
@@ -396,25 +431,25 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 			errors.push("invalid argumens for leaf '" + id + "' of type '" + elems + "'.");
 			continue;
 		}
-				
+
 		this.leaves[id] = leaf;
 	}
 }
 
 MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
-	
+
 	var translation_attributes = ["x", "y", "z"];
 	var translation_types = ["ff", "ff", "ff"];
 	var rotation_attributes = ["axis", "angle"];
 	var rotation_types = ["cc", "ff"];
 	var scale_attributes = ["sx", "sy", "sz"];
 	var scale_types = ["ff", "ff", "ff"];
-	
+
 	var elems = [];
 	elems = this.parseElement(errors, warnings, rootElement, 'NODES', 1, 1);
 	if(elems == null)
 		return;
-		
+
 	// GET ROOT NODE ID
 	var root = this.parseElement(errors, warnings, elems[0], 'ROOT', 1, 1);
 	if(root == null)
@@ -422,15 +457,15 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 	this.rootNode = this.parseRequiredAttribute(errors, warnings, root[0], 'id', 'ss');
 	if(this.rootNode == null)
 		return;
-	
+
 	// GET NORMAL NODES
 	elems = this.parseElement(errors, warnings, elems[0], 'NODE', 0, 0);
 	if(elems == null)
 		return;
-	
+
 	// for every node
 	for(var i = 0; i < elems.length; i++) {
-		
+
 		// GET NODE ID AND CHECK IF IT ALREADY EXISTS
 		var id = this.parseRequiredAttribute(errors, warnings, elems[i], 'id', 'ss');
 		if(id == null) {
@@ -444,33 +479,33 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 			warnings.push("NODE id '" + id + "' already used as LEAF id. The NODE will not be considered");
 			continue;
 		}
-		
+
 		// GET NODE'S MATERIAL ID
-		var material = parseElement(errors, warnings, elems[i], 'MATERIAL', 1, 1);
+		var material = this.parseElement(errors, warnings, elems[i], 'MATERIAL', 1, 1);
 		if(material == null)
 			continue;
-		var mat_id = parseRequiredAttribute(errors, warnings, material[0], 'id', 'ss');
+		var mat_id = this.parseRequiredAttribute(errors, warnings, material[0], 'id', 'ss');
 		if(mat_id == null)
 			continue;
-		
+
 		// GET NODE'S TEXTURE ID
-		var texture = parseElement(errors, warnings, elems[i], 'TEXTURE', 1, 1);
+		var texture = this.parseElement(errors, warnings, elems[i], 'TEXTURE', 1, 1);
 		if(texture == null)
 			continue;
-		var tex_id = parseRequiredAttribute(errors, warnings, texture[0], 'id', 'ss');
+		var tex_id = this.parseRequiredAttribute(errors, warnings, texture[0], 'id', 'ss');
 		if(tex_id == null)
 			continue;
-		
+
 		var transforms = [];
 		var elements = elems[0].getElements();
-		
+
 		// TODO same cleanup necessary as in leaves
-		
+
 		for(var j = 0; j < elements.length; j++) {
 			var type = null;
 			var attributes = null;
 			var types = null;
-			
+
 			switch(elements[j].nodeName) {
 			case "TRANSLATION":
 				type = "TRANSLATION";
@@ -490,12 +525,12 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 			default:
 				break;	
 			}
-			
+
 			if(type != null) {
 				var transform = [];
 				transform["id"] = type;
 				var error = false;
-				
+
 				for(var i = 0; i < attributes.length; i++) {
 					transform[attributes[i]] = this.parseRequiredAttribute(errors, warnings, elements[j], attributes[i], types[i]);
 					if(transform[attributes[i]] == null) {
@@ -503,13 +538,13 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 						break;
 					}
 				}
-				
+
 				if(error)
 					continue;
 				transforms.push(transform);
 			}
 		}
-		
+
 		// GET NODE DESCENDANTS
 		var descendants = this.parseElement(errors, warnings, elems[0], 'DESCENDANTS', 1, 1);
 		if(descendants == null)
@@ -518,21 +553,21 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		if(descendants == null) {
 			continue;
 		}
-		
+
 		var desc = [];
-		
+
 		for(var j = 0; j < descendants.length; j++) {
 			var desc_id = this.parseRequiredAttribute(errors, warnings, descendants[0], 'id', 'ss');
 			if(desc_id == null)
 				continue;
 			desc.push(desc_id);
 		}
-		
+
 		if(desc.length < 1) {
 			errors.push("NODE '" + id + "' must have at least one valid descendant id");
 			continue;
 		}
-		
+
 		// ADD NODE TO NODE LIST
 		node = [];
 		node["material"] = mat_id;
@@ -544,14 +579,14 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 }
 
 MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
-	
+
 	var init_err_len = errors.length;
-	
+
 	// CHECK IF ROOT NODE EXISTS
 	if(typeof this.nodes[this.rootNode] == 'undefined') {
 		errors.push("no NODE with id of ROOT node ('" + this.nodes["root-id"] + "') was found");
 	}
-	
+
 	// CHECK IF LINKS IN NODES ARE VALID
 	for (var i in this.nodes) {
 		// CHECK IF ALL DESCENDANTS EXIST
@@ -561,14 +596,14 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 				errors.push("DESCENDANT '" + desc[j] + "' of NODE '" + i + "' not found in NODES or LEAVES list");
 			}
 		}
-		
+
 		// CHECK IF TEXTURE EXISTS (except "null" and "clear")
 		var tex_id = this.nodes[i]["texture"];
 		if(tex_id != "null" && tex_id != "clear" && typeof this.textures[tex_id] == 'undefined') {
 			errors.push("TEXTURE id '" + tex_id + "' not found for NODE '" + id + "'");
 			continue;				
 		}
-		
+
 		// CHECK IF MATERIAL EXISTS (except "null")
 		var mat_id = this.nodes[i]["material"];
 		if(mat_id != "null" && typeof this.materials[mat_id] == 'undefined') {
@@ -576,10 +611,10 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 			continue;
 		}
 	}
-	
+
 	if(errors.length > init_err_len)
 		return false;
-	
+
 	return true;
 }
 
@@ -608,7 +643,7 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, elemen
 		break;
 	default:
 		attribute = this.reader.getString(element, name, false);
-		break;
+	break;
 	}
 	if (attribute == null)
 		errors.push("'" + name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'.");
@@ -622,7 +657,7 @@ MySceneGraph.prototype.parseElement= function(errors, warnings, parent, elementN
 		errors.push("'" + elementname + "' element is missing.");
 		return null;
 	}
-	
+
 	if ((element.length < minNum && minNum != 0) || (element.length > maxNum && maxNum != 0))
 	{
 		if (minNum == maxNum)
@@ -647,8 +682,8 @@ MySceneGraph.prototype.onXMLError=function (errors) {
 
 MySceneGraph.prototype.onXMLWarning=function (warnings) {
 	for (var i = 0; i < warnings.length; i++)
-		console.log("XML Loading Warning: "+ warnings[i]);
-	
+		console.warn("XML Loading Warning: "+ warnings[i]);
+
 	if(this.loadedOk)
 		console.log("Execution continuing with possible errors.")
 }
