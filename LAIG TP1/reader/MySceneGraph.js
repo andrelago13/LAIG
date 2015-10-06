@@ -497,7 +497,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 			continue;
 
 		var transforms = [];
-		var elements = elems[0].getElements();
+		var elements = elems[0].childNodes;
 
 		// TODO same cleanup necessary as in leaves
 
@@ -509,13 +509,13 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 			switch(elements[j].nodeName) {
 			case "TRANSLATION":
 				type = "TRANSLATION";
-				attributes = transform_attributes;
-				types = transform_types;
+				attributes = translation_attributes;
+				types = translation_types;
 				break;
 			case "ROTATION":
 				type = "ROTATION";
 				attributes = rotation_attributes;
-				types = rotations_types;
+				types = rotation_types;
 				break;
 			case "SCALE":
 				type = "SCALE";
