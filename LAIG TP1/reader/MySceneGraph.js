@@ -66,7 +66,7 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 	var elements = rootElement.childNodes;
 	for (var i = 0; i < elements.length; i++)
 	{
-		if (typeof elements[i].tagName === 'undefined')
+		if (typeof elements[i].tagName == 'undefined')
 			continue;
 		var index = blocks.indexOf(elements[i].tagName);
 		if (index == -1) warnings.push("unknown block '" + elements[i].tagName + "'.");
@@ -131,22 +131,21 @@ MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
 		for (var i = 0; i < axisList.length; i++)
 			this.initials["translate"][axisList[i]] = this.parseRequiredAttribute(errors, warnings, translate, axisList[i], 'ff');
 	}
-
 	elems = this.parseElement(errors, warnings, initials, 'rotation', 0, 0);
 	if (elems != null)
 	{
 		this.initials["rotation"] = [];
-		for (var i = 0; i < elems[i]; i++)
+		for (var i = 0; i < elems.length; i++)
 		{
 			var rotation = elems[i];
 			var axis = this.parseRequiredAttribute(errors, warnings, rotation, 'axis', 'cc', axisList);
-			if (this.initials["rotation"][axis] != null)
+			if (typeof this.initials["rotation"][axis] != 'undefined')
 				warnings.push("rotation of '" + axis + "' axis already defined, updating its value.");
 			this.initials["rotation"][axis] = this.parseRequiredAttribute(errors, warnings, rotation, 'angle', 'ff');
 		}
 		for (var i = 0; i < 3; i++)
 		{
-			if (this.initials["rotation"][axisList[i]] == null)
+			if (typeof this.initials["rotation"][axisList[i]] == 'undefined')
 			{
 				warnings.push("rotation of '" + axis + "' axis not defined, setting it to 0.");
 				this.initials["rotation"][axisList[i]] = 0;
@@ -191,13 +190,6 @@ MySceneGraph.prototype.parseIllumination= function(errors, warnings, rootElement
 		{
 			this.illumination["ambient"][rgbaList[i]] = this.parseRequiredAttribute(errors, warnings, ambient, rgbaList[i], 'ff');
 		}
-	}
-
-	elems = this.parseElement(errors, warnings, illumination, 'doubleside', 1, 1);
-	if (elems != null)
-	{
-		var doubleside = elems[0];
-		this.illumination["doubleside"] = this.parseRequiredAttribute(errors, warnings, doubleside, 'value', 'tt');
 	}
 
 	elems = this.parseElement(errors, warnings, illumination, 'background', 1, 1);
@@ -458,7 +450,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 	this.rootNode = this.parseRequiredAttribute(errors, warnings, root[0], 'id', 'ss');
 	if(this.rootNode == null)
 		return;
-
+	console.log("root: " + this.rootNode);
 	// GET NORMAL NODES
 	elems = this.parseElement(errors, warnings, elems[0], 'NODE', 0, 0);
 	if(elems == null)
@@ -466,12 +458,13 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 
 	// for every node
 	for(var i = 0; i < elems.length; i++) {
-
+		
 		// GET NODE ID AND CHECK IF IT ALREADY EXISTS
 		var id = this.parseRequiredAttribute(errors, warnings, elems[i], 'id', 'ss');
 		if(id == null) {
 			continue;
 		}
+		console.log("node: " + id);
 		if(typeof this.nodes[id] != 'undefined') {
 			warnings.push("duplicate NODE id '" + id + "' found. Only the first will be considered.");
 			continue;
@@ -496,10 +489,10 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		var tex_id = this.parseRequiredAttribute(errors, warnings, texture[0], 'id', 'ss');
 		if(tex_id == null)
 			continue;
-
+		
 		var transforms = [];
-		var elements = elems[0].childNodes;
-
+		var elements = elems[i].childNodes;
+		
 		for(var j = 0; j < elements.length; j++) {
 			var type = elements[j].nodeName;
 			if(typeof all_types[type] == 'undefined')
@@ -509,9 +502,9 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 			transform["type"] = type;
 			var error = false;
 
-			for(var i = 0; i < all_attributes[type].length; i++) {
-				var att = all_attributes[type][i];
-				var t = all_types[type][i];
+			for(var k = 0; k < all_attributes[type].length; k++) {
+				var att = all_attributes[type][k];
+				var t = all_types[type][k];
 				transform[att] = this.parseRequiredAttribute(errors, warnings, elements[j], att, t);
 				if(transform[att] == null) {
 					error = true;
@@ -532,7 +525,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		if(descendants == null) {
 			continue;
 		}
-
+		
 		var desc = [];
 
 		for(var j = 0; j < descendants.length; j++) {
@@ -624,7 +617,7 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, elemen
 		attribute = this.reader.getString(element, name, false);
 	break;
 	}
-	if (attribute == null)
+	if (attribute === null)
 		errors.push("'" + name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'.");
 	return attribute;
 }
