@@ -123,7 +123,7 @@ MySceneGraph.prototype.parseInitials= function(errors, warnings, rootElement) {
 
 	var axisList = ["x", "y", "z"];
 
-	elems = this.parseElement(errors, warnings, initials, 'translate', 1, 1);
+	elems = this.parseElement(errors, warnings, initials, 'translation', 1, 1);
 	if (elems != null)
 	{
 		var translate = elems[0];
@@ -450,7 +450,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 	this.rootNode = this.parseRequiredAttribute(errors, warnings, root[0], 'id', 'ss');
 	if(this.rootNode == null)
 		return;
-	console.log("root: " + this.rootNode);
+	
 	// GET NORMAL NODES
 	elems = this.parseElement(errors, warnings, elems[0], 'NODE', 0, 0);
 	if(elems == null)
@@ -464,7 +464,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		if(id == null) {
 			continue;
 		}
-		console.log("node: " + id);
+		
 		if(typeof this.nodes[id] != 'undefined') {
 			warnings.push("duplicate NODE id '" + id + "' found. Only the first will be considered.");
 			continue;
