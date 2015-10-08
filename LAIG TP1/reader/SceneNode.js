@@ -10,6 +10,8 @@ function SceneNode() {
 	this.descendants = [];
 }
 
+SceneNode.prototype.constructor=SceneNode;
+
 function SceneNode(nodeId, nodeIdList, materialList, textureList, nodeList) {
 	
 	console.log("Create node");
@@ -22,6 +24,7 @@ function SceneNode(nodeId, nodeIdList, materialList, textureList, nodeList) {
 	this.m = nodeArray["transforms"].matrix;
 	
 	var desc = nodeArray["descendants"];
+	// FIXME check for node in leafs
 	for(var i = 0; i < desc.length; i++) {
 		if(typeof nodeList[desc[i]] == 'undefined') {
 			this.descendants.push(nodeList[desc[i]]);

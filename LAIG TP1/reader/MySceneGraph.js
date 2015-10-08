@@ -424,8 +424,20 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 			errors.push("invalid argumens for leaf '" + id + "' of type '" + elems + "'.");
 			continue;
 		}
-
+		
 		this.leaves[id] = leaf;
+
+		switch(elems) {
+		case "rectangle":
+			this.leaves[id] = new Rectangle()
+			break;
+		case "triangle":
+			break;
+		case "sphere":
+			break;
+		case "cylinder":
+			break;
+		}
 	}
 }
 
