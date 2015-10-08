@@ -427,6 +427,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 		
 		this.leaves[id] = leaf;
 
+		// FIXME add primitives as objects
 		switch(elems) {
 		case "rectangle":
 			this.leaves[id] = new Rectangle()
