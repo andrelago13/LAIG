@@ -25,6 +25,7 @@ function MySceneGraph(filename, scene) {
 	this.leaves = [];
 	this.nodes = [];
 	this.rootNode = "";
+	this.graphNodes = [];
 }
 
 /*
@@ -544,7 +545,8 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		node = [];
 		node["material"] = mat_id;
 		node["texture"] = tex_id;
-		node["transforms"] = transforms;
+		var transform_obj = TransformMatrix(transforms);
+		node["transforms"] = transform_obj;
 		node["descendants"] = desc;
 		this.nodes[id] = node;
 	}		
@@ -591,7 +593,9 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 }
 
 MySceneGraph.prototype.createGraph= function(errors, warnings, rootElement) {
-	this.graph = new SceneNode(this.rootNode);
+	// TODO complete
+	this.graph = new SceneNode(this.rootNode, this.nodes, this.materials, this.textures, this.graphNodes);
+	
 }
 
 MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, element, name, type, opts)
