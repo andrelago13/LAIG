@@ -590,6 +590,10 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 	return true;
 }
 
+MySceneGraph.prototype.createGraph= function(errors, warnings, rootElement) {
+	this.graph = new SceneNode(this.rootNode);
+}
+
 MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, element, name, type, opts)
 {
 	if (!this.reader.hasAttribute(element, name))

@@ -33,11 +33,23 @@ XMLscene.prototype.initLights = function () {
 		this.lights[i].setSpecular(this.graph.lights[i]["specular"]["r"],this.graph.lights[i]["specular"]["g"],this.graph.lights[i]["specular"]["b"],this.graph.lights[i]["specular"]["a"]);
 		if (this.graph.lights[i]["enable"])
 			this.lights[i].enable();
+		else
+			this.lights[i].disable();
 		this.lights[i].update();
 	}
 
 	this.shader.unbind();
 };
+
+XMLscene.prototype.initPrimitives = function () {
+	this.primitives = [];
+	for (var key in this.graph.leaves) {
+		if (this.graph.leaves[key]["type"] == "rectangle")
+		{
+			this.primitives.push([key, new Rectangle(this, 0, 1, 0, 1)]);
+		}
+	}
+}
 
 XMLscene.prototype.initCameras = function () {
 	this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
@@ -56,6 +68,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 {
 	this.gl.clearColor(0, 0, 0, 1);
 	this.initLights();
+	this.initPrimitives();
 };
 
 XMLscene.prototype.display = function () {
@@ -85,6 +98,11 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.graph.loadedOk)
 	{
+		for (var i = 0; i < this.primitives.length; i++)
+		{
+			this.primitives[i][1].display();
+		}
+
 		this.lights[0].update();
 	};	
 
