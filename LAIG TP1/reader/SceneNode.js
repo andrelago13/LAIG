@@ -14,6 +14,7 @@ function SceneNode(nodeId, nodeIdList, materialList, textureList, nodeList) {
 	
 	console.log("Create node");
 	this.id = nodeId;
+	nodeList[nodeId] = this;
 	
 	var nodeArray = nodeIdList[nodeId];
 	this.material = materialList[nodeArray["material"]];
