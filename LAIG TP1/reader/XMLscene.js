@@ -17,7 +17,7 @@ XMLscene.prototype.init = function (application) {
 	this.gl.enable(this.gl.DEPTH_TEST);
 	this.gl.enable(this.gl.CULL_FACE);
 	this.gl.depthFunc(this.gl.LEQUAL);
-	
+
 	this.axis=new CGFaxis(this);
 	this.initialTransform = mat4.create();
 };
@@ -114,11 +114,7 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.ready)
 	{
-		for (var i = 0; i < this.primitives.length; i++)
-		{
-			this.primitives[i][1].display();
-		}
-
+		this.dfsDisplay(this.graph.graph, mat4.create(), null, null);
 		this.lights[0].update();
 	};
 
@@ -131,7 +127,7 @@ XMLscene.prototype.display = function () {
 
 XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture)
 {
-	var matrix;
+	return;
 	var nodeMatrix = node.getMatrix();
 
 	if (nodeMatrix != null)
@@ -144,8 +140,19 @@ XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture
 		texture = node.getTexture();
 
 	this.pushMatrix();
-	this.mulMatrix(matrix);
+	this.multMatrix(nodeMatrix);
 	// TODO set material and texture
-	// TODO check if leaf, if not leaf call recursively
+	if (node instanceof SceneLeaf)
+	{
+		node.display();
+	}
+	else
+	{
+		var descendants = node.getDescendants();
+		for (var i = 0; i < descendants.length; i++)
+		{
+			this.dfsDisplay(descendants[i], transformation, material, texture);
+		}
+	}
 	this.popMatrix();
 }

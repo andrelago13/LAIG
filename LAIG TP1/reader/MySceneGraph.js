@@ -10,6 +10,7 @@ function MySceneGraph(filename, scene) {
 	this.nodes = [];
 	this.rootNode = "";
 	this.graphNodes = [];
+	this.graph = null;
 	
 	this.loadedOk = null;
 
@@ -91,6 +92,8 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 		if (elems == null) break;
 		this.parseBlock(errors, warnings, rootElement, i);
 	}
+	if(this.validateNodes(errors, warnings, rootElement))
+		this.createGraph(errors, warnings, rootElement);
 }
 
 MySceneGraph.prototype.parseBlock= function(errors, warnings, element, blockID)
@@ -592,14 +595,14 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 		// CHECK IF TEXTURE EXISTS (except "null" and "clear")
 		var tex_id = this.nodes[i]["texture"];
 		if(tex_id != "null" && tex_id != "clear" && typeof this.textures[tex_id] == 'undefined') {
-			errors.push("TEXTURE id '" + tex_id + "' not found for NODE '" + id + "'");
+			warnings.push("TEXTURE id '" + tex_id + "' not found for NODE '" + i + "'");
 			continue;				
 		}
 
 		// CHECK IF MATERIAL EXISTS (except "null")
 		var mat_id = this.nodes[i]["material"];
 		if(mat_id != "null" && typeof this.materials[mat_id] == 'undefined') {
-			errors.push("MATERIAL id '" + mat_id + "' not found for NODE '" + id + "'");
+			warnings.push("MATERIAL id '" + mat_id + "' not found for NODE '" + i + "'");
 			continue;
 		}
 	}

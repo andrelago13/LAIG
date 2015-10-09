@@ -23,6 +23,7 @@ function SceneNode(nodeId, nodeIdList, leafList, materialList, textureList, node
 	this.material = materialList[nodeArray["material"]];
 	this.texture = textureList[nodeArray["texture"]];
 	this.m = nodeArray["transforms"].matrix;
+	this.descendants = [];
 	
 	var desc = nodeArray["descendants"];
 	
@@ -66,4 +67,8 @@ SceneNode.prototype.getMaterial = function() {
 
 SceneNode.prototype.getTexture = function() {
 	return this.texture;
+}
+
+SceneNode.prototype.getDescendants = function() {
+	return this.descendants;
 }
