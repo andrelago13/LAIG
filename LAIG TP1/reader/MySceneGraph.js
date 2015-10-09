@@ -425,18 +425,20 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 			continue;
 		}
 		
-		this.leaves[id] = leaf;
+		//this.leaves[id] = leaf;
 
-		// FIXME add primitives as objects
 		switch(elems) {
 		case "rectangle":
-			//this.leaves[id] = new Rectangle();
+			this.leaves[id] = new SceneLeaf(new Rectangle(this.scene, leaf["left-top-x"], leaf["left-top-y"], leaf["right-top-x"], leaf["right-top-y"]));
 			break;
 		case "triangle":
+			this.leaves[id] = new SceneLeaf(new Triangle(this.scene, leaf["v1_x"], leaf["v1_y"], leaf["v1_z"], leaf["v2_x"], leaf["v2_y"], leaf["v2_z"], leaf["v3_x"], leaf["v3_y"], leaf["v3_z"]));
 			break;
 		case "sphere":
+			this.leaves[id] = new SceneLeaf(new Sphere(this.scene, leaf["height"], leaf["bottom-radius"], leaf["top-radius"], leaf["sections-per-height"], leaf["parts-per-section"]));
 			break;
 		case "cylinder":
+			this.leaves[id] = new SceneLeaf(new Cylinder(this.scene, leaf["radius"], leaf["parts-along-radius"], leaf["parts-per-section"]));
 			break;
 		}
 	}

@@ -31,11 +31,15 @@ Cylinder.prototype.initBuffers = function () {
  	this.normals = [];
 	this.texCoords = [];
  	verts = 0;
+ 	
+ 	var tempang = Math.atan((this.top_radius - this.bottom_radius)/this.height);
+ 	var tempang = Math.PI/2 - tempang;
+ 	var znorm = Math.cos(tempang);
 
  	for(j = 0; j <= this.stacks; j++)
 	{
 		this.vertices.push(radius, 0, this.height*j / this.stacks);
-		this.normals.push(radius, 0, 0);
+		this.normals.push(radius, 0, znorm);
 		this.texCoords.push(0, this.height*j / this.stacks);
 		verts += 1;
 
@@ -45,7 +49,7 @@ Cylinder.prototype.initBuffers = function () {
 			x = radius*Math.cos(alfa);
 			y = radius*Math.sin(alfa);
 			this.vertices.push(x, y, this.height*j / this.stacks);
-			this.normals.push(x, y, 0);	// TODO considerar angulo
+			this.normals.push(x, y, znorm);
 			this.texCoords.push(i / this.slices, j / this.stacks);
 			verts++;
 
