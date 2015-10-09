@@ -40,12 +40,15 @@ Rectangle.prototype.initBuffers = function () {
     nx, ny, nz,
     nx, ny, nz ];
     
-    
+    var ab = Math.sqrt(Math.pow(v2x-v1x, 2) + Math.pow(v2y-v1y, 2) + Math.pow(v2z-v1z, 2));
+    var bc = Math.sqrt(Math.pow(v2x-v3x, 2) + Math.pow(v2y-v3y, 2) + Math.pow(v2z-v3z, 2));
+    var ac = Math.sqrt(Math.pow(v1x-v3x, 2) + Math.pow(v1y-v3y, 2) + Math.pow(v1z-v3z, 2));
+    var beta = Math.acos((Math.pow(bc, 2) + Math.pow(ab, 2) - Math.pow(ac, 2))/(2*ab*bc));
     
     this.texCoords = [
 		this.minS, this.minT,
 		this.maxS, this.minT,
-		0, 0
+		ab - bc*Math.cos(beta), bc*Math.sin(beta)
     ];
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
