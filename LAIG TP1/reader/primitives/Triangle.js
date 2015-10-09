@@ -31,7 +31,7 @@ Rectangle.prototype.initBuffers = function () {
 
 	this.indices = [ 0, 1, 2 ];
 	
-	var nx = (this.v2y-this.v1y)*(this.v3z-this.v1z) - this.(v2z-this.v1z)*(this.v3y-this.v1y);
+	var nx = (this.v2y-this.v1y)*(this.v3z-this.v1z) - (this.v2z-this.v1z)*(this.v3y-this.v1y);
 	var ny = (this.v2z-this.v1z)*(this.v3x-this.v1x) - (this.v2x-this.v1x)*(this.v3z-this.v1z);
 	var nz = (this.v2x-this.v1x)*(this.v3y-this.v1y) - (this.v2y-this.v1y)*(this.v3x-this.v1x);
 
@@ -40,20 +40,12 @@ Rectangle.prototype.initBuffers = function () {
     nx, ny, nz,
     nx, ny, nz ];
     
-    var planeNormal = new Math.Vector3(nx, ny, nz);
-    planeNormal = planeNormal.normalize();
     
-    var vecAB = new Math.Vector3(this.v2x-this.v1x, this.v2y-this.v1y, this.v2z-this.v1z);
-    var vecAC = new Math.Vector3(this.v3x-this.v1x, this.v3y-this.v1y, this.v3z-this.v1z);
-    var vecS = vecAB;
-    var vecT = vecAB;
-    vecS = vecS.dot(vecAC);
-    vecT = vecAB.applyAxisAngle(planeNormal, Math.PI/2);
     
     this.texCoords = [
 		this.minS, this.minT,
 		this.maxS, this.minT,
-		vecS.length, vecT.length
+		0, 0
     ];
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
