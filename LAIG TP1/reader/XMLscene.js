@@ -8,7 +8,7 @@ XMLscene.prototype.constructor = XMLscene;
 
 XMLscene.prototype.init = function (application) {
 	CGFscene.prototype.init.call(this, application);
-
+	this.ready = false;
 	this.initCameras();
 
 	this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -19,6 +19,7 @@ XMLscene.prototype.init = function (application) {
 	this.gl.depthFunc(this.gl.LEQUAL);
 
 	this.axis=new CGFaxis(this);
+	this.initialTransform = mat4.create();
 };
 
 XMLscene.prototype.initLights = function () {
@@ -40,6 +41,14 @@ XMLscene.prototype.initLights = function () {
 
 	this.shader.unbind();
 };
+
+XMLscene.prototype.setInitials = function () {
+	this.camera.near = this.graph.initials["frustum"]["near"];
+	this.camera.far = this.graph.initials["frustum"]["far"];
+	var tMatrix = this.graph.initials["translate"];
+	// TODO
+	mat4.translate(this.initialTransform, this.initialTransform, [tMatrix["x"], tMatrix["y"], tMatrix["z"]]);
+}
 
 XMLscene.prototype.initPrimitives = function () {
 	this.primitives = [];
@@ -67,8 +76,10 @@ XMLscene.prototype.setDefaultAppearance = function () {
 XMLscene.prototype.onGraphLoaded = function () 
 {
 	this.gl.clearColor(0, 0, 0, 1);
+	this.setInitials();
 	this.initLights();
 	this.initPrimitives();
+	this.ready = true;
 };
 
 XMLscene.prototype.display = function () {
@@ -96,7 +107,7 @@ XMLscene.prototype.display = function () {
 	// it is important that things depending on the proper loading of the graph
 	// only get executed after the graph has loaded correctly.
 	// This is one possible way to do it
-	if (this.graph.loadedOk)
+	if (this.ready)
 	{
 		for (var i = 0; i < this.primitives.length; i++)
 		{
