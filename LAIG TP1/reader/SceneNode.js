@@ -12,7 +12,8 @@ function SceneNode() {
 
 SceneNode.prototype.constructor=SceneNode;
 
-function SceneNode(nodeId, nodeIdList, materialList, textureList, nodeList) {
+function SceneNode(nodeId, nodeIdList, leafList, materialList, textureList, nodeList) {
+	console.log("" + nodeId + " -- " + nodeList);
 	
 	console.log("Create node");
 	this.id = nodeId;
@@ -24,12 +25,16 @@ function SceneNode(nodeId, nodeIdList, materialList, textureList, nodeList) {
 	this.m = nodeArray["transforms"].matrix;
 	
 	var desc = nodeArray["descendants"];
-	// FIXME check for node in leafs
+	
 	for(var i = 0; i < desc.length; i++) {
 		if(typeof nodeList[desc[i]] == 'undefined') {
 			this.descendants.push(nodeList[desc[i]]);
 		} else {
-			this.descendants.push(new SceneNode(desc[i], nodeIdList, materialList, textureList, nodeList));
+			
+			if(typeof leafList[desc[i]] == 'undefined')
+				this.descendants.push(new SceneNode(desc[i], nodeIdList, materialList, textureList, nodeList));
+			else
+				this.descendants.push(leafList[desc[i]]);
 		}
 	}
 }
