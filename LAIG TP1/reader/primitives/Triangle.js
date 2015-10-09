@@ -31,22 +31,20 @@ Rectangle.prototype.initBuffers = function () {
 
 	this.indices = [ 0, 1, 2 ];
 	
-	var nx = (v2y-v1y)*(v3z-v1z) - (v2z-v1z)*(v3y-v1y);
-	var ny = (v2z-v1z)*(v3x-v1x) - (v2x-v1x)*(v3z-v1z);
-	var nz = (v2x-v1x)*(v3y-v1y) - (v2y-v1y)*(v3x-v1x);
+	var nx = (this.v2y-this.v1y)*(this.v3z-this.v1z) - this.(v2z-this.v1z)*(this.v3y-this.v1y);
+	var ny = (this.v2z-this.v1z)*(this.v3x-this.v1x) - (this.v2x-this.v1x)*(this.v3z-this.v1z);
+	var nz = (this.v2x-this.v1x)*(this.v3y-this.v1y) - (this.v2y-this.v1y)*(this.v3x-this.v1x);
 
     this.normals = [
     nx, ny, nz,
     nx, ny, nz,
     nx, ny, nz ];
     
-    // TODO interpolate texcoords
-    
     var planeNormal = new Math.Vector3(nx, ny, nz);
     planeNormal = planeNormal.normalize();
     
-    var vecAB = new Math.Vector3(v2x-v1x, v2y-v1y, v2z-v1z);
-    var vecAC = new Math.Vector3(v3x-v1x, v3y-v1y, v3z-v1z);
+    var vecAB = new Math.Vector3(this.v2x-this.v1x, this.v2y-this.v1y, this.v2z-this.v1z);
+    var vecAC = new Math.Vector3(this.v3x-this.v1x, this.v3y-this.v1y, this.v3z-this.v1z);
     var vecS = vecAB;
     var vecT = vecAB;
     vecS = vecS.dot(vecAC);
@@ -56,7 +54,7 @@ Rectangle.prototype.initBuffers = function () {
 		this.minS, this.minT,
 		this.maxS, this.minT,
 		vecS.length, vecT.length
-    ]
+    ];
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
