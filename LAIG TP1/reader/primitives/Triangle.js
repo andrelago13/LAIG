@@ -19,10 +19,10 @@ function Triangle(scene, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z) {
 	this.initBuffers();
 };
 
-Rectangle.prototype = Object.create(CGFobject.prototype);
-Rectangle.prototype.constructor=Rectangle;
+Triangle.prototype = Object.create(CGFobject.prototype);
+Triangle.prototype.constructor=Triangle;
 
-Rectangle.prototype.initBuffers = function () {
+Triangle.prototype.initBuffers = function () {
 	this.vertices = [
             this.v1x, this.v1y, this.v1z,
             this.v2x, this.v2y, this.v2z,
