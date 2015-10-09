@@ -1,5 +1,16 @@
 
-function MySceneGraph(filename, scene) {
+function MySceneGraph(filename, scene) {  
+
+	this.initials = [];
+	this.illumination = [];
+	this.lights = [];
+	this.textures = [];
+	this.materials = [];
+	this.leaves = [];
+	this.nodes = [];
+	this.rootNode = "";
+	this.graphNodes = [];
+	
 	this.loadedOk = null;
 
 	// Establish bidirectional references between scene and graph
@@ -15,17 +26,7 @@ function MySceneGraph(filename, scene) {
 	 * If any error occurs, the reader calls onXMLError on this object, with an error message
 	 */
 
-	this.reader.open('scenes/'+filename, this);  
-
-	this.initials = [];
-	this.illumination = [];
-	this.lights = [];
-	this.textures = [];
-	this.materials = [];
-	this.leaves = [];
-	this.nodes = [];
-	this.rootNode = "";
-	this.graphNodes = [];
+	this.reader.open('scenes/'+filename, this);
 }
 
 /*
@@ -424,21 +425,23 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 			errors.push("invalid argumens for leaf '" + id + "' of type '" + elems + "'.");
 			continue;
 		}
-		
-		//this.leaves[id] = leaf;
 
 		switch(elems) {
 		case "rectangle":
-			this.leaves[id] = new SceneLeaf(new Rectangle(this.scene, leaf["left-top-x"], leaf["left-top-y"], leaf["right-top-x"], leaf["right-top-y"]));
+			this.leaves[id] = new SceneLeaf(new Rectangle(this.scene, leaf["left-top-x"], leaf["left-top-y"], leaf["right-top-x"], leaf["right-top-y"]),
+					id, this.leaves);
 			break;
 		case "triangle":
-			this.leaves[id] = new SceneLeaf(new Triangle(this.scene, leaf["v1_x"], leaf["v1_y"], leaf["v1_z"], leaf["v2_x"], leaf["v2_y"], leaf["v2_z"], leaf["v3_x"], leaf["v3_y"], leaf["v3_z"]));
+			this.leaves[id] = new SceneLeaf(new Triangle(this.scene, leaf["v1_x"], leaf["v1_y"], leaf["v1_z"], leaf["v2_x"], leaf["v2_y"], leaf["v2_z"], leaf["v3_x"], leaf["v3_y"], leaf["v3_z"]),
+					id, this.leaves);
 			break;
 		case "sphere":
-			this.leaves[id] = new SceneLeaf(new Sphere(this.scene, leaf["height"], leaf["bottom-radius"], leaf["top-radius"], leaf["sections-per-height"], leaf["parts-per-section"]));
+			this.leaves[id] = new SceneLeaf(new Sphere(this.scene, leaf["height"], leaf["bottom-radius"], leaf["top-radius"], leaf["sections-per-height"], leaf["parts-per-section"]),
+					id, this.leaves);
 			break;
 		case "cylinder":
-			this.leaves[id] = new SceneLeaf(new Cylinder(this.scene, leaf["radius"], leaf["parts-along-radius"], leaf["parts-per-section"]));
+			this.leaves[id] = new SceneLeaf(new Cylinder(this.scene, leaf["radius"], leaf["parts-along-radius"], leaf["parts-per-section"]),
+					id, this.leaves);
 			break;
 		}
 	}
@@ -608,8 +611,7 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 }
 
 MySceneGraph.prototype.createGraph= function(errors, warnings, rootElement) {
-	// TODO complete
-	this.graph = new SceneNode(this.scene, this.rootNode, this.nodes, this.materials, this.textures, this.graphNodes);
+	this.graph = new SceneNode(this.rootNode, this.nodes, this.leaves, this.materials, this.textures, this.graphNodes);
 	
 }
 
