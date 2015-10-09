@@ -102,14 +102,14 @@ XMLscene.prototype.display = function () {
 		{
 			this.primitives[i][1].display();
 		}
-
+		
 		this.lights[0].update();
 	};	
 
 	this.shader.unbind();
 };
 
-XMLscene.prototype.dfsDisplay(node, transformation, material, texture)
+XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture)
 {
 	var matrix;
 	var nodeMatrix = node.getMatrix();
