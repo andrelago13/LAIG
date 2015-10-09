@@ -15,5 +15,6 @@ function SceneLeaf(primitive, leafId, leafList) {
 }
 
 SceneLeaf.prototype.display = function () {
+	console.log("drawing leaf...");
 	this.primitive.display();
 }

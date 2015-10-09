@@ -119,8 +119,8 @@ XMLscene.prototype.display = function () {
 	};
 
 	//scene, height, bottom_radius, top_radius, stacks, slices
-	var cylinder = new Cylinder(this, 2, 1, 0, 100, 100);
-	cylinder.display();
+	//var cylinder = new Cylinder(this, 2, 1, 0, 100, 100);
+	//cylinder.display();
 
 	this.shader.unbind();
 };
@@ -139,8 +139,8 @@ XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture
 	if (node.getTexture() != null)
 		texture = node.getTexture();
 
-	this.pushMatrix();
-	this.multMatrix(nodeMatrix);
+	//this.pushMatrix();
+	//this.multMatrix(nodeMatrix);
 	// TODO set material and texture
 	if (node instanceof SceneLeaf)
 	{
@@ -154,5 +154,5 @@ XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture
 			this.dfsDisplay(descendants[i], transformation, material, texture);
 		}
 	}
-	this.popMatrix();
+	//this.popMatrix();
 }

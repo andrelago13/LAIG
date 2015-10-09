@@ -11,7 +11,7 @@ function MySceneGraph(filename, scene) {
 	this.rootNode = "";
 	this.graphNodes = [];
 	this.graph = null;
-	
+
 	this.loadedOk = null;
 
 	// Establish bidirectional references between scene and graph
@@ -55,7 +55,7 @@ MySceneGraph.prototype.onXMLReady=function()
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on 
 	// the graph can take place
 	this.scene.onGraphLoaded();
-};
+}
 
 MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 	if (rootElement.nodeName != 'SCENE')
@@ -93,7 +93,7 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 		this.parseBlock(errors, warnings, rootElement, i);
 	}
 	if(this.validateNodes(errors, warnings, rootElement))
-		this.createGraph(errors, warnings, rootElement);
+		this.createGraph(this.rootNode);
 }
 
 MySceneGraph.prototype.parseBlock= function(errors, warnings, element, blockID)
@@ -472,7 +472,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 	this.rootNode = this.parseRequiredAttribute(errors, warnings, root[0], 'id', 'ss');
 	if(this.rootNode == null)
 		return;
-	
+
 	// GET NORMAL NODES
 	elems = this.parseElement(errors, warnings, elems[0], 'NODE', 0, 0);
 	if(elems == null)
@@ -480,13 +480,13 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 
 	// for every node
 	for(var i = 0; i < elems.length; i++) {
-		
+
 		// GET NODE ID AND CHECK IF IT ALREADY EXISTS
 		var id = this.parseRequiredAttribute(errors, warnings, elems[i], 'id', 'ss');
 		if(id == null) {
 			continue;
 		}
-		
+
 		if(typeof this.nodes[id] != 'undefined') {
 			warnings.push("duplicate NODE id '" + id + "' found. Only the first will be considered.");
 			continue;
@@ -511,10 +511,10 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		var tex_id = this.parseRequiredAttribute(errors, warnings, texture[0], 'id', 'ss');
 		if(tex_id == null)
 			continue;
-		
+
 		var transforms = [];
 		var elements = elems[i].childNodes;
-		
+
 		for(var j = 0; j < elements.length; j++) {
 			var type = elements[j].nodeName;
 			if(typeof all_types[type] == 'undefined')
@@ -533,25 +533,25 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 					break;
 				}
 			}
-			
+
 			if(error)
 				continue;
 			transforms.push(transform);
 		}
 
 		// GET NODE DESCENDANTS
-		var descendants = this.parseElement(errors, warnings, elems[0], 'DESCENDANTS', 1, 1);
-		if(descendants == null)
+		var descendants = this.parseElement(errors, warnings, elems[i], 'DESCENDANTS', 1, 1);
+		if(descendants == null) // TODO output warning
 			continue;
 		descendants = this.parseElement(errors, warnings, descendants[0], 'DESCENDANT', 0, 0);
 		if(descendants == null) {
 			continue;
 		}
-		
+
 		var desc = [];
 
 		for(var j = 0; j < descendants.length; j++) {
-			var desc_id = this.parseRequiredAttribute(errors, warnings, descendants[0], 'id', 'ss');
+			var desc_id = this.parseRequiredAttribute(errors, warnings, descendants[j], 'id', 'ss');
 			if(desc_id == null)
 				continue;
 			desc.push(desc_id);
@@ -613,9 +613,21 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 	return true;
 }
 
-MySceneGraph.prototype.createGraph= function(errors, warnings, rootElement) {
-	this.graph = new SceneNode(this.rootNode, this.nodes, this.leaves, this.materials, this.textures, this.graphNodes);
-	
+MySceneGraph.prototype.createGraph= function(nodeID) {
+	if (typeof this.graphNodes[nodeID] != 'undefined') return this.graphNodes[nodeID]; // Node already created
+	if (typeof this.leaves[nodeID] != 'undefined')
+	{
+		this.leaves[nodeID].display();
+		return this.leaves[nodeID]; // Node is a leaf
+	}
+
+	this.graphNodes[nodeID] = new SceneNode(nodeID, null, null, this.nodes[nodeID]["transforms"]);
+
+	for (var i = 0; i < this.nodes[nodeID]["descendants"].length; i++)
+	{
+		this.graphNodes[nodeID].push(this.createGraph(this.nodes[nodeID]["descendants"][i]));
+	}
+	return this.graphNodes[nodeID];
 }
 
 MySceneGraph.prototype.parseRequiredAttribute= function(errors, warnings, element, name, type, opts)
@@ -668,10 +680,6 @@ MySceneGraph.prototype.parseElement= function(errors, warnings, parent, elementN
 	}
 	return element;
 }
-
-/*
- * Callback to be executed on any read error
- */
 
 MySceneGraph.prototype.onXMLError=function (errors) {
 	for (var i = 0; i < errors.length; i++)

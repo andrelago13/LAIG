@@ -12,36 +12,16 @@ function SceneNode() {
 
 SceneNode.prototype.constructor=SceneNode;
 
-function SceneNode(nodeId, nodeIdList, leafList, materialList, textureList, nodeList) {
-	console.log("" + nodeId + " -- " + nodeList);
-	
-	console.log("Create node");
-	this.id = nodeId;
-	nodeList[nodeId] = this;
-	
-	var nodeArray = nodeIdList[nodeId];
-	this.material = materialList[nodeArray["material"]];
-	this.texture = textureList[nodeArray["texture"]];
-	this.m = nodeArray["transforms"].matrix;
+function SceneNode(id, material, texture, transforms) {
+	this.id = id;
+	this.material = material;
+	this.texture = texture;
+	this.m = transforms;
 	this.descendants = [];
-	
-	var desc = nodeArray["descendants"];
-	
-	for(var i = 0; i < desc.length; i++) {
-		if(typeof nodeList[desc[i]] == 'undefined') {
-			this.descendants.push(nodeList[desc[i]]);
-		} else {
-			
-			if(typeof leafList[desc[i]] == 'undefined')
-				this.descendants.push(new SceneNode(desc[i], nodeIdList, materialList, textureList, nodeList));
-			else
-				this.descendants.push(leafList[desc[i]]);
-		}
-	}
 }
 
-SceneNode.prototype.push = function(SceneNodename) {
-	this.descendants.push(SceneNodename);
+SceneNode.prototype.push = function(sceneNode) {
+	this.descendants.push(sceneNode);
 }
 
 SceneNode.prototype.setMatrix = function(m) {
