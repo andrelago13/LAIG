@@ -430,7 +430,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 		// FIXME add primitives as objects
 		switch(elems) {
 		case "rectangle":
-			this.leaves[id] = new Rectangle()
+			//this.leaves[id] = new Rectangle();
 			break;
 		case "triangle":
 			break;
@@ -607,7 +607,7 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 
 MySceneGraph.prototype.createGraph= function(errors, warnings, rootElement) {
 	// TODO complete
-	this.graph = new SceneNode(this.rootNode, this.nodes, this.materials, this.textures, this.graphNodes);
+	this.graph = new SceneNode(this.scene, this.rootNode, this.nodes, this.materials, this.textures, this.graphNodes);
 	
 }
 
