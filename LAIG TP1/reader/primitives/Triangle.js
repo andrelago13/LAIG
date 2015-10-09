@@ -42,10 +42,20 @@ Rectangle.prototype.initBuffers = function () {
     
     // TODO interpolate texcoords
     
+    var planeNormal = new Math.Vector3(nx, ny, nz);
+    planeNormal = planeNormal.normalize();
+    
+    var vecAB = new Math.Vector3(v2x-v1x, v2y-v1y, v2z-v1z);
+    var vecAC = new Math.Vector3(v3x-v1x, v3y-v1y, v3z-v1z);
+    var vecS = vecAB;
+    var vecT = vecAB;
+    vecS = vecS.dot(vecAC);
+    vecT = vecAB.applyAxisAngle(planeNormal, Math.PI/2);
+    
     this.texCoords = [
-		this.minS, this.maxT,
-		this.maxS, this.maxT,
-		this.minS, this.minT
+		this.minS, this.minT,
+		this.maxS, this.minT,
+		vecS.length, vecT.length
     ]
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
