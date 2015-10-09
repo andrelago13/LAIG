@@ -24,8 +24,11 @@ XMLscene.prototype.init = function (application) {
 
 XMLscene.prototype.initLights = function () {
 
+	var globalAmbient = this.graph.illumination["ambient"];
+	this.setGlobalAmbientLight(globalAmbient["r"], globalAmbient["g"], globalAmbient["b"], globalAmbient["a"]);
+	
 	this.shader.bind();
-
+	
 	for (var i = 0; i < this.graph.lights.length; i++)
 	{
 		this.lights[i].setPosition(this.graph.lights[i]["position"]["x"], this.graph.lights[i]["position"]["y"], this.graph.lights[i]["position"]["z"], this.graph.lights[i]["position"]["w"]);
@@ -75,7 +78,8 @@ XMLscene.prototype.setDefaultAppearance = function () {
 //As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
 {
-	this.gl.clearColor(0, 0, 0, 1);
+	var background = this.graph.illumination["background"];
+	this.gl.clearColor(background["r"], background["g"], background["b"], background["a"]);
 	this.setInitials();
 	this.initLights();
 	this.initPrimitives();
