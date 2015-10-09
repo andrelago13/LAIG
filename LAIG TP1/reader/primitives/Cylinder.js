@@ -25,8 +25,6 @@ Cylinder.prototype.initBuffers = function () {
  	
  	var radius = this.bottom_radius;
  	var radius_dif = (this.top_radius - this.bottom_radius)/this.stacks;
- 	console.log(this.top_radius);
- 	console.log(radius_dif);
 
  	this.indices = [];
  	this.vertices = [];
