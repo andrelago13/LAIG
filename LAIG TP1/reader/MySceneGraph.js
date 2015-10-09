@@ -236,7 +236,7 @@ MySceneGraph.prototype.parseLights= function(errors, warnings, rootElement)
 			{
 				var position = elems[0];
 				this.lights[i]["position"] = [];
-				for (var j = 0; j < 3; j++)
+				for (var j = 0; j < xyzwList.length; j++)
 				{
 					this.lights[i]["position"][xyzwList[j]] = this.parseRequiredAttribute(errors, warnings, position, xyzwList[j], 'ff');
 				}
@@ -247,7 +247,7 @@ MySceneGraph.prototype.parseLights= function(errors, warnings, rootElement)
 			{
 				var ambient = elems[0];
 				this.lights[i]["ambient"] = [];
-				for (var j = 0; j < 3; j++)
+				for (var j = 0; j < rgbaList.length; j++)
 				{
 					this.lights[i]["ambient"][rgbaList[j]] = this.parseRequiredAttribute(errors, warnings, ambient, rgbaList[j], 'ff');
 				}
@@ -258,7 +258,7 @@ MySceneGraph.prototype.parseLights= function(errors, warnings, rootElement)
 			{
 				var diffuse = elems[0];
 				this.lights[i]["diffuse"] = [];
-				for (var j = 0; j < 3; j++)
+				for (var j = 0; j < rgbaList.length; j++)
 				{
 					this.lights[i]["diffuse"][rgbaList[j]] = this.parseRequiredAttribute(errors, warnings, diffuse, rgbaList[j], 'ff');
 				}
@@ -269,7 +269,7 @@ MySceneGraph.prototype.parseLights= function(errors, warnings, rootElement)
 			{
 				var specular = elems[0];
 				this.lights[i]["specular"] = [];
-				for (var j = 0; j < 3; j++)
+				for (var j = 0; j < rgbaList.length; j++)
 				{
 					this.lights[i]["specular"][rgbaList[j]] = this.parseRequiredAttribute(errors, warnings, specular, rgbaList[j], 'ff');
 				}

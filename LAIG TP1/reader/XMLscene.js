@@ -39,6 +39,7 @@ XMLscene.prototype.initLights = function () {
 			this.lights[i].enable();
 		else
 			this.lights[i].disable();
+		this.lights[i].setVisible();
 		this.lights[i].update();
 	}
 
@@ -68,9 +69,9 @@ XMLscene.prototype.initCameras = function () {
 };
 
 XMLscene.prototype.setDefaultAppearance = function () {
-	this.setAmbient(0.2, 0.4, 0.8, 1.0);
-	this.setDiffuse(0.2, 0.4, 0.8, 1.0);
-	this.setSpecular(0.2, 0.4, 0.8, 1.0);
+	this.setAmbient(0.5, 0.5, 0.5, 1.0);
+	this.setDiffuse(0.5, 0.5, 0.5, 1.0);
+	this.setSpecular(0.5, 0.5, 0.5, 1.0);
 	this.setShininess(10.0);	
 };
 
@@ -94,7 +95,7 @@ XMLscene.prototype.display = function () {
 	this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 	this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
-	// Initialize Model-View matrix as identity (no transformation
+	// Initialize Model-View matrix as identity (no transformation)
 	this.updateProjectionMatrix();
 	this.loadIdentity();
 
@@ -122,7 +123,7 @@ XMLscene.prototype.display = function () {
 	};
 
 	//scene, height, bottom_radius, top_radius, stacks, slices
-	var cylinder = new Cylinder(this, 2, 1, 0, 10, 10);
+	var cylinder = new Cylinder(this, 2, 1, 0, 100, 100);
 	cylinder.display();
 
 	this.shader.unbind();
