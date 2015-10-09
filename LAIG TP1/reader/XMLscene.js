@@ -109,3 +109,23 @@ XMLscene.prototype.display = function () {
 	this.shader.unbind();
 };
 
+XMLscene.prototype.dfsDisplay(node, transformation, material, texture)
+{
+	var matrix;
+	var nodeMatrix = node.getMatrix();
+	
+	if (nodeMatrix != null)
+		mat4.multiply(transformation, transformation, nodeMatrix);
+	
+	if (node.getMaterial() != null)
+		material = node.getMaterial();
+	
+	if (node.getTexture() != null)
+		texture = node.getTexture();
+	
+	this.pushMatrix();
+		this.mulMatrix(matrix);
+		// TODO set material and texture
+		// TODO check if leaf, if not leaf call recursively
+	this.popMatrix();
+}

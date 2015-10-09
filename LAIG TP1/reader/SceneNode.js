@@ -50,3 +50,15 @@ SceneNode.prototype.setMaterial = function(material) {
 SceneNode.prototype.setTexture = function(tex) {
 	this.texture = tex;
 }
+
+SceneNode.prototype.getMatrix = function() {
+	return this.m;
+}
+
+SceneNode.prototype.getMaterial = function() {
+	return this.material;
+}
+
+SceneNode.prototype.getTexture = function() {
+	return this.texture;
+}
