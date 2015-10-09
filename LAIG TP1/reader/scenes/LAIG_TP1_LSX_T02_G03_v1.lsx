@@ -47,7 +47,7 @@
         <specular r="1" g="1" b="1" a="1"  />       <!-- specular component -->
     </LIGHT>
 	<LIGHT id="Sol">                                    <!-- light identifier -->
-        <enable value ="0" />                         <!-- enable/disable -->
+        <enable value ="1" />                         <!-- enable/disable -->
         <position x="50" y="200" z="50" w="1" />       <!-- light position -->
         <ambient r="0.5" g="0.45" b="0.3" a="1" />        <!-- ambient component -->
         <diffuse r="0.5" g="0.45" b="0.3" a="1" />        <!-- diffuse component -->

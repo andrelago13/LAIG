@@ -26,9 +26,9 @@ XMLscene.prototype.initLights = function () {
 
 	var globalAmbient = this.graph.illumination["ambient"];
 	this.setGlobalAmbientLight(globalAmbient["r"], globalAmbient["g"], globalAmbient["b"], globalAmbient["a"]);
-	
+
 	this.shader.bind();
-	
+
 	for (var i = 0; i < this.graph.lights.length; i++)
 	{
 		this.lights[i].setPosition(this.graph.lights[i]["position"]["x"], this.graph.lights[i]["position"]["y"], this.graph.lights[i]["position"]["z"], this.graph.lights[i]["position"]["w"]);
@@ -117,10 +117,10 @@ XMLscene.prototype.display = function () {
 		{
 			this.primitives[i][1].display();
 		}
-		
+
 		this.lights[0].update();
 	};
-	
+
 	//scene, height, bottom_radius, top_radius, stacks, slices
 	var cylinder = new Cylinder(this, 2, 1, 0, 10, 10);
 	cylinder.display();
@@ -132,19 +132,19 @@ XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture
 {
 	var matrix;
 	var nodeMatrix = node.getMatrix();
-	
+
 	if (nodeMatrix != null)
 		mat4.multiply(transformation, transformation, nodeMatrix);
-	
+
 	if (node.getMaterial() != null)
 		material = node.getMaterial();
-	
+
 	if (node.getTexture() != null)
 		texture = node.getTexture();
-	
+
 	this.pushMatrix();
-		this.mulMatrix(matrix);
-		// TODO set material and texture
-		// TODO check if leaf, if not leaf call recursively
+	this.mulMatrix(matrix);
+	// TODO set material and texture
+	// TODO check if leaf, if not leaf call recursively
 	this.popMatrix();
 }
