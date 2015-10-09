@@ -24,6 +24,9 @@ Cylinder.prototype.initBuffers = function () {
  	var alfa = 0;
  	
  	var radius = this.bottom_radius;
+ 	var radius_dif = (this.top_radius - this.bottom_radius)/this.stacks;
+ 	console.log(this.top_radius);
+ 	console.log(radius_dif);
 
  	this.indices = [];
  	this.vertices = [];
@@ -33,18 +36,18 @@ Cylinder.prototype.initBuffers = function () {
 
  	for(j = 0; j <= this.stacks; j++)
 	{
-		this.vertices.push(1, 0, j / this.stacks);
-		this.normals.push(1, 0, 0);
-		this.texCoords.push(0, j / this.stacks);
+		this.vertices.push(radius, 0, this.height*j / this.stacks);
+		this.normals.push(radius, 0, 0);
+		this.texCoords.push(0, this.height*j / this.stacks);
 		verts += 1;
 
 		for(i = 1; i <= this.slices; i++)
 		{
 			alfa+=ang;
-			x = Math.cos(alfa);
-			y = Math.sin(alfa);
-			this.vertices.push(x, y, j / this.stacks);
-			this.normals.push(x, y, 0);
+			x = radius*Math.cos(alfa);
+			y = radius*Math.sin(alfa);
+			this.vertices.push(x, y, this.height*j / this.stacks);
+			this.normals.push(x, y, 0);	// TODO considerar angulo
 			this.texCoords.push(i / this.slices, j / this.stacks);
 			verts++;
 
@@ -54,6 +57,8 @@ Cylinder.prototype.initBuffers = function () {
 				this.indices.push(verts-this.slices-3, verts-this.slices-2, verts-2);
 			}
 		}
+		
+		radius += radius_dif;
 	}
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
