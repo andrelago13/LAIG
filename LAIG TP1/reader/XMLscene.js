@@ -118,10 +118,6 @@ XMLscene.prototype.display = function () {
 		this.lights[0].update();
 	};
 
-	//scene, height, bottom_radius, top_radius, stacks, slices
-	var cylinder = new Cylinder(this, 2, 1, 0, 100, 100);
-	cylinder.display();
-
 	this.shader.unbind();
 };
 
