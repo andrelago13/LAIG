@@ -644,7 +644,7 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	var texture = this.nodes[nodeID]["texture"];
 	if (texture === "null")
 		texture = null;
-	else
+	else if (texture !== "clear")
 		texture = this.CGFtextures[texture];
 	
 	

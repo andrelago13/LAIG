@@ -22,17 +22,19 @@ function SceneNode(id, material, texture, transforms, scene) {
 	this.scene = scene;
 }
 
-SceneNode.prototype.display = function(scene) {
+SceneNode.prototype.display = function() {
 	this.scene.pushMatrix();
-		this.scene.multMatrix(this.m);
-		for(var i = 0; i < this.descendants.length; i++) {
-			if (this.material != null) this.material.apply();
-			if (this.texture != null)
-			{
-				this.texture.bind();
-			}
-			this.descendants[i].display();
+	this.scene.multMatrix(this.m);
+	for(var i = 0; i < this.descendants.length; i++) {
+		if (this.material != null) this.material.apply();
+		if (this.texture === "clear")
+		{
+			if (this.scene.activeTexture !== null)
+				this.scene.activeTexture.unbind();
 		}
+		else if (this.texture != null) this.texture.bind();
+		this.descendants[i].display();
+	}
 	this.scene.popMatrix();
 }
 
