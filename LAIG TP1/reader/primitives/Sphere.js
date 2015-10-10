@@ -44,7 +44,8 @@ Sphere.prototype.initBuffers = function() {
 			z = this.radius * Math.sin(beta);
 			this.vertices.push(x, y, z);
 			this.normals.push(x, y, z);
-			this.texCoords.push(this.radius * (Math.asin(x)/Math.PI + 0.5), this.radius * (Math.asin(y)/Math.PI + 0.5));
+			this.texCoords.push(0.5 + Math.atan2(z,x)/(2*Math.PI), 0.5-Math.asin(y)/Math.PI);
+			//this.texCoords.push(this.radius * (Math.asin(x)/Math.PI + 0.5), this.radius * (Math.asin(y)/Math.PI + 0.5));
 			verts++;
 
 			if(j > 0)
