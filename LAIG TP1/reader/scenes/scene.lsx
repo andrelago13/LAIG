@@ -59,7 +59,7 @@
 <!-- The leaves -->
 <LEAVES>
     <LEAF id="rectangle1" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
-    <LEAF id="cylinder1" type="cylinder" args="1 1 1 20 20" />
+    <LEAF id="cylinder1" type="cylinder" args="1 1 1 5 8" />
     <LEAF id="sphere1" type="sphere" args="1 20 20" />
     <LEAF id="triangle1" type="triangle" args="0 0 0 1 0 0 0 1 0" />
 </LEAVES>
@@ -73,11 +73,20 @@
         <TEXTURE id="null" />
 
         <DESCENDANTS>
-            <DESCENDANT id="seat_block_bottom" />
-            <DESCENDANT id="seat_block_top-middle" />
+            <DESCENDANT id="seats" />
+            <DESCENDANT id="stairs" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seats">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat_block_center" />
             <DESCENDANT id="seat_block_top-left" />
             <DESCENDANT id="seat_block_top-right" />
-            <DESCENDANT id="stairs" />
         </DESCENDANTS>
 
     </NODE>
@@ -104,10 +113,10 @@
         <MATERIAL id="null" />         
         <TEXTURE id="null" />
         
-        <TRANSLATION x="7" y="1.25" z="-7.5" />
+        <TRANSLATION x="12" y="1.25" z="-7.5" />
 
         <DESCENDANTS>
-            <DESCENDANT id="seat_block" />
+            <DESCENDANT id="seat_block_sides" />
         </DESCENDANTS>
 
     </NODE>
@@ -119,110 +128,204 @@
         <TRANSLATION x="-7" y="1.25" z="-7.5" />
 
         <DESCENDANTS>
-            <DESCENDANT id="seat_block" />
+            <DESCENDANT id="seat_block_sides" />
         </DESCENDANTS>
 
     </NODE>
     
-    <NODE id="seat_block_top-middle">
+    <NODE id="seat_block_center">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat_block_center_left" />
+            <DESCENDANT id="seat_block_center_right" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_block_center_right">
         <MATERIAL id="null" />         
         <TEXTURE id="null" />
         
-        <TRANSLATION x="0" y="1.25" z="-7.5" />
+        <TRANSLATION x="5" y="0" z="0" />
 
         <DESCENDANTS>
-            <DESCENDANT id="seat_block" />
+            <DESCENDANT id="row_five1" />
+            <DESCENDANT id="row_five2" />
+            <DESCENDANT id="row_five3" />
+            <DESCENDANT id="row_five4" />
+            <DESCENDANT id="row_five5" />
+            <DESCENDANT id="row_five6" />
+            <DESCENDANT id="row_five7" />
+            <DESCENDANT id="row_five8" />
+            <DESCENDANT id="row_five9" />
+            <DESCENDANT id="row_five10" />
         </DESCENDANTS>
 
     </NODE>
     
-    <NODE id="seat_block_bottom">
+    <NODE id="seat_block_center_left">
         <MATERIAL id="null" />         
         <TEXTURE id="null" />
 
         <DESCENDANTS>
-            <DESCENDANT id="seat_block" />
+            <DESCENDANT id="row_five1" />
+            <DESCENDANT id="row_five2" />
+            <DESCENDANT id="row_five3" />
+            <DESCENDANT id="row_five4" />
+            <DESCENDANT id="row_five5" />
+            <DESCENDANT id="row_five6" />
+            <DESCENDANT id="row_five7" />
+            <DESCENDANT id="row_five8" />
+            <DESCENDANT id="row_five9" />
+            <DESCENDANT id="row_five10" />
         </DESCENDANTS>
 
     </NODE>
     
-    <NODE id="seat_block">
+    <NODE id="seat_block_sides">
         <MATERIAL id="null" />         
         <TEXTURE id="null" />
 
         <DESCENDANTS>
-            <DESCENDANT id="row_small1" />
-            <DESCENDANT id="row_small2" />
-            <DESCENDANT id="row_small3" />
-            <DESCENDANT id="row_small4" />
-            <DESCENDANT id="row_small5" />
+            <DESCENDANT id="row_five1" />
+            <DESCENDANT id="row_five2" />
+            <DESCENDANT id="row_five3" />
+            <DESCENDANT id="row_five4" />
+            <DESCENDANT id="row_five5" />
         </DESCENDANTS>
 
     </NODE>
     
-    <NODE id="row_small5">
+    <NODE id="row_five10">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="2.25" z="-13.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five9">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="2" z="-12" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five8">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="1.75" z="-10.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five7">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="1.5" z="-9" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five6">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="1.25" z="-7.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five5">
     	<MATERIAL id="null" />         
         <TEXTURE id="null" />
 
 		<TRANSLATION x="0" y="1" z="-6" />
 
         <DESCENDANTS>
-            <DESCENDANT id="row_small" />
+            <DESCENDANT id="row_five" />
             <DESCENDANT id="seat_floor" />
         </DESCENDANTS>
 
     </NODE>
     
-    <NODE id="row_small4">
+    <NODE id="row_five4">
     	<MATERIAL id="null" />         
         <TEXTURE id="null" />
 
 		<TRANSLATION x="0" y="0.75" z="-4.5" />
 
         <DESCENDANTS>
-            <DESCENDANT id="row_small" />
+            <DESCENDANT id="row_five" />
             <DESCENDANT id="seat_floor" />
         </DESCENDANTS>
 
     </NODE>
     
-    <NODE id="row_small3">
+    <NODE id="row_five3">
     	<MATERIAL id="null" />         
         <TEXTURE id="null" />
 
 		<TRANSLATION x="0" y="0.5" z="-3" />
 
         <DESCENDANTS>
-            <DESCENDANT id="row_small" />
+            <DESCENDANT id="row_five" />
             <DESCENDANT id="seat_floor" />
         </DESCENDANTS>
 
     </NODE>
     
-    <NODE id="row_small2">
+    <NODE id="row_five2">
     	<MATERIAL id="null" />         
         <TEXTURE id="null" />
 
 		<TRANSLATION x="0" y="0.25" z="-1.5" />
 
         <DESCENDANTS>
-            <DESCENDANT id="row_small" />
+            <DESCENDANT id="row_five" />
             <DESCENDANT id="seat_floor" />
         </DESCENDANTS>
 
     </NODE>
     
-    <NODE id="row_small1">
+    <NODE id="row_five1">
     	<MATERIAL id="null" />         
         <TEXTURE id="null" />
 
         <DESCENDANTS>
-            <DESCENDANT id="row_small" />
+            <DESCENDANT id="row_five" />
         </DESCENDANTS>
 
     </NODE>
 	
-	<NODE id="row_small">
+	<NODE id="row_five">
 		<MATERIAL id="null" />         
         <TEXTURE id="null" />
 
@@ -357,7 +460,7 @@
     	<MATERIAL id="null" />         
         <TEXTURE id="null" />
         
-        <TRANSLATION x="7" y="0" z="0" />
+        <TRANSLATION x="12" y="0" z="0" />
 
         <DESCENDANTS>
             <DESCENDANT id="stair_step" />
