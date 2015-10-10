@@ -23,8 +23,6 @@ function SceneNode(id, material, texture, transforms, scene) {
 }
 
 SceneNode.prototype.display = function() {
-	// TODO complete
-
 	this.scene.pushMatrix();
 	this.scene.multMatrix(this.m);
 	var currTexture = this.scene.activeTexture;
