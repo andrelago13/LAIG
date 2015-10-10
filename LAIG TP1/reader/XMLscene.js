@@ -121,7 +121,12 @@ XMLscene.prototype.display = function () {
 		this.dfsDisplay(this.graph.graph, mat4.create(), null, null);
 	};
 	
-	//var t = new Rectangle(this, 0, 2, 2, 0);
+	for (var i = 0; i < this.graph.lights.length; i++)
+	{
+		this.lights[i].update();
+	}
+	
+	//var t = new Sphere(this, 2, 60, 40);
 	//t.display();
 	
 	this.graph.graphNodes["root"].display();

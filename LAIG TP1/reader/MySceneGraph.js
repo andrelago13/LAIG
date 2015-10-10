@@ -465,6 +465,10 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 }
 
 MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
+	
+	for(var t in this.leaves) {
+		console.log(t);
+	}
 
 	var all_attributes = []; var all_types = [];
 	all_attributes["TRANSLATION"] = ["x", "y", "z"];
