@@ -617,6 +617,7 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 		var tex_id = this.nodes[i]["texture"];
 		if(tex_id != "null" && tex_id != "clear" && typeof this.textures[tex_id] == 'undefined') {
 			warnings.push("TEXTURE id '" + tex_id + "' not found for NODE '" + i + "'");
+			this.nodes[i]["texture"] = "null";
 			continue;				
 		}
 
@@ -624,6 +625,7 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 		var mat_id = this.nodes[i]["material"];
 		if(mat_id != "null" && typeof this.materials[mat_id] == 'undefined') {
 			warnings.push("MATERIAL id '" + mat_id + "' not found for NODE '" + i + "'");
+			this.nodes[i]["material"] = "null";
 			continue;
 		}
 	}
