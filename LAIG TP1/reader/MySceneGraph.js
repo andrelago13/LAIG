@@ -555,8 +555,11 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 
 		// GET NODE DESCENDANTS
 		var descendants = this.parseElement(errors, warnings, elems[i], 'DESCENDANTS', 1, 1);
-		if(descendants == null) // TODO output warning
+		if(descendants == null) {
+			warnings.push("NODE '" + id + "' doesn't have a DESCENDANTS block. Ignoring node");
 			continue;
+		}
+
 		descendants = this.parseElement(errors, warnings, descendants[0], 'DESCENDANT', 0, 0);
 		if(descendants == null) {
 			continue;
@@ -581,7 +584,7 @@ MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
 		node["material"] = mat_id;
 		node["texture"] = tex_id;
 		var transform_obj = new TransformMatrix(transforms);
-		node["transforms"] = transform_obj;
+		node["transforms"] = transform_obj.matrix;
 		node["descendants"] = desc;
 		this.nodes[id] = node;
 	}		
@@ -631,7 +634,7 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	if (typeof this.graphNodes[nodeID] != 'undefined') return this.graphNodes[nodeID]; // Node already created
 	if (typeof this.leaves[nodeID] != 'undefined') return this.leaves[nodeID]; // Node is a leaf
 
-	this.graphNodes[nodeID] = new SceneNode(nodeID, null, null, this.nodes[nodeID]["transforms"]);
+	this.graphNodes[nodeID] = new SceneNode(nodeID, null, null, this.nodes[nodeID]["transforms"], this.scene);
 
 	for (var i = 0; i < this.nodes[nodeID]["descendants"].length; i++)
 	{

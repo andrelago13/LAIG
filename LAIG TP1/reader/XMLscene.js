@@ -120,13 +120,18 @@ XMLscene.prototype.display = function () {
 		}
 		this.dfsDisplay(this.graph.graph, mat4.create(), null, null);
 	};
-
+	
+	//var t = new Rectangle(this, 0, 2, 2, 0);
+	//t.display();
+	
+	this.graph.graphNodes["root"].display();
+	
 	this.shader.unbind();
 };
 
 XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture)
 {
-	var nodeMatrix = node.getMatrix();
+	/*var nodeMatrix = node.getMatrix();
 
 	if (nodeMatrix != null)
 		mat4.multiply(transformation, transformation, nodeMatrix);
@@ -152,5 +157,5 @@ XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture
 			this.dfsDisplay(descendants[i], transformation, material, texture);
 		}
 	}
-	this.popMatrix();
+	this.popMatrix();*/
 }

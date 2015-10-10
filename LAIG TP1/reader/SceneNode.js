@@ -8,16 +8,29 @@ function SceneNode() {
 	this.texture = null;
 	this.m = null;
 	this.descendants = [];
+	this.scene = null;
 }
 
 SceneNode.prototype.constructor=SceneNode;
 
-function SceneNode(id, material, texture, transforms) {
+function SceneNode(id, material, texture, transforms, scene) {
 	this.id = id;
 	this.material = material;
 	this.texture = texture;
 	this.m = transforms;
 	this.descendants = [];
+	this.scene = scene;
+}
+
+SceneNode.prototype.display = function(scene) {
+	// TODO complete
+	
+	this.scene.pushMatrix();
+	this.scene.multMatrix(this.m);
+		for(var i = 0; i < this.descendants.length; i++) {
+			this.descendants[i].display();
+		}
+	this.scene.popMatrix();
 }
 
 SceneNode.prototype.push = function(sceneNode) {
