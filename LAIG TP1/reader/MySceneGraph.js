@@ -5,6 +5,7 @@ function MySceneGraph(filename, scene) {
 	this.illumination = [];
 	this.lights = [];
 	this.textures = [];
+	this.CGFtextures = [];
 	this.materials = [];
 	this.leaves = [];
 	this.nodes = [];
@@ -91,6 +92,10 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 		elems = this.parseElement(errors, warnings, rootElement, blocks[i], 1, 1);
 		if (elems == null) break;
 		this.parseBlock(errors, warnings, rootElement, i);
+	}
+	for (var id in this.textures)
+	{
+		this.CGFtextures[id] = new CGFtexture(this.scene, this.textures[id]["file"]);
 	}
 	if(this.validateNodes(errors, warnings, rootElement))
 		this.graph = this.createGraph(this.rootNode);
@@ -295,23 +300,22 @@ MySceneGraph.prototype.parseTextures= function(errors, warnings, rootElement)
 		var textures = elems;
 		for (var i = 0; i < textures.length; i++) // Para cada textura
 		{
-			this.textures[i] = [];
-			this.textures[i]["id"] = this.parseRequiredAttribute(errors, warnings, textures[i], 'id', 'ss');
-
+			var id = this.parseRequiredAttribute(errors, warnings, textures[i], 'id', 'ss');
+			this.textures[id] = [];
 			elems = this.parseElement(errors, warnings, textures[i], 'file', 1, 1);
 			if (elems != null)
 			{
 				var enable = elems[0];
-				this.textures[i]["file"] = this.parseRequiredAttribute(errors, warnings, enable, 'path', 'ss');
+				this.textures[id]["file"] = this.parseRequiredAttribute(errors, warnings, enable, 'path', 'ss');
 			}
 
 			elems = this.parseElement(errors, warnings, textures[i], 'amplif_factor', 1, 1);
 			if (elems != null)
 			{
 				var enable = elems[0];
-				this.textures[i]["amplif_factor"] = [];
-				this.textures[i]["amplif_factor"]["s"] = this.parseRequiredAttribute(errors, warnings, enable, 's', 'ff');
-				this.textures[i]["amplif_factor"]["t"] = this.parseRequiredAttribute(errors, warnings, enable, 't', 'ff');
+				this.textures[id]["amplif_factor"] = [];
+				this.textures[id]["amplif_factor"]["s"] = this.parseRequiredAttribute(errors, warnings, enable, 's', 'ff');
+				this.textures[id]["amplif_factor"]["t"] = this.parseRequiredAttribute(errors, warnings, enable, 't', 'ff');
 			}
 		}
 	}
@@ -367,7 +371,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 				}
 			}
 		}
-		
+
 		var app = new CGFappearance(this.scene);
 		app.setAmbient(material["ambient"]["r"], material["ambient"]["g"], material["ambient"]["b"], material["ambient"]["a"]);
 		app.setDiffuse(material["diffuse"]["r"], material["diffuse"]["g"], material["diffuse"]["b"], material["diffuse"]["a"]);
@@ -633,8 +637,18 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 MySceneGraph.prototype.createGraph= function(nodeID) {
 	if (typeof this.graphNodes[nodeID] != 'undefined') return this.graphNodes[nodeID]; // Node already created
 	if (typeof this.leaves[nodeID] != 'undefined') return this.leaves[nodeID]; // Node is a leaf
-
-	this.graphNodes[nodeID] = new SceneNode(nodeID, null, null, this.nodes[nodeID]["transforms"], this.scene);
+	
+	var material = this.nodes[nodeID]["material"];
+	if (material == "null") material = null;
+	
+	var texture = this.nodes[nodeID]["texture"];
+	if (texture === "null")
+		texture = null;
+	else
+		texture = this.CGFtextures[texture];
+	
+	
+	this.graphNodes[nodeID] = new SceneNode(nodeID, null, texture, this.nodes[nodeID]["transforms"], this.scene);
 
 	for (var i = 0; i < this.nodes[nodeID]["descendants"].length; i++)
 	{

@@ -26,8 +26,13 @@ SceneNode.prototype.display = function(scene) {
 	// TODO complete
 	
 	this.scene.pushMatrix();
-	this.scene.multMatrix(this.m);
+		this.scene.multMatrix(this.m);
 		for(var i = 0; i < this.descendants.length; i++) {
+			if (this.material != null) this.material.apply();
+			if (this.texture != null)
+			{
+				this.texture.bind();
+			}
 			this.descendants[i].display();
 		}
 	this.scene.popMatrix();
