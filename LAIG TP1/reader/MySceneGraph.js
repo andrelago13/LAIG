@@ -336,6 +336,8 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 	{
 		var material = [];
 		var id = this.parseRequiredAttribute(errors, warnings, materials[i], 'id', 'ss');
+		if(id == null)
+			continue;
 
 		// Check if material id already exists. If so, continue to next one and add warning
 		if (typeof this.materials[id] != 'undefined') {
@@ -347,6 +349,10 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 		if(elems==null)
 			continue;
 		material["shininess"] = this.parseRequiredAttribute(errors, warnings, elems[0], 'value', 'ff');
+		if(material["shininess"] == null) {
+			material["shininess"] = 0;
+			warnings.push("MATERIAL '" + id + "' shininess not found. Assuming zero.");
+		}
 
 		for(var att = 0; att < attributes.length; att++) {
 			elems = this.parseElement(errors, warnings, materials[i], attributes[att], 1, 1);
@@ -356,12 +362,20 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 					material[attributes[att]][value] = this.parseRequiredAttribute(errors, warnings, elems[0], rgba[value], 'ff');
 					if(material[attributes[att]][value] == null) {
 						material[attributes[att]][value] = 0;
+						warnings.push("MATERIAL '" + id + "' " + attributes[att] + " " + rgba[value] + " value not found. Assuming zero.");
 					}
 				}
 			}
 		}
+		
+		var app = new CGFappearance(this.scene);
+		app.setAmbient(material["ambient"]["r"], material["ambient"]["g"], material["ambient"]["b"], material["ambient"]["a"]);
+		app.setDiffuse(material["diffuse"]["r"], material["diffuse"]["g"], material["diffuse"]["b"], material["diffuse"]["a"]);
+		app.setSpecular(material["specular"]["r"], material["specular"]["g"], material["specular"]["b"], material["specular"]["a"]);
+		app.setShininess(material["shininess"]);
+		app.setEmission(material["emission"]["r"], material["emission"]["g"], material["emission"]["b"], material["emission"]["a"]);
 
-		this.materials[id] = material;
+		this.materials[id] = app;
 	}
 }
 
