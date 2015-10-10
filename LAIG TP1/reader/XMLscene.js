@@ -20,6 +20,7 @@ XMLscene.prototype.init = function (application) {
 
 	this.axis=new CGFaxis(this);
 	this.initialTransform = mat4.create();
+	this.enableTextures(true);
 };
 
 XMLscene.prototype.initLights = function () {
