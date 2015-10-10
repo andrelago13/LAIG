@@ -115,7 +115,7 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.ready)
 	{
-		this.graph.graphNodes["root"].display();
+			this.graph.graphNodes[this.graph.rootNode].display();
 	};
 	
 	for (var i = 0; i < this.graph.lights.length; i++)

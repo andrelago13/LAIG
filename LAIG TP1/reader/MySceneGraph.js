@@ -5,11 +5,12 @@ function MySceneGraph(filename, scene) {
 	this.illumination = [];
 	this.lights = [];
 	this.textures = [];
-	this.CGFtextures = [];
 	this.materials = [];
 	this.leaves = [];
 	this.nodes = [];
 	this.rootNode = "";
+
+	this.CGFtextures = [];
 	this.graphNodes = [];
 	this.graph = null;
 
@@ -340,7 +341,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 	{
 		var material = [];
 		var id = this.parseRequiredAttribute(errors, warnings, materials[i], 'id', 'ss');
-		if(id == null)
+		if(id === null)
 			continue;
 
 		// Check if material id already exists. If so, continue to next one and add warning
@@ -350,10 +351,10 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 		}
 
 		elems = this.parseElement(errors, warnings, materials[i], 'shininess', 1, 1);
-		if(elems==null)
+		if(elems===null)
 			continue;
 		material["shininess"] = this.parseRequiredAttribute(errors, warnings, elems[0], 'value', 'ff');
-		if(material["shininess"] == null) {
+		if(material["shininess"] === null) {
 			material["shininess"] = 0;
 			warnings.push("MATERIAL '" + id + "' shininess not found. Assuming zero.");
 		}
@@ -363,15 +364,14 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 			if(elems != null) {
 				material[attributes[att]] = [];
 				for(var value = 0; value < rgba.length; value++) {
-					material[attributes[att]][value] = this.parseRequiredAttribute(errors, warnings, elems[0], rgba[value], 'ff');
-					if(material[attributes[att]][value] == null) {
-						material[attributes[att]][value] = 0;
+					material[attributes[att]][rgba[value]] = this.parseRequiredAttribute(errors, warnings, elems[0], rgba[value], 'ff');
+					if(material[attributes[att]][rgba[value]] === null) {
+						material[attributes[att]][rgba[value]] = 0;
 						warnings.push("MATERIAL '" + id + "' " + attributes[att] + " " + rgba[value] + " value not found. Assuming zero.");
 					}
 				}
 			}
 		}
-
 		var app = new CGFappearance(this.scene);
 		app.setAmbient(material["ambient"]["r"], material["ambient"]["g"], material["ambient"]["b"], material["ambient"]["a"]);
 		app.setDiffuse(material["diffuse"]["r"], material["diffuse"]["g"], material["diffuse"]["b"], material["diffuse"]["a"]);
@@ -617,6 +617,7 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 		var tex_id = this.nodes[i]["texture"];
 		if(tex_id != "null" && tex_id != "clear" && typeof this.textures[tex_id] == 'undefined') {
 			warnings.push("TEXTURE id '" + tex_id + "' not found for NODE '" + i + "'");
+			this.nodes[i]["texture"] = "null";
 			continue;				
 		}
 
@@ -624,6 +625,7 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 		var mat_id = this.nodes[i]["material"];
 		if(mat_id != "null" && typeof this.materials[mat_id] == 'undefined') {
 			warnings.push("MATERIAL id '" + mat_id + "' not found for NODE '" + i + "'");
+			this.nodes[i]["material"] = "null";
 			continue;
 		}
 	}
@@ -637,17 +639,20 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 MySceneGraph.prototype.createGraph= function(nodeID) {
 	if (typeof this.graphNodes[nodeID] != 'undefined') return this.graphNodes[nodeID]; // Node already created
 	if (typeof this.leaves[nodeID] != 'undefined') return this.leaves[nodeID]; // Node is a leaf
-	
+
 	var material = this.nodes[nodeID]["material"];
-	if (material == "null") material = null;
-	
+	if (material === "null")
+		material = null;
+	else
+		material = this.materials[material];
+
 	var texture = this.nodes[nodeID]["texture"];
 	if (texture === "null")
 		texture = null;
 	else if (texture !== "clear")
 		texture = this.CGFtextures[texture];
-	
-	this.graphNodes[nodeID] = new SceneNode(nodeID, null, texture, this.nodes[nodeID]["transforms"], this.scene);
+
+	this.graphNodes[nodeID] = new SceneNode(nodeID, material, texture, this.nodes[nodeID]["transforms"], this.scene);
 
 	for (var i = 0; i < this.nodes[nodeID]["descendants"].length; i++)
 	{
