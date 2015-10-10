@@ -126,7 +126,7 @@ XMLscene.prototype.display = function () {
 		this.lights[i].update();
 	}
 	
-	//var t = new Sphere(this, 2, 60, 40);
+	//var t = new Rectangle(this, 0, 1, 1, 0);
 	//t.display();
 	
 	this.graph.graphNodes["root"].display();

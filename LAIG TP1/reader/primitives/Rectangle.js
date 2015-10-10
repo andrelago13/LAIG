@@ -37,32 +37,33 @@ Rectangle.prototype = Object.create(CGFobject.prototype);
 Rectangle.prototype.constructor=Rectangle;
 
 Rectangle.prototype.initBuffers = function () {
+	
 	this.vertices = [
-	                 this.left_top_x, this.right_bottom_y, 0,
-	                 this.right_bottom_x, this.right_bottom_y, 0,
-	                 this.left_top_x, this.left_top_y, 0,
-	                 this.right_bottom_x, this.left_top_y, 0
-	     			];
-
-	     	this.indices = [
-	                 0, 2, 1, 
-	     			3, 1, 2
-	             ];
-
-	         this.normals = [
-	         0, 0, 1,
-	         0, 0, 1,
-	         0, 0, 1,
-	         0, 0, 1
-	         ];
-	         
-	         this.texCoords = [
-	     		this.minS, this.maxT,
-	     		this.maxS, this.maxT,
-	     		this.minS, this.minT,
-	     		this.maxS, this.minT
-	         ]
-	     		
-	     	this.primitiveType=this.scene.gl.TRIANGLES;
-	     	this.initGLBuffers();
+	     this.left_top_x, this.right_bottom_y, 0,
+	     this.right_bottom_x, this.right_bottom_y, 0,
+	     this.left_top_x, this.left_top_y, 0,
+	     this.right_bottom_x, this.left_top_y, 0
+	];
+	
+	this.indices = [
+	     0, 1, 2,
+	     2, 1, 3
+    ];
+	
+	this.normals = [
+         0, 0, 1,
+         0, 0, 1,
+         0, 0, 1,
+         0, 0, 1
+    ];
+         
+    this.texCoords = [
+     		this.minS, this.maxT,
+     		this.maxS, this.maxT,
+     		this.minS, this.minT,
+     		this.maxS, this.minT
+    ]
+     		
+    this.primitiveType=this.scene.gl.TRIANGLES;
+    this.initGLBuffers();
 };
