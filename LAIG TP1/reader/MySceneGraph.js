@@ -647,7 +647,6 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	else if (texture !== "clear")
 		texture = this.CGFtextures[texture];
 	
-	
 	this.graphNodes[nodeID] = new SceneNode(nodeID, null, texture, this.nodes[nodeID]["transforms"], this.scene);
 
 	for (var i = 0; i < this.nodes[nodeID]["descendants"].length; i++)
