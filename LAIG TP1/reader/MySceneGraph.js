@@ -5,11 +5,13 @@ function MySceneGraph(filename, scene) {
 	this.illumination = [];
 	this.lights = [];
 	this.textures = [];
-	this.CGFtextures = [];
 	this.materials = [];
 	this.leaves = [];
 	this.nodes = [];
 	this.rootNode = "";
+
+	this.CGFmaterials = [];
+	this.CGFtextures = [];
 	this.graphNodes = [];
 	this.graph = null;
 
@@ -92,6 +94,15 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 		elems = this.parseElement(errors, warnings, rootElement, blocks[i], 1, 1);
 		if (elems == null) break;
 		this.parseBlock(errors, warnings, rootElement, i);
+	}
+	for (var id in this.materials)
+	{
+		this.CGFmaterials[id] = new CGFappearance(this.scene);
+		this.CGFmaterials[id].setAmbient(this.materials[id]["ambient"]["r"], this.materials[id]["ambient"]["g"], this.materials[id]["ambient"]["b"], this.materials[id]["ambient"]["a"]);
+		this.CGFmaterials[id].setDiffuse(this.materials[id]["diffuse"]["r"], this.materials[id]["diffuse"]["g"], this.materials[id]["diffuse"]["b"], this.materials[id]["diffuse"]["a"]);
+		this.CGFmaterials[id].setSpecular(this.materials[id]["specular"]["r"], this.materials[id]["specular"]["g"], this.materials[id]["specular"]["b"], this.materials[id]["specular"]["a"]);
+		this.CGFmaterials[id].setShininess(this.materials[id]["shininess"]);
+		this.CGFmaterials[id].setEmission(this.materials[id]["emission"]);
 	}
 	for (var id in this.textures)
 	{
@@ -637,16 +648,16 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 MySceneGraph.prototype.createGraph= function(nodeID) {
 	if (typeof this.graphNodes[nodeID] != 'undefined') return this.graphNodes[nodeID]; // Node already created
 	if (typeof this.leaves[nodeID] != 'undefined') return this.leaves[nodeID]; // Node is a leaf
-	
+
 	var material = this.nodes[nodeID]["material"];
 	if (material == "null") material = null;
-	
+
 	var texture = this.nodes[nodeID]["texture"];
 	if (texture === "null")
 		texture = null;
 	else if (texture !== "clear")
 		texture = this.CGFtextures[texture];
-	
+
 	this.graphNodes[nodeID] = new SceneNode(nodeID, null, texture, this.nodes[nodeID]["transforms"], this.scene);
 
 	for (var i = 0; i < this.nodes[nodeID]["descendants"].length; i++)
