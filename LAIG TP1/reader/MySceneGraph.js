@@ -10,7 +10,6 @@ function MySceneGraph(filename, scene) {
 	this.nodes = [];
 	this.rootNode = "";
 
-	this.CGFmaterials = [];
 	this.CGFtextures = [];
 	this.graphNodes = [];
 	this.graph = null;
@@ -94,15 +93,6 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 		elems = this.parseElement(errors, warnings, rootElement, blocks[i], 1, 1);
 		if (elems == null) break;
 		this.parseBlock(errors, warnings, rootElement, i);
-	}
-	for (var id in this.materials)
-	{
-		this.CGFmaterials[id] = new CGFappearance(this.scene);
-		this.CGFmaterials[id].setAmbient(this.materials[id]["ambient"]["r"], this.materials[id]["ambient"]["g"], this.materials[id]["ambient"]["b"], this.materials[id]["ambient"]["a"]);
-		this.CGFmaterials[id].setDiffuse(this.materials[id]["diffuse"]["r"], this.materials[id]["diffuse"]["g"], this.materials[id]["diffuse"]["b"], this.materials[id]["diffuse"]["a"]);
-		this.CGFmaterials[id].setSpecular(this.materials[id]["specular"]["r"], this.materials[id]["specular"]["g"], this.materials[id]["specular"]["b"], this.materials[id]["specular"]["a"]);
-		this.CGFmaterials[id].setShininess(this.materials[id]["shininess"]);
-		this.CGFmaterials[id].setEmission(this.materials[id]["emission"]);
 	}
 	for (var id in this.textures)
 	{
@@ -351,7 +341,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 	{
 		var material = [];
 		var id = this.parseRequiredAttribute(errors, warnings, materials[i], 'id', 'ss');
-		if(id == null)
+		if(id === null)
 			continue;
 
 		// Check if material id already exists. If so, continue to next one and add warning
@@ -361,10 +351,10 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 		}
 
 		elems = this.parseElement(errors, warnings, materials[i], 'shininess', 1, 1);
-		if(elems==null)
+		if(elems===null)
 			continue;
 		material["shininess"] = this.parseRequiredAttribute(errors, warnings, elems[0], 'value', 'ff');
-		if(material["shininess"] == null) {
+		if(material["shininess"] === null) {
 			material["shininess"] = 0;
 			warnings.push("MATERIAL '" + id + "' shininess not found. Assuming zero.");
 		}
@@ -374,15 +364,14 @@ MySceneGraph.prototype.parseMaterials= function(errors, warnings, rootElement) {
 			if(elems != null) {
 				material[attributes[att]] = [];
 				for(var value = 0; value < rgba.length; value++) {
-					material[attributes[att]][value] = this.parseRequiredAttribute(errors, warnings, elems[0], rgba[value], 'ff');
-					if(material[attributes[att]][value] == null) {
-						material[attributes[att]][value] = 0;
+					material[attributes[att]][rgba[value]] = this.parseRequiredAttribute(errors, warnings, elems[0], rgba[value], 'ff');
+					if(material[attributes[att]][rgba[value]] === null) {
+						material[attributes[att]][rgba[value]] = 0;
 						warnings.push("MATERIAL '" + id + "' " + attributes[att] + " " + rgba[value] + " value not found. Assuming zero.");
 					}
 				}
 			}
 		}
-
 		var app = new CGFappearance(this.scene);
 		app.setAmbient(material["ambient"]["r"], material["ambient"]["g"], material["ambient"]["b"], material["ambient"]["a"]);
 		app.setDiffuse(material["diffuse"]["r"], material["diffuse"]["g"], material["diffuse"]["b"], material["diffuse"]["a"]);
@@ -650,7 +639,10 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	if (typeof this.leaves[nodeID] != 'undefined') return this.leaves[nodeID]; // Node is a leaf
 
 	var material = this.nodes[nodeID]["material"];
-	if (material == "null") material = null;
+	if (material === "null")
+		material = null;
+	else
+		material = this.materials[material];
 
 	var texture = this.nodes[nodeID]["texture"];
 	if (texture === "null")
@@ -658,7 +650,7 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	else if (texture !== "clear")
 		texture = this.CGFtextures[texture];
 
-	this.graphNodes[nodeID] = new SceneNode(nodeID, null, texture, this.nodes[nodeID]["transforms"], this.scene);
+	this.graphNodes[nodeID] = new SceneNode(nodeID, material, texture, this.nodes[nodeID]["transforms"], this.scene);
 
 	for (var i = 0; i < this.nodes[nodeID]["descendants"].length; i++)
 	{
