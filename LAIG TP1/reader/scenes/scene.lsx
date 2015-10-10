@@ -75,6 +75,60 @@
         <DESCENDANTS>
             <DESCENDANT id="seats" />
             <DESCENDANT id="stairs" />
+            <DESCENDANT id="box" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="box">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="wall_back" />
+            <DESCENDANT id="wall_left" />
+            <DESCENDANT id="floor" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="wall_back">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="24" sy="8" sz="1" />
+        <TRANSLATION x="0.5" y="0.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="wall_left">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="1" sy="8" sz="23" />
+        <ROTATION axis="y" angle="90" />
+        <TRANSLATION x="-0.5" y="0.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="floor">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="24" sy="1" sz="23" />
+        <ROTATION axis="x" angle="-90" />
+        <TRANSLATION x="0.5" y="-0.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
         </DESCENDANTS>
 
     </NODE>
@@ -82,6 +136,8 @@
     <NODE id="seats">
         <MATERIAL id="null" />         
         <TEXTURE id="null" />
+        
+        <TRANSLATION x="7" y="0" z="13.5" />
 
         <DESCENDANTS>
             <DESCENDANT id="seat_block_center" />
@@ -94,6 +150,8 @@
     <NODE id="stairs">
         <MATERIAL id="null" />         
         <TEXTURE id="null" />
+        
+        <TRANSLATION x="7" y="0" z="13.5" />
 
         <DESCENDANTS>
             <DESCENDANT id="stair_step1" />
