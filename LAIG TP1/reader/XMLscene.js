@@ -114,20 +114,22 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.ready)
 	{
+		for (var id in this.graph.leaves)
+		{
+			this.graph.leaves[id].primitive = new Rectangle(this, 0, 0, 1, 1);
+		}
 		this.dfsDisplay(this.graph.graph, mat4.create(), null, null);
-		this.lights[0].update();
 	};
 
 	//scene, height, bottom_radius, top_radius, stacks, slices
-	//var cylinder = new Cylinder(this, 2, 1, 0, 100, 100);
-	//cylinder.display();
+	var cylinder = new Cylinder(this, 2, 1, 0, 100, 100);
+	cylinder.display();
 
 	this.shader.unbind();
 };
 
 XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture)
 {
-	return;
 	var nodeMatrix = node.getMatrix();
 
 	if (nodeMatrix != null)
@@ -139,8 +141,8 @@ XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture
 	if (node.getTexture() != null)
 		texture = node.getTexture();
 
-	//this.pushMatrix();
-	//this.multMatrix(nodeMatrix);
+	this.pushMatrix();
+	this.multMatrix(nodeMatrix);
 	// TODO set material and texture
 	if (node instanceof SceneLeaf)
 	{
@@ -154,5 +156,5 @@ XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture
 			this.dfsDisplay(descendants[i], transformation, material, texture);
 		}
 	}
-	//this.popMatrix();
+	this.popMatrix();
 }

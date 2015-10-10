@@ -1,20 +1,25 @@
-SceneLeaf.protoype = Object.create(SceneNode.prototype)
+SceneLeaf.protoype = SceneNode();
 SceneLeaf.prototype.constructor = SceneLeaf;
 
 function SceneLeaf(primitive, leafId, leafList) {
-	//SceneNode.call(this, nodeId, nodeIdList, materialList, textureList, nodeList);
+	SceneNode.apply(leafId, null, null, mat4.create);
 		
-	this.id = leafId;
 	leafList[leafId] = this;
-	this.material = null;
-	this.texture = null;
-	this.m = mat4.create();
-	this.descendants = [];
-
 	this.primitive = primitive;
 }
 
 SceneLeaf.prototype.display = function () {
-	console.log("drawing leaf...");
 	this.primitive.display();
+}
+
+SceneLeaf.prototype.getMatrix = function () {
+	return mat4.create();
+}
+
+SceneLeaf.prototype.getMaterial = function () {
+	return this.material;
+}
+
+SceneLeaf.prototype.getTexture = function () {
+	return this.texture;
 }

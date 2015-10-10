@@ -93,7 +93,7 @@ MySceneGraph.prototype.parse= function(errors, warnings, rootElement) {
 		this.parseBlock(errors, warnings, rootElement, i);
 	}
 	if(this.validateNodes(errors, warnings, rootElement))
-		this.createGraph(this.rootNode);
+		this.graph = this.createGraph(this.rootNode);
 }
 
 MySceneGraph.prototype.parseBlock= function(errors, warnings, element, blockID)
@@ -615,11 +615,7 @@ MySceneGraph.prototype.validateNodes= function(errors, warnings, rootElement) {
 
 MySceneGraph.prototype.createGraph= function(nodeID) {
 	if (typeof this.graphNodes[nodeID] != 'undefined') return this.graphNodes[nodeID]; // Node already created
-	if (typeof this.leaves[nodeID] != 'undefined')
-	{
-		this.leaves[nodeID].display();
-		return this.leaves[nodeID]; // Node is a leaf
-	}
+	if (typeof this.leaves[nodeID] != 'undefined') return this.leaves[nodeID]; // Node is a leaf
 
 	this.graphNodes[nodeID] = new SceneNode(nodeID, null, null, this.nodes[nodeID]["transforms"]);
 
