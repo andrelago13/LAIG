@@ -449,15 +449,15 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 					id, this.leaves);
 			break;
 		case "triangle":
-			this.leaves[id] = new SceneLeaf(new Triangle(this.scene, leaf["v1_x"], leaf["v1_y"], leaf["v1_z"], leaf["v2_x"], leaf["v2_y"], leaf["v2_z"], leaf["v3_x"], leaf["v3_y"], leaf["v3_z"]),
+			this.leaves[id] = new SceneLeaf(new Triangle(this.scene, leaf["v1-x"], leaf["v1-y"], leaf["v1-z"], leaf["v2-x"], leaf["v2-y"], leaf["v2-z"], leaf["v3-x"], leaf["v3-y"], leaf["v3-z"]),
 					id, this.leaves);
 			break;
 		case "sphere":
-			this.leaves[id] = new SceneLeaf(new Sphere(this.scene, leaf["height"], leaf["bottom-radius"], leaf["top-radius"], leaf["sections-per-height"], leaf["parts-per-section"]),
+			this.leaves[id] = new SceneLeaf(new Sphere(this.scene, leaf["radius"], leaf["parts-along-radius"], leaf["parts-per-section"]),
 					id, this.leaves);
 			break;
 		case "cylinder":
-			this.leaves[id] = new SceneLeaf(new Cylinder(this.scene, leaf["radius"], leaf["parts-along-radius"], leaf["parts-per-section"]),
+			this.leaves[id] = new SceneLeaf(new Cylinder(this.scene, leaf["height"], leaf["bottom-radius"], leaf["top-radius"], leaf["sections-per-height"], leaf["parts-per-section"]),
 					id, this.leaves);
 			break;
 		}
@@ -465,10 +465,6 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 }
 
 MySceneGraph.prototype.parseNodes= function(errors, warnings, rootElement) {
-	
-	for(var t in this.leaves) {
-		console.log(t);
-	}
 
 	var all_attributes = []; var all_types = [];
 	all_attributes["TRANSLATION"] = ["x", "y", "z"];
