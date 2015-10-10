@@ -6,6 +6,8 @@
 function Rectangle(scene, left_top_x, left_top_y, right_bottom_x, right_bottom_y) {
 	CGFobject.call(this,scene);
 	
+	console.log("" + left_top_x + " " + left_top_y + " " + right_bottom_x + " " + right_bottom_y);
+	
 	if(typeof left_top_x == 'undefined' || typeof left_top_y == 'undefined' || typeof right_bottom_x == 'undefined' || typeof right_bottom_y == 'undefined') {
 		this.left_top_x = -1;
 		this.left_top_y = 1;

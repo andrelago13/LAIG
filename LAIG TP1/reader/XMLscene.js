@@ -114,11 +114,7 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.ready)
 	{
-		for (var id in this.graph.leaves)
-		{
-			this.graph.leaves[id].primitive = new Rectangle(this, 0, 0, 1, 1);
-		}
-		this.dfsDisplay(this.graph.graph, mat4.create(), null, null);
+		this.graph.graphNodes["root"].display();
 	};
 	
 	for (var i = 0; i < this.graph.lights.length; i++)
@@ -128,8 +124,6 @@ XMLscene.prototype.display = function () {
 	
 	//var t = new Rectangle(this, 0, 1, 1, 0);
 	//t.display();
-	
-	this.graph.graphNodes["root"].display();
 	
 	this.shader.unbind();
 };

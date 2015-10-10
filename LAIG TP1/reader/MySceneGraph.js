@@ -445,7 +445,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, warnings, rootElement) {
 
 		switch(elems) {
 		case "rectangle":
-			this.leaves[id] = new SceneLeaf(new Rectangle(this.scene, leaf["left-top-x"], leaf["left-top-y"], leaf["right-top-x"], leaf["right-top-y"]),
+			this.leaves[id] = new SceneLeaf(new Rectangle(this.scene, leaf["left-top-x"], leaf["left-top-y"], leaf["right-bottom-x"], leaf["right-bottom-y"]),
 					id, this.leaves);
 			break;
 		case "triangle":
