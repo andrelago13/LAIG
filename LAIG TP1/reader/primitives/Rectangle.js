@@ -58,12 +58,26 @@ Rectangle.prototype.initBuffers = function () {
     ];
          
     this.texCoords = [
-     		this.minS, this.maxT,
-     		this.maxS, this.maxT,
      		this.minS, this.minT,
-     		this.maxS, this.minT
+     		this.maxS, this.minT,
+     		this.minS, this.maxT,
+     		this.maxS, this.maxT
     ]
      		
     this.primitiveType=this.scene.gl.TRIANGLES;
     this.initGLBuffers();
 };
+
+Rectangle.prototype.setAmplifFactor = function(amplif_factor) {
+	var dist_s = Math.abs(this.left_top_x - this.right_bottom_x);
+	var dist_t = Math.abs(this.left_top_y - this.right_bottom_y);
+	
+	this.texCoords = [
+	     this.minS, this.minT,
+	     this.maxS*dist_s/amplif_factor, this.minT,
+	     this.minS, this.maxT*dist_t/amplif_factor,
+	     this.maxS*dist_s/amplif_factor, this.maxT*dist_t/amplif_factor
+	];
+	
+	this.updateTexCoordsGLBuffers();
+}

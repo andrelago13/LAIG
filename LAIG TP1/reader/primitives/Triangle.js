@@ -54,3 +54,10 @@ Triangle.prototype.initBuffers = function () {
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
 };
+
+Triangle.prototype.setAmplifFactor = function(amplif_factor) {
+	// TODO
+	
+	
+	this.updateTexCoordsGLBuffers();
+}

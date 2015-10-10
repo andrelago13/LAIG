@@ -66,3 +66,10 @@ Cylinder.prototype.initBuffers = function () {
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
 };
+
+Cylinder.prototype.setAmplifFactor = function(amplif_factor) {
+	// TODO
+	
+	
+	this.updateTexCoordsGLBuffers();
+}
