@@ -34,7 +34,7 @@
 <TEXTURES>
     <TEXTURE id="wall">
         <file path="textures/blue_fabric.jpg" />                             <!-- path to file -->
-        <amplif_factor s="1000" t="1000" />                <!-- x/s, y/t -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
     <TEXTURE id="floor">
@@ -59,7 +59,7 @@
 
 <MATERIALS>
     <MATERIAL id="material_metalico">                                
-        <shininess value="1" />
+        <shininess value="100" />
         <specular r="0.5" g="0.5" b="0.5" a="1" />        <!-- specular reflection -->
         <diffuse r="0.5" g="0.5" b="0.5" a="1" />         <!-- diffuse reflection -->
         <ambient r="0.8" g="0.8" b="0.8" a="1" />         <!-- ambient reflection -->
@@ -72,6 +72,14 @@
         <diffuse r="0.4" g="0.05" b="0.05" a="1" />         <!-- diffuse reflection -->
         <ambient r="0.4" g="0.05" b="0.05" a="1" />         <!-- ambient reflection -->
         <emission r="0" g="0" b="0" a="0.5" />        <!-- emission component -->
+    </MATERIAL>
+    
+    <MATERIAL id="floor">                                
+        <shininess value="50" />
+        <specular r="0" g="0" b="0" a="1" />        <!-- specular reflection -->
+        <diffuse r="0.9" g="0.9" b="0.9" a="1" />         <!-- diffuse reflection -->
+        <ambient r="0.9" g="0.9" b="0.9" a="1" />         <!-- ambient reflection -->
+        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
     </MATERIAL>
     
     <MATERIAL id="screen">                                
@@ -489,8 +497,8 @@
     </NODE>
     
     <NODE id="stairs">
-        <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <MATERIAL id="floor" />         
+        <TEXTURE id="floor" />
         
         <TRANSLATION x="7" y="0" z="13.5" />
 
@@ -1082,8 +1090,8 @@
     </NODE>
     
     <NODE id="seat_floor_two_floor">
-    	<MATERIAL id="null" />         
-        <TEXTURE id="null" />
+    	<MATERIAL id="floor" />         
+        <TEXTURE id="floor" />
 
 		<SCALE sx="2" sy="1" sz="0.5" />
 		<ROTATION axis="x" angle="-90" />
@@ -1122,8 +1130,8 @@
     </NODE>
     
     <NODE id="seat_floor_two_side">
-    	<MATERIAL id="null" />         
-        <TEXTURE id="null" />
+    	<MATERIAL id="floor" />         
+        <TEXTURE id="floor" />
 
 		<SCALE sx="1" sy="0.25" sz="1.5" />
 
@@ -1135,8 +1143,8 @@
     </NODE>
     
     <NODE id="seat_floor_five">
-    	<MATERIAL id="null" />         
-        <TEXTURE id="null" />
+    	<MATERIAL id="floor" />         
+        <TEXTURE id="floor" />
 
 		<SCALE sx="5" sy="1" sz="0.5" />
 		<ROTATION axis="x" angle="-90" />
