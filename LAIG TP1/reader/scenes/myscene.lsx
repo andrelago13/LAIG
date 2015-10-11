@@ -129,7 +129,7 @@
         
     <NODE id="screen">
         <MATERIAL id="black_screen" />         
-        <TEXTURE id="sreen-img" />
+        <TEXTURE id="screen-img" />
         
         <TRANSLATION x="4" y="0.25" z="22.98" />
         <ROTATION axis="y" angle="180" />
