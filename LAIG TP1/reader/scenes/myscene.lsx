@@ -76,11 +76,11 @@
 
 <!-- The leaves -->
 <LEAVES>
-    <LEAF id="rectangle1" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
-    <LEAF id="cylinder1" type="cylinder" args="1 1 1 5 20" />
-    <LEAF id="circle1" type="cylinder" args="0 1 0 1 20" />
-    <LEAF id="sphere1" type="sphere" args="1 20 20" />
-    <LEAF id="triangle1" type="triangle" args="0 0 0 1 0 0 0 1 0" />
+    <LEAF id="rectangle" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
+    <LEAF id="cylinder" type="cylinder" args="1 1 1 5 20" />
+    <LEAF id="circle" type="cylinder" args="0 1 0 1 20" />
+    <LEAF id="sphere" type="sphere" args="1 20 20" />
+    <LEAF id="triangle" type="triangle" args="0 0 0 1 0 0 0 1 0" />
 </LEAVES>
 
 
@@ -89,7 +89,7 @@
 	
 	<NODE id="cinema">
         <MATERIAL id="null" />         
-        <TEXTURE id="clear" />
+        <TEXTURE id="null" />
 
         <DESCENDANTS>
             <DESCENDANT id="seats" />
@@ -166,7 +166,7 @@
         <ROTATION axis="x" angle="-90" />
         
         <DESCENDANTS>
-            <DESCENDANT id="cylinder1" />
+            <DESCENDANT id="cylinder" />
         </DESCENDANTS>
     </NODE>
     
@@ -191,7 +191,7 @@
         <ROTATION axis="y" angle="90" />
 
         <DESCENDANTS>
-            <DESCENDANT id="cylinder1" />
+            <DESCENDANT id="cylinder" />
         </DESCENDANTS>
     </NODE>
     
@@ -202,7 +202,7 @@
         <SCALE sx="0.07" sy="0.07" sz="0.07" />
 
         <DESCENDANTS>
-            <DESCENDANT id="sphere1" />
+            <DESCENDANT id="sphere" />
         </DESCENDANTS>
     </NODE>
     
@@ -214,7 +214,7 @@
         <SCALE sx="0.07" sy="0.07" sz="0.07" />
 
         <DESCENDANTS>
-            <DESCENDANT id="sphere1" />
+            <DESCENDANT id="sphere" />
         </DESCENDANTS>
     </NODE>
     
@@ -254,7 +254,7 @@
         <TRANSLATION x="-0.5" y="0.5" z="0" />
 
         <DESCENDANTS>
-            <DESCENDANT id="rectangle1" />
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
     </NODE>
     
@@ -279,7 +279,7 @@
         <TRANSLATION x="0.5" y="0.5" z="0" />
 
         <DESCENDANTS>
-            <DESCENDANT id="rectangle1" />
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
 
     </NODE>
@@ -294,7 +294,7 @@
         <TRANSLATION x="-0.5" y="0.5" z="0" />
 
         <DESCENDANTS>
-            <DESCENDANT id="rectangle1" />
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
     </NODE>
     
@@ -307,7 +307,7 @@
         <TRANSLATION x="-0.5" y="0.5" z="0" />
 
         <DESCENDANTS>
-            <DESCENDANT id="rectangle1" />
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
 
     </NODE>
@@ -321,7 +321,7 @@
         <TRANSLATION x="0.5" y="-0.5" z="0" />
 
         <DESCENDANTS>
-            <DESCENDANT id="rectangle1" />
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
 
     </NODE>
@@ -396,7 +396,7 @@
         <SCALE sx="0.1" sy="0.1" sz="0.2" />
 
         <DESCENDANTS>
-            <DESCENDANT id="cylinder1" />
+            <DESCENDANT id="cylinder" />
         </DESCENDANTS>
     </NODE>
     
@@ -989,7 +989,7 @@
 		<TRANSLATION x="-0.5" y="0.5" z="1" />
 
         <DESCENDANTS>
-            <DESCENDANT id="rectangle1" />
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
 
     </NODE>
@@ -1002,7 +1002,7 @@
 		<TRANSLATION x="-0.5" y="0.5" z="0" />
 
         <DESCENDANTS>
-            <DESCENDANT id="rectangle1" />
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
 
     </NODE>
@@ -1077,7 +1077,7 @@
 		<TRANSLATION x="0.5" y="-2.5" z="0" />
 
         <DESCENDANTS>
-            <DESCENDANT id="rectangle1" />
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
 
     </NODE>
@@ -1090,7 +1090,7 @@
 		<TRANSLATION x="-0.5" y="-0.5" z="2" />
 
         <DESCENDANTS>
-            <DESCENDANT id="rectangle1" />
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
 
     </NODE>
@@ -1103,7 +1103,7 @@
 		<TRANSLATION x="0.5" y="-0.5" z="0" />
 
         <DESCENDANTS>
-            <DESCENDANT id="rectangle1" />
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
 
     </NODE>
@@ -1130,7 +1130,7 @@
 		<TRANSLATION x="0.5" y="-2.5" z="0" />
 
         <DESCENDANTS>
-            <DESCENDANT id="rectangle1" />
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
 
     </NODE>
@@ -1317,7 +1317,7 @@
     	<ROTATION axis="x" angle="90" />
     	
     	<DESCENDANTS>
-    		<DESCENDANT id="rectangle1" />
+    		<DESCENDANT id="rectangle" />
     	</DESCENDANTS>
     </NODE>
     
@@ -1329,7 +1329,7 @@
     	<ROTATION axis="x" angle="-90" />
     	
     	<DESCENDANTS>
-    		<DESCENDANT id="rectangle1" />
+    		<DESCENDANT id="rectangle" />
     	</DESCENDANTS>
     </NODE>
     
@@ -1340,7 +1340,7 @@
     	<TRANSLATION x="0" y="0" z="0.5" />
     	
     	<DESCENDANTS>
-    		<DESCENDANT id="rectangle1" />
+    		<DESCENDANT id="rectangle" />
     	</DESCENDANTS>
     </NODE>
     
@@ -1352,7 +1352,7 @@
     	<ROTATION axis="y" angle="180" />
     	
     	<DESCENDANTS>
-    		<DESCENDANT id="rectangle1" />
+    		<DESCENDANT id="rectangle" />
     	</DESCENDANTS>
     </NODE>
     
@@ -1364,7 +1364,7 @@
     	<ROTATION axis="y" angle="-90" />
     	
     	<DESCENDANTS>
-    		<DESCENDANT id="rectangle1" />
+    		<DESCENDANT id="rectangle" />
     	</DESCENDANTS>
     </NODE>
     
@@ -1376,7 +1376,7 @@
     	<ROTATION axis="y" angle="90" />
     	
     	<DESCENDANTS>
-    		<DESCENDANT id="rectangle1" />
+    		<DESCENDANT id="rectangle" />
     	</DESCENDANTS>
     </NODE>
     
@@ -1385,7 +1385,7 @@
     	<TEXTURE id="null" />
     	
     	<DESCENDANTS>
-    		<DESCENDANT id="cylinder1" />
+    		<DESCENDANT id="cylinder" />
     		<DESCENDANT id="covered-cylinder-cover-back" />
     		<DESCENDANT id="covered-cylinder-cover-front" />
     	</DESCENDANTS>
@@ -1398,7 +1398,7 @@
     	<TRANSLATION x="0" y="0" z="0.999" />
     	
     	<DESCENDANTS>
-    		<DESCENDANT id="circle1" />
+    		<DESCENDANT id="circle" />
     	</DESCENDANTS>
     </NODE>
     
@@ -1410,7 +1410,7 @@
     	<ROTATION axis="y" angle="180" />
     	
     	<DESCENDANTS>
-    		<DESCENDANT id="circle1" />
+    		<DESCENDANT id="circle" />
     	</DESCENDANTS>
     </NODE>
 

@@ -15,6 +15,11 @@ function Triangle(scene, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z) {
 	this.v3x = v3x;
 	this.v3y = v3y;
 	this.v3z = v3z;
+	
+	this.minS = 0;
+	this.minT = 0;
+	this.maxS = 1;
+	this.maxT = 1;
 
 	this.initBuffers();
 };
