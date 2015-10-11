@@ -38,7 +38,12 @@
     </TEXTURE>
     
     <TEXTURE id="rolo-projetor">
-        <file path="texturrs/roll.png" />                             <!-- path to file -->
+        <file path="textures/roll.png" />                             <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
+    
+    <TEXTURE id="screen-img">
+        <file path="textures/screen.jpg" />                             <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
 
@@ -54,6 +59,14 @@
         <diffuse r="0.5" g="0.5" b="0.5" a="1" />         <!-- diffuse reflection -->
         <ambient r="0.8" g="0.8" b="0.8" a="1" />         <!-- ambient reflection -->
         <emission r="0.5" g="0.5" b="0.5" a="0.5" />        <!-- emission component -->
+    </MATERIAL>
+    
+    <MATERIAL id="black_screen">                                
+        <shininess value="1" />
+        <specular r="0" g="0" b="0" a="1" />        <!-- specular reflection -->
+        <diffuse r="0.1" g="0.1" b="0.1" a="1" />         <!-- diffuse reflection -->
+        <ambient r="0.1" g="0.1" b="0.1" a="1" />         <!-- ambient reflection -->
+        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
     </MATERIAL>
 
     <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material requires a distinct "id" -->
@@ -82,6 +95,7 @@
             <DESCENDANT id="seats" />
             <DESCENDANT id="stairs" />
             <DESCENDANT id="box" />
+            <DESCENDANT id="screen" />
             <DESCENDANT id="movie-projector" />
         </DESCENDANTS>
 
@@ -112,12 +126,20 @@
         </DESCENDANTS>
 
     </NODE>
-    
-    
-    
-    
-    
-    
+        
+    <NODE id="screen">
+        <MATERIAL id="black_screen" />         
+        <TEXTURE id="sreen-img" />
+        
+        <TRANSLATION x="4" y="0.25" z="22.98" />
+        <ROTATION axis="y" angle="180" />
+        <SCALE sx="16" sy="7.5" sz="1" />
+        <TRANSLATION x="-0.5" y="0.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
+    </NODE>
     
     <NODE id="box">
         <MATERIAL id="null" />         
@@ -125,6 +147,7 @@
 
         <DESCENDANTS>
             <DESCENDANT id="wall_back" />
+            <DESCENDANT id="wall_front" />
             <DESCENDANT id="wall_left" />
             <DESCENDANT id="floor" />
         </DESCENDANTS>
@@ -142,6 +165,20 @@
             <DESCENDANT id="rectangle1" />
         </DESCENDANTS>
 
+    </NODE>
+    
+    <NODE id="wall_front">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0" y="0" z="23" />
+        <ROTATION axis="y" angle="180" />
+        <SCALE sx="24" sy="8" sz="1" />
+        <TRANSLATION x="-0.5" y="0.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
     </NODE>
     
     <NODE id="wall_left">
@@ -196,7 +233,7 @@
     
     <NODE id="projector-roll1">
         <MATERIAL id="null" />         
-        <TEXTURE id="rolo-projetor" />
+        <TEXTURE id="null" />
         
         <TRANSLATION x="0.2" y="0.6" z="0.05" />
         <ROTATION axis="x" angle="70" />
