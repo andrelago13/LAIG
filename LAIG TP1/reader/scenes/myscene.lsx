@@ -61,9 +61,17 @@
         <emission r="0.5" g="0.5" b="0.5" a="0.5" />        <!-- emission component -->
     </MATERIAL>
     
-    <MATERIAL id="black_screen">                                
-        <shininess value="1" />
-        <specular r="0" g="0" b="0" a="1" />        <!-- specular reflection -->
+    <MATERIAL id="safety-bar">                                
+        <shininess value="50" />
+        <specular r="0.8" g="0.1" b="0.1" a="1" />        <!-- specular reflection -->
+        <diffuse r="0.4" g="0.05" b="0.05" a="1" />         <!-- diffuse reflection -->
+        <ambient r="0.4" g="0.05" b="0.05" a="1" />         <!-- ambient reflection -->
+        <emission r="0" g="0" b="0" a="0.5" />        <!-- emission component -->
+    </MATERIAL>
+    
+    <MATERIAL id="screen">                                
+        <shininess value="5" />
+        <specular r="0.05" g="0.05" b="0.05" a="1" />        <!-- specular reflection -->
         <diffuse r="0.9" g="0.9" b="0.9" a="1" />         <!-- diffuse reflection -->
         <ambient r="0.9" g="0.9" b="0.9" a="1" />         <!-- ambient reflection -->
         <emission r="0.2" g="0.2" b="0.2" a="1" />        <!-- emission component -->
@@ -102,7 +110,7 @@
     </NODE>
     
     <NODE id="safety-bar">
-        <MATERIAL id="null" />         
+        <MATERIAL id="safety-bar" />         
         <TEXTURE id="null" />
 
         <DESCENDANTS>
@@ -245,7 +253,7 @@
     </NODE>
         
     <NODE id="screen">
-        <MATERIAL id="black_screen" />         
+        <MATERIAL id="screen" />         
         <TEXTURE id="screen-img" />
         
         <TRANSLATION x="4" y="0.25" z="22.98" />
