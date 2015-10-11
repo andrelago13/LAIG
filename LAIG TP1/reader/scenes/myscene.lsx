@@ -97,8 +97,125 @@
             <DESCENDANT id="box" />
             <DESCENDANT id="screen" />
             <DESCENDANT id="movie-projector" />
+            <DESCENDANT id="safety-bar" />
         </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="safety-bar">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
 
+        <DESCENDANTS>
+            <DESCENDANT id="safety-bar-horizontal" />
+            <DESCENDANT id="safety-bar-vertical1" />
+            <DESCENDANT id="safety-bar-vertical2" />
+            <DESCENDANT id="safety-bar-vertical3" />
+            <DESCENDANT id="safety-bar-vertical4" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="safety-bar-vertical1">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0.5" y="0" z="17" />
+        
+        <DESCENDANTS>
+            <DESCENDANT id="safety-bar-vertical-tube" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="safety-bar-vertical2">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="8.16" y="0" z="17" />
+        
+        <DESCENDANTS>
+            <DESCENDANT id="safety-bar-vertical-tube" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="safety-bar-vertical3">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="15.83" y="0" z="17" />
+        
+        <DESCENDANTS>
+            <DESCENDANT id="safety-bar-vertical-tube" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="safety-bar-vertical4">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="23.5" y="0" z="17" />
+        
+        <DESCENDANTS>
+            <DESCENDANT id="safety-bar-vertical-tube" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="safety-bar-vertical-tube">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="0.07" sy="0.8" sz="0.07" />
+        <ROTATION axis="x" angle="-90" />
+        
+        <DESCENDANTS>
+            <DESCENDANT id="cylinder1" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="safety-bar-horizontal">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0.5" y="0.8" z="17" />
+        
+        <DESCENDANTS>
+            <DESCENDANT id="safety-bar-tube" />
+            <DESCENDANT id="safety-bar-cover1" />
+            <DESCENDANT id="safety-bar-cover2" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="safety-bar-tube">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="23" sy="0.07" sz="0.07" />
+        <ROTATION axis="y" angle="90" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="cylinder1" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="safety-bar-cover1">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="0.07" sy="0.07" sz="0.07" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="sphere1" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="safety-bar-cover2">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="23" y="0" z="0" />
+        <SCALE sx="0.07" sy="0.07" sz="0.07" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="sphere1" />
+        </DESCENDANTS>
     </NODE>
     
     <NODE id="movie-projector">
