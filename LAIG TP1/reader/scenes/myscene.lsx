@@ -1,149 +1,57 @@
 <SCENE>
 
-<!-- Initial values -->
 <INITIALS>
-    <frustum near="0.1" far="500"/>                 
-    <translation x="-1" y="1" z="0" />               
-    <rotation axis="x" angle="0" />                
-    <rotation axis="y" angle="0" />                
-    <rotation axis="z" angle="0" />                
-    <scale sx="0.25" sy="0.25" sz="0.25" />         
-    <reference length="5" />                        
+    <frustum near="0.1" far="500.0"/>                      	<!-- frustum planes-->
+    <translation x="0.0" y="0.0" z="0.0" />                 	<!-- initial translate -->
+    <rotation axis="x" angle="0.0" />                  		<!-- initial rotation 3 -->
+    <rotation axis="y" angle="45.0" />                 		<!-- initial ROTATIONon 2 -->
+    <rotation axis="z" angle="0.0" />                  		<!-- initial rotation 1 -->
+    <scale sx="1" sy="1" sz="1" />                  	<!-- initial scaling -->
+    <reference length="5" />                          		<!-- axis length; "0" means no axis-->
 </INITIALS>
 
 
-<!-- Illumination and clear colour -->
 <ILLUMINATION>
-    <ambient r="0.2" g="0.2" b="0.2" a="1" />       
-    <background r="0" g="0" b="0" a="1" />          
+    <ambient r="0.1" g="0.1" b="0.1" a="1" />            <!-- global ambient -->
+    <background r="0" g="0" b="0.1" a="1" />         <!-- background color -->
 </ILLUMINATION>
 
 
-<!-- Lights -->
-<LIGHTS>	
-	<LIGHT id="light0">                                    
-        <enable value ="1" />                   	       
-        <position  x="0" y="10" z="0" w="1" />       	   
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />        	 
-        <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />        
-        <specular r="1.0" g="1.0" b="1.0" a="1.0" />      
-    </LIGHT>
-	
-	<LIGHT id="light1">                                    
-        <enable value ="1" />                   	      
-        <position x="30" y="10" z="0" w="1" />       	   
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />       
-        <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />        
-        <specular r="1.0" g="1.0" b="1.0" a="1.0" />       
-    </LIGHT>
-	
-	<LIGHT id="light2">                                   
-        <enable value ="1" />                   	       
-        <position x="0" y="10" z="20" w="1" />       		   
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />      
-        <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />        
-        <specular r="1.0" g="1.0" b="1.0" a="1.0" />       
+<LIGHTS>
+    <LIGHT id="luz1">                                    <!-- light identifier -->
+        <enable value ="1" />                         <!-- enable/disable -->
+        <position x="6" y="8.5" z="18" w="1" />       <!-- light position -->
+        <ambient r="0" g="0" b="0" a="1" />        <!-- ambient component -->
+        <diffuse r="1" g="1" b="1" a="1" />        <!-- diffuse component -->
+        <specular r="1" g="1" b="1" a="1" />       <!-- specular component -->
     </LIGHT>
 
-    <LIGHT id="light3">                                   
-        <enable value ="1" />                   	       
-        <position x="30" y="10" z="20" w="1" />       			
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />           	
-        <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />       
-        <specular r="0.6" g="0.6" b="0.6" a="1.0" />      
-    </LIGHT>
+    <!-- NOTE: this block "LIGHT" must be repeated as necessary with different "id" -->
     
 </LIGHTS>
 
-<!-- Textures -->
+
 <TEXTURES>
-	<!-- Tree trunk -->
-    <TEXTURE id="trunk">
-        <file path="textures/cone-de-gelado.jpg" />               
-        <amplif_factor s="2" t="2" />                           
+    <TEXTURE id="textura_parede">
+        <file path="Texturas/wall.jpg" />                             <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
 
-     <!-- Tree leaves -->
-    <TEXTURE id="folhas">
-        <file path="textures/cone-de-gelado.jpg" />                
-        <amplif_factor s="3" t="4" />                           
-    </TEXTURE>
-
-    <!-- Rocks -->
-    <TEXTURE id="rocks">
-        <file path="textures/cone-de-gelado.jpg" />                
-        <amplif_factor s="1" t="1" />                           
-    </TEXTURE>
-
-    <!-- Glass work -->
-    <TEXTURE id="vidral">
-        <file path="textures/cone-de-gelado.jpg" />               
-        <amplif_factor s="15" t="10" />                           
-    </TEXTURE>
-
-    <!-- Street bench -->
-    <TEXTURE id="banco">
-        <file path="textures/cone-de-gelado.jpg" />                
-        <amplif_factor s="1" t="1" />                           
-    </TEXTURE>
+    <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
     
 </TEXTURES>
 
 
 <MATERIALS>
-	<!-- Pyramid material -->
-    <MATERIAL id="piramideMaterial">                                  
+    <MATERIAL id="material_metalico">                                
         <shininess value="1" />
-        <specular r="0" g="0" b="0" a="1" />        
-        <diffuse r="1.0" g="0.68" b="0.4" a="1" />        
-        <ambient r="0.2" g="0.2" b="0.2" a="1" />         
-        <emission r="0.0" g="0.0" b="0.0" a="1" />        
-    </MATERIAL>
-	
-	<!-- Tree leaves material -->
-	<MATERIAL id="leavesTreeMaterial">                                  
-        <shininess value="1" />
-        <specular r="0.2" g="0.2" b="0.2" a="1" />        
-        <diffuse r="0.0" g="0.207" b="0.0" a="1" />       
-        <ambient r="0.1" g="0.1" b="0.1" a="1" />         
-        <emission r="0.0" g="0.0" b="0.0" a="1" />        
-    </MATERIAL>
-	
-	<!-- Tree trunk material -->
-	<MATERIAL id="trunkTreeMaterial">                                  
-        <shininess value="1" />
-        <specular r="0.0" g="0.0" b="0.0" a="1" />        
-        <diffuse r="0.6" g="0.298" b="0.0" a="1" />      
-        <ambient r="0.1" g="0.1" b="0.1" a="1" />         
-        <emission r="0.0" g="0.0" b="0.0" a="1" />       
+        <specular r="0.5" g="0.5" b="0.5" a="1" />        <!-- specular reflection -->
+        <diffuse r="0.5" g="0.5" b="0.5" a="1" />         <!-- diffuse reflection -->
+        <ambient r="0.8" g="0.8" b="0.8" a="1" />         <!-- ambient reflection -->
+        <emission r="0.5" g="0.5" b="0.5" a="0.5" />        <!-- emission component -->
     </MATERIAL>
 
-    <!-- Lamp post material -->
-    <MATERIAL id="lightPostMaterial">                                  
-        <shininess value="100" />
-        <specular r="0.0" g="0.0" b="0.0" a="1" />        
-        <diffuse r="0.447" g="0.416" b="0.416" a="1" />       
-        <ambient r="0.0" g="0.0" b="0.0" a="1" />         
-        <emission r="0.0" g="0.0" b="0.0" a="1" />        
-    </MATERIAL>
-
-    <!-- Light bulb material -->
-    <MATERIAL id="lightMaterial">                                  
-        <shininess value="100" />
-        <specular r="0.5" g="0.5" b="0.5" a="1" />       
-        <diffuse r="0.5" g="0.5" b="0.5" a="1" />       
-        <ambient r="0.0" g="0.0" b="0.0" a="1" />        
-        <emission r="0.0" g="0.0" b="0.0" a="1" />        
-    </MATERIAL>
-
-    <!-- A default material -->
-    <MATERIAL id="defaultMaterial">                                  
-        <shininess value="1" />
-        <specular r="0.0" g="0.0" b="0.0" a="1" />        
-        <diffuse r="0.4" g="0.4" b="0.4" a="1" />       
-        <ambient r="0.4" g="0.4" b="0.4" a="1" />         
-        <emission r="0.0" g="0.0" b="0.0" a="1" />        
-    </MATERIAL>
+    <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material requires a distinct "id" -->
 
 </MATERIALS>
 
@@ -151,26 +59,817 @@
 <!-- The leaves -->
 <LEAVES>
     <LEAF id="rectangle1" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
-    <LEAF id="cylinder1" type="cylinder" args="1 1 1 20 20" />
+    <LEAF id="cylinder1" type="cylinder" args="1 1 1 5 20" />
+    <LEAF id="circle1" type="cylinder" args="0 1 0 1 20" />
     <LEAF id="sphere1" type="sphere" args="1 20 20" />
     <LEAF id="triangle1" type="triangle" args="0 0 0 1 0 0 0 1 0" />
 </LEAVES>
 
 
-<!-- The nodes -->
 <NODES>
-
-    <ROOT id="root" />     
-
-    <!-- The root node -->
-    <NODE id="root">       
+    <ROOT id="cinema" />     
+	
+	<NODE id="cinema">
         <MATERIAL id="null" />         
         <TEXTURE id="null" />
 
         <DESCENDANTS>
-            <DESCENDANT id="sofa" />
+            <DESCENDANT id="seats" />
+            <DESCENDANT id="stairs" />
+            <DESCENDANT id="box" />
         </DESCENDANTS>
 
+    </NODE>
+    
+    <NODE id="box">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="wall_back" />
+            <DESCENDANT id="wall_left" />
+            <DESCENDANT id="floor" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="wall_back">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="24" sy="8" sz="1" />
+        <TRANSLATION x="0.5" y="0.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="wall_left">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="1" sy="8" sz="23" />
+        <ROTATION axis="y" angle="90" />
+        <TRANSLATION x="-0.5" y="0.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="floor">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="24" sy="1" sz="23" />
+        <ROTATION axis="x" angle="-90" />
+        <TRANSLATION x="0.5" y="-0.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seats">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="7" y="0" z="13.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat_block_center" />
+            <DESCENDANT id="seat_block_top-left" />
+            <DESCENDANT id="seat_block_top-right" />
+            <DESCENDANT id="seat_block_stairs_left" />
+            <DESCENDANT id="seat_block_stairs_right" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stairs">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="7" y="0" z="13.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step1" />
+            <DESCENDANT id="stair_step2" />
+            <DESCENDANT id="stair_step3" />
+            <DESCENDANT id="stair_step4" />
+            <DESCENDANT id="stair_step5" />
+            <DESCENDANT id="stair_step6" />
+            <DESCENDANT id="stair_step7" />
+            <DESCENDANT id="stair_step8" />
+            <DESCENDANT id="stair_step9" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_block_top-right">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="12" y="1.25" z="-7.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat_block_sides" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_block_top-left">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="-7" y="1.25" z="-7.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat_block_sides" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_block_center">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat_block_center_left" />
+            <DESCENDANT id="seat_block_center_right" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_block_center_right">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="5" y="0" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five1" />
+            <DESCENDANT id="row_five2" />
+            <DESCENDANT id="row_five3" />
+            <DESCENDANT id="row_five4" />
+            <DESCENDANT id="row_five5" />
+            <DESCENDANT id="row_five6" />
+            <DESCENDANT id="row_five7" />
+            <DESCENDANT id="row_five8" />
+            <DESCENDANT id="row_five9" />
+            <DESCENDANT id="row_five10" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_block_center_left">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five1" />
+            <DESCENDANT id="row_five2" />
+            <DESCENDANT id="row_five3" />
+            <DESCENDANT id="row_five4" />
+            <DESCENDANT id="row_five5" />
+            <DESCENDANT id="row_five6" />
+            <DESCENDANT id="row_five7" />
+            <DESCENDANT id="row_five8" />
+            <DESCENDANT id="row_five9" />
+            <DESCENDANT id="row_five10" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_block_stairs_right">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="12" y="0" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_two1" />
+            <DESCENDANT id="row_two2" />
+            <DESCENDANT id="row_two3" />
+            <DESCENDANT id="row_two4" />
+            <DESCENDANT id="row_two5" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_block_stairs_left">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="-4" y="0" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_two1" />
+            <DESCENDANT id="row_two2" />
+            <DESCENDANT id="row_two3" />
+            <DESCENDANT id="row_two4" />
+            <DESCENDANT id="row_two5" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_block_sides">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five1" />
+            <DESCENDANT id="row_five2" />
+            <DESCENDANT id="row_five3" />
+            <DESCENDANT id="row_five4" />
+            <DESCENDANT id="row_five5" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five10">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="2.25" z="-13.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor_five" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five9">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="2" z="-12" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor_five" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five8">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="1.75" z="-10.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor_five" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five7">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="1.5" z="-9" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor_five" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five6">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="1.25" z="-7.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor_five" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five5">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="1" z="-6" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor_five" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five4">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="0.75" z="-4.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor_five" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five3">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="0.5" z="-3" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor_five" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five2">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="0.25" z="-1.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+            <DESCENDANT id="seat_floor_five" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_five1">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_five" />
+        </DESCENDANTS>
+
+    </NODE>
+	
+	<NODE id="row_five">
+		<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat1" />
+            <DESCENDANT id="seat2" />
+            <DESCENDANT id="seat3" />
+            <DESCENDANT id="seat4" />
+            <DESCENDANT id="seat5" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_two5">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="1" z="-6" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_two" />
+            <DESCENDANT id="seat_floor_two5" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_two4">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="0.75" z="-4.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_two" />
+            <DESCENDANT id="seat_floor_two4" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_two3">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="0.5" z="-3" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_two" />
+            <DESCENDANT id="seat_floor_two3" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_two2">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0" y="0.25" z="-1.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_two" />
+            <DESCENDANT id="seat_floor_two2" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_two1">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="row_two" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="row_two">
+		<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat1" />
+            <DESCENDANT id="seat2" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step9">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0" y="2" z="-12" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step_both" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step8">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0" y="1.75" z="-10.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step_both" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step7">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0" y="1.5" z="-9" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step_both" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step6">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0" y="1.25" z="-7.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step_both" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step5">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0" y="1" z="-6" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step_both" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step4">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0" y="0.75" z="-4.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step_both" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step3">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0" y="0.5" z="-3" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step_both" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step2">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0" y="0.25" z="-1.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step_both" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step1">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step_both" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step_both">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step_left" />
+            <DESCENDANT id="stair_step_right" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step_right">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="12" y="0" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step_left">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="stair_step_horizontal" />
+            <DESCENDANT id="stair_step_vertical" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step_horizontal">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<SCALE sx="2" sy="0.25" sz="1.5" />
+		<ROTATION axis="x" angle="-90" />
+		<TRANSLATION x="-0.5" y="0.5" z="1" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="stair_step_vertical">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<SCALE sx="2" sy="0.25" sz="1" />
+		<TRANSLATION x="-0.5" y="0.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_floor_two5">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="1" sy="4" sz="1" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat_floor_two_side" />
+            <DESCENDANT id="seat_floor_two_floor" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_floor_two4">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="1" sy="3" sz="1" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat_floor_two_side" />
+            <DESCENDANT id="seat_floor_two_floor" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_floor_two3">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="1" sy="2" sz="1" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat_floor_two_side" />
+            <DESCENDANT id="seat_floor_two_floor" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_floor_two2">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat_floor_two_side" />
+            <DESCENDANT id="seat_floor_two_floor" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_floor_two">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat_floor_two_floor" />
+            <DESCENDANT id="seat_floor_two_side" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_floor_two_floor">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<SCALE sx="2" sy="1" sz="0.5" />
+		<ROTATION axis="x" angle="-90" />
+		<TRANSLATION x="0.5" y="-2.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_floor_two_side_right">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<ROTATION axis="y" angle="90" />
+		<TRANSLATION x="-0.5" y="-0.5" z="2" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_floor_two_side_left">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <ROTATION axis="y" angle="-90" />
+		<TRANSLATION x="0.5" y="-0.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_floor_two_side">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<SCALE sx="1" sy="0.25" sz="1.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat_floor_two_side_left" />
+            <DESCENDANT id="seat_floor_two_side_right" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat_floor_five">
+    	<MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<SCALE sx="5" sy="1" sz="0.5" />
+		<ROTATION axis="x" angle="-90" />
+		<TRANSLATION x="0.5" y="-2.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle1" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    <NODE id="seat">
+    	<MATERIAL id="null" />
+    	<TEXTURE id="null" />
+    	
+    	<DESCENDANTS>
+    		<DESCENDANT id="sofa" />
+    	</DESCENDANTS>
+    </NODE>
+    
+    <NODE id="seat1">
+    	<MATERIAL id="null" />
+    	<TEXTURE id="null" />
+    	
+    	<DESCENDANTS>
+    		<DESCENDANT id="seat" />
+    	</DESCENDANTS>
+    </NODE>
+    
+    <NODE id="seat2">
+    	<MATERIAL id="null" />
+    	<TEXTURE id="null" />
+    	
+    	<TRANSLATION x="1" y="0" z="0" />
+    	
+    	<DESCENDANTS>
+    		<DESCENDANT id="seat" />
+    	</DESCENDANTS>
+    </NODE>
+    
+    <NODE id="seat3">
+    	<MATERIAL id="null" />
+    	<TEXTURE id="null" />
+    	
+    	<TRANSLATION x="2" y="0" z="0" />
+    	
+    	<DESCENDANTS>
+    		<DESCENDANT id="seat" />
+    	</DESCENDANTS>
+    </NODE>
+    
+    <NODE id="seat4">
+    	<MATERIAL id="null" />
+    	<TEXTURE id="null" />
+    	
+    	<TRANSLATION x="3" y="0" z="0" />
+    	
+    	<DESCENDANTS>
+    		<DESCENDANT id="seat" />
+    	</DESCENDANTS>
+    </NODE>
+    
+    <NODE id="seat5">
+    	<MATERIAL id="null" />
+    	<TEXTURE id="null" />
+    	
+    	<TRANSLATION x="4" y="0" z="0" />
+    	
+    	<DESCENDANTS>
+    		<DESCENDANT id="seat" />
+    	</DESCENDANTS>
     </NODE>
     
     <NODE id="sofa">
@@ -215,6 +914,31 @@
     	
     	<DESCENDANTS>
     		<DESCENDANT id="cylinder1" />
+    		<DESCENDANT id="sofa-top-cover-right" />
+    		<DESCENDANT id="sofa-top-cover-left" />
+    	</DESCENDANTS>
+    </NODE>
+    
+    <NODE id="sofa-top-cover-left">
+    	<MATERIAL id="null" />
+    	<TEXTURE id="null" />
+    	
+    	<TRANSLATION x="0" y="0" z="0.999" />
+    	
+    	<DESCENDANTS>
+    		<DESCENDANT id="circle1" />
+    	</DESCENDANTS>
+    </NODE>
+    
+    <NODE id="sofa-top-cover-right">
+    	<MATERIAL id="null" />
+    	<TEXTURE id="null" />
+    	
+    	<TRANSLATION x="0" y="0" z="0.001" />
+    	<ROTATION axis="y" angle="180" />
+    	
+    	<DESCENDANTS>
+    		<DESCENDANT id="circle1" />
     	</DESCENDANTS>
     </NODE>
     
@@ -355,10 +1079,6 @@
     		<DESCENDANT id="rectangle1" />
     	</DESCENDANTS>
     </NODE>
-    
-    <!-- <TRANSLATION x="ff" y="ff" z="ff" /> -->
-    <!-- <ROTATION axis="cc" angle="ff" />    -->
-    <!-- <SCALE sx="ff" sy="ff" sz="ff" />    -->
 
 </NODES>
 
