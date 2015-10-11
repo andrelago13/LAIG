@@ -51,6 +51,11 @@
         <file path="textures/screen.jpg" />                             <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
+    
+    <TEXTURE id="door">
+        <file path="textures/door.png" />                             <!-- path to file -->
+        <amplif_factor s="2" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
 
     <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
     
@@ -370,10 +375,9 @@
         <TEXTURE id="null" />
 		
 		<TRANSLATION x="1.5" y="0" z="7.9" />
-		<SCALE sx="1.2" sy="1.15" sz="0.1" />
 
         <DESCENDANTS>
-            <DESCENDANT id="cube" />
+            <DESCENDANT id="cinema-door" />
         </DESCENDANTS>
 	</NODE>
 	
@@ -383,10 +387,32 @@
 		
 		<TRANSLATION x="0.3" y="0" z="7.9" />
 		<ROTATION axis="y" angle="-10" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="cinema-door" />
+        </DESCENDANTS>
+	</NODE>
+	
+	<NODE id="cinema-door">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
 		<SCALE sx="1.2" sy="1.15" sz="0.1" />
 
         <DESCENDANTS>
             <DESCENDANT id="cube" />
+            <DESCENDANT id="cinema-door-front" />
+        </DESCENDANTS>
+	</NODE>
+	
+	<NODE id="cinema-door-front">
+        <MATERIAL id="null" />         
+        <TEXTURE id="door" />
+		
+		<TRANSLATION x="0.5" y="0.5" z="1.01" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
 	</NODE>
 	
