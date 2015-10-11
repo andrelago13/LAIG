@@ -4,7 +4,7 @@
     <frustum near="0.1" far="500.0"/>                      	<!-- frustum planes-->
     <translation x="0.0" y="0.0" z="0.0" />                 	<!-- initial translate -->
     <rotation axis="x" angle="0.0" />                  		<!-- initial rotation 3 -->
-    <rotation axis="y" angle="45.0" />                 		<!-- initial ROTATIONon 2 -->
+    <rotation axis="y" angle="0.0" />                 		<!-- initial ROTATIONon 2 -->
     <rotation axis="z" angle="0.0" />                  		<!-- initial rotation 1 -->
     <scale sx="1" sy="1" sz="1" />                  	<!-- initial scaling -->
     <reference length="5" />                          		<!-- axis length; "0" means no axis-->
@@ -101,7 +101,8 @@
     <LEAF id="cylinder" type="cylinder" args="1 1 1 5 20" />
     <LEAF id="circle" type="cylinder" args="0 1 0 1 20" />
     <LEAF id="sphere" type="sphere" args="1 20 20" />
-    <LEAF id="triangle" type="triangle" args="0 0 0 1 0 0 0 1 0" />
+    <LEAF id="triangle" type="triangle" args="0 0 0 0 0 1 0 1 0" />
+    <LEAF id="triangle2" type="triangle" args="0 0 1 0 0 0 0 1 0" />
 </LEAVES>
 
 
@@ -119,6 +120,328 @@
             <DESCENDANT id="screen" />
             <DESCENDANT id="movie-projector" />
             <DESCENDANT id="safety-bar" />
+            <DESCENDANT id="tunnel-left" />
+            <DESCENDANT id="tunnel-right" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="tunnel-right">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="21" y="0" z="0" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="tunnel" />
+			<DESCENDANT id="tunnel-right-seat-side" />
+			<DESCENDANT id="sidesafety-right" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="sidesafety-right">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="sidesafety-top" />
+            <DESCENDANT id="sidesafety-top-horizontal-right" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="sidesafety-top-horizontal-right">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="-2.8" y="0" z="0" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="sidesafety-top-horizontal" />
+            <DESCENDANT id="sidesafety-top-vertical-front" />
+            <DESCENDANT id="sidesafety-top-horizontal" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="tunnel-right-seat-side">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="0" y="0" z="7.8" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="seat-side" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="sidesafety-left">
+        <MATERIAL id="safety-bar" />         
+        <TEXTURE id="null" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="sidesafety-top" />
+            <DESCENDANT id="sidesafety-top-vertical-front" />
+            <DESCENDANT id="sidesafety-top-horizontal" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="sidesafety-top">
+        <MATERIAL id="safety-bar" />         
+        <TEXTURE id="null" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="sidesafety-top-tube" />
+            <DESCENDANT id="sidesafety-top-tube-cover-left" />
+            <DESCENDANT id="sidesafety-top-tube-cover-right" />
+            <DESCENDANT id="sidesafety-top-vertical-left" />
+            <DESCENDANT id="sidesafety-top-vertical-right" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="sidesafety-top-horizontal">
+        <MATERIAL id="safety-bar" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="2.9" y="2.05" z="7.8" />
+		<ROTATION axis="x" angle="12.88" />
+		<SCALE sx="0.07" sy="0.07" sz="5.6" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="cylinder" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="sidesafety-top-vertical-front">
+        <MATERIAL id="safety-bar" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="2.9" y="0" z="13.27" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="safety-bar-vertical-tube" />
+            <DESCENDANT id="sidesafety-top-vertical-front-cover" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="sidesafety-top-vertical-front-cover">
+        <MATERIAL id="safety-bar" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="0" y="0.8" z="0" />
+		<SCALE sx="0.07" sy="0.07" sz="0.07" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="sphere" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="sidesafety-top-vertical-right">
+        <MATERIAL id="safety-bar" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="2.9" y="1.25" z="7.8" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="safety-bar-vertical-tube" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="sidesafety-top-vertical-left">
+        <MATERIAL id="safety-bar" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="0.1" y="1.25" z="7.8" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="safety-bar-vertical-tube" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="sidesafety-top-tube-cover-right">
+        <MATERIAL id="safety-bar" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="2.9" y="2.05" z="7.8" />
+		<SCALE sx="0.07" sy="0.07" sz="0.07" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="sphere" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="sidesafety-top-tube-cover-left">
+        <MATERIAL id="safety-bar" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0.1" y="2.05" z="7.8" />
+		<SCALE sx="0.07" sy="0.07" sz="0.07" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="sphere" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="sidesafety-top-tube">
+        <MATERIAL id="safety-bar" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0.1" y="2.05" z="7.8" />
+		<ROTATION axis="y" angle="90" />
+		<SCALE sx="0.07" sy="0.07" sz="2.8" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="covered-cylinder" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="seat-side">
+        <MATERIAL id="floor" />         
+        <TEXTURE id="floor" />
+
+		<SCALE sx="1" sy="1.15" sz="5" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="triangle" />
+            <DESCENDANT id="seat-side-triangle-2" />
+            <DESCENDANT id="seat-side-top" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="seat-side-triangle-2">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+		<TRANSLATION x="0.2" y="0" z="0" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="triangle2" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="seat-side-top">
+        <MATERIAL id="floor" />         
+        <TEXTURE id="floor" />
+		
+		<TRANSLATION x="0" y="1" z="0" />
+		<ROTATION axis="x" angle="45" />
+		<SCALE sx="0.2" sy="0.02" sz="1.42" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="cube" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="tunnel">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="tunnel-top" />
+            <DESCENDANT id="tunnel-wall-left" />
+            <DESCENDANT id="tunnel-wall-right" />
+            <DESCENDANT id="tunnel-back" />
+            <DESCENDANT id="tunnel-door-left" />
+            <DESCENDANT id="tunnel-door-right" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="tunnel-left">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="tunnel" />
+            <DESCENDANT id="tunnel-left-seat-side" />
+            <DESCENDANT id="sidesafety-left" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="tunnel-left-seat-side">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="2.8" y="0" z="7.8" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="seat-side" />
+        </DESCENDANTS>
+	</NODE>
+	
+	<NODE id="tunnel-door-right">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="1.5" y="0" z="7.9" />
+		<SCALE sx="1.2" sy="1.15" sz="0.1" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="cube" />
+        </DESCENDANTS>
+	</NODE>
+	
+	<NODE id="tunnel-door-left">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="0.3" y="0" z="7.9" />
+		<ROTATION axis="y" angle="-10" />
+		<SCALE sx="1.2" sy="1.15" sz="0.1" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="cube" />
+        </DESCENDANTS>
+	</NODE>
+	
+	<NODE id="tunnel-back">
+        <MATERIAL id="floor" />         
+        <TEXTURE id="floor" />
+		
+		<SCALE sx="3" sy="1.25" sz="1" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="cube" />
+        </DESCENDANTS>
+	</NODE>
+	
+	<NODE id="tunnel-top">
+        <MATERIAL id="floor" />         
+        <TEXTURE id="floor" />
+		
+		<TRANSLATION x="0" y="1.15" z="0" />
+		<SCALE sx="3" sy="0.1" sz="8" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="cube" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="tunnel-wall-left">
+        <MATERIAL id="floor" />         
+        <TEXTURE id="floor" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="tunnel-wall" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="tunnel-wall-right">
+        <MATERIAL id="floor" />         
+        <TEXTURE id="floor" />
+		
+		<TRANSLATION x="2.7" y="0" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="tunnel-wall" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="tunnel-wall">
+        <MATERIAL id="floor" />         
+        <TEXTURE id="floor" />
+		
+		<TRANSLATION x="0" y="0" z="0" />
+		<SCALE sx="0.3" sy="1.25" sz="8" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="cube" />
         </DESCENDANTS>
     </NODE>
     
