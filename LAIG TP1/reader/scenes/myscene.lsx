@@ -80,14 +80,24 @@
 
 
 <TEXTURES>
-    <TEXTURE id="wall">
+    <TEXTURE id="floor">
+        <file path="textures/blue_fabric.jpg" />                             <!-- path to file -->
+        <amplif_factor s="0.1" t="0.1" />                <!-- x/s, y/t -->
+    </TEXTURE>
+    
+    <TEXTURE id="seats_floor">
         <file path="textures/blue_fabric.jpg" />                             <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
-    <TEXTURE id="floor">
+    <TEXTURE id="wall">
         <file path="textures/black_fabric.jpg" />                             <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
+    
+    <TEXTURE id="wall_seamless">
+        <file path="textures/seamless_black_fabric.jpg" />                             <!-- path to file -->
+        <amplif_factor s="2" t="2" />                <!-- x/s, y/t -->
     </TEXTURE>
     
     <TEXTURE id="rolo-projetor">
@@ -1179,7 +1189,7 @@
     
     <NODE id="seat_floor_two_side">
     	<MATERIAL id="floor" />         
-        <TEXTURE id="floor" />
+        <TEXTURE id="wall_seamless" />
 
 		<SCALE sx="1" sy="0.25" sz="1.5" />
 
