@@ -64,9 +64,9 @@
     <MATERIAL id="black_screen">                                
         <shininess value="1" />
         <specular r="0" g="0" b="0" a="1" />        <!-- specular reflection -->
-        <diffuse r="0.1" g="0.1" b="0.1" a="1" />         <!-- diffuse reflection -->
-        <ambient r="0.1" g="0.1" b="0.1" a="1" />         <!-- ambient reflection -->
-        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
+        <diffuse r="0.9" g="0.9" b="0.9" a="1" />         <!-- diffuse reflection -->
+        <ambient r="0.9" g="0.9" b="0.9" a="1" />         <!-- ambient reflection -->
+        <emission r="0.2" g="0.2" b="0.2" a="1" />        <!-- emission component -->
     </MATERIAL>
 
     <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material requires a distinct "id" -->
