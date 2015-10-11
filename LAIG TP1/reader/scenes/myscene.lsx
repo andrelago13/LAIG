@@ -36,6 +36,11 @@
         <file path="Texturas/wall.jpg" />                             <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
+    
+    <TEXTURE id="rolo-projetor">
+        <file path="texturrs/roll.png" />                             <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
 
     <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
     
@@ -77,9 +82,42 @@
             <DESCENDANT id="seats" />
             <DESCENDANT id="stairs" />
             <DESCENDANT id="box" />
+            <DESCENDANT id="movie-projector" />
         </DESCENDANTS>
 
     </NODE>
+    
+    <NODE id="movie-projector">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="11.85" y="6" z="0.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="projector" />
+            <DESCENDANT id="projector-stand" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-stand">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="-0.5" y="0" z="-0.5" />
+        <SCALE sx="1.3" sy="0.1" sz="1.6" />
+        <TRANSLATION x="0" y="-1" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="cube" />
+        </DESCENDANTS>
+
+    </NODE>
+    
+    
+    
+    
+    
+    
     
     <NODE id="box">
         <MATERIAL id="null" />         
@@ -132,6 +170,139 @@
             <DESCENDANT id="rectangle1" />
         </DESCENDANTS>
 
+    </NODE>
+    
+    <NODE id="projector">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="projector-camera" />
+            <DESCENDANT id="projector-roll1" />
+            <DESCENDANT id="projector-roll2" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-camera">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="projector-camera-block" />
+            <DESCENDANT id="projector-camera-lens1" />
+            <DESCENDANT id="projector-camera-lens2" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-roll1">
+        <MATERIAL id="null" />         
+        <TEXTURE id="rolo-projetor" />
+        
+        <TRANSLATION x="0.2" y="0.6" z="0.05" />
+        <ROTATION axis="x" angle="70" />
+        <ROTATION axis="z" angle="180" />
+        <SCALE sx="1" sy="0.6" sz="0.6" />
+        <TRANSLATION x="0" y="0" z="-1" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="projector-roll-piece" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-roll2">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0.1" y="0.6" z="0.76" />
+        <ROTATION axis="x" angle="110" />
+        <SCALE sx="1" sy="0.6" sz="0.6" />
+        <TRANSLATION x="0" y="0" z="-1" />
+        
+        <DESCENDANTS>
+            <DESCENDANT id="projector-roll-piece" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-camera-block">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <SCALE sx="0.3" sy="0.6" sz="0.8" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="cube" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-camera-lens1">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0.15" y="0.2" z="0.8" />
+        <SCALE sx="0.1" sy="0.1" sz="0.2" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="cylinder1" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-camera-lens2">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0.15" y="0.2" z="1" />
+        <SCALE sx="0.15" sy="0.15" sz="0.15" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="covered-cylinder" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-roll-piece">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="projector-roll-disc" />
+            <DESCENDANT id="projector-roll-support" />
+            <DESCENDANT id="projector-roll-tape" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-roll-disc">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <ROTATION axis="y" angle="90" />
+        <SCALE sx="0.5" sy="0.5" sz="0.1" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="covered-cylinder" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-roll-support">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0.1" y="-0.075" z="0" />
+        <SCALE sx="0.1" sy="0.15" sz="1.2" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="cube" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-roll-tape">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0" y="-0.5" z="0" />
+        <SCALE sx="0.1" sy="0.001" sz="1.5" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="cube" />
+        </DESCENDANTS>
     </NODE>
     
     <NODE id="seats">
@@ -913,32 +1084,7 @@
     	<SCALE sx="0.15" sy="0.15" sz="1.4" /> 
     	
     	<DESCENDANTS>
-    		<DESCENDANT id="cylinder1" />
-    		<DESCENDANT id="sofa-top-cover-right" />
-    		<DESCENDANT id="sofa-top-cover-left" />
-    	</DESCENDANTS>
-    </NODE>
-    
-    <NODE id="sofa-top-cover-left">
-    	<MATERIAL id="null" />
-    	<TEXTURE id="null" />
-    	
-    	<TRANSLATION x="0" y="0" z="0.999" />
-    	
-    	<DESCENDANTS>
-    		<DESCENDANT id="circle1" />
-    	</DESCENDANTS>
-    </NODE>
-    
-    <NODE id="sofa-top-cover-right">
-    	<MATERIAL id="null" />
-    	<TEXTURE id="null" />
-    	
-    	<TRANSLATION x="0" y="0" z="0.001" />
-    	<ROTATION axis="y" angle="180" />
-    	
-    	<DESCENDANTS>
-    		<DESCENDANT id="circle1" />
+    		<DESCENDANT id="covered-cylinder" />
     	</DESCENDANTS>
     </NODE>
     
@@ -1077,6 +1223,40 @@
     	
     	<DESCENDANTS>
     		<DESCENDANT id="rectangle1" />
+    	</DESCENDANTS>
+    </NODE>
+    
+    <NODE id="covered-cylinder">
+    	<MATERIAL id="null" />
+    	<TEXTURE id="null" />
+    	
+    	<DESCENDANTS>
+    		<DESCENDANT id="cylinder1" />
+    		<DESCENDANT id="covered-cylinder-cover-back" />
+    		<DESCENDANT id="covered-cylinder-cover-front" />
+    	</DESCENDANTS>
+    </NODE>
+    
+    <NODE id="covered-cylinder-cover-front">
+    	<MATERIAL id="null" />
+    	<TEXTURE id="null" />
+    	
+    	<TRANSLATION x="0" y="0" z="0.999" />
+    	
+    	<DESCENDANTS>
+    		<DESCENDANT id="circle1" />
+    	</DESCENDANTS>
+    </NODE>
+    
+    <NODE id="covered-cylinder-cover-back">
+    	<MATERIAL id="null" />
+    	<TEXTURE id="null" />
+    	
+    	<TRANSLATION x="0" y="0" z="0.001" />
+    	<ROTATION axis="y" angle="180" />
+    	
+    	<DESCENDANTS>
+    		<DESCENDANT id="circle1" />
     	</DESCENDANTS>
     </NODE>
 
