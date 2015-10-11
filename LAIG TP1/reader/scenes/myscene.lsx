@@ -12,17 +12,65 @@
 
 
 <ILLUMINATION>
-    <ambient r="0.05" g="0.05" b="0.05" a="1" />            <!-- global ambient -->
+    <ambient r="0.01" g="0.01" b="0.01" a="1" />            <!-- global ambient -->
     <background r="0" g="0" b="0.1" a="1" />         <!-- background color -->
 </ILLUMINATION>
 
 
 <LIGHTS>
-    <LIGHT id="luz1">                                    <!-- light identifier -->
+    <LIGHT id="screen">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="12" y="4" z="23.1" w="1" />       <!-- light position -->
+        <ambient r="0.2" g="0.2" b="0.2" a="1" />        <!-- ambient component -->
+        <diffuse r="0.2" g="0.2" b="0.2" a="1" />        <!-- diffuse component -->
+        <specular r="0" g="0" b="0" a="1" />       	<!-- specular component --> <!-- no specular here because it's a wide source of light -->
+    </LIGHT>
+    
+    <LIGHT id="left1">                                    <!-- light identifier -->
+        <enable value ="1" />                         <!-- enable/disable -->
+        <position x="0.1" y="7" z="18" w="1" />       <!-- light position -->
         <ambient r="0.3" g="0.3" b="0.3" a="1" />        <!-- ambient component -->
-        <diffuse r="1" g="1" b="1" a="1" />        <!-- diffuse component -->
+        <diffuse r="0.3" g="0.3" b="0.3" a="1" />        <!-- diffuse component -->
+        <specular r="0.3" g="0.3" b="0.3" a="1" />       <!-- specular component -->
+    </LIGHT>
+    
+    <LIGHT id="left2">                                    <!-- light identifier -->
+        <enable value ="1" />                         <!-- enable/disable -->
+        <position x="0.1" y="7" z="11.5" w="1" />       <!-- light position -->
+        <ambient r="0.3" g="0.3" b="0.3" a="1" />        <!-- ambient component -->
+        <diffuse r="0.3" g="0.3" b="0.3" a="1" />        <!-- diffuse component -->
+        <specular r="0.3" g="0.3" b="0.3" a="1" />       <!-- specular component -->
+    </LIGHT>
+    
+    <LIGHT id="left3">                                    <!-- light identifier -->
+        <enable value ="1" />                         <!-- enable/disable -->
+        <position x="0.1" y="7" z="5" w="1" />       <!-- light position -->
+        <ambient r="0.3" g="0.3" b="0.3" a="1" />        <!-- ambient component -->
+        <diffuse r="0.3" g="0.3" b="0.3" a="1" />        <!-- diffuse component -->
+        <specular r="0.3" g="0.3" b="0.3" a="1" />       <!-- specular component -->
+    </LIGHT>
+    
+    <LIGHT id="right1">                                    <!-- light identifier -->
+        <enable value ="1" />                         <!-- enable/disable -->
+        <position x="23.9" y="7" z="18" w="1" />       <!-- light position -->
+        <ambient r="0.3" g="0.3" b="0.3" a="1" />        <!-- ambient component -->
+        <diffuse r="0.3" g="0.3" b="0.3" a="1" />        <!-- diffuse component -->
+        <specular r="0.3" g="0.3" b="0.3" a="1" />       <!-- specular component -->
+    </LIGHT>
+    
+    <LIGHT id="right2">                                    <!-- light identifier -->
+        <enable value ="1" />                         <!-- enable/disable -->
+        <position x="23.9" y="7" z="11.5" w="1" />       <!-- light position -->
+        <ambient r="0.3" g="0.3" b="0.3" a="1" />        <!-- ambient component -->
+        <diffuse r="0.3" g="0.3" b="0.3" a="1" />        <!-- diffuse component -->
+        <specular r="0.3" g="0.3" b="0.3" a="1" />       <!-- specular component -->
+    </LIGHT>
+    
+    <LIGHT id="right3">                                    <!-- light identifier -->
+        <enable value ="1" />                         <!-- enable/disable -->
+        <position x="23.9" y="7" z="5" w="1" />       <!-- light position -->
+        <ambient r="0.3" g="0.3" b="0.3" a="1" />        <!-- ambient component -->
+        <diffuse r="0.3" g="0.3" b="0.3" a="1" />        <!-- diffuse component -->
         <specular r="0.3" g="0.3" b="0.3" a="1" />       <!-- specular component -->
     </LIGHT>
 
@@ -69,8 +117,8 @@
     <MATERIAL id="safety-bar">                                
         <shininess value="20" />
         <specular r="0.8" g="0.1" b="0.1" a="1" />        <!-- specular reflection -->
-        <diffuse r="0.4" g="0.05" b="0.05" a="1" />         <!-- diffuse reflection -->
-        <ambient r="0.4" g="0.05" b="0.05" a="1" />         <!-- ambient reflection -->
+        <diffuse r="0.2" g="0.025" b="0.025" a="1" />         <!-- diffuse reflection -->
+        <ambient r="0.2" g="0.025" b="0.025" a="1" />         <!-- ambient reflection -->
         <emission r="0" g="0" b="0" a="0.5" />        <!-- emission component -->
     </MATERIAL>
     
