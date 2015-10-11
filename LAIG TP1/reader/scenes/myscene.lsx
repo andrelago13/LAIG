@@ -32,8 +32,8 @@
 
 
 <TEXTURES>
-    <TEXTURE id="textura_parede">
-        <file path="Texturas/wall.jpg" />                             <!-- path to file -->
+    <TEXTURE id="wall">
+        <file path="textures/blue_fabric.jpg" />                             <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
@@ -88,8 +88,8 @@
     <ROOT id="cinema" />     
 	
 	<NODE id="cinema">
-        <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <MATERIAL id="clear" />         
+        <TEXTURE id="clear" />
 
         <DESCENDANTS>
             <DESCENDANT id="seats" />
@@ -156,7 +156,7 @@
     
     <NODE id="wall_back">
         <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <TEXTURE id="wall" />
         
         <SCALE sx="24" sy="8" sz="1" />
         <TRANSLATION x="0.5" y="0.5" z="0" />
@@ -169,7 +169,7 @@
     
     <NODE id="wall_front">
         <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <TEXTURE id="wall" />
         
         <TRANSLATION x="0" y="0" z="23" />
         <ROTATION axis="y" angle="180" />
@@ -183,7 +183,7 @@
     
     <NODE id="wall_left">
         <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <TEXTURE id="wall" />
         
         <SCALE sx="1" sy="8" sz="23" />
         <ROTATION axis="y" angle="90" />

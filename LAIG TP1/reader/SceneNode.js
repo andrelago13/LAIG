@@ -33,7 +33,12 @@ SceneNode.prototype.display = function() {
 			if (this.scene.activeTexture !== null)
 				this.scene.activeTexture.unbind();
 		}
-		else if (this.texture !== null) this.texture.bind();
+		else if (this.texture === null)
+		{
+			if (currTexture !== null) currTexture.bind();
+		}
+		else
+			this.texture.bind();
 		this.descendants[i].display();
 	}
 	if (currTexture !== null) currTexture.bind();

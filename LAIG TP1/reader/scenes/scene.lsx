@@ -32,8 +32,8 @@
 
 
 <TEXTURES>
-    <TEXTURE id="textura_parede">
-        <file path="Texturas/wall.jpg" />                             <!-- path to file -->
+    <TEXTURE id="wall">
+        <file path="textures/blue_fabric_wall.jpg" />                             <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
 
