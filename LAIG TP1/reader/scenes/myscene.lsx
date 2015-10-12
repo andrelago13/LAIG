@@ -26,10 +26,12 @@
         <specular r="0" g="0" b="0" a="1" />       	<!-- specular component --> <!-- no specular here because it's a wide source of light -->
     </LIGHT>
     
+    <!-- Ambients set to a value lower than diffuse to create a better visual effect -->
+    
     <LIGHT id="left1">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="0.1" y="7" z="18" w="1" />       <!-- light position -->
-        <ambient r="0.3" g="0.3" b="0.3" a="1" />        <!-- ambient component -->
+        <ambient r="0.2" g="0.2" b="0.2" a="1" />        <!-- ambient component -->
         <diffuse r="0.3" g="0.3" b="0.3" a="1" />        <!-- diffuse component -->
         <specular r="0.3" g="0.3" b="0.3" a="1" />       <!-- specular component -->
     </LIGHT>
@@ -37,7 +39,7 @@
     <LIGHT id="left2">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="0.1" y="7" z="11.5" w="1" />       <!-- light position -->
-        <ambient r="0.3" g="0.3" b="0.3" a="1" />        <!-- ambient component -->
+        <ambient r="0.2" g="0.2" b="0.2" a="1" />        <!-- ambient component -->
         <diffuse r="0.3" g="0.3" b="0.3" a="1" />        <!-- diffuse component -->
         <specular r="0.3" g="0.3" b="0.3" a="1" />       <!-- specular component -->
     </LIGHT>
@@ -45,7 +47,7 @@
     <LIGHT id="left3">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="0.1" y="7" z="5" w="1" />       <!-- light position -->
-        <ambient r="0.3" g="0.3" b="0.3" a="1" />        <!-- ambient component -->
+        <ambient r="0.2" g="0.2" b="0.2" a="1" />        <!-- ambient component -->
         <diffuse r="0.3" g="0.3" b="0.3" a="1" />        <!-- diffuse component -->
         <specular r="0.3" g="0.3" b="0.3" a="1" />       <!-- specular component -->
     </LIGHT>
@@ -53,7 +55,7 @@
     <LIGHT id="right1">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="23.9" y="7" z="18" w="1" />       <!-- light position -->
-        <ambient r="0.3" g="0.3" b="0.3" a="1" />        <!-- ambient component -->
+        <ambient r="0.2" g="0.2" b="0.2" a="1" />        <!-- ambient component -->
         <diffuse r="0.3" g="0.3" b="0.3" a="1" />        <!-- diffuse component -->
         <specular r="0.3" g="0.3" b="0.3" a="1" />       <!-- specular component -->
     </LIGHT>
@@ -61,7 +63,7 @@
     <LIGHT id="right2">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="23.9" y="7" z="11.5" w="1" />       <!-- light position -->
-        <ambient r="0.3" g="0.3" b="0.3" a="1" />        <!-- ambient component -->
+        <ambient r="0.2" g="0.2" b="0.2" a="1" />        <!-- ambient component -->
         <diffuse r="0.3" g="0.3" b="0.3" a="1" />        <!-- diffuse component -->
         <specular r="0.3" g="0.3" b="0.3" a="1" />       <!-- specular component -->
     </LIGHT>
@@ -69,7 +71,7 @@
     <LIGHT id="right3">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="23.9" y="7" z="5" w="1" />       <!-- light position -->
-        <ambient r="0.3" g="0.3" b="0.3" a="1" />        <!-- ambient component -->
+        <ambient r="0.2" g="0.2" b="0.2" a="1" />        <!-- ambient component -->
         <diffuse r="0.3" g="0.3" b="0.3" a="1" />        <!-- diffuse component -->
         <specular r="0.3" g="0.3" b="0.3" a="1" />       <!-- specular component -->
     </LIGHT>
@@ -170,7 +172,7 @@
     <MATERIAL id="floor">                                
         <shininess value="50" />
         <specular r="0" g="0" b="0" a="1" />        <!-- specular reflection -->
-        <diffuse r="0.5" g="0.5" b="0.5" a="1" />         <!-- diffuse reflection -->
+        <diffuse r="0.7" g="0.7" b="0.7" a="1" />         <!-- diffuse reflection -->
         <ambient r="0.2" g="0.2" b="0.2" a="1" />         <!-- ambient reflection --> <!-- Lower than diffuse to create a better visual effect -->
         <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
     </MATERIAL>
@@ -979,23 +981,8 @@
             <DESCENDANT id="seat_block_top-right" />
             <DESCENDANT id="seat_block_stairs_left" />
             <DESCENDANT id="seat_block_stairs_right" />
-            <DESCENDANT id="seat_floor_cover" />
         </DESCENDANTS>
 
-    </NODE>
-	
-	<NODE id="seat_floor_cover">
-        <MATERIAL id="null" />         
-        <TEXTURE id="null" />
-        
-        <TRANSLATION x="0" y="1.25" z="-5.5" />
-		<SCALE sx="15" sy="1" sz="-3" />
-        <TRANSLATION x="0.5" y="0" z="0.5" />
-		<ROTATION axis="x" angle="-90" />
-
-        <DESCENDANTS>
-            <DESCENDANT id="rectangle" />
-        </DESCENDANTS>
     </NODE>
     
     <NODE id="stairs">
