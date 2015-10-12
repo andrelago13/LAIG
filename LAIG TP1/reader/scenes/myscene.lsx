@@ -979,8 +979,23 @@
             <DESCENDANT id="seat_block_top-right" />
             <DESCENDANT id="seat_block_stairs_left" />
             <DESCENDANT id="seat_block_stairs_right" />
+            <DESCENDANT id="seat_floor_cover" />
         </DESCENDANTS>
 
+    </NODE>
+	
+	<NODE id="seat_floor_cover">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+        
+        <TRANSLATION x="0" y="1.25" z="-5.5" />
+		<SCALE sx="15" sy="1" sz="-3" />
+        <TRANSLATION x="0.5" y="0" z="0.5" />
+		<ROTATION axis="x" angle="-90" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle" />
+        </DESCENDANTS>
     </NODE>
     
     <NODE id="stairs">
