@@ -114,6 +114,36 @@
         <file path="textures/door.png" />                             <!-- path to file -->
         <amplif_factor s="2" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
+    
+    <TEXTURE id="metal">
+        <file path="textures/metal.jpg" />                             <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
+    
+    <TEXTURE id="projector-roll-tape">
+        <file path="textures/tape.png" />                             <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
+    
+    <TEXTURE id="projector-roll-tape2">
+        <file path="textures/tape2.png" />                             <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
+    
+    <TEXTURE id="projector-lens">
+        <file path="textures/lens.png" />                             <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
+    
+    <TEXTURE id="projector-pannel">
+        <file path="textures/projector.png" />                             <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
+    
+    <TEXTURE id="projector-material">
+        <file path="textures/projector-material.jpg" />                             <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
 
     <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
     
@@ -159,6 +189,22 @@
         <diffuse r="0.1" g="0.1" b="0.1" a="1" />         <!-- diffuse reflection -->
         <ambient r="0.05" g="0.05" b="0.05" a="1" />         <!-- ambient reflection --> <!-- Lower than diffuse to create a better visual effect -->
         <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+    </MATERIAL>
+    
+    <MATERIAL id="bright-metal">                                
+        <shininess value="20" />
+        <specular r="1" g="1" b="1" a="1" />        <!-- specular reflection -->
+        <diffuse r="0.2" g="0.2" b="0.2" a="1" />         <!-- diffuse reflection -->
+        <ambient r="0.2" g="0.2" b="0.2" a="1" />         <!-- ambient reflection --> <!-- Lower than diffuse to create a better visual effect -->
+        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+    </MATERIAL>
+    
+    <MATERIAL id="projector-lens">                                
+        <shininess value="200" />
+        <specular r="1" g="1" b="1" a="1" />        <!-- specular reflection -->
+        <diffuse r="0.2" g="0.2" b="0.2" a="1" />         <!-- diffuse reflection -->
+        <ambient r="0.2" g="0.2" b="0.2" a="1" />         <!-- ambient reflection --> <!-- Lower than diffuse to create a better visual effect -->
+        <emission r="1" g="1" b="1" a="1" />        <!-- emission component -->
     </MATERIAL>
 
     <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material requires a distinct "id" -->
@@ -668,7 +714,7 @@
     
     <NODE id="projector-stand">
         <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <TEXTURE id="wall" />
         
         <TRANSLATION x="-0.5" y="0" z="-0.5" />
         <SCALE sx="1.3" sy="0.1" sz="1.6" />
@@ -763,8 +809,8 @@
     </NODE>
     
     <NODE id="projector">
-        <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <MATERIAL id="bright-metal" />         
+        <TEXTURE id="metal" />
 
         <DESCENDANTS>
             <DESCENDANT id="projector-camera" />
@@ -781,12 +827,13 @@
             <DESCENDANT id="projector-camera-block" />
             <DESCENDANT id="projector-camera-lens1" />
             <DESCENDANT id="projector-camera-lens2" />
+            <DESCENDANT id="projector-camera-lens3" />
         </DESCENDANTS>
     </NODE>
     
     <NODE id="projector-roll1">
         <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <TEXTURE id="projector-roll-tape2" />
         
         <TRANSLATION x="0.2" y="0.6" z="0.05" />
         <ROTATION axis="x" angle="70" />
@@ -801,7 +848,7 @@
     
     <NODE id="projector-roll2">
         <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <TEXTURE id="projector-roll-tape2" />
         
         <TRANSLATION x="0.1" y="0.6" z="0.76" />
         <ROTATION axis="x" angle="110" />
@@ -815,18 +862,31 @@
     
     <NODE id="projector-camera-block">
         <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <TEXTURE id="projector-material" />
         
         <SCALE sx="0.3" sy="0.6" sz="0.8" />
 
         <DESCENDANTS>
             <DESCENDANT id="cube" />
+            <DESCENDANT id="projector-camera-block-pannel" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-camera-block-pannel">
+        <MATERIAL id="null" />         
+        <TEXTURE id="projector-pannel" />
+		
+		<TRANSLATION x="1.01" y="0.5" z="0.5" />
+		<ROTATION axis="y" angle="90" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle" />
         </DESCENDANTS>
     </NODE>
     
     <NODE id="projector-camera-lens1">
         <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <TEXTURE id="projector-material" />
         
         <TRANSLATION x="0.15" y="0.2" z="0.8" />
         <SCALE sx="0.1" sy="0.1" sz="0.2" />
@@ -838,13 +898,25 @@
     
     <NODE id="projector-camera-lens2">
         <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <TEXTURE id="projector-material" />
         
         <TRANSLATION x="0.15" y="0.2" z="1" />
         <SCALE sx="0.15" sy="0.15" sz="0.15" />
 
         <DESCENDANTS>
             <DESCENDANT id="covered-cylinder" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="projector-camera-lens3">
+        <MATERIAL id="projector-lens" />         
+        <TEXTURE id="projector-lens" />
+        
+        <TRANSLATION x="0.15" y="0.2" z="1.16" />
+        <SCALE sx="0.15" sy="0.15" sz="1" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="circle" />
         </DESCENDANTS>
     </NODE>
     
@@ -873,7 +945,7 @@
     
     <NODE id="projector-roll-support">
         <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <TEXTURE id="metal" />
         
         <TRANSLATION x="0.1" y="-0.075" z="0" />
         <SCALE sx="0.1" sy="0.15" sz="1.2" />
@@ -885,7 +957,7 @@
     
     <NODE id="projector-roll-tape">
         <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <TEXTURE id="projector-roll-tape" />
         
         <TRANSLATION x="0" y="-0.5" z="0" />
         <SCALE sx="0.1" sy="0.001" sz="1.5" />
