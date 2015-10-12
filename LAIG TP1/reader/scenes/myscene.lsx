@@ -22,7 +22,7 @@
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="12" y="4" z="23.1" w="1" />       <!-- light position -->
         <ambient r="0.2" g="0.2" b="0.2" a="1" />        <!-- ambient component -->
-        <diffuse r="0.2" g="0.2" b="0.2" a="1" />        <!-- diffuse component -->
+        <diffuse r="0.5" g="0.5" b="0.1" a="1" />        <!-- diffuse component -->
         <specular r="0" g="0" b="0" a="1" />       	<!-- specular component --> <!-- no specular here because it's a wide source of light -->
     </LIGHT>
     
@@ -171,14 +171,6 @@
 
 
 <MATERIALS>
-    <MATERIAL id="material_metalico">                                
-        <shininess value="100" />
-        <specular r="0.5" g="0.5" b="0.5" a="1" />        <!-- specular reflection -->
-        <diffuse r="0.5" g="0.5" b="0.5" a="1" />         <!-- diffuse reflection -->
-        <ambient r="0.8" g="0.8" b="0.8" a="1" />         <!-- ambient reflection -->
-        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
-    </MATERIAL>
-    
     <MATERIAL id="safety-bar">                                
         <shininess value="20" />
         <specular r="0.8" g="0.1" b="0.1" a="1" />        <!-- specular reflection -->
@@ -709,7 +701,7 @@
         <MATERIAL id="null" />         
         <TEXTURE id="door" />
 		
-		<TRANSLATION x="0.5" y="0.5" z="1.01" />
+		<TRANSLATION x="0.5" y="0.5" z="1.03" />
 
         <DESCENDANTS>
             <DESCENDANT id="rectangle" />
