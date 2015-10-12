@@ -170,8 +170,8 @@
     <MATERIAL id="floor">                                
         <shininess value="50" />
         <specular r="0" g="0" b="0" a="1" />        <!-- specular reflection -->
-        <diffuse r="0.9" g="0.9" b="0.9" a="1" />         <!-- diffuse reflection -->
-        <ambient r="0.9" g="0.9" b="0.9" a="1" />         <!-- ambient reflection -->
+        <diffuse r="0.5" g="0.5" b="0.5" a="1" />         <!-- diffuse reflection -->
+        <ambient r="0.2" g="0.2" b="0.2" a="1" />         <!-- ambient reflection --> <!-- Lower than diffuse to create a better visual effect -->
         <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
     </MATERIAL>
     
@@ -795,7 +795,7 @@
     </NODE>
     
     <NODE id="floor">
-        <MATERIAL id="null" />         
+        <MATERIAL id="floor" />         
         <TEXTURE id="floor" />
         
         <SCALE sx="24" sy="1" sz="23" />
@@ -1618,7 +1618,7 @@
     
     <NODE id="seat_floor_two_side">
     	<MATERIAL id="floor" />         
-        <TEXTURE id="wall_seamless" />
+        <TEXTURE id="floor" />
 
 		<SCALE sx="1" sy="0.25" sz="1.5" />
 
