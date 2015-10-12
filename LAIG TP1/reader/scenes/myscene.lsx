@@ -85,6 +85,11 @@
         <amplif_factor s="0.1" t="0.1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
+    <TEXTURE id="floor_cover">
+        <file path="textures/blue_fabric.jpg" />                             <!-- path to file -->
+        <amplif_factor s="0.1" t="0.5" />                <!-- x/s, y/t -->
+    </TEXTURE>
+    
     <TEXTURE id="seats_floor">
         <file path="textures/blue_fabric.jpg" />                             <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
@@ -979,19 +984,34 @@
             <DESCENDANT id="seat_block_top-right" />
             <DESCENDANT id="seat_block_stairs_left" />
             <DESCENDANT id="seat_block_stairs_right" />
-            <DESCENDANT id="seat_floor_cover" />
+            <DESCENDANT id="seat_floor_cover-left" />
+            <DESCENDANT id="seat_floor_cover-right" />
         </DESCENDANTS>
 
     </NODE>
 	
-	<NODE id="seat_floor_cover">
-        <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+	<NODE id="seat_floor_cover-left">
+        <MATERIAL id="floor" />         
+        <TEXTURE id="floor_cover" />
         
-        <TRANSLATION x="0" y="1.25" z="-5.5" />
-		<SCALE sx="15" sy="1" sz="-3" />
+        <TRANSLATION x="-4" y="1.25" z="-6" />
+		<SCALE sx="2" sy="1" sz="-0.5" />
         <TRANSLATION x="0.5" y="0" z="0.5" />
-		<ROTATION axis="x" angle="-90" />
+		<ROTATION axis="x" angle="90" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle" />
+        </DESCENDANTS>
+    </NODE>
+    
+    <NODE id="seat_floor_cover-right">
+        <MATERIAL id="floor" />         
+        <TEXTURE id="floor_cover" />
+        
+        <TRANSLATION x="12" y="1.25" z="-6" />
+		<SCALE sx="2" sy="1" sz="-0.5" />
+        <TRANSLATION x="0.5" y="0" z="0.5" />
+		<ROTATION axis="x" angle="90" />
 
         <DESCENDANTS>
             <DESCENDANT id="rectangle" />
