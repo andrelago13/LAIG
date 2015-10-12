@@ -2,12 +2,12 @@
 
 <INITIALS>
     <frustum near="0.1" far="500.0"/>                      	<!-- frustum planes-->
-    <translation x="0.0" y="0.0" z="0.0" />                 	<!-- initial translate -->
+    <translation x="-10" y="-10" z="-23" />                 	<!-- initial translate -->
     <rotation axis="x" angle="0.0" />                  		<!-- initial rotation 3 -->
-    <rotation axis="y" angle="0.0" />                 		<!-- initial rotation 2 -->
+    <rotation axis="y" angle="-40" />                 		<!-- initial rotation 2 -->
     <rotation axis="z" angle="0.0" />                  		<!-- initial rotation 1 -->
     <scale sx="1" sy="1" sz="1" />                  	<!-- initial scaling -->
-    <reference length="5" />                          		<!-- axis length; "0" means no axis-->
+    <reference length="0" />                          		<!-- axis length; "0" means no axis-->
 </INITIALS>
 
 
@@ -302,7 +302,7 @@
 	
 	<NODE id="trash-bin">
         <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <TEXTURE id="trash-bin-body" />
 		
         <DESCENDANTS>
             <DESCENDANT id="trash-bin-top" />
