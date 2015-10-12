@@ -154,6 +154,16 @@
         <file path="textures/lamp.png" />                             <!-- path to file -->
         <amplif_factor s="2" t="2" />                <!-- x/s, y/t -->
     </TEXTURE>
+    
+    <TEXTURE id="trash-bin-top">
+        <file path="textures/bin-top.png" />                             <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
+    
+    <TEXTURE id="trash-bin-body">
+        <file path="textures/bin-body.png" />                             <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
 
     <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
     
@@ -252,6 +262,76 @@
             <DESCENDANT id="tunnel-left" />
             <DESCENDANT id="tunnel-right" />
             <DESCENDANT id="wall-lamps" />
+            <DESCENDANT id="trash-bins" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="trash-bins">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="trash-bin-left" />
+            <DESCENDANT id="trash-bin-right" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="trash-bin-left">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="0.4" y="0" z="9" />
+		<ROTATION axis="y" angle="45" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="trash-bin" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="trash-bin-right">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="23.6" y="0" z="9" />
+		<ROTATION axis="y" angle="-45" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="trash-bin" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="trash-bin">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="trash-bin-top" />
+            <DESCENDANT id="trash-bin-body" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="trash-bin-body">
+        <MATERIAL id="bright-metal" />         
+        <TEXTURE id="trash-bin-body" />
+
+		<ROTATION axis="x" angle="-90" />
+		<SCALE sx="0.2" sy="0.2" sz="0.4" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="covered-cylinder" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="trash-bin-top">
+        <MATERIAL id="bright-metal" />         
+        <TEXTURE id="trash-bin-top" />
+
+		<TRANSLATION x="0" y="0.4" z="0" />
+		<ROTATION axis="z" angle="-90" />
+		<SCALE sx="0.2" sy="0.2" sz="0.2" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="sphere" />
         </DESCENDANTS>
     </NODE>
 	
