@@ -149,6 +149,11 @@
         <file path="textures/projector-material.jpg" />                             <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
+    
+    <TEXTURE id="wall-lamp">
+        <file path="textures/lamp.png" />                             <!-- path to file -->
+        <amplif_factor s="2" t="2" />                <!-- x/s, y/t -->
+    </TEXTURE>
 
     <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
     
@@ -225,6 +230,8 @@
     <LEAF id="sphere" type="sphere" args="1 20 20" />
     <LEAF id="triangle" type="triangle" args="0 0 0 0 0 1 0 1 0" />
     <LEAF id="triangle2" type="triangle" args="0 0 1 0 0 0 0 1 0" />
+    <LEAF id="triangle3" type="triangle" args="1 1 0 0 1 1 0 0 0" />
+    <LEAF id="triangle4" type="triangle" args="1 1 0 0 0 0 0 1 -1" />
 </LEAVES>
 
 
@@ -244,6 +251,102 @@
             <DESCENDANT id="safety-bar" />
             <DESCENDANT id="tunnel-left" />
             <DESCENDANT id="tunnel-right" />
+            <DESCENDANT id="wall-lamps" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="wall-lamps">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="wall-lamp-left-1" />
+            <DESCENDANT id="wall-lamp-left-2" />
+            <DESCENDANT id="wall-lamp-left-3" />
+            <DESCENDANT id="wall-lamp-right-1" />
+            <DESCENDANT id="wall-lamp-right-2" />
+            <DESCENDANT id="wall-lamp-right-3" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="wall-lamp-left-1">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="0" y="4" z="18" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="lamp-piece" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="wall-lamp-left-2">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="0" y="4" z="11.5" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="lamp-piece" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="wall-lamp-left-3">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="0" y="4" z="5" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="lamp-piece" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="wall-lamp-right-1">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="24" y="4" z="18" />
+		<ROTATION axis="y" angle="180" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="lamp-piece" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="wall-lamp-right-2">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="24" y="4" z="11.5" />
+		<ROTATION axis="y" angle="180" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="lamp-piece" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="wall-lamp-right-3">
+        <MATERIAL id="null" />         
+        <TEXTURE id="null" />
+		
+		<TRANSLATION x="24" y="4" z="5" />
+		<ROTATION axis="y" angle="180" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="lamp-piece" />
+        </DESCENDANTS>
+    </NODE>
+	
+	<NODE id="lamp-piece">
+        <MATERIAL id="null" />         
+        <TEXTURE id="wall-lamp" />
+		
+		<SCALE sx="0.3" sy="3" sz="0.3" />
+		
+        <DESCENDANTS>
+            <DESCENDANT id="triangle3" />
+            <DESCENDANT id="triangle4" />
         </DESCENDANTS>
     </NODE>
 	
@@ -753,6 +856,7 @@
             <DESCENDANT id="wall_back" />
             <DESCENDANT id="wall_front" />
             <DESCENDANT id="wall_left" />
+            <DESCENDANT id="wall_right" />
             <DESCENDANT id="floor" />
         </DESCENDANTS>
 
@@ -785,6 +889,20 @@
         </DESCENDANTS>
     </NODE>
     
+    <NODE id="wall_right">
+        <MATERIAL id="null" />         
+        <TEXTURE id="wall" />
+        
+        <TRANSLATION x="24" y="0" z="0" />
+        <SCALE sx="1" sy="8" sz="23" />
+        <ROTATION axis="y" angle="-90" />
+        <TRANSLATION x="0.5" y="0.5" z="0" />
+
+        <DESCENDANTS>
+            <DESCENDANT id="rectangle" />
+        </DESCENDANTS>
+    </NODE>
+    
     <NODE id="wall_left">
         <MATERIAL id="null" />         
         <TEXTURE id="wall" />
@@ -796,7 +914,6 @@
         <DESCENDANTS>
             <DESCENDANT id="rectangle" />
         </DESCENDANTS>
-
     </NODE>
     
     <NODE id="floor">
