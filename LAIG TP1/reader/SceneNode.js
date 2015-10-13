@@ -40,7 +40,7 @@ SceneNode.prototype.display = function() {
 		else
 			this.texture.bind();
 		this.descendants[i].display();
-		if(this.texture !== null) this.texture.unbind();
+		if(this.texture !== null && this.texture !== "clear") this.texture.unbind();
 	}
 	if (currTexture !== null) currTexture.bind();
 	this.scene.popMatrix();
