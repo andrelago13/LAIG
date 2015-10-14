@@ -26,40 +26,32 @@ Sphere.prototype.initBuffers = function() {
  	this.texCoords = [];
  	verts = 0;
  	
- 	// FIXME corrigir a textura da última peça
-
-	for(j = 0; j <= this.stacks; j++)
-	{
-		x = this.radius * Math.cos(beta);
-		y = 0;
-		z = this.radius * Math.sin(beta);
-		this.vertices.push(x, y, z);
-		this.normals.push(x, y, z);
-		this.texCoords.push(0.5 + Math.atan2(z,x)/(2*Math.PI), 0.5-Math.asin(y)/Math.PI);
-		verts++;
-
-		for(i = 0; i < this.slices; i++)
-		{
-			alfa+=ang;
-			x = this.radius * Math.cos(alfa) * Math.cos(beta);
+ 	for(var j = 0; j <= this.stacks; j++) {
+ 		alfa = 0;
+ 		
+ 		for(var i = 0; i <= this.slices; i++) {
+ 			x = this.radius * Math.cos(alfa) * Math.cos(beta);
 			y = this.radius * Math.sin(alfa) * Math.cos(beta);
 			z = this.radius * Math.sin(beta);
+			
 			this.vertices.push(x, y, z);
 			this.normals.push(x, y, z);
-			this.texCoords.push(0.5 + Math.atan2(z,x)/(2*Math.PI), 0.5-Math.asin(y)/Math.PI);
-			//this.texCoords.push(this.radius * (Math.asin(x)/Math.PI + 0.5), this.radius * (Math.asin(y)/Math.PI + 0.5));
+			this.texCoords.push(0.5 + Math.atan2(z/this.radius, x/this.radius)/(2*Math.PI), 0.5 - Math.asin(y/this.radius)/Math.PI);
 			verts++;
-
-			if(j > 0)
-			{
+			
+			if(i > 0 && j > 0) {
 				this.indices.push(verts-1, verts-2, verts-this.slices-2);
 				this.indices.push(verts-this.slices-3, verts-this.slices-2, verts-2);
 			}
-		}
-
-		beta += ang2;
-	}
- 	this.primitiveType = this.scene.gl.TRIANGLES;
+			
+			alfa += ang;
+ 		}
+ 		beta += ang2;
+ 	}
+ 	
+ 	// FIXME corrigir a textura da última peça
+	
+	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
  };
 
