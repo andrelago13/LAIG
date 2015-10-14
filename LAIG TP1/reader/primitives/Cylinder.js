@@ -67,24 +67,4 @@ Cylinder.prototype.initBuffers = function () {
 	this.initGLBuffers();
 };
 
-Cylinder.prototype.setAmplifFactor = function(amplif_factor) {
-	this.texCoords = [];
-	var radius = this.bottom_radius;
- 	var radius_dif = (this.top_radius - this.bottom_radius)/this.stacks;
-	
-	var perimeter = Math.PI*2*this.bottom;
-	
- 	for(j = 0; j <= this.stacks; j++)
-	{
-		this.texCoords.push(0, this.height*j / this.stacks);
-
-		for(i = 1; i <= this.slices; i++)
-		{
-			this.texCoords.push((radius/amplif_factor)*i / this.slices, (j / this.stacks)/amplif_factor);
-		}
-		
-		radius += radius_dif;
-	}
-	
-	this.updateTexCoordsGLBuffers();
-}
+Cylinder.prototype.setAmplifFactor = function(amplif_s, amplif_t) {}

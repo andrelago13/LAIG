@@ -68,15 +68,15 @@ Rectangle.prototype.initBuffers = function () {
     this.initGLBuffers();
 };
 
-Rectangle.prototype.setAmplifFactor = function(amplif_factor) {
+Rectangle.prototype.setAmplifFactor = function(amplif_s, amplif_t) {
 	var dist_s = Math.abs(this.left_top_x - this.right_bottom_x);
 	var dist_t = Math.abs(this.left_top_y - this.right_bottom_y);
 	
 	this.texCoords = [
 	     this.minS, this.minT,
-	     this.maxS*dist_s/amplif_factor, this.minT,
-	     this.minS, this.maxT*dist_t/amplif_factor,
-	     this.maxS*dist_s/amplif_factor, this.maxT*dist_t/amplif_factor
+	     this.maxS*dist_s/amplif_s, this.minT,
+	     this.minS, this.maxT*dist_t/amplif_t,
+	     this.maxS*dist_s/amplif_s, this.maxT*dist_t/amplif_t
 	];
 	
 	this.updateTexCoordsGLBuffers();

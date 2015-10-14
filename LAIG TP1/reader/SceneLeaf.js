@@ -24,6 +24,6 @@ SceneLeaf.prototype.getTexture = function () {
 	return this.texture;
 }
 
-SceneLeaf.prototype.setAmplifFactor = function(amplif_factor) {
-	this.primitive.setAmplifFactor(amplif_factor);
+SceneLeaf.prototype.setAmplifFactor = function(amplif_s, amplif_t) {
+	this.primitive.setAmplifFactor(amplif_s, amplif_t);
 }

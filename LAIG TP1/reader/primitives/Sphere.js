@@ -63,9 +63,4 @@ Sphere.prototype.initBuffers = function() {
  	this.initGLBuffers();
  };
 
- Sphere.prototype.setAmplifFactor = function(amplif_factor) {
- 	// TODO
-		
-		
-	this.updateTexCoordsGLBuffers();
- }
+ Sphere.prototype.setAmplifFactor = function(amplif_s, amplif_t) {}
