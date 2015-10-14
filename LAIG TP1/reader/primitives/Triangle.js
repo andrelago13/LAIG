@@ -50,11 +50,18 @@ Triangle.prototype.initBuffers = function () {
     var ac = Math.sqrt(Math.pow(this.v1x-this.v3x, 2) + Math.pow(this.v1y-this.v3y, 2) + Math.pow(this.v1z-this.v3z, 2));
     var beta = Math.acos((Math.pow(bc, 2) + Math.pow(ab, 2) - Math.pow(ac, 2))/(2*ab*bc));
     
+    console.log(ab);
+    
     this.texCoords = [
 		this.minS, this.minT,
 		this.maxS, this.minT,
-		ab - bc*Math.cos(beta), bc*Math.sin(beta)
+		(ab - bc*Math.cos(beta))/ab, bc*Math.sin(beta)/ab
     ];
+    
+    console.log("" + this.texCoords[0] + " - " + this.texCoords[1]);
+    console.log("" + this.texCoords[2] + " - " + this.texCoords[3]);
+    console.log("" + this.texCoords[4] + " - " + this.texCoords[5]);
+    console.log("==");
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
