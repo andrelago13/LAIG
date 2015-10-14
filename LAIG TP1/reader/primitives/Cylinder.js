@@ -19,48 +19,28 @@ Cylinder.prototype = Object.create(CGFobject.prototype);
 Cylinder.prototype.constructor=Cylinder;
 
 Cylinder.prototype.initBuffers = function () {
-
-	var ang = Math.PI*2/this.slices;
- 	var alfa = 0;
- 	
- 	var radius = this.bottom_radius;
- 	var radius_dif = (this.top_radius - this.bottom_radius)/this.stacks;
-
- 	this.indices = [];
+	
+	var delta = 2*Math.PI / this.slices;
+	this.indices = [];
  	this.vertices = [];
  	this.normals = [];
 	this.texCoords = [];
- 	verts = 0;
- 	
- 	var tempang = Math.atan((this.top_radius - this.bottom_radius)/this.height);
- 	var tempang = Math.PI/2 - tempang;
- 	var znorm = Math.cos(tempang);
-
- 	for(j = 0; j <= this.stacks; j++)
-	{
-		this.vertices.push(radius, 0, this.height*j / this.stacks);
-		this.normals.push(radius, 0, znorm);
-		this.texCoords.push(0, this.height*j / this.stacks);
-		verts += 1;
-
-		for(i = 1; i <= this.slices; i++)
-		{
-			alfa+=ang;
-			x = radius*Math.cos(alfa);
-			y = radius*Math.sin(alfa);
-			this.vertices.push(x, y, this.height*j / this.stacks);
-			this.normals.push(x, y, znorm);
-			this.texCoords.push(i / this.slices, j / this.stacks);
-			verts++;
-
-			if(j > 0 && i > 0)
-			{
+	var init_angle = this.bottom_radius;
+	var ang_dif = (this.top_radius - this.bottom_radius)/this.stacks;
+	
+	for(var i = 0; i <= this.stacks; i++) {
+		for(var j = 0; j <= this.slices; j++) {
+			this.vertices.push((init_angle + i*ang_dif)*Math.cos(j*delta), (init_angle + i*ang_dif)*Math.sin(j*delta), this.height*i/this.stacks);
+			this.normals.push((init_angle + i*ang_dif)*Math.cos(j*delta), (init_angle + i*ang_dif)*Math.sin(j*delta), (this.top_radius-this.bottom_radius)*Math.sqrt(Math.pow((init_angle + i*ang_dif)*Math.cos(j*delta), 2) + Math.pow((init_angle + i*ang_dif)*Math.sin(j*delta), 2))/this.height);
+			this.texCoords.push(j/this.slices, i/this.stacks);
+			
+			if(i > 0 && j > 0) {
+				var verts = this.vertices.length / 3;
 				this.indices.push(verts-1, verts-2, verts-this.slices-2);
-				this.indices.push(verts-this.slices-3, verts-this.slices-2, verts-2);
+				this.indices.push(verts-2, verts-this.slices-3, verts-this.slices-2);
 			}
+
 		}
-		
-		radius += radius_dif;
 	}
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
