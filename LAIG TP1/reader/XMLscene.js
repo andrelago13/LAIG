@@ -144,7 +144,6 @@ XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture
 
 	this.pushMatrix();
 	this.multMatrix(nodeMatrix);
-	// TODO set material and texture
 	if (node instanceof SceneLeaf)
 	{
 		node.display();
