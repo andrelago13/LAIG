@@ -494,6 +494,13 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 		args = args.split(' ');
 		if(elems == null)
 			continue;
+		
+		var temp_args = [];
+		for(var temp = 0; temp < args.length; temp++) {
+			if(args[temp] !== "")
+				temp_args.push(args[temp]);
+		}
+		args = temp_args;
 
 		if(typeof all_args[elems] == 'undefined') {
 			this.addError(errors, "illegal LEAF type '" + elems + "' found.");
