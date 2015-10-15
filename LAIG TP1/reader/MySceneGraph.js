@@ -138,7 +138,6 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 	
 	var temp = initials.childNodes;
 	var realElems = [];
-	// TODO this invalidates nodenames starting in "#"
 	for(var i = 0; i < temp.length; i++) {
 		if(temp[i].nodeName[0] != "#")
 			realElems.push(temp[i]);
