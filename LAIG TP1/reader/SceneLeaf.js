@@ -8,7 +8,12 @@ function SceneLeaf(primitive, leafId, leafList) {
 	this.primitive = primitive;
 }
 
-SceneLeaf.prototype.display = function () {
+SceneLeaf.prototype.display = function (texture) {
+	if (texture != null)
+	{
+		var amplifFactor = texture.getAmplifFactor();
+		this.setAmplifFactor(amplifFactor[0], amplifFactor[1]);
+	}
 	this.primitive.display();
 }
 
