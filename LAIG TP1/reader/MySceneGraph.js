@@ -135,6 +135,52 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 		this.initials["frustum"]["near"] = this.parseRequiredAttribute(errors, frustum, 'near', 'ff');
 		this.initials["frustum"]["far"] = this.parseRequiredAttribute(errors, frustum, 'far', 'ff');
 	}
+	
+	var temp = initials.childNodes;
+	var realElems = [];
+	// TODO this invalidates nodenames starting in "#"
+	for(var i = 0; i < temp.length; i++) {
+		if(temp[i].nodeName[0] != "#")
+			realElems.push(temp[i]);
+	}
+	var transform_found = [];
+	transform_found["translation"] = -1;
+	transform_found["rotation"] = [-1, -1, -1];
+	transform_found["scale"] = -1;
+	for(var i = 0; i < realElems.length; i++) {
+		switch(realElems[i].nodeName) {
+		case "translation":
+			if(transform_found["translation"] != -1) {
+				this.addWarning("Duplicate initial translation found. Only considering the first one.");
+			} else {
+				transform_found["translation"] = i;
+			}
+			break;
+		case "rotation":
+			if(transform_found["rotation"][0] == -1) {
+				transform_found["rotation"][0] = i;
+			} else if(transform_found["rotation"][1] == -1) {
+				transform_found["rotation"][1] = i;
+			} else
+				transform_found["rotation"][2] = i;
+			break;
+		case "scale":
+			if(transform_found["scale"] != -1) {
+				this.addWarning("Duplicate initial scale found. Only considering the first one.");
+			} else {
+				transform_found["scale"] = i;
+			}
+			break;
+		}
+	}
+	
+	if(!(transform_found["translation"] === transform_found["rotation"][0] - 1 &&
+			transform_found["rotation"][0] === transform_found["rotation"][1] - 1 &&
+			transform_found["rotation"][1] === transform_found["rotation"][2] - 1 &&
+			transform_found["rotation"][2] === transform_found["scale"] - 1)) {
+		this.addWarning(errors, "Invalid initial transformation order found. Results may be different from expected. " +
+				"Correct order must be translation, rotation1, rotation2, rotation3, scale, where rotations must use all 3 axis on any order.");
+	}
 
 	var axisList = ["x", "y", "z"];
 
@@ -166,7 +212,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 		angle = angle*Math.PI/180;
 		
 		if(axis_found[axis]) {
-			this.addWarning("Initial rotation on axis '" + axis + "' already found. Only the first will be considered.");
+			this.addWarning(errors, "Initial rotation on axis '" + axis + "' already found. Only the first will be considered.");
 			continue;
 		}
 		axis_found[axis] = true;
@@ -186,32 +232,9 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 	
 	for(var i in axis_found) {
 		if(!axis_found[i]) {
-			this.addWarning("Initial rotation on axis '" + i + "' not found. Assuming zero.");
+			this.addWarning(errors, "Initial rotation on axis '" + i + "' not found. Assuming zero.");
 		}
 	}
-	
-	// FIXME consider axis rotation order
-	/*elems = this.parseElement(errors, initials, 'rotation', 0, 0);
-	if (elems != null)
-	{
-		this.initials["rotation"] = [];
-		for (var i = 0; i < elems.length; i++)
-		{
-			var rotation = elems[i];
-			var axis = this.parseRequiredAttribute(errors, rotation, 'axis', 'cc', axisList);
-			if (typeof this.initials["rotation"][axis] != 'undefined')
-				this.addWarning(errors, "rotation of '" + axis + "' axis already defined, updating its value.");
-			this.initials["rotation"][axis] = this.parseRequiredAttribute(errors, rotation, 'angle', 'ff');
-		}
-		for (var i = 0; i < 3; i++)
-		{
-			if (typeof this.initials["rotation"][axisList[i]] == 'undefined')
-			{
-				this.addWarning(errors, "rotation of '" + axis + "' axis not defined, setting it to 0.");
-				this.initials["rotation"][axisList[i]] = 0;
-			}
-		}
-	}*/
 
 	elems = this.parseElement(errors, initials, 'scale', 1, 1);
 	if (elems != null)
