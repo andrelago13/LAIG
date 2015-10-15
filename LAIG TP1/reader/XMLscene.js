@@ -117,7 +117,10 @@ XMLscene.prototype.display = function () {
 	};
 	
 	for (var i = 0; i < this.graph.lights.length; i++) {
+		this.pushMatrix();
+		this.multMatrix(this.initialTransform);
 		this.lights[i].update();
+		this.popMatrix();
 	}
 	
 	this.shader.unbind();
