@@ -12,7 +12,6 @@ function MySceneGraph(filename, scene) {
 	this.nodes = [];
 	this.rootNode = "";
 
-	this.CGFtextures = [];
 	this.graphNodes = [];
 	this.graph = null;
 
@@ -97,10 +96,6 @@ MySceneGraph.prototype.parse= function(errors, rootElement) {
 		elems = this.parseElement(errors, rootElement, blocks[i], 1, 1);
 		if (elems == null) break;
 		this.parseBlock(errors, rootElement, i);
-	}
-	for (var id in this.textures)
-	{
-		this.CGFtextures[id] = new CGFtexture(this.scene, this.textures[id]["file"]);
 	}
 	if(this.validateNodes(errors, rootElement))
 		this.graph = this.createGraph(this.rootNode);
@@ -374,22 +369,26 @@ MySceneGraph.prototype.parseTextures= function(errors, rootElement)
 		for (var i = 0; i < textures.length; i++) // Para cada textura
 		{
 			var id = this.parseRequiredAttribute(errors, textures[i], 'id', 'ss');
-			this.textures[id] = [];
+			var texture = [];
+			texture["id"] = id;
 			elems = this.parseElement(errors, textures[i], 'file', 1, 1);
 			if (elems != null)
 			{
 				var enable = elems[0];
-				this.textures[id]["file"] = this.parseRequiredAttribute(errors, enable, 'path', 'ss');
+				texture["file"] = this.parseRequiredAttribute(errors, enable, 'path', 'ss');
 			}
 
 			elems = this.parseElement(errors, textures[i], 'amplif_factor', 1, 1);
 			if (elems != null)
 			{
 				var enable = elems[0];
-				this.textures[id]["amplif_factor"] = [];
-				this.textures[id]["amplif_factor"]["s"] = this.parseRequiredAttribute(errors, enable, 's', 'ff');
-				this.textures[id]["amplif_factor"]["t"] = this.parseRequiredAttribute(errors, enable, 't', 'ff');
+				texture["amplif_factor"] = [];
+				texture["amplif_factor"]["s"] = this.parseRequiredAttribute(errors, enable, 's', 'ff');
+				texture["amplif_factor"]["t"] = this.parseRequiredAttribute(errors, enable, 't', 'ff');
 			}
+			this.textures[texture["id"]] = new Texture(new CGFtexture(this.scene, texture["file"]),
+					texture["amplif_factor"]["s"],
+					texture["amplif_factor"]["t"]);
 		}
 	}
 }
@@ -729,7 +728,7 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	if (texture === "null")
 		texture = null;
 	else if (texture !== "clear")
-		texture = this.CGFtextures[texture];
+		texture = this.textures[texture];
 
 	this.graphNodes[nodeID] = new SceneNode(nodeID, material, texture, this.nodes[nodeID]["transforms"], this.scene);
 
