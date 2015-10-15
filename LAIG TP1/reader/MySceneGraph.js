@@ -2,6 +2,8 @@
 function MySceneGraph(filename, scene) {  
 
 	this.initials = [];
+	this.initials["transform"] = new mat4.create();
+	this.initialTransform = mat4.create();
 	this.illumination = [];
 	this.lights = [];
 	this.textures = [];
@@ -144,7 +146,52 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 		for (var i = 0; i < axisList.length; i++)
 			this.initials["translate"][axisList[i]] = this.parseRequiredAttribute(errors, translate, axisList[i], 'ff');
 	}
-	elems = this.parseElement(errors, initials, 'rotation', 0, 0);
+	this.initials["transform"] = mat4.translate(this.initials["transform"], this.initials["transform"], [ this.initials["translate"]["x"], this.initials["translate"]["y"], this.initials["translate"]["z"] ]);
+	
+	var axis_found = [];
+	axis_found["x"] = false;
+	axis_found["y"] = false;
+	axis_found["z"] = false;
+	elems = initials.childNodes;
+	for(var i = 0; i < elems.length; i++) {
+		if(elems[i].nodeName != "rotation")
+			continue;
+		
+		var axis = this.parseRequiredAttribute(errors, elems[i], 'axis', 'cc');
+		var angle = this.parseRequiredAttribute(errors, elems[i], 'angle', 'ff');
+		
+		if(axis == null || angle == null)
+			continue;
+		
+		angle = angle*Math.PI/180;
+		
+		if(axis_found[axis]) {
+			this.addWarning("Initial rotation on axis '" + axis + "' already found. Only the first will be considered.");
+			continue;
+		}
+		axis_found[axis] = true;
+		
+		switch(axis) {
+		case 'x':
+			this.initials["transform"] = mat4.rotateX(this.initials["transform"], this.initials["transform"], angle);
+			break;
+		case 'y':
+			this.initials["transform"] = mat4.rotateY(this.initials["transform"], this.initials["transform"], angle);
+			break;
+		case 'z':
+			this.initials["transform"] = mat4.rotateZ(this.initials["transform"], this.initials["transform"], angle);
+			break;
+		}
+	}
+	
+	for(var i in axis_found) {
+		if(!axis_found[i]) {
+			this.addWarning("Initial rotation on axis '" + i + "' not found. Assuming zero.");
+		}
+	}
+	
+	// FIXME consider axis rotation order
+	/*elems = this.parseElement(errors, initials, 'rotation', 0, 0);
 	if (elems != null)
 	{
 		this.initials["rotation"] = [];
@@ -164,7 +211,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 				this.initials["rotation"][axisList[i]] = 0;
 			}
 		}
-	}
+	}*/
 
 	elems = this.parseElement(errors, initials, 'scale', 1, 1);
 	if (elems != null)
@@ -176,6 +223,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 			this.initials["scale"]["s" + axisList[i]] = this.parseRequiredAttribute(errors, scale, 's' + axisList[i], 'ff');
 		}
 	}
+	this.initials["transform"] = mat4.scale(this.initials["transform"], this.initials["transform"], [ this.initials["scale"]["sx"], this.initials["scale"]["sy"], this.initials["scale"]["sz"] ]);
 
 	elems = this.parseElement(errors, initials, 'reference', 1, 1);
 	if (elems != null)

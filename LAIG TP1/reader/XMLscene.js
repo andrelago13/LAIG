@@ -50,9 +50,7 @@ XMLscene.prototype.initLights = function () {
 XMLscene.prototype.setInitials = function () {
 	this.camera.near = this.graph.initials["frustum"]["near"];
 	this.camera.far = this.graph.initials["frustum"]["far"];
-	var tMatrix = this.graph.initials["translate"];
-	// TODO
-	mat4.translate(this.initialTransform, this.initialTransform, [tMatrix["x"], tMatrix["y"], tMatrix["z"]]);
+	this.initialTransform = mat4.clone(this.graph.initials["transform"]);
 }
 
 XMLscene.prototype.initPrimitives = function () {
@@ -110,51 +108,17 @@ XMLscene.prototype.display = function () {
 
 	// ---- END Background, camera and axis setup
 
-	// it is important that things depending on the proper loading of the graph
-	// only get executed after the graph has loaded correctly.
-	// This is one possible way to do it
-	if (this.ready)
-	{
-			this.graph.graphNodes[this.graph.rootNode].display();
+	// guarantees that the graph is only displayed when correctly loaded 
+	if (this.ready) {
+		this.pushMatrix();
+		this.multMatrix(this.initialTransform);
+		this.graph.graphNodes[this.graph.rootNode].display();
+		this.popMatrix();
 	};
 	
-	for (var i = 0; i < this.graph.lights.length; i++)
-	{
+	for (var i = 0; i < this.graph.lights.length; i++) {
 		this.lights[i].update();
 	}
 	
-	//var t = new Rectangle(this, 0, 1, 1, 0);
-	//t.display();
-	
 	this.shader.unbind();
 };
-
-XMLscene.prototype.dfsDisplay = function(node, transformation, material, texture)
-{
-	/*var nodeMatrix = node.getMatrix();
-
-	if (nodeMatrix != null)
-		mat4.multiply(transformation, transformation, nodeMatrix);
-
-	if (node.getMaterial() != null)
-		material = node.getMaterial();
-
-	if (node.getTexture() != null)
-		texture = node.getTexture();
-
-	this.pushMatrix();
-	this.multMatrix(nodeMatrix);
-	if (node instanceof SceneLeaf)
-	{
-		node.display();
-	}
-	else
-	{
-		var descendants = node.getDescendants();
-		for (var i = 0; i < descendants.length; i++)
-		{
-			this.dfsDisplay(descendants[i], transformation, material, texture);
-		}
-	}
-	this.popMatrix();*/
-}
