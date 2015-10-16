@@ -19,6 +19,12 @@ function MySceneGraph(filename, scene) {
 	this.graph = null;
 
 	this.loadedOk = null;
+	
+	// TODO complete other defaults
+	this.defaultFrustumNear = 0.1;
+	this.defaultFrustumFar = 500;
+	
+	// TODO add default material
 
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
@@ -133,8 +139,8 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 	{
 		var frustum = elems[0];
 		this.initials["frustum"] = [];
-		this.initials["frustum"]["near"] = this.parseRequiredAttribute(errors, frustum, 'near', 'ff');
-		this.initials["frustum"]["far"] = this.parseRequiredAttribute(errors, frustum, 'far', 'ff');
+		this.initials["frustum"]["near"] = this.parseAttributeWithDefault(errors, frustum, 'near', 'ff', defaultFrustumNear);
+		this.initials["frustum"]["far"] = this.parseAttributeWithDefault(errors, frustum, 'far', 'ff', defaultFrustumFar);
 	}
 	
 	var temp = initials.childNodes;
@@ -744,7 +750,42 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	}
 	return this.graphNodes[nodeID];
 }
-// TODO parseOptionalAttribute
+
+MySceneGraph.prototype.parseAttributeWithDefault= function(errors, element, name, type, opts, defaultValue) {
+	if (!this.reader.hasAttribute(element, name))
+	{
+		this.addWarning(errors, "Could not read '" + name + "' attribute of '" + element.nodeName + "' element. Assuming default value: " + defaultValue);
+		return defaultValue;
+	}
+	var attribute = null;
+	switch (type)
+	{
+	case "cc":
+		attribute = this.reader.getItem(element, name, ["x", "y", "z"], false);
+		break;
+	case "ff":
+		attribute = this.reader.getFloat(element, name, false);
+		if (isNaN(attribute)) attribute = null;
+		break;
+	case "ss":
+		attribute = this.reader.getString(element, name, false);
+		break;
+	case "tt":
+		attribute = this.reader.getBoolean(element, name, false);
+		break;
+	default:
+		attribute = this.reader.getString(element, name, false);
+	break;
+	}
+	
+	if (attribute === null) {
+		this.addWarning(errors, "'" + name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'. Assuming default value: " + defaultValue);
+		attribute = defaultValue;
+	}
+	
+	return attribute;	
+}
+
 MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, type, opts)
 {
 	if (!this.reader.hasAttribute(element, name))
