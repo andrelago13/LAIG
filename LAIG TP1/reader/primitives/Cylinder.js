@@ -1,4 +1,5 @@
 /**
+
  * Cylinder
  * @param gl {WebGLRenderingContext}
  * @constructor
@@ -25,16 +26,20 @@ Cylinder.prototype.initBuffers = function () {
  	this.vertices = [];
  	this.normals = [];
 	this.texCoords = [];
-	var init_angle = this.bottom_radius;
-	var ang_dif = (this.top_radius - this.bottom_radius)/this.stacks;
+	var init_radius = this.bottom_radius;
+	var radius_dif = (this.top_radius - this.bottom_radius)/this.stacks;
 	
 	for(var i = 0; i <= this.stacks; i++) {
 		for(var j = 0; j <= this.slices; j++) {
-			this.vertices.push((init_angle + i*ang_dif)*Math.cos(j*delta), (init_angle + i*ang_dif)*Math.sin(j*delta), this.height*i/this.stacks);
-			if(this.height > 0)
-				this.normals.push((init_angle + i*ang_dif)*Math.cos(j*delta), (init_angle + i*ang_dif)*Math.sin(j*delta), (this.top_radius-this.bottom_radius)*Math.sqrt(Math.pow((init_angle + i*ang_dif)*Math.cos(j*delta), 2) + Math.pow((init_angle + i*ang_dif)*Math.sin(j*delta), 2))/this.height);
-			else
-				this.normals.push((init_angle + i*ang_dif)*Math.cos(j*delta), (init_angle + i*ang_dif)*Math.sin(j*delta), 1);
+			this.vertices.push((init_radius + i*radius_dif)*Math.cos(j*delta), (init_radius + i*radius_dif)*Math.sin(j*delta), this.height*i/this.stacks);
+			
+			if(this.height > 0) {
+				var temp = Math.atan(Math.abs(this.top_radius-this.bottom_radius)/this.height);
+				this.normals.push(Math.cos(temp)*Math.cos(j*delta),
+						Math.cos(temp)*Math.sin(j*delta),
+						Math.sin(temp));
+			} else
+				this.normals.push(0, 0, 1);
 			this.texCoords.push(j/this.slices, i/this.stacks);
 			
 			if(i > 0 && j > 0) {
