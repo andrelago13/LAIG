@@ -1,4 +1,7 @@
-
+/*
+ * MySceneGraph constructor
+ * Reads scene objects and properties from the specified 'filename', assigning them to the specified 'scene'
+ */
 function MySceneGraph(filename, scene) {  
 
 	this.initials = [];
@@ -62,6 +65,9 @@ MySceneGraph.prototype.onXMLReady=function()
 	this.scene.onGraphLoaded();
 }
 
+/*
+ * Parses information on the file, displaying errors and warnings produced during parsing of specific elements
+ */
 MySceneGraph.prototype.parse= function(errors, rootElement) {
 	if (rootElement.nodeName != 'SCENE')
 	{
@@ -738,7 +744,7 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	}
 	return this.graphNodes[nodeID];
 }
-
+// TODO parseOptionalAttribute
 MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, type, opts)
 {
 	if (!this.reader.hasAttribute(element, name))
