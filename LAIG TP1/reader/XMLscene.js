@@ -51,6 +51,11 @@ XMLscene.prototype.setInitials = function () {
 	this.camera.near = this.graph.initials["frustum"]["near"];
 	this.camera.far = this.graph.initials["frustum"]["far"];
 	this.initialTransform = mat4.clone(this.graph.initials["transform"]);
+	if(this.graph.initials["reference"] <= 0) {
+		this.axis = new CGFaxis(this, 0, 0);
+	} else {
+		this.axis = new CGFaxis(this, this.graph.initials["reference"]);
+	}
 }
 
 XMLscene.prototype.initPrimitives = function () {
