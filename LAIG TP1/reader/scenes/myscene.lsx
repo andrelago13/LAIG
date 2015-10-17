@@ -921,8 +921,8 @@
     </NODE>
     
     <NODE id="box">
-        <MATERIAL id="null" />         
-        <TEXTURE id="null" />
+        <MATERIAL id="floor" />         
+        <TEXTURE id="clear" />
 
         <DESCENDANTS>
             <DESCENDANT id="wall_back" />

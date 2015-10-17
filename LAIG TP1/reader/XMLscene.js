@@ -115,10 +115,7 @@ XMLscene.prototype.display = function () {
 
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
-		this.pushMatrix();
-		this.multMatrix(this.initialTransform);
-		this.graph.graphNodes[this.graph.rootNode].display();
-		this.popMatrix();
+		this.graph.display();
 	};
 	
 	for (var i = 0; i < this.graph.lights.length; i++) {

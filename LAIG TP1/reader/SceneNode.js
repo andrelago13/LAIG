@@ -22,12 +22,18 @@ function SceneNode(id, material, texture, transforms, scene) {
 	this.scene = scene;
 }
 
-SceneNode.prototype.display = function(texture) {
+SceneNode.prototype.display = function(texture, parentAppearance) {
 	this.scene.pushMatrix();
 	this.scene.multMatrix(this.m);
 	for(var i = 0; i < this.descendants.length; i++) {
 		var newTexture = texture;
-		if (this.material != null) this.material.apply();
+		var newMaterial = parentAppearance;
+		if (this.material != null) {
+			this.material.apply();
+			newMaterial = this.material;
+		} else if(parentAppearance != null) {
+			parentAppearance.apply();
+		}
 		if (this.texture == "clear")
 		{
 			if (texture != null)
@@ -49,7 +55,7 @@ SceneNode.prototype.display = function(texture) {
 			this.texture.bind();
 			newTexture = this.texture;
 		}
-		this.descendants[i].display(newTexture);
+		this.descendants[i].display(newTexture, newMaterial);
 		if(this.texture != null && this.texture !== "clear") this.texture.unbind();
 	}
 	if (texture != null) texture.bind();

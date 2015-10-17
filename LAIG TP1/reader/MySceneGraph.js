@@ -20,15 +20,28 @@ function MySceneGraph(filename, scene) {
 
 	this.loadedOk = null;
 	
-	// TODO complete other defaults
 	this.defaultFrustumNear = 0.1;
 	this.defaultFrustumFar = 500;
-	
-	// TODO add default material
+	this.defaulTransformValue = 0;
+	this.defaultAxisReference = 3;
+	this.defautlLightValue = 0;
+	this.defaultLightEnabled = true;
+	this.defaultAmplifFactor = 1;
+	this.defaultMaterialShininess = 1;
+	this.defaultMaterialRGBA = 1;
+	this.defaultNodeMaterialID = "null";
+	this.defaultNodeTextureID = "clear";
 
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
 	scene.graph=this;
+	
+	this.defaultSceneMaterial = new CGFappearance(this.scene);
+	this.defaultSceneMaterial.setAmbient(1, 1, 1, 1);
+	this.defaultSceneMaterial.setDiffuse(1, 1, 1, 1);
+	this.defaultSceneMaterial.setSpecular(1, 1, 1, 1);
+	this.defaultSceneMaterial.setShininess(1);
+	this.defaultSceneMaterial.setEmission(1, 1, 1, 1);
 
 	// File reading 
 	this.reader = new CGFXMLreader();
@@ -40,6 +53,30 @@ function MySceneGraph(filename, scene) {
 	 */
 
 	this.reader.open('scenes/'+filename, this);
+}
+
+/*
+ * Displays the graph
+ */
+MySceneGraph.prototype.display=function() 
+{
+	if(!this.ready)
+		return;
+	
+	var initMatNull = false;
+	if(this.graphNodes[this.rootNode].material === null) {
+		initMatNull = true;
+		//this.graphNodes[this.rootNode].material = this.defaultSceneMaterial;
+	}
+	
+	this.scene.pushMatrix();
+	this.scene.multMatrix(this.initials["transform"]);
+	this.graphNodes[this.rootNode].display(undefined, this.defaultSceneMaterial);
+	this.scene.popMatrix();
+	
+	if(initMatNull) {
+		this.graphNodes[this.rootNode].material = null;
+	}
 }
 
 /*
@@ -68,6 +105,7 @@ MySceneGraph.prototype.onXMLReady=function()
 
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on 
 	// the graph can take place
+	this.ready = true;
 	this.scene.onGraphLoaded();
 }
 
@@ -139,8 +177,8 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 	{
 		var frustum = elems[0];
 		this.initials["frustum"] = [];
-		this.initials["frustum"]["near"] = this.parseAttributeWithDefault(errors, frustum, 'near', 'ff', defaultFrustumNear);
-		this.initials["frustum"]["far"] = this.parseAttributeWithDefault(errors, frustum, 'far', 'ff', defaultFrustumFar);
+		this.initials["frustum"]["near"] = this.parseAttributeWithDefault(errors, frustum, 'near', 'ff', this.defaultFrustumNear);
+		this.initials["frustum"]["far"] = this.parseAttributeWithDefault(errors, frustum, 'far', 'ff', this.defaultFrustumFar);
 	}
 	
 	var temp = initials.childNodes;
@@ -196,7 +234,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 		var translate = elems[0];
 		this.initials["translate"] = [];
 		for (var i = 0; i < axisList.length; i++)
-			this.initials["translate"][axisList[i]] = this.parseAttributeWithDefault(errors, translate, axisList[i], 'ff', 0);
+			this.initials["translate"][axisList[i]] = this.parseAttributeWithDefault(errors, translate, axisList[i], 'ff', this.defaulTransformValue);
 	}
 	this.initials["transform"] = mat4.translate(this.initials["transform"], this.initials["transform"], [ this.initials["translate"]["x"], this.initials["translate"]["y"], this.initials["translate"]["z"] ]);
 	
@@ -210,7 +248,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 			continue;
 		
 		var axis = this.parseRequiredAttribute(errors, elems[i], 'axis', 'cc');
-		var angle = this.parseAttributeWithDefault(errors, elems[i], 'angle', 'ff', 0);
+		var angle = this.parseAttributeWithDefault(errors, elems[i], 'angle', 'ff', this.defaultTransformValue);
 		
 		if(axis == null || angle == null)
 			continue;
@@ -249,7 +287,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 		this.initials["scale"] = [];
 		for (var i = 0; i < 3; i++)
 		{
-			this.initials["scale"]["s" + axisList[i]] = this.parseAttributeWithDefault(errors, scale, 's' + axisList[i], 'ff', 0);
+			this.initials["scale"]["s" + axisList[i]] = this.parseAttributeWithDefault(errors, scale, 's' + axisList[i], 'ff', this.defaultTransformValue);
 		}
 	}
 	this.initials["transform"] = mat4.scale(this.initials["transform"], this.initials["transform"], [ this.initials["scale"]["sx"], this.initials["scale"]["sy"], this.initials["scale"]["sz"] ]);
@@ -258,7 +296,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 	if (elems != null)
 	{
 		var reference = elems[0];
-		this.initials["reference"] = this.parseAttributeWithDefault(errors, reference, 'length', 'ff', 3);
+		this.initials["reference"] = this.parseAttributeWithDefault(errors, reference, 'length', 'ff', this.defaultAxisReference);
 	}
 }
 
@@ -278,7 +316,7 @@ MySceneGraph.prototype.parseIllumination= function(errors, rootElement)
 		this.illumination["ambient"] = [];
 		for (var i = 0; i < 3; i++)
 		{
-			this.illumination["ambient"][rgbaList[i]] = this.parseAttributeWithDefault(errors, ambient, rgbaList[i], 'ff', 0);
+			this.illumination["ambient"][rgbaList[i]] = this.parseAttributeWithDefault(errors, ambient, rgbaList[i], 'ff', this.defautlLightValue);
 		}
 	}
 
@@ -289,7 +327,7 @@ MySceneGraph.prototype.parseIllumination= function(errors, rootElement)
 		this.illumination["background"] = [];
 		for (var i = 0; i < 3; i++)
 		{
-			this.illumination["background"][rgbaList[i]] = this.parseAttributeWithDefault(errors, background, rgbaList[i], 'ff', 0);
+			this.illumination["background"][rgbaList[i]] = this.parseAttributeWithDefault(errors, background, rgbaList[i], 'ff', this.defautlLightValue);
 		}
 	}
 }
@@ -317,7 +355,7 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 			if (elems != null)
 			{
 				var enable = elems[0];
-				this.lights[i]["enable"] = this.parseAttributeWithDefault(errors, enable, 'value', 'tt', true);
+				this.lights[i]["enable"] = this.parseAttributeWithDefault(errors, enable, 'value', 'tt', this.defaultLightEnabled);
 			}
 
 			elems = this.parseElement(errors, lights[i], 'position', 1, 1);
@@ -338,7 +376,7 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 				this.lights[i]["ambient"] = [];
 				for (var j = 0; j < rgbaList.length; j++)
 				{
-					this.lights[i]["ambient"][rgbaList[j]] = this.parseAttributeWithDefault(errors, ambient, rgbaList[j], 'ff', 0);
+					this.lights[i]["ambient"][rgbaList[j]] = this.parseAttributeWithDefault(errors, ambient, rgbaList[j], 'ff', this.defautlLightValue);
 				}
 			}
 
@@ -349,7 +387,7 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 				this.lights[i]["diffuse"] = [];
 				for (var j = 0; j < rgbaList.length; j++)
 				{
-					this.lights[i]["diffuse"][rgbaList[j]] = this.parseAttributeWithDefault(errors, diffuse, rgbaList[j], 'ff', 0);
+					this.lights[i]["diffuse"][rgbaList[j]] = this.parseAttributeWithDefault(errors, diffuse, rgbaList[j], 'ff', this.defautlLightValue);
 				}
 			}
 
@@ -360,7 +398,7 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 				this.lights[i]["specular"] = [];
 				for (var j = 0; j < rgbaList.length; j++)
 				{
-					this.lights[i]["specular"][rgbaList[j]] = this.parseAttributeWithDefault(errors, specular, rgbaList[j], 'ff', 0);
+					this.lights[i]["specular"][rgbaList[j]] = this.parseAttributeWithDefault(errors, specular, rgbaList[j], 'ff', this.defautlLightValue);
 				}
 			}
 		}
@@ -395,8 +433,8 @@ MySceneGraph.prototype.parseTextures= function(errors, rootElement)
 			{
 				var enable = elems[0];
 				texture["amplif_factor"] = [];
-				texture["amplif_factor"]["s"] = this.parseAttributeWithDefault(errors, enable, 's', 'ff', 1);
-				texture["amplif_factor"]["t"] = this.parseAttributeWithDefault(errors, enable, 't', 'ff', 1);
+				texture["amplif_factor"]["s"] = this.parseAttributeWithDefault(errors, enable, 's', 'ff', this.defaultAmplifFactor);
+				texture["amplif_factor"]["t"] = this.parseAttributeWithDefault(errors, enable, 't', 'ff', this.defaultAmplifFactor);
 			}
 			this.textures[texture["id"]] = new Texture(new CGFtexture(this.scene, texture["file"]),
 					texture["amplif_factor"]["s"],
@@ -436,7 +474,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, rootElement) {
 		elems = this.parseElement(errors, materials[i], 'shininess', 1, 1);
 		if(elems===null)
 			continue;
-		material["shininess"] = this.parseAttributeWithDefault(errors, elems[0], 'value', 'ff', 0);
+		material["shininess"] = this.parseAttributeWithDefault(errors, elems[0], 'value', 'ff', this.defaultMaterialShininess);
 		if(material["shininess"] === null) {
 			material["shininess"] = 0;
 			this.addWarning(errors, "MATERIAL '" + id + "' shininess not found. Assuming zero.");
@@ -447,7 +485,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, rootElement) {
 			if(elems != null) {
 				material[attributes[att]] = [];
 				for(var value = 0; value < rgba.length; value++) {
-					material[attributes[att]][rgba[value]] = this.parseAttributeWithDefault(errors, elems[0], rgba[value], 'ff', 0);
+					material[attributes[att]][rgba[value]] = this.parseAttributeWithDefault(errors, elems[0], rgba[value], 'ff', this.defaultMaterialRGBA);
 					if(material[attributes[att]][rgba[value]] === null) {
 						material[attributes[att]][rgba[value]] = 0;
 						this.addWarning(errors, "MATERIAL '" + id + "' " + attributes[att] + " " + rgba[value] + " value not found. Assuming zero.");
@@ -608,7 +646,7 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 		var material = this.parseElement(errors, elems[i], 'MATERIAL', 1, 1);
 		if(material == null)
 			continue;
-		var mat_id = this.parseAttributeWithDefault(errors, material[0], 'id', 'ss', null);
+		var mat_id = this.parseAttributeWithDefault(errors, material[0], 'id', 'ss', this.defaultNodeMaterialID);
 		if(mat_id == null)
 			continue;
 
@@ -616,7 +654,7 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 		var texture = this.parseElement(errors, elems[i], 'TEXTURE', 1, 1);
 		if(texture == null)
 			continue;
-		var tex_id = this.parseAttributeWithDefault(errors, texture[0], 'id', 'ss', null);
+		var tex_id = this.parseAttributeWithDefault(errors, texture[0], 'id', 'ss', this.defaultNodeTextureID);
 		if(tex_id == null)
 			continue;
 
