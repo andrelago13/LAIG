@@ -2,8 +2,8 @@
  * MySceneGraph constructor
  * Reads scene objects and properties from the specified 'filename', assigning them to the specified 'scene'
  */
-function MySceneGraph(filename, scene) {  
-
+function MySceneGraph(scenename, scene) {  
+	this.scenename = scenename;
 	this.initials = [];
 	this.initials["transform"] = new mat4.create();
 	this.initialTransform = mat4.create();
@@ -52,7 +52,7 @@ function MySceneGraph(filename, scene) {
 	 * If any error occurs, the reader calls onXMLError on this object, with an error message
 	 */
 
-	this.reader.open('scenes/'+filename, this);
+	this.reader.open('scenes/'+scenename+'/'+scenename+'.lsx', this);
 }
 
 /*
@@ -436,7 +436,7 @@ MySceneGraph.prototype.parseTextures= function(errors, rootElement)
 				texture["amplif_factor"]["s"] = this.parseAttributeWithDefault(errors, enable, 's', 'ff', this.defaultAmplifFactor);
 				texture["amplif_factor"]["t"] = this.parseAttributeWithDefault(errors, enable, 't', 'ff', this.defaultAmplifFactor);
 			}
-			this.textures[texture["id"]] = new Texture(new CGFtexture(this.scene, texture["file"]),
+			this.textures[texture["id"]] = new Texture(new CGFtexture(this.scene, 'scenes/'+this.scenename+'/'+texture["file"]),
 					texture["amplif_factor"]["s"],
 					texture["amplif_factor"]["t"]);
 		}
