@@ -265,7 +265,7 @@
     <ROOT id="cinema" />     
 	
 	<NODE id="cinema">
-        <MATERIAL id="cenas" />         
+        <MATERIAL id="null" />         
         <TEXTURE id="null" />
 
         <DESCENDANTS>
