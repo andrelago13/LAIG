@@ -218,6 +218,30 @@
         <ambient r="0.2" g="0.2" b="0.2" a="1" />         <!-- ambient reflection --> <!-- Lower than diffuse to create a better visual effect -->
         <emission r="1" g="1" b="1" a="1" />        <!-- emission component -->
     </MATERIAL>
+    
+    <MATERIAL id="door">                                
+        <shininess value="5" />
+        <specular r="0.3" g="0.3" b="0.3" a="1" />        <!-- specular reflection -->
+        <diffuse r="0.8" g="0.8" b="0.8" a="1" />         <!-- diffuse reflection -->
+        <ambient r="0.8" g="0.8" b="0.8" a="1" />         <!-- ambient reflection -->
+        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+    </MATERIAL>
+    
+    <MATERIAL id="projector-stand">                                
+        <shininess value="1" />
+        <specular r="0.1" g="0.1" b="0.1" a="1" />        <!-- specular reflection -->
+        <diffuse r="0.4" g="0.4" b="0.4" a="1" />         <!-- diffuse reflection -->
+        <ambient r="0.1" g="0.1" b="0.1" a="1" />         <!-- ambient reflection --> <!-- Lower than diffuse to create a better visual effect -->
+        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+    </MATERIAL>
+    
+    <MATERIAL id="wall-lamp">                                
+        <shininess value="1" />
+        <specular r="0.4" g="0.4" b="0.4" a="1" />        <!-- specular reflection -->
+        <diffuse r="1" g="1" b="1" a="1" />         <!-- diffuse reflection -->
+        <ambient r="0.5" g="0.5" b="0.5" a="1" />         <!-- ambient reflection --> <!-- Lower than diffuse to create a better visual effect -->
+        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+    </MATERIAL>
 
     <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material requires a distinct "id" -->
 
@@ -411,7 +435,7 @@
     </NODE>
 	
 	<NODE id="lamp-piece">
-        <MATERIAL id="null" />         
+        <MATERIAL id="wall-lamp" />         
         <TEXTURE id="wall-lamp" />
 		
 		<SCALE sx="0.3" sy="3" sz="0.3" />
@@ -686,7 +710,7 @@
 	</NODE>
 	
 	<NODE id="cinema-door">
-        <MATERIAL id="null" />         
+        <MATERIAL id="door" />         
         <TEXTURE id="null" />
 		
 		<SCALE sx="1.2" sy="1.15" sz="0.1" />
@@ -893,7 +917,7 @@
     </NODE>
     
     <NODE id="projector-stand">
-        <MATERIAL id="null" />         
+        <MATERIAL id="projector-stand" />         
         <TEXTURE id="wall" />
         
         <TRANSLATION x="-0.5" y="0" z="-0.5" />

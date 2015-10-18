@@ -42,7 +42,7 @@ function MySceneGraph(scenename, scene, interface) {
 	this.defaultSceneMaterial.setDiffuse(1, 1, 1, 1);
 	this.defaultSceneMaterial.setSpecular(1, 1, 1, 1);
 	this.defaultSceneMaterial.setShininess(1);
-	this.defaultSceneMaterial.setEmission(1, 1, 1, 1);
+	this.defaultSceneMaterial.setEmission(0, 0, 0, 1);
 
 	// File reading 
 	this.reader = new CGFXMLreader();
