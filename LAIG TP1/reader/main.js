@@ -11,7 +11,7 @@ function getUrlVars() {
     return vars;
 }	 
 
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js', 'TransformMatrix.js', 'SceneLeaf.js', 'Texture.js', 
+serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js', 'TransformMatrix.js', 'SceneLeaf.js', 'Texture.js', 'Interface.js', 
                'primitives/Cylinder.js', 
                'primitives/Rectangle.js', 
                'primitives/Sphere.js', 
@@ -22,7 +22,7 @@ main=function()
 	// Standard application, scene and interface setup
     var app = new CGFapplication(document.body);
     var myScene = new XMLscene();
-    var myInterface = new CGFinterface();
+    var myInterface = new Interface();
 
     app.init();
 
@@ -38,7 +38,7 @@ main=function()
 
 	// create and load graph, and associate it to scene. 
 	// Check console for loading errors
-	var myGraph = new MySceneGraph(filename, myScene);
+	var myGraph = new MySceneGraph(filename, myScene, myInterface);
 	
 	// start
     app.run();

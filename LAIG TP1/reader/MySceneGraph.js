@@ -2,7 +2,8 @@
  * MySceneGraph constructor
  * Reads scene objects and properties from the specified 'filename', assigning them to the specified 'scene'
  */
-function MySceneGraph(scenename, scene) {  
+function MySceneGraph(scenename, scene, interface) {  
+	this.interface = interface;
 	this.scenename = scenename;
 	this.initials = [];
 	this.initials["transform"] = new mat4.create();
@@ -887,4 +888,10 @@ MySceneGraph.prototype.addWarning = function(errors, msg)
 
 MySceneGraph.prototype.onXMLError = function()
 {
+}
+
+MySceneGraph.prototype.toggleLight = function(light)
+{
+	if (this.scene !== null)
+		this.scene.lights[light].disable();
 }

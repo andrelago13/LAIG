@@ -21,6 +21,8 @@ XMLscene.prototype.init = function (application) {
 	this.axis=new CGFaxis(this);
 	this.initialTransform = mat4.create();
 	this.enableTextures(true);
+
+	this.lightStatus = [false, false, false, false, false, false, false, false, false];
 };
 
 XMLscene.prototype.initLights = function () {
@@ -37,11 +39,18 @@ XMLscene.prototype.initLights = function () {
 		this.lights[i].setDiffuse(this.graph.lights[i]["diffuse"]["r"],this.graph.lights[i]["diffuse"]["g"],this.graph.lights[i]["diffuse"]["b"],this.graph.lights[i]["diffuse"]["a"]);
 		this.lights[i].setSpecular(this.graph.lights[i]["specular"]["r"],this.graph.lights[i]["specular"]["g"],this.graph.lights[i]["specular"]["b"],this.graph.lights[i]["specular"]["a"]);
 		if (this.graph.lights[i]["enable"])
+		{
 			this.lights[i].enable();
+			this.lightStatus[i] = true;
+		}
 		else
+		{
 			this.lights[i].disable();
+			this.lightStatus[i] = false;
+		}
 		this.lights[i].setVisible(false);
 		this.lights[i].update();
+		this.graph.interface.addLightToggler(i, this.graph.lights[i]["id"]);
 	}
 
 	this.shader.unbind();
@@ -91,6 +100,16 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.ready = true;
 };
 
+XMLscene.prototype.updateLights = function(){
+	for(var i = 0; i < this.lights.length; i++)
+	{
+		if(this.lightStatus[i])	this.lights[i].enable();
+		else this.lights[i].disable();
+		
+		this.lights[i].update();
+	}
+}
+
 XMLscene.prototype.display = function () {
 	// ---- BEGIN Background, camera and axis setup
 	this.shader.bind();
@@ -117,13 +136,13 @@ XMLscene.prototype.display = function () {
 	if (this.ready) {
 		this.graph.display();
 	};
-	
+
 	for (var i = 0; i < this.graph.lights.length; i++) {
 		this.pushMatrix();
 		this.multMatrix(this.initialTransform);
-		this.lights[i].update();
+		this.updateLights();
 		this.popMatrix();
 	}
-	
+
 	this.shader.unbind();
 };
