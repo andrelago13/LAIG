@@ -82,10 +82,10 @@ XMLscene.prototype.initCameras = function () {
 };
 
 XMLscene.prototype.setDefaultAppearance = function () {
-	this.setAmbient(0.5, 0.5, 0.5, 1.0);
-	this.setDiffuse(0.5, 0.5, 0.5, 1.0);
-	this.setSpecular(0.5, 0.5, 0.5, 1.0);
-	this.setShininess(10.0);	
+	this.setAmbient(1.0, 1.0, 1.0, 1.0);
+	this.setDiffuse(1.0, 1.0, 1.0, 1.0);
+	this.setSpecular(1.0, 1.0, 1.0, 1.0);
+	this.setShininess(1.0);	
 };
 
 //Handler called when the graph is finally loaded. 

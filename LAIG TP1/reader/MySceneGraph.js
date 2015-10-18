@@ -20,7 +20,7 @@ function MySceneGraph(scenename, scene, interface) {
 	this.graph = null;
 
 	this.loadedOk = null;
-	
+
 	this.defaultFrustumNear = 0.1;
 	this.defaultFrustumFar = 500;
 	this.defaulTransformValue = 0;
@@ -36,7 +36,7 @@ function MySceneGraph(scenename, scene, interface) {
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
 	scene.graph=this;
-	
+
 	this.defaultSceneMaterial = new CGFappearance(this.scene);
 	this.defaultSceneMaterial.setAmbient(1, 1, 1, 1);
 	this.defaultSceneMaterial.setDiffuse(1, 1, 1, 1);
@@ -52,7 +52,12 @@ function MySceneGraph(scenename, scene, interface) {
 	 * After the file is read, the reader calls onXMLReady on this object.
 	 * If any error occurs, the reader calls onXMLError on this object, with an error message
 	 */
-
+	console.clear();
+	console.group("%cParsing '" + this.scenename + ".lsx'", "font-size: 1.5em;");
+	console.time("Total time taken to parse the LSX file");
+	console.group("Reading the XML tree");
+	console.time("Time taken to read the XML tree");
+	console.log("Reading XML tree...");
 	this.reader.open('scenes/'+scenename+'/'+scenename+'.lsx', this);
 }
 
@@ -63,18 +68,18 @@ MySceneGraph.prototype.display=function()
 {
 	if(!this.ready)
 		return;
-	
+
 	var initMatNull = false;
 	if(this.graphNodes[this.rootNode].material === null) {
 		initMatNull = true;
 		//this.graphNodes[this.rootNode].material = this.defaultSceneMaterial;
 	}
-	
+
 	this.scene.pushMatrix();
 	this.scene.multMatrix(this.initials["transform"]);
 	this.graphNodes[this.rootNode].display(undefined, this.defaultSceneMaterial);
 	this.scene.popMatrix();
-	
+
 	if(initMatNull) {
 		this.graphNodes[this.rootNode].material = null;
 	}
@@ -85,25 +90,37 @@ MySceneGraph.prototype.display=function()
  */
 MySceneGraph.prototype.onXMLReady=function() 
 {
-	console.log("XML Loading finished.");
+	console.log("XML tree successfully read.");
+	console.timeEnd("Time taken to read the XML tree");
+	console.groupEnd();
 	var rootElement = this.reader.xmlDoc.documentElement;
 
 	// Here should go the calls for different functions to parse the various blocks
 	var errors = [];
+	console.group("Parsing the LSX blocks");
+	console.time("Time taken to parse the LSX blocks");
+	console.log("Parsing LSX blocks...");
 	this.parse(errors, rootElement);
 	this.loadedOk = true;
 	for (var i = 0; i < errors.length; i++)
 	{
 		if (errors[i][0])
 		{
-			console.error("XML Loading Error: " + errors[i][1]);
+			console.error("LSX parsing error: " + errors[i][1]);
 			this.loadedOk = false;
 		}
 		else
-			console.warn("XML Loading Warning: " + errors[i][1]);
+			console.warn("LSX parsing warning: " + errors[i][1]);
 	}
+	if (this.loadedOk) console.log("LSX successfully parsed.");
+	else console.info("Errors found while parsing the LSX, cannot continue.");
+	
+	console.timeEnd("Time taken to parse the LSX blocks");
+	console.groupEnd();
+	console.timeEnd("Total time taken to parse the LSX file");
+	console.groupEnd();
 	if (!this.loadedOk) return;
-
+	
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on 
 	// the graph can take place
 	this.ready = true;
@@ -181,7 +198,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 		this.initials["frustum"]["near"] = this.parseAttributeWithDefault(errors, frustum, 'near', 'ff', this.defaultFrustumNear);
 		this.initials["frustum"]["far"] = this.parseAttributeWithDefault(errors, frustum, 'far', 'ff', this.defaultFrustumFar);
 	}
-	
+
 	var temp = initials.childNodes;
 	var realElems = [];
 	for(var i = 0; i < temp.length; i++) {
@@ -218,13 +235,13 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 			break;
 		}
 	}
-	
+
 	if(!(transform_found["translation"] === transform_found["rotation"][0] - 1 &&
 			transform_found["rotation"][0] === transform_found["rotation"][1] - 1 &&
 			transform_found["rotation"][1] === transform_found["rotation"][2] - 1 &&
 			transform_found["rotation"][2] === transform_found["scale"] - 1)) {
 		this.addWarning(errors, "Invalid initial transformation order found. Results may be different from expected. " +
-				"Correct order must be translation, rotation1, rotation2, rotation3, scale, where rotations must use all 3 axis on any order.");
+		"Correct order must be translation, rotation1, rotation2, rotation3, scale, where rotations must use all 3 axis on any order.");
 	}
 
 	var axisList = ["x", "y", "z"];
@@ -238,7 +255,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 			this.initials["translate"][axisList[i]] = this.parseAttributeWithDefault(errors, translate, axisList[i], 'ff', this.defaulTransformValue);
 	}
 	this.initials["transform"] = mat4.translate(this.initials["transform"], this.initials["transform"], [ this.initials["translate"]["x"], this.initials["translate"]["y"], this.initials["translate"]["z"] ]);
-	
+
 	var axis_found = [];
 	axis_found["x"] = false;
 	axis_found["y"] = false;
@@ -247,21 +264,21 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 	for(var i = 0; i < elems.length; i++) {
 		if(elems[i].nodeName != "rotation")
 			continue;
-		
+
 		var axis = this.parseRequiredAttribute(errors, elems[i], 'axis', 'cc');
 		var angle = this.parseAttributeWithDefault(errors, elems[i], 'angle', 'ff', this.defaultTransformValue);
-		
+
 		if(axis == null || angle == null)
 			continue;
-		
+
 		angle = angle*Math.PI/180;
-		
+
 		if(axis_found[axis]) {
 			this.addWarning(errors, "Initial rotation on axis '" + axis + "' already found. Only the first will be considered.");
 			continue;
 		}
 		axis_found[axis] = true;
-		
+
 		switch(axis) {
 		case 'x':
 			this.initials["transform"] = mat4.rotateX(this.initials["transform"], this.initials["transform"], angle);
@@ -274,7 +291,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 			break;
 		}
 	}
-	
+
 	for(var i in axis_found) {
 		if(!axis_found[i]) {
 			this.addWarning(errors, "Initial rotation on axis '" + i + "' not found. Assuming zero.");
@@ -544,7 +561,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 		args = args.split(' ');
 		if(elems == null)
 			continue;
-		
+
 		var temp_args = [];
 		for(var temp = 0; temp < args.length; temp++) {
 			if(args[temp] !== "")
@@ -816,12 +833,12 @@ MySceneGraph.prototype.parseAttributeWithDefault= function(errors, element, name
 		attribute = this.reader.getString(element, name, false);
 	break;
 	}
-	
+
 	if (attribute === null) {
 		this.addWarning(errors, "'" + name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'. Assuming default value: " + defaultValue);
 		attribute = defaultValue;
 	}
-	
+
 	return attribute;	
 }
 
