@@ -69,20 +69,10 @@ MySceneGraph.prototype.display=function()
 	if(!this.ready)
 		return;
 
-	var initMatNull = false;
-	if(this.graphNodes[this.rootNode].material === null) {
-		initMatNull = true;
-		//this.graphNodes[this.rootNode].material = this.defaultSceneMaterial;
-	}
-
 	this.scene.pushMatrix();
 	this.scene.multMatrix(this.initials["transform"]);
 	this.graphNodes[this.rootNode].display(undefined, this.defaultSceneMaterial);
 	this.scene.popMatrix();
-
-	if(initMatNull) {
-		this.graphNodes[this.rootNode].material = null;
-	}
 }
 
 /*
@@ -196,6 +186,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 	if (elems == null) return;
 	var initials = elems[0];
 
+	// Parse frustum values
 	elems = this.parseElement(errors, initials, 'frustum', 1, 1);
 	if (elems != null)
 	{
@@ -205,6 +196,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 		this.initials["frustum"]["far"] = this.parseAttributeWithDefault(errors, frustum, 'far', 'ff', this.defaultFrustumFar);
 	}
 
+	// Validate initial transormation number and order
 	var temp = initials.childNodes;
 	var realElems = [];
 	for(var i = 0; i < temp.length; i++) {
@@ -241,7 +233,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 			break;
 		}
 	}
-
+	// Checks if the transformation order was correct. Even if it isn't correct, assumes the correct order (translation, rotation1, rotation2, rotation3, scale).
 	if(!(transform_found["translation"] === transform_found["rotation"][0] - 1 &&
 			transform_found["rotation"][0] === transform_found["rotation"][1] - 1 &&
 			transform_found["rotation"][1] === transform_found["rotation"][2] - 1 &&
@@ -250,18 +242,20 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 		"Correct order must be translation, rotation1, rotation2, rotation3, scale, where rotations must use all 3 axis on any order.");
 	}
 
+	// Parse initial transformations
 	var axisList = ["x", "y", "z"];
-
 	elems = this.parseElement(errors, initials, 'translation', 1, 1);
-	if (elems != null)
-	{
-		var translate = elems[0];
-		this.initials["translate"] = [];
-		for (var i = 0; i < axisList.length; i++)
-			this.initials["translate"][axisList[i]] = this.parseAttributeWithDefault(errors, translate, axisList[i], 'ff', this.defaulTransformValue);
-	}
+	if(elems == null)
+		return;
+
+	// Initial translation
+	var translate = elems[0];
+	this.initials["translate"] = [];
+	for (var i = 0; i < axisList.length; i++)
+		this.initials["translate"][axisList[i]] = this.parseAttributeWithDefault(errors, translate, axisList[i], 'ff', this.defaulTransformValue);
 	this.initials["transform"] = mat4.translate(this.initials["transform"], this.initials["transform"], [ this.initials["translate"]["x"], this.initials["translate"]["y"], this.initials["translate"]["z"] ]);
 
+	// Initial rotations
 	var axis_found = [];
 	axis_found["x"] = false;
 	axis_found["y"] = false;
@@ -304,6 +298,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 		}
 	}
 
+	// Initial scale
 	elems = this.parseElement(errors, initials, 'scale', 1, 1);
 	if (elems != null)
 	{
@@ -316,6 +311,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 	}
 	this.initials["transform"] = mat4.scale(this.initials["transform"], this.initials["transform"], [ this.initials["scale"]["sx"], this.initials["scale"]["sy"], this.initials["scale"]["sz"] ]);
 
+	// Parses axis reference
 	elems = this.parseElement(errors, initials, 'reference', 1, 1);
 	if (elems != null)
 	{
@@ -336,6 +332,7 @@ MySceneGraph.prototype.parseIllumination= function(errors, rootElement)
 
 	var rgbaList = ["r", "g", "b", "a"];
 
+	// Parses global ambient light values
 	elems = this.parseElement(errors, illumination, 'ambient', 1, 1);
 	if (elems != null)
 	{
@@ -347,6 +344,7 @@ MySceneGraph.prototype.parseIllumination= function(errors, rootElement)
 		}
 	}
 
+	// Parses global background light values
 	elems = this.parseElement(errors, illumination, 'background', 1, 1);
 	if (elems != null)
 	{
@@ -373,64 +371,66 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 	var rgbaList = ["r", "g", "b", "a"];
 
 	elems = this.parseElement(errors, lights, 'LIGHT', 0, 0);
-	if (elems != null)
+	if(elems == null)
+		return;
+	
+	var lights = elems;
+	for (var i = 0; i < lights.length; i++) // For each light
 	{
-		var lights = elems;
-		for (var i = 0; i < lights.length; i++) // Para cada fonte de luz
+		// Get light id
+		this.lights[i] = [];
+		this.lights[i]["id"] = this.parseRequiredAttribute(errors, lights[i], 'id', 'ss');
+		elems = this.parseElement(errors, lights[i], 'enable', 1, 1);
+		if(elems == null)
+			continue;
+		
+		// Get light's enabled valye
+		var enable = elems[0];
+		this.lights[i]["enable"] = this.parseAttributeWithDefault(errors, enable, 'value', 'tt', this.defaultLightEnabled);
+		
+		// Get light's position
+		elems = this.parseElement(errors, lights[i], 'position', 1, 1);
+		if(elems == null)
+			continue;
+		var position = elems[0];
+		this.lights[i]["position"] = [];
+		for (var j = 0; j < xyzwList.length; j++)
 		{
-			this.lights[i] = [];
-			this.lights[i]["id"] = this.parseRequiredAttribute(errors, lights[i], 'id', 'ss');
+			this.lights[i]["position"][xyzwList[j]] = this.parseRequiredAttribute(errors, position, xyzwList[j], 'ff');
+		}
+				
+		// Get light's ambient values
+		elems = this.parseElement(errors, lights[i], 'ambient', 1, 1);
+		if(elems == null)
+			continue;
 
-			elems = this.parseElement(errors, lights[i], 'enable', 1, 1);
-			if (elems != null)
-			{
-				var enable = elems[0];
-				this.lights[i]["enable"] = this.parseAttributeWithDefault(errors, enable, 'value', 'tt', this.defaultLightEnabled);
-			}
+		var ambient = elems[0];
+		this.lights[i]["ambient"] = [];
+		for (var j = 0; j < rgbaList.length; j++)
+		{
+			this.lights[i]["ambient"][rgbaList[j]] = this.parseAttributeWithDefault(errors, ambient, rgbaList[j], 'ff', this.defautlLightValue);
+		}
 
-			elems = this.parseElement(errors, lights[i], 'position', 1, 1);
-			if (elems != null)
-			{
-				var position = elems[0];
-				this.lights[i]["position"] = [];
-				for (var j = 0; j < xyzwList.length; j++)
-				{
-					this.lights[i]["position"][xyzwList[j]] = this.parseRequiredAttribute(errors, position, xyzwList[j], 'ff');
-				}
-			}
-
-			elems = this.parseElement(errors, lights[i], 'ambient', 1, 1);
-			if (elems != null)
-			{
-				var ambient = elems[0];
-				this.lights[i]["ambient"] = [];
-				for (var j = 0; j < rgbaList.length; j++)
-				{
-					this.lights[i]["ambient"][rgbaList[j]] = this.parseAttributeWithDefault(errors, ambient, rgbaList[j], 'ff', this.defautlLightValue);
-				}
-			}
-
-			elems = this.parseElement(errors, lights[i], 'diffuse', 1, 1);
-			if (elems != null)
-			{
-				var diffuse = elems[0];
-				this.lights[i]["diffuse"] = [];
-				for (var j = 0; j < rgbaList.length; j++)
-				{
-					this.lights[i]["diffuse"][rgbaList[j]] = this.parseAttributeWithDefault(errors, diffuse, rgbaList[j], 'ff', this.defautlLightValue);
-				}
-			}
-
-			elems = this.parseElement(errors, lights[i], 'specular', 1, 1);
-			if (elems != null)
-			{
-				var specular = elems[0];
-				this.lights[i]["specular"] = [];
-				for (var j = 0; j < rgbaList.length; j++)
-				{
-					this.lights[i]["specular"][rgbaList[j]] = this.parseAttributeWithDefault(errors, specular, rgbaList[j], 'ff', this.defautlLightValue);
-				}
-			}
+		// Get light's diffuse values
+		elems = this.parseElement(errors, lights[i], 'diffuse', 1, 1);
+		if(elems == null)
+			continue;
+		var diffuse = elems[0];
+		this.lights[i]["diffuse"] = [];
+		for (var j = 0; j < rgbaList.length; j++)
+		{
+			this.lights[i]["diffuse"][rgbaList[j]] = this.parseAttributeWithDefault(errors, diffuse, rgbaList[j], 'ff', this.defautlLightValue);
+		}
+		
+		// Get light's specular values
+		elems = this.parseElement(errors, lights[i], 'specular', 1, 1);
+		if(elems == null)
+			continue;
+		var specular = elems[0];
+		this.lights[i]["specular"] = [];
+		for (var j = 0; j < rgbaList.length; j++)
+		{
+			this.lights[i]["specular"][rgbaList[j]] = this.parseAttributeWithDefault(errors, specular, rgbaList[j], 'ff', this.defautlLightValue);
 		}
 	}
 }
@@ -449,11 +449,14 @@ MySceneGraph.prototype.parseTextures= function(errors, rootElement)
 	if (elems != null)
 	{
 		var textures = elems;
-		for (var i = 0; i < textures.length; i++) // Para cada textura
+		for (var i = 0; i < textures.length; i++) // For each texture
 		{
+			// Get texture ID
 			var id = this.parseRequiredAttribute(errors, textures[i], 'id', 'ss');
 			var texture = [];
 			texture["id"] = id;
+			
+			// Get texture file
 			elems = this.parseElement(errors, textures[i], 'file', 1, 1);
 			if (elems != null)
 			{
@@ -461,6 +464,7 @@ MySceneGraph.prototype.parseTextures= function(errors, rootElement)
 				texture["file"] = this.parseRequiredAttribute(errors, enable, 'path', 'ss');
 			}
 
+			// Get texture's amplification factors
 			elems = this.parseElement(errors, textures[i], 'amplif_factor', 1, 1);
 			if (elems != null)
 			{
@@ -481,6 +485,7 @@ MySceneGraph.prototype.parseTextures= function(errors, rootElement)
  */
 MySceneGraph.prototype.parseMaterials= function(errors, rootElement) {
 
+	// These arrays store the different material arguments and types to shorten parsing
 	var attributes = ["specular", "diffuse", "ambient", "emission"];
 	var rgba = ["r", "g", "b", "a"];
 
@@ -497,6 +502,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, rootElement) {
 	for (var i = 0; i < materials.length; i++) // For each material
 	{
 		var material = [];
+		// Get material ID
 		var id = this.parseRequiredAttribute(errors, materials[i], 'id', 'ss');
 		if(id === null)
 			continue;
@@ -507,6 +513,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, rootElement) {
 			continue;
 		}
 
+		// Get material shininess
 		elems = this.parseElement(errors, materials[i], 'shininess', 1, 1);
 		if(elems===null)
 			continue;
@@ -516,6 +523,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, rootElement) {
 			this.addWarning(errors, "MATERIAL '" + id + "' shininess not found. Assuming zero.");
 		}
 
+		// Parse material arguments and their properties
 		for(var att = 0; att < attributes.length; att++) {
 			elems = this.parseElement(errors, materials[i], attributes[att], 1, 1);
 			if(elems != null) {
@@ -545,6 +553,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, rootElement) {
  */
 MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 
+	// These arrays store the different argument names and parsing functions for each type of primitive
 	var all_args = [];
 	var all_func = [];
 	all_args["rectangle"] = ["left-top-x", "left-top-y", "right-bottom-x", "right-bottom-y"];
@@ -569,7 +578,10 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 	for (var i = 0; i < leaves.length; i++) // For each leaf
 	{
 		var leaf = [];
+		// Get leaf ID
 		var id = this.parseRequiredAttribute(errors, leaves[i], 'id', 'ss');
+		if(id == null)
+			continue;
 
 		// Check if leaf id already exists. If so, continue to next one and add error
 		if (typeof this.leaves[id] != 'undefined') {
@@ -577,12 +589,14 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 			continue;
 		}
 
+		// Get leaf type
 		elems = this.parseRequiredAttribute(errors, leaves[i], 'type', 'ss');
 		var args = this.parseRequiredAttribute(errors, leaves[i], 'args', 'ss');
 		args = args.split(' ');
 		if(elems == null)
 			continue;
-
+		
+		// Prepare list of arguments, allowing multiple spaces between arguments
 		var temp_args = [];
 		for(var temp = 0; temp < args.length; temp++) {
 			if(args[temp] !== "")
@@ -596,11 +610,13 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 		}	
 		leaf["type"] = elems;
 
+		// Validate leaf type's number of arguments
 		if(args.length != all_args[elems].length) {
 			this.addError(errors, "illegal number of arguments for leaf '" + id + "' of type '" + elems + "'.");
 			continue;
 		}
 
+		// Get leaf parameters
 		var err_found = false;
 		for(var temp = 0; temp < all_args[elems].length; temp++) {
 			leaf[all_args[elems][temp]] = (all_func[elems])[temp](args[temp]);
@@ -614,6 +630,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 			continue;
 		}
 
+		// Generate SceneLeaf objet for the leaf
 		switch(elems) {
 		case "rectangle":
 			this.leaves[id] = new SceneLeaf(new Rectangle(this.scene, leaf["left-top-x"], leaf["left-top-y"], leaf["right-bottom-x"], leaf["right-bottom-y"]),
@@ -640,6 +657,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
  */
 MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 
+	// These arrays store the different attributes and their types for the node's transformations
 	var all_attributes = []; var all_types = [];
 	all_attributes["TRANSLATION"] = ["x", "y", "z"];
 	all_types["TRANSLATION"] = ["ff", "ff", "ff"];
