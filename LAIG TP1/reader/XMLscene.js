@@ -28,12 +28,15 @@ XMLscene.prototype.init = function (application) {
 XMLscene.prototype.initLights = function () {
 
 	var globalAmbient = this.graph.illumination["ambient"];
-	this.setGlobalAmbientLight(globalAmbient["r"], globalAmbient["g"], globalAmbient["b"], globalAmbient["a"]);
+	if(typeof globalAmbient != 'undefined')
+		this.setGlobalAmbientLight(globalAmbient["r"], globalAmbient["g"], globalAmbient["b"], globalAmbient["a"]);
 
 	this.shader.bind();
 
 	for (var i = 0; i < this.graph.lights.length; i++)
 	{
+		if(typeof this.graph.lights[i] == 'undefined')
+			continue;
 		this.lights[i].setPosition(this.graph.lights[i]["position"]["x"], this.graph.lights[i]["position"]["y"], this.graph.lights[i]["position"]["z"], this.graph.lights[i]["position"]["w"]);
 		this.lights[i].setAmbient(this.graph.lights[i]["ambient"]["r"],this.graph.lights[i]["ambient"]["g"],this.graph.lights[i]["ambient"]["b"],this.graph.lights[i]["ambient"]["a"]);
 		this.lights[i].setDiffuse(this.graph.lights[i]["diffuse"]["r"],this.graph.lights[i]["diffuse"]["g"],this.graph.lights[i]["diffuse"]["b"],this.graph.lights[i]["diffuse"]["a"]);
@@ -57,10 +60,17 @@ XMLscene.prototype.initLights = function () {
 };
 
 XMLscene.prototype.setInitials = function () {
-	this.camera.near = this.graph.initials["frustum"]["near"];
-	this.camera.far = this.graph.initials["frustum"]["far"];
-	this.initialTransform = mat4.clone(this.graph.initials["transform"]);
-	if(this.graph.initials["reference"] <= 0) {
+	if(typeof this.graph.initials["frustum"] != 'undefined') {
+		this.camera.near = this.graph.initials["frustum"]["near"];
+		this.camera.far = this.graph.initials["frustum"]["far"];
+	}
+	
+	if(typeof this.graph.initials["transform"] != 'undefined')
+		this.initialTransform = mat4.clone(this.graph.initials["transform"]);
+	else
+		this.initialTransform = mat4.create();
+	
+	if(typeof this.graph.initials["reference"] != 'undefined' && this.graph.initials["reference"] <= 0) {
 		this.axis = new CGFaxis(this, 0, 0);
 	} else {
 		this.axis = new CGFaxis(this, this.graph.initials["reference"]);
@@ -93,7 +103,8 @@ XMLscene.prototype.setDefaultAppearance = function () {
 XMLscene.prototype.onGraphLoaded = function () 
 {
 	var background = this.graph.illumination["background"];
-	this.gl.clearColor(background["r"], background["g"], background["b"], background["a"]);
+	if(typeof background != 'undefined')
+		this.gl.clearColor(background["r"], background["g"], background["b"], background["a"]);
 	this.setInitials();
 	this.initLights();
 	this.initPrimitives();

@@ -145,13 +145,13 @@ MySceneGraph.prototype.parse= function(errors, rootElement) {
 		if (blockPos[i] == -1)
 		{
 			this.addWarning(errors, "block '" + blocks[i] + "' not found.");
-			break;
+			continue;
 		}
 		if (blockPos[i] != i)
 			this.addWarning(errors, "wrong block order for block '" + blocks[i] + "', it should be number " + (i + 1) + ".");
 
 		var elems = [];
-		elems = this.parseElement(errors, rootElement, blocks[i], 1, 1);
+		elems = this.parseElement(errors, rootElement, blocks[i], 1, 1, true);
 		if (elems == null) break;
 		this.parseBlock(errors, rootElement, i);
 	}
@@ -182,12 +182,12 @@ MySceneGraph.prototype.parseBlock= function(errors, element, blockID)
  */
 MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 	var elems = [];
-	elems = this.parseElement(errors, rootElement, 'INITIALS', 1, 1);
+	elems = this.parseElement(errors, rootElement, 'INITIALS', 1, 1, true);
 	if (elems == null) return;
 	var initials = elems[0];
 
 	// Parse frustum values
-	elems = this.parseElement(errors, initials, 'frustum', 1, 1);
+	elems = this.parseElement(errors, initials, 'frustum', 1, 1, true);
 	if (elems != null)
 	{
 		var frustum = elems[0];
@@ -244,7 +244,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 
 	// Parse initial transformations
 	var axisList = ["x", "y", "z"];
-	elems = this.parseElement(errors, initials, 'translation', 1, 1);
+	elems = this.parseElement(errors, initials, 'translation', 1, 1, true);
 	if(elems == null)
 		return;
 
@@ -299,7 +299,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 	}
 
 	// Initial scale
-	elems = this.parseElement(errors, initials, 'scale', 1, 1);
+	elems = this.parseElement(errors, initials, 'scale', 1, 1, true);
 	if (elems != null)
 	{
 		var scale = elems[0];
@@ -312,7 +312,7 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 	this.initials["transform"] = mat4.scale(this.initials["transform"], this.initials["transform"], [ this.initials["scale"]["sx"], this.initials["scale"]["sy"], this.initials["scale"]["sz"] ]);
 
 	// Parses axis reference
-	elems = this.parseElement(errors, initials, 'reference', 1, 1);
+	elems = this.parseElement(errors, initials, 'reference', 1, 1, true);
 	if (elems != null)
 	{
 		var reference = elems[0];
@@ -326,14 +326,14 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 MySceneGraph.prototype.parseIllumination= function(errors, rootElement)
 {
 	var elems = [];
-	elems = this.parseElement(errors, rootElement, 'ILLUMINATION', 1, 1);
+	elems = this.parseElement(errors, rootElement, 'ILLUMINATION', 1, 1, true);
 	if (elems == null) return;
 	var illumination = elems[0];
 
 	var rgbaList = ["r", "g", "b", "a"];
 
 	// Parses global ambient light values
-	elems = this.parseElement(errors, illumination, 'ambient', 1, 1);
+	elems = this.parseElement(errors, illumination, 'ambient', 1, 1, true);
 	if (elems != null)
 	{
 		var ambient = elems[0];
@@ -345,7 +345,7 @@ MySceneGraph.prototype.parseIllumination= function(errors, rootElement)
 	}
 
 	// Parses global background light values
-	elems = this.parseElement(errors, illumination, 'background', 1, 1);
+	elems = this.parseElement(errors, illumination, 'background', 1, 1, true);
 	if (elems != null)
 	{
 		var background = elems[0];
@@ -363,14 +363,14 @@ MySceneGraph.prototype.parseIllumination= function(errors, rootElement)
 MySceneGraph.prototype.parseLights= function(errors, rootElement)
 {
 	var elems = [];
-	elems = this.parseElement(errors, rootElement, 'LIGHTS', 1, 1);
+	elems = this.parseElement(errors, rootElement, 'LIGHTS', 1, 1, true);
 	if (elems == null) return;
 	var lights = elems[0];
 
 	var xyzwList = ["x", "y", "z", "w"];
 	var rgbaList = ["r", "g", "b", "a"];
 
-	elems = this.parseElement(errors, lights, 'LIGHT', 0, 0);
+	elems = this.parseElement(errors, lights, 'LIGHT', 0, 0, true);
 	if(elems == null)
 		return;
 	
@@ -380,7 +380,7 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 		// Get light id
 		this.lights[i] = [];
 		this.lights[i]["id"] = this.parseRequiredAttribute(errors, lights[i], 'id', 'ss');
-		elems = this.parseElement(errors, lights[i], 'enable', 1, 1);
+		elems = this.parseElement(errors, lights[i], 'enable', 1, 1, true);
 		if(elems == null)
 			continue;
 		
@@ -389,7 +389,7 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 		this.lights[i]["enable"] = this.parseAttributeWithDefault(errors, enable, 'value', 'tt', this.defaultLightEnabled);
 		
 		// Get light's position
-		elems = this.parseElement(errors, lights[i], 'position', 1, 1);
+		elems = this.parseElement(errors, lights[i], 'position', 1, 1, true);
 		if(elems == null)
 			continue;
 		var position = elems[0];
@@ -400,7 +400,7 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 		}
 				
 		// Get light's ambient values
-		elems = this.parseElement(errors, lights[i], 'ambient', 1, 1);
+		elems = this.parseElement(errors, lights[i], 'ambient', 1, 1, true);
 		if(elems == null)
 			continue;
 
@@ -412,7 +412,7 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 		}
 
 		// Get light's diffuse values
-		elems = this.parseElement(errors, lights[i], 'diffuse', 1, 1);
+		elems = this.parseElement(errors, lights[i], 'diffuse', 1, 1, true);
 		if(elems == null)
 			continue;
 		var diffuse = elems[0];
@@ -423,7 +423,7 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 		}
 		
 		// Get light's specular values
-		elems = this.parseElement(errors, lights[i], 'specular', 1, 1);
+		elems = this.parseElement(errors, lights[i], 'specular', 1, 1, true);
 		if(elems == null)
 			continue;
 		var specular = elems[0];
@@ -441,11 +441,11 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 MySceneGraph.prototype.parseTextures= function(errors, rootElement)
 {
 	var elems = [];
-	elems = this.parseElement(errors, rootElement, 'TEXTURES', 1, 1);
+	elems = this.parseElement(errors, rootElement, 'TEXTURES', 1, 1, true);
 	if (elems == null) return;
 	var textures = elems[0];
 
-	elems = this.parseElement(errors, textures, 'TEXTURE', 0, 0);
+	elems = this.parseElement(errors, textures, 'TEXTURE', 0, 0, true);
 	if (elems != null)
 	{
 		var textures = elems;
@@ -457,7 +457,7 @@ MySceneGraph.prototype.parseTextures= function(errors, rootElement)
 			texture["id"] = id;
 			
 			// Get texture file
-			elems = this.parseElement(errors, textures[i], 'file', 1, 1);
+			elems = this.parseElement(errors, textures[i], 'file', 1, 1, true);
 			if (elems != null)
 			{
 				var enable = elems[0];
@@ -465,7 +465,7 @@ MySceneGraph.prototype.parseTextures= function(errors, rootElement)
 			}
 
 			// Get texture's amplification factors
-			elems = this.parseElement(errors, textures[i], 'amplif_factor', 1, 1);
+			elems = this.parseElement(errors, textures[i], 'amplif_factor', 1, 1, true);
 			if (elems != null)
 			{
 				var enable = elems[0];
@@ -490,11 +490,11 @@ MySceneGraph.prototype.parseMaterials= function(errors, rootElement) {
 	var rgba = ["r", "g", "b", "a"];
 
 	var elems = [];
-	elems = this.parseElement(errors, rootElement, 'MATERIALS', 1, 1);
+	elems = this.parseElement(errors, rootElement, 'MATERIALS', 1, 1, true);
 	if (elems == null) return;
 	var materials = elems[0];
 
-	elems = this.parseElement(errors, materials, 'MATERIAL', 0, 0);
+	elems = this.parseElement(errors, materials, 'MATERIAL', 0, 0, true);
 	if (elems == null)
 		return;
 
@@ -514,7 +514,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, rootElement) {
 		}
 
 		// Get material shininess
-		elems = this.parseElement(errors, materials[i], 'shininess', 1, 1);
+		elems = this.parseElement(errors, materials[i], 'shininess', 1, 1, true);
 		if(elems===null)
 			continue;
 		material["shininess"] = this.parseAttributeWithDefault(errors, elems[0], 'value', 'ff', this.defaultMaterialShininess);
@@ -525,7 +525,7 @@ MySceneGraph.prototype.parseMaterials= function(errors, rootElement) {
 
 		// Parse material arguments and their properties
 		for(var att = 0; att < attributes.length; att++) {
-			elems = this.parseElement(errors, materials[i], attributes[att], 1, 1);
+			elems = this.parseElement(errors, materials[i], attributes[att], 1, 1, true);
 			if(elems != null) {
 				material[attributes[att]] = [];
 				for(var value = 0; value < rgba.length; value++) {
@@ -566,11 +566,11 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 	all_func["triangle"] = [parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat];
 
 	var elems = [];
-	elems = this.parseElement(errors, rootElement, 'LEAVES', 1, 1);
+	elems = this.parseElement(errors, rootElement, 'LEAVES', 1, 1, true);
 	if (elems == null) return;
 	var leaves = elems[0];
 
-	elems = this.parseElement(errors, leaves, 'LEAF', 0, 0);
+	elems = this.parseElement(errors, leaves, 'LEAF', 0, 0, true);
 	if (elems == null)
 		return;
 
@@ -667,12 +667,12 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 	all_types["SCALE"] = ["ff", "ff", "ff"];
 
 	var elems = [];
-	elems = this.parseElement(errors, rootElement, 'NODES', 1, 1);
+	elems = this.parseElement(errors, rootElement, 'NODES', 1, 1, true);
 	if(elems == null)
 		return;
 
 	// GET ROOT NODE ID
-	var root = this.parseElement(errors, elems[0], 'ROOT', 1, 1);
+	var root = this.parseElement(errors, elems[0], 'ROOT', 1, 1, true);
 	if(root == null)
 		return;
 	this.rootNode = this.parseRequiredAttribute(errors, root[0], 'id', 'ss');
@@ -680,7 +680,7 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 		return;
 
 	// GET NORMAL NODES
-	elems = this.parseElement(errors, elems[0], 'NODE', 0, 0);
+	elems = this.parseElement(errors, elems[0], 'NODE', 0, 0, true);
 	if(elems == null)
 		return;
 
@@ -703,7 +703,7 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 		}
 
 		// GET NODE'S MATERIAL ID
-		var material = this.parseElement(errors, elems[i], 'MATERIAL', 1, 1);
+		var material = this.parseElement(errors, elems[i], 'MATERIAL', 1, 1, true);
 		if(material == null)
 			continue;
 		var mat_id = this.parseAttributeWithDefault(errors, material[0], 'id', 'ss', this.defaultNodeMaterialID);
@@ -711,7 +711,7 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 			continue;
 
 		// GET NODE'S TEXTURE ID
-		var texture = this.parseElement(errors, elems[i], 'TEXTURE', 1, 1);
+		var texture = this.parseElement(errors, elems[i], 'TEXTURE', 1, 1, true);
 		if(texture == null)
 			continue;
 		var tex_id = this.parseAttributeWithDefault(errors, texture[0], 'id', 'ss', this.defaultNodeTextureID);
@@ -746,13 +746,13 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 		}
 
 		// GET NODE DESCENDANTS
-		var descendants = this.parseElement(errors, elems[i], 'DESCENDANTS', 1, 1);
+		var descendants = this.parseElement(errors, elems[i], 'DESCENDANTS', 1, 1, true);
 		if(descendants == null) {
 			this.addWarning(errors, "NODE '" + id + "' doesn't have a DESCENDANTS block. Ignoring node");
 			continue;
 		}
 
-		descendants = this.parseElement(errors, descendants[0], 'DESCENDANT', 0, 0);
+		descendants = this.parseElement(errors, descendants[0], 'DESCENDANT', 0, 0, true);
 		if(descendants == null) {
 			continue;
 		}
@@ -796,6 +796,11 @@ MySceneGraph.prototype.validateNodes= function(errors) {
 	var error_found = false;
 
 	// CHECK IF ROOT NODE EXISTS
+	if(typeof this.rootNode == 'undefined') {
+		this.addError(errors, "No ROOT node ID found.");
+		error_found = true;
+	}
+	
 	if(typeof this.nodes[this.rootNode] == 'undefined') {
 		this.addError(errors, "no NODE with id of ROOT node ('" + this.rootNode + "') was found");
 		error_found = true;
@@ -806,9 +811,9 @@ MySceneGraph.prototype.validateNodes= function(errors) {
 		// CHECK IF ALL DESCENDANTS EXIST
 		var desc = this.nodes[i]["descendants"];
 		for(var j = 0; j < desc.length; j++) {
-			if(typeof this.nodes[desc[j]] == 'undefined' && typeof this.leaves[desc[j]] == 'undefined') {
-				this.addError(errors, "DESCENDANT '" + desc[j] + "' of NODE '" + i + "' not found in NODES or LEAVES list");
-				error_found = true;
+			if(typeof this.nodes[desc[j]] == 'undefined' && typeof this.leaves[desc[j]] == 'undefined') {	// if a descendant does not exist, removes it so the scene can still be displayed
+				this.addWarning(errors, "DESCENDANT '" + desc[j] + "' of NODE '" + i + "' not found in NODES or LEAVES list. Removing descendant.");
+				this.nodes[i]["descendants"].splice(j, 1);
 			}
 		}
 
@@ -938,15 +943,15 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, t
  * Parses an inner element from another element, with a specified name. Returns an array
  * of elements with that name if the array's length is within minNum - maxNum, returning null otherwise
  */
-MySceneGraph.prototype.parseElement= function(errors, parent, elementName, minNum, maxNum)
+MySceneGraph.prototype.parseElement= function(errors, parent, elementName, minNum, maxNum, addError)
 {
 	var element = parent.getElementsByTagName(elementName);
-	if (element == null) {
+	if (element == null && addError) {
 		this.addError(errors, "'" + elementname + "' element is missing.");
 		return null;
 	}
 
-	if ((element.length < minNum && minNum != 0) || (element.length > maxNum && maxNum != 0))
+	if (((element.length < minNum && minNum != 0) || (element.length > maxNum && maxNum != 0)) && addError)
 	{
 		if (minNum == maxNum)
 			this.addError(errors, "expected " + minNum + " '" + elementName + "' element" + (minNum != 1 ? "s" : "") + " but found " + element.length + ".");
