@@ -970,6 +970,11 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, t
 /**
  * Parses an inner element from another element, with a specified name. Returns an array
  * of elements with that name if the array's length is within minNum - maxNum, returning null otherwise
+ * @param errors errors and warnings array
+ * @param parent parent element
+ * @param name of the element to be parsed
+ * @param minimum number of elements expected to be found, or 0 if optional element
+ * @param maximum number of elements expected to be found, or 0 if infinite
  */
 MySceneGraph.prototype.parseElement= function(errors, parent, elementName, minNum, maxNum, addError)
 {
@@ -992,6 +997,8 @@ MySceneGraph.prototype.parseElement= function(errors, parent, elementName, minNu
 
 /**
  * Adds an error to the errors array, with the specified message
+ * @param errors errors and warnings array
+ * @param msg error message
  */
 MySceneGraph.prototype.addError = function(errors, msg)
 {
@@ -1001,6 +1008,8 @@ MySceneGraph.prototype.addError = function(errors, msg)
 
 /**
  * Adds a warning to the errors array, with the specified message
+ * @param errors errors and warnings array
+ * @param msg warning message
  */
 MySceneGraph.prototype.addWarning = function(errors, msg)
 {
@@ -1017,6 +1026,7 @@ MySceneGraph.prototype.onXMLError = function()
 
 /**
  * Toggles the light with the specified index
+ * @param light index of the light to be toggled
  */
 MySceneGraph.prototype.toggleLight = function(light)
 {
