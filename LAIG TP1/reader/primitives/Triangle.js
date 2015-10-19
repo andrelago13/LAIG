@@ -1,6 +1,15 @@
 /**
  * Triangle
- * @param gl {WebGLRenderingContext}
+ * @param scene CGFscene where the Rectangle will be displayed
+ * @param v1x x coordinate of the first triangle vertex
+ * @param v1y y coordinate of the first triangle vertex
+ * @param v1z z coordinate of the first triangle vertex
+ * @param v2x x coordinate of the second triangle vertex
+ * @param v2y y coordinate of the second triangle vertex
+ * @param v2z z coordinate of the second triangle vertex
+ * @param v3x x coordinate of the third triangle vertex
+ * @param v3y y coordinate of the third triangle vertex
+ * @param v3z z coordinate of the third triangle vertex
  * @constructor
  */
 function Triangle(scene, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z) {
@@ -27,6 +36,9 @@ function Triangle(scene, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z) {
 Triangle.prototype = Object.create(CGFobject.prototype);
 Triangle.prototype.constructor=Triangle;
 
+/**
+ * Initializes the Triangle buffers (vertices, indices, normals and texCoords)
+ */
 Triangle.prototype.initBuffers = function () {
 	this.vertices = [
             this.v1x, this.v1y, this.v1z,
@@ -60,6 +72,11 @@ Triangle.prototype.initBuffers = function () {
 	this.initGLBuffers();
 };
 
+/**
+ * Updates the Triangle amplification factors
+ * @param amplif_s s domain amplification factor
+ * @param amplif_t t domain amplification factor
+ */
 Triangle.prototype.setAmplifFactor = function(amplif_s, amplif_t) {
     
     var ab = Math.sqrt(Math.pow(this.v2x-this.v1x, 2) + Math.pow(this.v2y-this.v1y, 2) + Math.pow(this.v2z-this.v1z, 2));

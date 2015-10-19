@@ -1,6 +1,10 @@
 /**
  * Rectangle
- * @param gl {WebGLRenderingContext}
+ * @param scene CGFscene where the Rectangle will be displayed
+ * @param left_top_x x coordinate of the left top vertex
+ * @param left_top_y y coordinate of the left top vertex
+ * @param right_bottom_x x coordinate of the right bottom vertex
+ * @param right_bottom_y y coordinate of the right bottom vertex
  * @constructor
  */
 function Rectangle(scene, left_top_x, left_top_y, right_bottom_x, right_bottom_y) {
@@ -36,6 +40,9 @@ function Rectangle(scene, left_top_x, left_top_y, right_bottom_x, right_bottom_y
 Rectangle.prototype = Object.create(CGFobject.prototype);
 Rectangle.prototype.constructor=Rectangle;
 
+/**
+ * Initializes the Rectangle buffers (vertices, indices, normals and texCoords)
+ */
 Rectangle.prototype.initBuffers = function () {
 	
 	this.vertices = [
@@ -68,6 +75,11 @@ Rectangle.prototype.initBuffers = function () {
     this.initGLBuffers();
 };
 
+/**
+ * Updates the Rectangle amplification factors
+ * @param amplif_s s domain amplification factor
+ * @param amplif_t t domain amplification factor
+ */
 Rectangle.prototype.setAmplifFactor = function(amplif_s, amplif_t) {
 	var dist_s = Math.abs(this.left_top_x - this.right_bottom_x);
 	var dist_t = Math.abs(this.left_top_y - this.right_bottom_y);

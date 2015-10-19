@@ -3,9 +3,9 @@ SceneLeaf.prototype.constructor = SceneLeaf;
 
 /**
  * @constructor
- * @param primitive
- * @param leafId
- * @param leafList
+ * @param primitive Primitive CGFobject to be represented by this leaf 
+ * @param leafId	ID string to be given as this leaf's key on the leafList array
+ * @param leafList	Array of graph leafs, where this will be added
  */
 function SceneLeaf(primitive, leafId, leafList) {
 	SceneNode.apply(leafId, null, null, mat4.create);
@@ -15,8 +15,8 @@ function SceneLeaf(primitive, leafId, leafList) {
 }
 
 /**
- * 
- * @param texture
+ * Displays the primitive, applying it's amplification factors
+ * @param texture	Current texture applied, needed to get current amplifFactors
  */
 SceneLeaf.prototype.display = function (texture) {
 	if (texture != null)
@@ -52,9 +52,9 @@ SceneLeaf.prototype.getTexture = function () {
 }
 
 /**
- * 
- * @param amplif_s
- * @param amplif_t
+ * Updates the primitive's amplification factors
+ * @param amplif_s s domain amplification factor
+ * @param amplif_t t domain amplification factor
  */
 SceneLeaf.prototype.setAmplifFactor = function(amplif_s, amplif_t) {
 	this.primitive.setAmplifFactor(amplif_s, amplif_t);

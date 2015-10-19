@@ -1,7 +1,11 @@
 /**
-
  * Cylinder
- * @param gl {WebGLRenderingContext}
+ * @param scene CGFscene where the Cylinder will be displayed
+ * @param height Cylinder height
+ * @param bottom_radius radius of the bottom base of the cylinder, placed on the (0, 0, 0) point
+ * @param top_radius radius of the top base of the cylinder
+ * @param stacks ammount of stacks the Cylinder will be divided along it's height
+ * @param slices ammount of slices the Cylinder will be divided into along it's perimeter
  * @constructor
  */
 function Cylinder(scene, height, bottom_radius, top_radius, stacks, slices) {
@@ -19,6 +23,9 @@ function Cylinder(scene, height, bottom_radius, top_radius, stacks, slices) {
 Cylinder.prototype = Object.create(CGFobject.prototype);
 Cylinder.prototype.constructor=Cylinder;
 
+/**
+ * Initializes the Cylinder buffers (vertices, indices, normals and texCoords)
+ */
 Cylinder.prototype.initBuffers = function () {
 	
 	var delta = 2*Math.PI / this.slices;
@@ -55,4 +62,7 @@ Cylinder.prototype.initBuffers = function () {
 	this.initGLBuffers();
 };
 
+/**
+ * Does nothing. Required because of inheritance purposes
+ */
 Cylinder.prototype.setAmplifFactor = function(amplif_s, amplif_t) {}

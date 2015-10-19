@@ -1,4 +1,12 @@
- function Sphere(scene, radius, slices, stacks) {
+/**
+ * Sphere
+ * @param scene CGFscene where the Rectangle will be displayed
+ * @param radius Sphere radius
+ * @param slices ammount of slices the sphere will be divided into along it's perimeter
+ * @param stacksammount of stacks the sphere will be divided into along it's height
+ * @constructor
+ */
+function Sphere(scene, radius, slices, stacks) {
  	CGFobject.call(this,scene);
 	
  	this.radius=radius;
@@ -11,6 +19,9 @@
 Sphere.prototype = Object.create(CGFobject.prototype);
 Sphere.prototype.constructor = Sphere;
 
+/**
+ * Initializes the Sphere buffers (vertices, indices, normals and texCoords)
+ */
 Sphere.prototype.initBuffers = function() {
  	
 	var ang_perimeter = Math.PI*2/this.slices;
@@ -46,4 +57,7 @@ Sphere.prototype.initBuffers = function() {
  	this.initGLBuffers();
  };
 
+/**
+ * Does nothing. Required because of inheritance purposes
+ */
  Sphere.prototype.setAmplifFactor = function(amplif_s, amplif_t) {}
