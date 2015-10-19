@@ -1,16 +1,23 @@
-/*
-	Represents the matrix of a transformation
-*/
-
+/**
+ * Represents the matrix of a transformation
+ * @constructor
+ */
 function TransformMatrix() {
 	this.matrix = mat4.create();
 	mat4.identity(matrix);
 }
 
+/**
+ * 
+ */
 function degToRad(deg) {
 	return Math.PI*deg/180;
 }
 
+/**
+ * @constructor
+ * @param transforms
+ */
 function TransformMatrix(transforms) {
 	this.matrix = mat4.create();
 	this.matrix = mat4.identity(this.matrix);

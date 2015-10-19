@@ -1,4 +1,6 @@
-
+/**
+ * @constructor
+ */
 function XMLscene() {
 	CGFscene.call(this);
 }
@@ -6,6 +8,10 @@ function XMLscene() {
 XMLscene.prototype = Object.create(CGFscene.prototype);
 XMLscene.prototype.constructor = XMLscene;
 
+/**
+ * 
+ * @param application
+ */
 XMLscene.prototype.init = function (application) {
 	CGFscene.prototype.init.call(this, application);
 	this.ready = false;
@@ -25,6 +31,9 @@ XMLscene.prototype.init = function (application) {
 	this.lightStatus = [false, false, false, false, false, false, false, false, false];
 };
 
+/**
+ * 
+ */
 XMLscene.prototype.initLights = function () {
 
 	var globalAmbient = this.graph.illumination["ambient"];
@@ -59,6 +68,9 @@ XMLscene.prototype.initLights = function () {
 	this.shader.unbind();
 };
 
+/**
+ * 
+ */
 XMLscene.prototype.setInitials = function () {
 	if(typeof this.graph.initials["frustum"] != 'undefined') {
 		this.camera.near = this.graph.initials["frustum"]["near"];
@@ -77,6 +89,9 @@ XMLscene.prototype.setInitials = function () {
 	}
 }
 
+/**
+ * 
+ */
 XMLscene.prototype.initPrimitives = function () {
 	this.primitives = [];
 	for (var key in this.graph.leaves) {
@@ -87,10 +102,16 @@ XMLscene.prototype.initPrimitives = function () {
 	}
 }
 
+/**
+ * 
+ */
 XMLscene.prototype.initCameras = function () {
 	this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
 };
 
+/**
+ * 
+ */
 XMLscene.prototype.setDefaultAppearance = function () {
 	this.setAmbient(1.0, 1.0, 1.0, 1.0);
 	this.setDiffuse(1.0, 1.0, 1.0, 1.0);
@@ -98,8 +119,10 @@ XMLscene.prototype.setDefaultAppearance = function () {
 	this.setShininess(1.0);	
 };
 
-//Handler called when the graph is finally loaded. 
-//As loading is asynchronous, this may be called already after the application has started the run loop
+/**
+ * Handler called when the graph is finally loaded. 
+* As loading is asynchronous, this may be called already after the application has started the run loop
+ */
 XMLscene.prototype.onGraphLoaded = function () 
 {
 	var background = this.graph.illumination["background"];
@@ -111,6 +134,9 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.ready = true;
 };
 
+/**
+ * 
+ */
 XMLscene.prototype.updateLights = function(){
 	for(var i = 0; i < this.lights.length; i++)
 	{
@@ -121,6 +147,9 @@ XMLscene.prototype.updateLights = function(){
 	}
 }
 
+/**
+ * 
+ */
 XMLscene.prototype.display = function () {
 	// ---- BEGIN Background, camera and axis setup
 	this.shader.bind();
