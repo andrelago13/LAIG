@@ -862,6 +862,7 @@ MySceneGraph.prototype.validateNodes= function(errors) {
 /**
  * Generates the scene graph after parsing the LSX file
  * @param nodeID ID of the root node
+ * @return {SceneNode} sceneNode representing the root node
  */
 MySceneGraph.prototype.createGraph= function(nodeID) {
 	if (typeof this.graphNodes[nodeID] != 'undefined') return this.graphNodes[nodeID]; // Node already created
@@ -895,6 +896,7 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
  * @param name name of the attribute to parse
  * @param type string representing the type of the attribute to be parsed
  * @param defaultValue default value to assign to the attribute if an error occurs
+ * @return value of the required attribute if it exists, defaultValue if it doesn't or has invalid type
  */
 MySceneGraph.prototype.parseAttributeWithDefault= function(errors, element, name, type, defaultValue) {
 	if (!this.reader.hasAttribute(element, name))
@@ -938,6 +940,7 @@ MySceneGraph.prototype.parseAttributeWithDefault= function(errors, element, name
  * @param element xml element whose attribute to parse
  * @param name name of the attribute to parse
  * @param type string representing the type of the attribute to be parsed
+ * @return required attribute if it exists and has valid type, null otherwise
  */
 MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, type)
 {
@@ -979,6 +982,7 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, t
  * @param name of the element to be parsed
  * @param minimum number of elements expected to be found, or 0 if optional element
  * @param maximum number of elements expected to be found, or 0 if infinite
+ * @return required element if it exists, null otherwise
  */
 MySceneGraph.prototype.parseElement= function(errors, parent, elementName, minNum, maxNum, addError)
 {
