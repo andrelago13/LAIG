@@ -123,6 +123,8 @@ MySceneGraph.prototype.onXMLReady=function()
 
 /**
  * Parses information on the file, displaying errors and warnings produced during parsing of specific elements
+ * @param errors errors and warnings array
+ * @param rootElement 'SCENE' node
  */
 MySceneGraph.prototype.parse= function(errors, rootElement) {
 	if (rootElement.nodeName != 'SCENE')
@@ -165,6 +167,8 @@ MySceneGraph.prototype.parse= function(errors, rootElement) {
 
 /**
  * Parses an individual block from the file
+ * @param errors errors and warnings array
+ * @param blockID
  */
 MySceneGraph.prototype.parseBlock= function(errors, element, blockID)
 {
@@ -183,6 +187,8 @@ MySceneGraph.prototype.parseBlock= function(errors, element, blockID)
 
 /**
  * Parses the "INITIALS" block
+ * @param errors errors and warnings array
+ * @param rootElement 'SCENE' node
  */
 MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 	var elems = [];
@@ -326,6 +332,8 @@ MySceneGraph.prototype.parseInitials= function(errors, rootElement) {
 
 /**
  * Parses the "ILLUMINATION" block
+ * @param errors errors and warnings array
+ * @param rootElement 'SCENE' node
  */
 MySceneGraph.prototype.parseIllumination= function(errors, rootElement)
 {
@@ -363,6 +371,8 @@ MySceneGraph.prototype.parseIllumination= function(errors, rootElement)
 
 /**
  * Parses the "LIGHTS" block
+ * @param errors errors and warnings array
+ * @param rootElement 'SCENE' node
  */
 MySceneGraph.prototype.parseLights= function(errors, rootElement)
 {
@@ -441,6 +451,8 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 
 /**
  * Parses the "TEXTURES" block
+ * @param errors errors and warnings array
+ * @param rootElement 'SCENE' node
  */
 MySceneGraph.prototype.parseTextures= function(errors, rootElement)
 {
@@ -486,6 +498,8 @@ MySceneGraph.prototype.parseTextures= function(errors, rootElement)
 
 /**
  * Parses the "MATERIALS" block
+ * @param errors errors and warnings array
+ * @param rootElement 'SCENE' node
  */
 MySceneGraph.prototype.parseMaterials= function(errors, rootElement) {
 
@@ -554,6 +568,8 @@ MySceneGraph.prototype.parseMaterials= function(errors, rootElement) {
 
 /**
  * Parses the "LEAVES" block
+ * @param errors errors and warnings array
+ * @param rootElement 'SCENE' node
  */
 MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 
@@ -658,6 +674,8 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 
 /**
  * Parses the "NODES" block
+ * @param errors errors and warnings array
+ * @param rootElement 'SCENE' node
  */
 MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 
@@ -843,6 +861,7 @@ MySceneGraph.prototype.validateNodes= function(errors) {
 
 /**
  * Generates the scene graph after parsing the LSX file
+ * @param nodeID ID of the root node
  */
 MySceneGraph.prototype.createGraph= function(nodeID) {
 	if (typeof this.graphNodes[nodeID] != 'undefined') return this.graphNodes[nodeID]; // Node already created
@@ -871,8 +890,13 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 
 /**
  * Parses an element attribute with given name and type. If the argument does not exist, returns defaultValue
+ * @param errors errors and warnings array
+ * @param element xml element whose attribute to parse
+ * @param name name of the attribute to parse
+ * @param type string representing the type of the attribute to be parsed
+ * @param defaultValue default value to assign to the attribute if an error occurs
  */
-MySceneGraph.prototype.parseAttributeWithDefault= function(errors, element, name, type, opts, defaultValue) {
+MySceneGraph.prototype.parseAttributeWithDefault= function(errors, element, name, type, defaultValue) {
 	if (!this.reader.hasAttribute(element, name))
 	{
 		this.addWarning(errors, "Could not read '" + name + "' attribute of '" + element.nodeName + "' element. Assuming default value: " + defaultValue);
@@ -910,8 +934,12 @@ MySceneGraph.prototype.parseAttributeWithDefault= function(errors, element, name
 /**
  * Parses a required attribute of a specified element, returning null
  * and adding an error, if the argument does not exist or has invalid type
+ * @param errors errors and warnings array
+ * @param element xml element whose attribute to parse
+ * @param name name of the attribute to parse
+ * @param type string representing the type of the attribute to be parsed
  */
-MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, type, opts)
+MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, type)
 {
 	if (!this.reader.hasAttribute(element, name))
 	{
@@ -946,6 +974,11 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, t
 /**
  * Parses an inner element from another element, with a specified name. Returns an array
  * of elements with that name if the array's length is within minNum - maxNum, returning null otherwise
+ * @param errors errors and warnings array
+ * @param parent parent element
+ * @param name of the element to be parsed
+ * @param minimum number of elements expected to be found, or 0 if optional element
+ * @param maximum number of elements expected to be found, or 0 if infinite
  */
 MySceneGraph.prototype.parseElement= function(errors, parent, elementName, minNum, maxNum, addError)
 {
@@ -968,14 +1001,19 @@ MySceneGraph.prototype.parseElement= function(errors, parent, elementName, minNu
 
 /**
  * Adds an error to the errors array, with the specified message
+ * @param errors errors and warnings array
+ * @param msg error message
  */
 MySceneGraph.prototype.addError = function(errors, msg)
 {
 	errors.push([true, msg]);
 }
 
+
 /**
  * Adds a warning to the errors array, with the specified message
+ * @param errors errors and warnings array
+ * @param msg warning message
  */
 MySceneGraph.prototype.addWarning = function(errors, msg)
 {
@@ -992,6 +1030,7 @@ MySceneGraph.prototype.onXMLError = function()
 
 /**
  * Toggles the light with the specified index
+ * @param light index of the light to be toggled
  */
 MySceneGraph.prototype.toggleLight = function(light)
 {
