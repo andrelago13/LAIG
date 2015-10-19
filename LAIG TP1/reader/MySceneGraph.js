@@ -71,7 +71,11 @@ MySceneGraph.prototype.display=function()
 
 	this.scene.pushMatrix();
 	this.scene.multMatrix(this.initials["transform"]);
-	this.graphNodes[this.rootNode].display(undefined, this.defaultSceneMaterial);
+	if(typeof this.graphNodes[this.rootNode] !== 'undefined') {
+		this.graphNodes[this.rootNode].display(undefined, this.defaultSceneMaterial);
+	} else if (typeof this.leaves[this.rootNode] !== 'undefined') {
+		this.leaves[this.rootNode].display();
+	}
 	this.scene.popMatrix();
 }
 
@@ -801,7 +805,7 @@ MySceneGraph.prototype.validateNodes= function(errors) {
 		error_found = true;
 	}
 	
-	if(typeof this.nodes[this.rootNode] == 'undefined') {
+	if(typeof this.nodes[this.rootNode] == 'undefined' && typeof this.leaves[this.rootNode] == 'undefined') {
 		this.addError(errors, "no NODE with id of ROOT node ('" + this.rootNode + "') was found");
 		error_found = true;
 	}
