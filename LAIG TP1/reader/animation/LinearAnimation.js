@@ -47,7 +47,7 @@ LinearAnimation.prototype.lerp = function(p1, p2, t) {
 	var result = [];
 	for (var i = 0; i < p1.length; i++)
 	{
-		result[i] = p1[i] * (1f - t) + (p2[i] * t);
+		result[i] = p1[i] * (1.0 - t) + (p2[i] * t);
 	}
 	return result;
 }

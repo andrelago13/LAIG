@@ -58,7 +58,7 @@ function MySceneGraph(scenename, scene, interface) {
 	 * After the file is read, the reader calls onXMLReady on this object.
 	 * If any error occurs, the reader calls onXMLError on this object, with an error message
 	 */
-	console.clear();
+	//console.clear();
 	console.group("%cParsing '" + this.scenename + ".lsx'", "font-size: 1.5em;");
 	console.time("Total time taken to parse the LSX file");
 	console.group("Reading the XML tree");
