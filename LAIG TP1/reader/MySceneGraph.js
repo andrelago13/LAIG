@@ -889,6 +889,33 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	return this.graphNodes[nodeID];
 }
 
+MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
+	/*var elems = [];
+	elems = this.parseElement(errors, rootElement, 'ANIMATIONS', 1, 1, true);
+	if (elems == null) return;
+
+	elems = this.parseElement(errors, elems[0], 'animation', 0, 0, true);
+	if (elems == null)
+		return;
+
+	var animations = elems;
+	for (var i = 0; i < animations.length; i++) // For each animation
+	{
+		var animation = [];
+		// Get animation ID
+		var id = this.parseRequiredAttribute(errors, animations[i], 'id', 'ss');
+		if(id === null)
+			continue;
+
+		// Check if animation id already exists. If so, continue to next one and add warning
+		if (typeof this.animations[id] != 'undefined') {
+			this.addWarning(errors, "duplicate ANIMATION id '" + id + "' found. Only the first will be considered.");
+			continue;
+		}
+
+	}*/
+}
+
 /**
  * Parses an element attribute with given name and type. If the argument does not exist, returns defaultValue
  * @param errors errors and warnings array
