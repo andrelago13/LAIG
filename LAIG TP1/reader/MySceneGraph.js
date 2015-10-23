@@ -12,6 +12,7 @@ function MySceneGraph(scenename, scene, interface) {
 	this.lights = [];
 	this.textures = [];
 	this.materials = [];
+	this.animations = [];
 	this.leaves = [];
 	this.nodes = [];
 	this.rootNode = "";
@@ -20,6 +21,11 @@ function MySceneGraph(scenename, scene, interface) {
 	this.graph = null;
 
 	this.loadedOk = null;
+	
+	this.defaultAnimSpan = 1;
+	this.defaultLinearAnimXX = 0;
+	this.defaultLinearAnimYY = 0;
+	this.defaultLinearAnimZZ = 0;
 
 	this.defaultFrustumNear = 0.1;
 	this.defaultFrustumFar = 500;
@@ -132,7 +138,7 @@ MySceneGraph.prototype.parse= function(errors, rootElement) {
 		this.addError(errors, "The document root node should be 'SCENE'");
 		return;
 	}
-	var blocks = ["INITIALS", "ILLUMINATION", "LIGHTS", "TEXTURES", "MATERIALS", "LEAVES", "NODES"];
+	var blocks = ["INITIALS", "ILLUMINATION", "LIGHTS", "TEXTURES", "MATERIALS", "LEAVES", "NODES", "ANIMATIONS"];
 	var blockPos = Array.apply(null, Array(blocks.length)).map(Number.prototype.valueOf, -1);
 	var currPos = 0;
 	var elements = rootElement.childNodes;
@@ -181,6 +187,7 @@ MySceneGraph.prototype.parseBlock= function(errors, element, blockID)
 	case 4: return this.parseMaterials(errors, element);
 	case 5: return this.parseLeaves(errors, element);
 	case 6: return this.parseNodes(errors, element);
+	case 7: return this.parseAnimations(errors, element);
 	default: return;
 	}
 }
@@ -805,6 +812,108 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 }
 
 /**
+ * Parses the "ANIMATIONS" block
+ * @param errors errors and warnings array
+ * @param rootElement 'SCENE' node
+ */
+MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
+	
+	var anims = this.parseElement(errors, rootElement, 'ANIMATIONS', 1, 1, true);
+	if(anims === null)
+		return;
+	
+	anims = this.parseElement(errors, anims[0], 'ANIMATION', 0, 0, true);
+	if(anims === null)
+		return;
+	
+	for(var i = 0; i < anims.length; i++) {	// for each animation
+		var animation = [];
+		
+		// Get animation ID
+		var id = this.parseRequiredAttribute(errors, anims[i], 'id', 'ss');
+		if(id === null)
+			continue;
+		
+		// Check if animation id already exists. If so, continue to next one and add warning
+		if (typeof this.animations[id] != 'undefined') {
+			this.addWarning(errors, "duplicate ANIMATION id '" + id + "' found. Only the first will be considered.");
+			continue;
+		}
+		
+		var span = this.parseAttributeWithDefault(errors, anims[i], 'span', 'ff', 0);
+		if(span <= 0) {
+			this.addWarning(errors, "Illegal span " + span + " for ANIMATION '" + id + "'. Replacing by default value " + this.defaultAnimSpan);
+			span = this.defaultAnimSpan;
+		}
+		
+		var type = this.parseRequiredAttribute(errors, anims[i], 'type', 'ss');
+		if(type == null)
+			continue;
+		
+		animation['id'] = id;
+		animation['span'] = span;
+		animation['type'] = type;
+
+		var invalidAnim = false;
+		switch(type) {
+		case 'linear':
+			invalidAnim = !this.parseLinearAnimation(animation, errors, anims[i]);
+			break;
+		case 'circular':
+			//invalidAnim = this.parseCircularAnimation(animation, errors, anims[i]);
+			console.log("FUNCTION NOT YET AVAILABLE FOR PARSE CIRCULAR ANIM");
+			break;
+		default:
+			this.addWarning("Invalid type '" + type + "' for animation '" + id + "'. Ignoring animation.");
+			invalidAnim = true;
+			break;
+		}
+		
+		if(invalidAnim)
+			continue;
+		
+		this.animations[id] = animation;
+	}
+};
+
+/**
+ * Parses the "ANIMATIONS" block
+ * @param destAnim animation array to store the result
+ * @param errors errors and warnings array
+ * @param animation_elem LSX element of the animation
+ * @return true if no error occurred, false otherwise
+ */
+MySceneGraph.prototype.parseLinearAnimation= function(destAnim, errors, animation_elem) {
+	
+	var controlpoints = [];
+	for(var i = 0; i < animation_elem.childNodes.length; i++) {
+		if(animation_elem.childNodes[i].nodeName === "controlpoint") {
+			controlpoints.push(animation_elem.childNodes[i]);
+		}
+	}
+	
+	if(controlpoints.length < 2) {
+		this.addWarning(errors, "Linear animation '" + destAnim['id'] + "' has less than 2 control points. Ignoring animation.");
+		return false;
+	}
+	
+	animation_elem['controlpoints'] = [];
+	
+	for(var i = 0; i < controlpoints.length; i++) {
+		var elem = controlpoints[i];
+		var xx = this.parseAttributeWithDefault(errors, elem, 'xx', 'ff', this.defaultLinearAnimXX);
+		var yy = this.parseAttributeWithDefault(errors, elem, 'yy', 'ff', this.defaultLinearAnimYY);
+		var zz = this.parseAttributeWithDefault(errors, elem, 'zz', 'ff', this.defaultLinearAnimZZ);
+		var point = [xx, yy, zz];
+		
+		animation_elem['controlpoints'].push(point);
+	}
+	
+	return true;
+};
+
+
+/**
  * Checks if graph nodes are valid
  * 	- checks if the indicated root node exists
  * 	- checks if all node descendants exist
@@ -814,7 +923,7 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
  * @return {Boolean} true if no error was found (only warnings), false otherwise
  */
 MySceneGraph.prototype.validateNodes= function(errors) {
-
+	
 	var error_found = false;
 
 	// CHECK IF ROOT NODE EXISTS
@@ -887,33 +996,6 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 		this.graphNodes[nodeID].push(this.createGraph(this.nodes[nodeID]["descendants"][i]));
 	}
 	return this.graphNodes[nodeID];
-}
-
-MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
-	/*var elems = [];
-	elems = this.parseElement(errors, rootElement, 'ANIMATIONS', 1, 1, true);
-	if (elems == null) return;
-
-	elems = this.parseElement(errors, elems[0], 'animation', 0, 0, true);
-	if (elems == null)
-		return;
-
-	var animations = elems;
-	for (var i = 0; i < animations.length; i++) // For each animation
-	{
-		var animation = [];
-		// Get animation ID
-		var id = this.parseRequiredAttribute(errors, animations[i], 'id', 'ss');
-		if(id === null)
-			continue;
-
-		// Check if animation id already exists. If so, continue to next one and add warning
-		if (typeof this.animations[id] != 'undefined') {
-			this.addWarning(errors, "duplicate ANIMATION id '" + id + "' found. Only the first will be considered.");
-			continue;
-		}
-
-	}*/
 }
 
 /**
