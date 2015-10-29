@@ -1,0 +1,13 @@
+O main.js abre o ficheiro xml indicado no seu código. O MyScheneGraph.js lê esse ficheiro guardando as informações nele guardadas em variáveis próprias.
+No final, chama funções de XMLScene para alterar os seus atributos com as informações lidas.
+
+function Node() {
+	this.material = null;
+	this.texture = null;
+	this.m = null;
+	this.descendants = null;
+}
+
+Node.prototype.push = function(nodename) {
+	this.descendants.push(nodename);
+}
