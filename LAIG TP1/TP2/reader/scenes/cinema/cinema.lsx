@@ -285,6 +285,7 @@
 	<NODE id="trash-bins">
         <MATERIAL id="null" />         
         <TEXTURE id="null" />
+        <ANIMATION id="3" />
 		
         <DESCENDANTS>
             <DESCENDANT id="trash-bin-left" />

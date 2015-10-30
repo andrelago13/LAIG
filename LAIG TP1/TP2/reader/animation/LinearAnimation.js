@@ -10,7 +10,7 @@ function LinearAnimation(id, span, controlPoints) {
 	{
 		totalDistance += this.calculateDistance(controlPoints[i - 1], controlPoints[i]);
 	}
-}
+};
 
 LinearAnimation.prototype.getMatrix = function(t) {
 	var m = mat4.create();
@@ -34,14 +34,14 @@ LinearAnimation.prototype.getMatrix = function(t) {
 	var interp = this.lerp(this.controlPoints[i - 1], this.controlPoints[i], t);
 	mat4.translate(m, m, interp);
 	return m;
-}
+};
 
 LinearAnimation.prototype.calculateDistance = function(p1, p2) {
 	return Math.sqrt(
 			Math.pow(p2[0] - p1[0], 2) +
 			Math.pow(p2[1] - p1[1], 2) +
 			Math.pow(p2[2] - p1[2], 2))
-}
+};
 
 LinearAnimation.prototype.lerp = function(p1, p2, t) {
 	var result = [];
@@ -50,4 +50,4 @@ LinearAnimation.prototype.lerp = function(p1, p2, t) {
 		result[i] = p1[i] * (1.0 - t) + (p2[i] * t);
 	}
 	return result;
-}
+};

@@ -746,6 +746,18 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 		var tex_id = this.parseAttributeWithDefault(errors, texture[0], 'id', 'ss', this.defaultNodeTextureID);
 		if(tex_id == null)
 			continue;
+		
+		// GET NODE'S ANIMATIONS
+		var anims = this.parseElement(errors, elems[i], 'ANIMATION', 0, 0, false);
+		var animations = [];
+		if(anims != null) {
+			for(var j = 0; j < anims.length; j++) {
+				var anim_id = this.parseAttributeWithDefault(errors, anims[0], 'id', 'ss', "");
+				if(anim_id !== null && anim_id !== "") {
+					animations.push(anim_id);
+				}
+			}
+		}
 
 		var transforms = [];
 		var elements = elems[i].childNodes;
@@ -853,11 +865,15 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
 		animation['id'] = id;
 		animation['span'] = span;
 		animation['type'] = type;
+		var anim_obj;
 
 		var invalidAnim = false;
 		switch(type) {
 		case 'linear':
 			invalidAnim = !this.parseLinearAnimation(animation, errors, anims[i]);
+			if(!invalidAnim) {
+				anim_obj = LinearAnimation(animation['id'], animation['span'], animation['controlpoints']);
+			}
 			break;
 		case 'circular':
 			//invalidAnim = this.parseCircularAnimation(animation, errors, anims[i]);
@@ -872,7 +888,7 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
 		if(invalidAnim)
 			continue;
 		
-		this.animations[id] = animation;
+		this.animations[id] = anim_obj;
 	}
 };
 
@@ -897,7 +913,7 @@ MySceneGraph.prototype.parseLinearAnimation= function(destAnim, errors, animatio
 		return false;
 	}
 	
-	animation_elem['controlpoints'] = [];
+	destAnim['controlpoints'] = [];
 	
 	for(var i = 0; i < controlpoints.length; i++) {
 		var elem = controlpoints[i];
@@ -906,7 +922,7 @@ MySceneGraph.prototype.parseLinearAnimation= function(destAnim, errors, animatio
 		var zz = this.parseAttributeWithDefault(errors, elem, 'zz', 'ff', this.defaultLinearAnimZZ);
 		var point = [xx, yy, zz];
 		
-		animation_elem['controlpoints'].push(point);
+		destAnim['controlpoints'].push(point);
 	}
 	
 	return true;

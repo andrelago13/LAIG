@@ -40,7 +40,7 @@ XMLscene.prototype.initLights = function () {
 	if(typeof globalAmbient != 'undefined')
 		this.setGlobalAmbientLight(globalAmbient["r"], globalAmbient["g"], globalAmbient["b"], globalAmbient["a"]);
 
-	this.shader.bind();
+	//this.shader.bind();
 
 	for (var i = 0; i < this.graph.lights.length; i++)
 	{
@@ -65,7 +65,7 @@ XMLscene.prototype.initLights = function () {
 		this.graph.interface.addLightToggler(i, this.graph.lights[i]["id"]);
 	}
 
-	this.shader.unbind();
+	//this.shader.unbind();
 };
 
 /**
@@ -152,8 +152,10 @@ XMLscene.prototype.updateLights = function(){
  */
 XMLscene.prototype.display = function () {
 	// ---- BEGIN Background, camera and axis setup
-	this.shader.bind();
-
+	//this.shader.bind();
+	//this.setActiveShader();
+	this.setActiveShader(this.defaultShader);
+	
 	// Clear image and depth buffer everytime we update the scene
 	this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 	this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -184,5 +186,5 @@ XMLscene.prototype.display = function () {
 		this.popMatrix();
 	}
 
-	this.shader.unbind();
+	//this.shader.unbind();
 };
