@@ -872,7 +872,7 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
 		case 'linear':
 			invalidAnim = !this.parseLinearAnimation(animation, errors, anims[i]);
 			if(!invalidAnim) {
-				anim_obj = LinearAnimation(animation['id'], animation['span'], animation['controlpoints']);
+				anim_obj = new LinearAnimation(animation['id'], animation['span'], animation['controlpoints']);
 			}
 			break;
 		case 'circular':
