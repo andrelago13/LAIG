@@ -29,7 +29,13 @@ XMLscene.prototype.init = function (application) {
 	this.enableTextures(true);
 
 	this.lightStatus = [false, false, false, false, false, false, false, false, false];
+	// TODO
+	//this.setUpdatePeriod(10);
 };
+
+XMLscene.prototype.update = function(currTime) {
+	// TODO
+}
 
 /**
  * 
