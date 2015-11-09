@@ -804,14 +804,16 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 
 		// GET NODE'S ANIMATION
 		var animation = this.parseElement(errors, elems[i], 'animationref', 0, 1, false);
+		if (animation == null)
+			continue;
 		var anim_id = null;
-		if(animation !== null)
+		if(animation.length == 1)
 		{
 			anim_id = this.parseRequiredAttribute(errors, animation[0], 'id', 'ss');
 			if(anim_id == null)
 				continue;
 		}
-
+		
 		var transforms = [];
 		var elements = elems[i].childNodes;
 
@@ -1045,7 +1047,8 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	else if (texture !== "clear")
 		texture = this.textures[texture];
 
-	var animation = this.animations[this.nodes[nodeID]["animation"]];
+	var animation = this.nodes[nodeID]["animation"]
+	if (animation !== null) animation = this.animations[animation];
 
 	this.graphNodes[nodeID] = new SceneNode(nodeID, material, texture, animation, this.nodes[nodeID]["transforms"], this.scene);
 

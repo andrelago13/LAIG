@@ -285,7 +285,6 @@
 	<NODE id="trash-bins">
         <MATERIAL id="null" />         
         <TEXTURE id="null" />
-        <ANIMATION id="3" />
 		
         <DESCENDANTS>
             <DESCENDANT id="trash-bin-left" />
@@ -2174,10 +2173,6 @@
 </NODES>
 
 <ANIMATIONS>
-	<ANIMATION id="anim" type="linear" span="2">
-		<controlpoint xx="1" yy="2" zz="3"/>
-		<controlpoint xx="5" yy="6" zz="7"/>
-	</ANIMATION>
 </ANIMATIONS>
 
 </SCENE>

@@ -24,7 +24,6 @@ function SceneNode(id, material, texture, animation, transforms, scene) {
 	this.material = material;
 	this.texture = texture;
 	this.animation = animation;
-	console.log(animation);
 	this.m = transforms;
 	this.descendants = [];
 	this.scene = scene;
