@@ -24,6 +24,7 @@ function SceneNode(id, material, texture, animation, transforms, scene) {
 	this.material = material;
 	this.texture = texture;
 	this.animation = animation;
+	console.log(animation);
 	this.m = transforms;
 	this.descendants = [];
 	this.scene = scene;
@@ -115,8 +116,9 @@ SceneNode.prototype.setTexture = function(tex) {
 SceneNode.prototype.getMatrix = function(t) {
 	if (this.animation === null) return this.m;
 	
-	var result;
+	var result = mat4.create();
 	mat4.multiply(result, this.m, this.animation.getMatrix(t));
+	return result;
 }
 
 /**
