@@ -61,8 +61,8 @@
 	
 	<ANIMATIONS>
 		<ANIMATION id="anim" type="linear" span="2">
-			<controlpoint xx="1" yy="2" zz="3"/>
-			<controlpoint xx="5" yy="6" zz="7"/>
+			<controlpoint xx="0" yy="0" zz="0"/>
+			<controlpoint xx="5" yy="1" zz="0"/>
 		</ANIMATION>
 	</ANIMATIONS>
 	

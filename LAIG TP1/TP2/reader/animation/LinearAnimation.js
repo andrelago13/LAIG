@@ -15,7 +15,7 @@ LinearAnimation.prototype.constructor = LinearAnimation;
 
 LinearAnimation.prototype.getMatrix = function(t) {
 	var m = mat4.create();
-	if (t >= this.span)
+	if (t > this.span)
 	{
 		mat4.translate(m, m, this.controlPoints[this.controlPoints.length - 1]);
 		return m;

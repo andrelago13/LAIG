@@ -30,11 +30,18 @@ XMLscene.prototype.init = function (application) {
 
 	this.lightStatus = [false, false, false, false, false, false, false, false, false];
 	this.setUpdatePeriod(10);
+	this.timerStarted = false;
+	this.startingTime = 0;
 	this.currTime = 0;
 };
 
 XMLscene.prototype.update = function(currTime) {
-	this.currTime = currTime;
+	if (!this.timerStarted)
+	{
+		this.startingTime = currTime;
+		this.timerStarted = true;
+	}
+	this.currTime = (currTime - this.startingTime) / 1000.0;
 }
 
 /**
@@ -82,12 +89,12 @@ XMLscene.prototype.setInitials = function () {
 		this.camera.near = this.graph.initials["frustum"]["near"];
 		this.camera.far = this.graph.initials["frustum"]["far"];
 	}
-	
+
 	if(typeof this.graph.initials["transform"] != 'undefined')
 		this.initialTransform = mat4.clone(this.graph.initials["transform"]);
 	else
 		this.initialTransform = mat4.create();
-	
+
 	if(typeof this.graph.initials["reference"] != 'undefined' && this.graph.initials["reference"] <= 0) {
 		this.axis = new CGFaxis(this, 0, 0);
 	} else {
@@ -127,7 +134,7 @@ XMLscene.prototype.setDefaultAppearance = function () {
 
 /**
  * Handler called when the graph is finally loaded. 
-* As loading is asynchronous, this may be called already after the application has started the run loop
+ * As loading is asynchronous, this may be called already after the application has started the run loop
  */
 XMLscene.prototype.onGraphLoaded = function () 
 {
@@ -148,7 +155,7 @@ XMLscene.prototype.updateLights = function(){
 	{
 		if(this.lightStatus[i])	this.lights[i].enable();
 		else this.lights[i].disable();
-		
+
 		this.lights[i].update();
 	}
 }
@@ -161,7 +168,7 @@ XMLscene.prototype.display = function () {
 	//this.shader.bind();
 	//this.setActiveShader();
 	this.setActiveShader(this.defaultShader);
-	
+
 	// Clear image and depth buffer everytime we update the scene
 	this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 	this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
