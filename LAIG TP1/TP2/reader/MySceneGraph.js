@@ -723,9 +723,9 @@ MySceneGraph.prototype.parseControlPoints= function(errors, rootElement, dest_ar
 	
 	for(var i = 0; i < controlpoints.length; i++) {
 		var elem = controlpoints[i];
-		var xx = this.parseRequiredAttribute(errors, rootElement, 'xx', 'ff');
-		var yy = this.parseRequiredAttribute(errors, rootElement, 'yy', 'ff');
-		var zz = this.parseRequiredAttribute(errors, rootElement, 'zz', 'ff');
+		var xx = this.parseRequiredAttribute(errors, controlpoints[i], 'xx', 'ff');
+		var yy = this.parseRequiredAttribute(errors, controlpoints[i], 'yy', 'ff');
+		var zz = this.parseRequiredAttribute(errors, controlpoints[i], 'zz', 'ff');
 		var point = [xx, yy, zz];
 		
 		dest_array['controlpoints'].push(point);
