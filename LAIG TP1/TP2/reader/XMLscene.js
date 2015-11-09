@@ -29,12 +29,12 @@ XMLscene.prototype.init = function (application) {
 	this.enableTextures(true);
 
 	this.lightStatus = [false, false, false, false, false, false, false, false, false];
-	// TODO
-	//this.setUpdatePeriod(10);
+	this.setUpdatePeriod(10);
+	this.currTime = 0;
 };
 
 XMLscene.prototype.update = function(currTime) {
-	// TODO
+	this.currTime = currTime;
 }
 
 /**
@@ -182,7 +182,7 @@ XMLscene.prototype.display = function () {
 
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
-		this.graph.display();
+		this.graph.display(this.currTime);
 	};
 
 	for (var i = 0; i < this.graph.lights.length; i++) {

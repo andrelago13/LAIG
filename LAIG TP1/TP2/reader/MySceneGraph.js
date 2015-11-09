@@ -70,7 +70,7 @@ function MySceneGraph(scenename, scene, interface) {
 /**
  * Displays the graph
  */
-MySceneGraph.prototype.display=function() 
+MySceneGraph.prototype.display=function(t) 
 {
 	if(!this.ready)
 		return;
@@ -78,9 +78,9 @@ MySceneGraph.prototype.display=function()
 	this.scene.pushMatrix();
 	this.scene.multMatrix(this.initials["transform"]);
 	if(typeof this.graphNodes[this.rootNode] !== 'undefined') {
-		this.graphNodes[this.rootNode].display(undefined, this.defaultSceneMaterial);
+		this.graphNodes[this.rootNode].display(t, undefined, this.defaultSceneMaterial);
 	} else if (typeof this.leaves[this.rootNode] !== 'undefined') {
-		this.leaves[this.rootNode].display();
+		this.leaves[this.rootNode].display(t, null);
 	}
 	this.scene.popMatrix();
 }
@@ -748,11 +748,11 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 			continue;
 		
 		// GET NODE'S ANIMATIONS
-		var anims = this.parseElement(errors, elems[i], 'ANIMATION', 0, 0, false);
+		var anims = this.parseElement(errors, elems[i], 'animationref', 0, 0, false);
 		var animations = [];
 		if(anims != null) {
 			for(var j = 0; j < anims.length; j++) {
-				var anim_id = this.parseAttributeWithDefault(errors, anims[0], 'id', 'ss', "");
+				var anim_id = this.parseRequiredAttribute(errors, anims[0], 'id', 'ss');
 				if(anim_id !== null && anim_id !== "") {
 					animations.push(anim_id);
 				}
@@ -1005,7 +1005,7 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	else if (texture !== "clear")
 		texture = this.textures[texture];
 
-	this.graphNodes[nodeID] = new SceneNode(nodeID, material, texture, this.nodes[nodeID]["transforms"], this.scene);
+	this.graphNodes[nodeID] = new SceneNode(nodeID, material, texture, animation, this.nodes[nodeID]["transforms"], this.scene);
 
 	for (var i = 0; i < this.nodes[nodeID]["descendants"].length; i++)
 	{

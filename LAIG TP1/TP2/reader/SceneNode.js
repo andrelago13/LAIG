@@ -8,6 +8,7 @@ function SceneNode() {
 	this.id = null;
 	this.material = null;
 	this.texture = null;
+	this.animation = null;
 	this.m = null;
 	this.descendants = [];
 	this.scene = null;
@@ -18,10 +19,11 @@ SceneNode.prototype.constructor=SceneNode;
 /**
  * @constructor
  */
-function SceneNode(id, material, texture, transforms, scene) {
+function SceneNode(id, material, texture, animation, transforms, scene) {
 	this.id = id;
 	this.material = material;
 	this.texture = texture;
+	this.animation = animation;
 	this.m = transforms;
 	this.descendants = [];
 	this.scene = scene;
@@ -32,9 +34,9 @@ function SceneNode(id, material, texture, transforms, scene) {
  * @param texture
  * @param parentAppearance
  */
-SceneNode.prototype.display = function(texture, parentAppearance) {
+SceneNode.prototype.display = function(t, texture, parentAppearance) {
 	this.scene.pushMatrix();
-	this.scene.multMatrix(this.m);
+	this.scene.multMatrix(this.getMatrix(t));
 	for(var i = 0; i < this.descendants.length; i++) {
 		var newTexture = texture;
 		var newMaterial = parentAppearance;
@@ -65,7 +67,7 @@ SceneNode.prototype.display = function(texture, parentAppearance) {
 			this.texture.bind();
 			newTexture = this.texture;
 		}
-		this.descendants[i].display(newTexture, newMaterial);
+		this.descendants[i].display(t, newTexture, newMaterial);
 		if(this.texture != null && this.texture !== "clear") this.texture.unbind();
 	}
 	if (texture != null) texture.bind();
@@ -107,10 +109,14 @@ SceneNode.prototype.setTexture = function(tex) {
 
 /**
  * 
- * @returns the node's matrix
+ * @param t the current time
+ * @returns the node's transformation matrix
  */
-SceneNode.prototype.getMatrix = function() {
-	return this.m;
+SceneNode.prototype.getMatrix = function(t) {
+	if (this.animation === null) return this.m;
+	
+	var result;
+	mat4.multiply(result, this.m, this.animation.getMatrix(t));
 }
 
 /**

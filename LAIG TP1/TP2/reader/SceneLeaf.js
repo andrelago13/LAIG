@@ -18,7 +18,7 @@ function SceneLeaf(primitive, leafId, leafList) {
  * Displays the primitive, applying it's amplification factors
  * @param texture	Current texture applied, needed to get current amplifFactors
  */
-SceneLeaf.prototype.display = function (texture) {
+SceneLeaf.prototype.display = function (t, texture) {
 	if (texture != null)
 	{
 		var amplifFactor = texture.getAmplifFactor();
