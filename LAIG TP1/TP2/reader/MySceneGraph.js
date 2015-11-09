@@ -591,6 +591,10 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 	all_func["sphere"] = [parseFloat, parseInt, parseInt];
 	all_args["triangle"] = ["v1-x", "v1-y", "v1-z", "v2-x", "v2-y", "v2-z", "v3-x", "v3-y", "v3-z"];
 	all_func["triangle"] = [parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat];
+	all_args["plane"] = ["parts"];
+	all_func["plane"] = [parseInt];
+	all_args["patch"] = ["order", "partsU", "partsV"];
+	all_func["patch"] = [parseInt, parseInt, parseInt];
 
 	var elems = [];
 	elems = this.parseElement(errors, rootElement, 'LEAVES', 1, 1, true);
@@ -675,8 +679,59 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 			this.leaves[id] = new SceneLeaf(new Cylinder(this.scene, leaf["height"], leaf["bottom-radius"], leaf["top-radius"], leaf["sections-per-height"], leaf["parts-per-section"]),
 					id, this.leaves);
 			break;
+		case "plane":
+			this.leaves[id] = new SceneLeaf(new Plane(this.scene, leaf["parts"]), id, this.leaves);
+			break;
+		case "patch":
+			if(parseControlPoints(errors, leaves[i], leaf, "Patch", math.pow(leaf["order"]+1, 2), true)) {
+				//this.leaves[id] = new SceneLeaf(new Patch(this.scene, leaf["order"], leaf["partsU"], leaf["partsV"], leaf["controlpoints"]), id, this.leaves);
+			}
+			break;
 		}
 	}
+}
+
+
+/**
+ * Parses a "controlpoint" elements inside a block
+ * @param errors errors and warnings array
+ * @param rootElement node containing controlpoints
+ * @param dest_array array having "id" and storing result
+ * @param message1 left error message
+ * @param message2 right error message
+ * @return false if an error occurred, true upon success
+ */
+MySceneGraph.prototype.parseControlPoints= function(errors, rootElement, dest_array, type, minNum, mandatory) {
+	var controlpoints = [];
+	for(var i = 0; i < rootElement.childNodes.length; i++) {
+		if(rootElement.childNodes[i].nodeName === "controlpoint") {
+			controlpoints.push(rootElement.childNodes[i]);
+		}
+	}
+	
+	if(mandatory && controlpoints.length != minNum) {
+		this.addWarning(errors, "" + type + " '" + dest_array['id'] + "' doesn't have " + minNum + " required control points. Ignoring");
+		return false;
+	}
+	
+	if(!mandatory && controlpoints.length < minNum) {
+		this.addWarning(errors, "" + type + " '" + dest_array['id'] + "' has less then " + minNum + " control points. Ignoring");
+		return false;
+	}
+	
+	dest_array['controlpoints'] = [];
+	
+	for(var i = 0; i < controlpoints.length; i++) {
+		var elem = controlpoints[i];
+		var xx = this.parseRequiredAttribute(errors, rootElement, 'xx', 'ff');
+		var yy = this.parseRequiredAttribute(errors, rootElement, 'yy', 'ff');
+		var zz = this.parseRequiredAttribute(errors, rootElement, 'zz', 'ff');
+		var point = [xx, yy, zz];
+		
+		dest_array['controlpoints'].push(point);
+	}
+	
+	return true;
 }
 
 /**
@@ -901,7 +956,9 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
  */
 MySceneGraph.prototype.parseLinearAnimation= function(destAnim, errors, animation_elem) {
 	
-	var controlpoints = [];
+	return this.parseControlPoints(errors, animation_elem, destAnim, "Linear animation", 2, false);
+	
+	/*var controlpoints = [];
 	for(var i = 0; i < animation_elem.childNodes.length; i++) {
 		if(animation_elem.childNodes[i].nodeName === "controlpoint") {
 			controlpoints.push(animation_elem.childNodes[i]);
@@ -925,7 +982,7 @@ MySceneGraph.prototype.parseLinearAnimation= function(destAnim, errors, animatio
 		destAnim['controlpoints'].push(point);
 	}
 	
-	return true;
+	return true;*/
 };
 
 
