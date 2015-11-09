@@ -21,7 +21,7 @@ function MySceneGraph(scenename, scene, interface) {
 	this.graph = null;
 
 	this.loadedOk = null;
-	
+
 	this.defaultAnimSpan = 1;
 	this.defaultLinearAnimXX = 0;
 	this.defaultLinearAnimYY = 0;
@@ -114,13 +114,13 @@ MySceneGraph.prototype.onXMLReady=function()
 	}
 	if (this.loadedOk) console.log("LSX successfully parsed.");
 	else console.info("Errors found while parsing the LSX, cannot continue.");
-	
+
 	console.timeEnd("Time taken to parse the LSX blocks");
 	console.groupEnd();
 	console.timeEnd("Total time taken to parse the LSX file");
 	console.groupEnd();
 	if (!this.loadedOk) return;
-	
+
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on 
 	// the graph can take place
 	this.ready = true;
@@ -394,7 +394,7 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 	elems = this.parseElement(errors, lights, 'LIGHT', 0, 0, true);
 	if(elems == null)
 		return;
-	
+
 	var lights = elems;
 	for (var i = 0; i < lights.length; i++) // For each light
 	{
@@ -404,11 +404,11 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 		elems = this.parseElement(errors, lights[i], 'enable', 1, 1, true);
 		if(elems == null)
 			continue;
-		
+
 		// Get light's enabled valye
 		var enable = elems[0];
 		this.lights[i]["enable"] = this.parseAttributeWithDefault(errors, enable, 'value', 'tt', this.defaultLightEnabled);
-		
+
 		// Get light's position
 		elems = this.parseElement(errors, lights[i], 'position', 1, 1, true);
 		if(elems == null)
@@ -419,7 +419,7 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 		{
 			this.lights[i]["position"][xyzwList[j]] = this.parseRequiredAttribute(errors, position, xyzwList[j], 'ff');
 		}
-				
+
 		// Get light's ambient values
 		elems = this.parseElement(errors, lights[i], 'ambient', 1, 1, true);
 		if(elems == null)
@@ -442,7 +442,7 @@ MySceneGraph.prototype.parseLights= function(errors, rootElement)
 		{
 			this.lights[i]["diffuse"][rgbaList[j]] = this.parseAttributeWithDefault(errors, diffuse, rgbaList[j], 'ff', this.defautlLightValue);
 		}
-		
+
 		// Get light's specular values
 		elems = this.parseElement(errors, lights[i], 'specular', 1, 1, true);
 		if(elems == null)
@@ -478,7 +478,7 @@ MySceneGraph.prototype.parseTextures= function(errors, rootElement)
 			var id = this.parseRequiredAttribute(errors, textures[i], 'id', 'ss');
 			var texture = [];
 			texture["id"] = id;
-			
+
 			// Get texture file
 			elems = this.parseElement(errors, textures[i], 'file', 1, 1, true);
 			if (elems != null)
@@ -622,7 +622,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 		args = args.split(' ');
 		if(elems == null)
 			continue;
-		
+
 		// Prepare list of arguments, allowing multiple spaces between arguments
 		var temp_args = [];
 		for(var temp = 0; temp < args.length; temp++) {
@@ -746,17 +746,14 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 		var tex_id = this.parseAttributeWithDefault(errors, texture[0], 'id', 'ss', this.defaultNodeTextureID);
 		if(tex_id == null)
 			continue;
-		
-		// GET NODE'S ANIMATIONS
-		var anims = this.parseElement(errors, elems[i], 'animationref', 0, 0, false);
-		var animations = [];
-		if(anims != null) {
-			for(var j = 0; j < anims.length; j++) {
-				var anim_id = this.parseRequiredAttribute(errors, anims[0], 'id', 'ss');
-				if(anim_id !== null && anim_id !== "") {
-					animations.push(anim_id);
-				}
-			}
+
+		// GET NODE'S ANIMATION
+		var animation = this.parseElement(errors, elems[i], 'animationref', 0, 1, false);
+		if(animation !== null)
+		{
+			var anim_id = this.parseRequiredAttribute(errors, animation[0], 'id', 'ss');
+			if(anim_id == null)
+				continue;
 		}
 
 		var transforms = [];
@@ -816,6 +813,7 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 		node = [];
 		node["material"] = mat_id;
 		node["texture"] = tex_id;
+		node["animation"] = anim_id;
 		var transform_obj = new TransformMatrix(transforms);
 		node["transforms"] = transform_obj.matrix;
 		node["descendants"] = desc;
@@ -829,40 +827,39 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
  * @param rootElement 'SCENE' node
  */
 MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
-	
+
 	var anims = this.parseElement(errors, rootElement, 'ANIMATIONS', 1, 1, true);
 	if(anims === null)
 		return;
-	
+
 	anims = this.parseElement(errors, anims[0], 'ANIMATION', 0, 0, true);
 	if(anims === null)
 		return;
-	
+
 	for(var i = 0; i < anims.length; i++) {	// for each animation
 		var animation = [];
-		
+
 		// Get animation ID
 		var id = this.parseRequiredAttribute(errors, anims[i], 'id', 'ss');
 		if(id === null)
 			continue;
-		
+
 		// Check if animation id already exists. If so, continue to next one and add warning
 		if (typeof this.animations[id] != 'undefined') {
 			this.addWarning(errors, "duplicate ANIMATION id '" + id + "' found. Only the first will be considered.");
 			continue;
 		}
-		
+
 		var span = this.parseAttributeWithDefault(errors, anims[i], 'span', 'ff', 0);
 		if(span <= 0) {
 			this.addWarning(errors, "Illegal span " + span + " for ANIMATION '" + id + "'. Replacing by default value " + this.defaultAnimSpan);
 			span = this.defaultAnimSpan;
 		}
-		
+
 		var type = this.parseRequiredAttribute(errors, anims[i], 'type', 'ss');
 		if(type == null)
 			continue;
-		
-		animation['id'] = id;
+
 		animation['span'] = span;
 		animation['type'] = type;
 		var anim_obj;
@@ -872,7 +869,7 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
 		case 'linear':
 			invalidAnim = !this.parseLinearAnimation(animation, errors, anims[i]);
 			if(!invalidAnim) {
-				anim_obj = new LinearAnimation(animation['id'], animation['span'], animation['controlpoints']);
+				anim_obj = new LinearAnimation(id, animation['span'], animation['controlpoints']);
 			}
 			break;
 		case 'circular':
@@ -881,13 +878,13 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
 			break;
 		default:
 			this.addWarning("Invalid type '" + type + "' for animation '" + id + "'. Ignoring animation.");
-			invalidAnim = true;
-			break;
+		invalidAnim = true;
+		break;
 		}
-		
+
 		if(invalidAnim)
 			continue;
-		
+
 		this.animations[id] = anim_obj;
 	}
 };
@@ -900,34 +897,33 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
  * @return true if no error occurred, false otherwise
  */
 MySceneGraph.prototype.parseLinearAnimation= function(destAnim, errors, animation_elem) {
-	
+
 	var controlpoints = [];
 	for(var i = 0; i < animation_elem.childNodes.length; i++) {
 		if(animation_elem.childNodes[i].nodeName === "controlpoint") {
 			controlpoints.push(animation_elem.childNodes[i]);
 		}
 	}
-	
+
 	if(controlpoints.length < 2) {
 		this.addWarning(errors, "Linear animation '" + destAnim['id'] + "' has less than 2 control points. Ignoring animation.");
 		return false;
 	}
-	
+
 	destAnim['controlpoints'] = [];
-	
+
 	for(var i = 0; i < controlpoints.length; i++) {
 		var elem = controlpoints[i];
 		var xx = this.parseAttributeWithDefault(errors, elem, 'xx', 'ff', this.defaultLinearAnimXX);
 		var yy = this.parseAttributeWithDefault(errors, elem, 'yy', 'ff', this.defaultLinearAnimYY);
 		var zz = this.parseAttributeWithDefault(errors, elem, 'zz', 'ff', this.defaultLinearAnimZZ);
 		var point = [xx, yy, zz];
-		
+
 		destAnim['controlpoints'].push(point);
 	}
-	
+
 	return true;
 };
-
 
 /**
  * Checks if graph nodes are valid
@@ -939,7 +935,7 @@ MySceneGraph.prototype.parseLinearAnimation= function(destAnim, errors, animatio
  * @return {Boolean} true if no error was found (only warnings), false otherwise
  */
 MySceneGraph.prototype.validateNodes= function(errors) {
-	
+
 	var error_found = false;
 
 	// CHECK IF ROOT NODE EXISTS
@@ -947,7 +943,7 @@ MySceneGraph.prototype.validateNodes= function(errors) {
 		this.addError(errors, "No ROOT node ID found.");
 		error_found = true;
 	}
-	
+
 	if(typeof this.nodes[this.rootNode] == 'undefined' && typeof this.leaves[this.rootNode] == 'undefined') {
 		this.addError(errors, "no NODE with id of ROOT node ('" + this.rootNode + "') was found");
 		error_found = true;
@@ -979,6 +975,18 @@ MySceneGraph.prototype.validateNodes= function(errors) {
 			this.nodes[i]["material"] = "null";
 			continue;
 		}
+
+		// CHECK IF THE ANIMATION EXISTS
+		var anim_id = this.nodes[i]["animation"];
+		if (anim_id !== null)
+		{
+			if (typeof this.animations[anim_id] == 'undefined')
+			{
+				this.addWarning(errors, "ANIMATION id '" + anim_id + "' not found for NODE '" + i + "'");
+				this.nodes[i]["animation"] = null;
+				continue;
+			}
+		}
 	}
 
 	return !error_found;
@@ -1005,6 +1013,8 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	else if (texture !== "clear")
 		texture = this.textures[texture];
 
+	var animation = this.animations[this.nodes[nodeID]["animation"]];
+
 	this.graphNodes[nodeID] = new SceneNode(nodeID, material, texture, animation, this.nodes[nodeID]["transforms"], this.scene);
 
 	for (var i = 0; i < this.nodes[nodeID]["descendants"].length; i++)
@@ -1013,6 +1023,7 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	}
 	return this.graphNodes[nodeID];
 }
+
 
 /**
  * Parses an element attribute with given name and type. If the argument does not exist, returns defaultValue
@@ -1058,6 +1069,7 @@ MySceneGraph.prototype.parseAttributeWithDefault= function(errors, element, name
 	return attribute;	
 }
 
+
 /**
  * Parses a required attribute of a specified element, returning null
  * and adding an error, if the argument does not exist or has invalid type
@@ -1099,14 +1111,15 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, t
 	return attribute;
 }
 
+
 /**
  * Parses an inner element from another element, with a specified name. Returns an array
  * of elements with that name if the array's length is within minNum - maxNum, returning null otherwise
  * @param errors errors and warnings array
  * @param parent parent element
  * @param name of the element to be parsed
- * @param minimum number of elements expected to be found, or 0 if optional element
- * @param maximum number of elements expected to be found, or 0 if infinite
+ * @param minNum minimum number of elements expected to be found, or 0 if optional element
+ * @param maxNum maximum number of elements expected to be found, or 0 if infinite
  * @return required element if it exists, null otherwise
  */
 MySceneGraph.prototype.parseElement= function(errors, parent, elementName, minNum, maxNum, addError)
@@ -1127,6 +1140,7 @@ MySceneGraph.prototype.parseElement= function(errors, parent, elementName, minNu
 	}
 	return element;
 }
+
 
 /**
  * Adds an error to the errors array, with the specified message
