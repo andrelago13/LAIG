@@ -36,7 +36,7 @@ XMLscene.prototype.init = function (application) {
 };
 
 XMLscene.prototype.update = function(currTime) {
-	if (!this.timerStarted)
+	if (!this.timerStarted && this.ready)
 	{
 		this.startingTime = currTime;
 		this.timerStarted = true;

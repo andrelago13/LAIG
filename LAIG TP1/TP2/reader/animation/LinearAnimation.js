@@ -32,7 +32,7 @@ LinearAnimation.prototype.getMatrix = function(t) {
 			break;
 	}
 	var s = totalS - currentDist;
-	var interp = this.lerp(this.controlPoints[i - 1], this.controlPoints[i], t);
+	var interp = this.lerp(this.controlPoints[i - 1], this.controlPoints[i], t / this.span);
 	mat4.translate(m, m, interp);
 	return m;
 }
