@@ -1,0 +1,73 @@
+<SCENE>
+	
+	<INITIALS>
+	    <frustum near="0.1" far="500.0"/>                      	<!-- frustum planes-->
+	    <translation x="0" y="0" z="0" />                 	<!-- initial translate -->
+	    <rotation axis="x" angle="0.0" />                  		<!-- initial rotation 3 -->
+	    <rotation axis="y" angle="0.0" />                 		<!-- initial rotation 2 -->
+	    <rotation axis="z" angle="0.0" />                  		<!-- initial rotation 1 -->
+	    <scale sx="1" sy="1" sz="1" />                  	<!-- initial scaling -->
+	    <reference length="1" />                          		<!-- axis length; "0" means no axis-->
+	</INITIALS>
+	
+	
+	<ILLUMINATION>
+	    <ambient r="0.1" g="0.1" b="0.1" a="1" />            <!-- global ambient -->
+	    <background r="0.8" g="0.8" b="0.8" a="1" />         <!-- background color -->
+	</ILLUMINATION>
+	
+	
+	<LIGHTS>
+	    <LIGHT id="screen">                                    <!-- light identifier -->
+	        <enable value ="1" />                         <!-- enable/disable -->
+	        <position x="1" y="1" z="1" w="1" />       <!-- light position -->
+	        <ambient r="0.1" g="0.1" b="0.1" a="1" />        <!-- ambient component -->
+	        <diffuse r="1" g="1" b="1" a="1" />        <!-- diffuse component -->
+	        <specular r="1" g="1" b="1" a="1" />       	<!-- specular component --> <!-- no specular here because it's a wide source of light -->
+	    </LIGHT>
+	</LIGHTS>
+	
+	<TEXTURES>
+    	<TEXTURE id="texture">
+        	<file path="textures/test.png" />                             <!-- path to file -->
+        	<amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    	</TEXTURE>
+	</TEXTURES>
+	
+	<MATERIALS>
+	</MATERIALS>
+	
+	<LEAVES>
+	    <LEAF id="rectangle" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
+	    <LEAF id="cylinder" type="cylinder" args="1 1 1 5 20" />
+	    <LEAF id="circle" type="cylinder" args="0 1 0 1 20" />
+	    <LEAF id="sphere" type="sphere" args="1 20 20" />
+	    <LEAF id="triangle" type="triangle" args="0 0 0 0 0 1 0 1 0" />
+	    <LEAF id="triangle2" type="triangle" args="0 0 1 0 0 0 0 1 0" />
+	    <LEAF id="triangle3" type="triangle" args="1 1 0 0 1 1 0 0 0" />
+	    <LEAF id="triangle4" type="triangle" args="1 1 0 0 0 0 0 1 -1" />
+	    <LEAF id="plane" type="plane" args="50"/>
+	</LEAVES>
+	
+	<NODES>
+	    <ROOT id="root" /> 
+		
+		<NODE id="root">
+	        <MATERIAL id="null" />         
+	        <TEXTURE id="texture" />
+	
+	        <DESCENDANTS>
+	            <DESCENDANT id="plane" />
+	        </DESCENDANTS>
+	    </NODE>
+	</NODES>
+	
+	<ANIMATIONS>
+		<ANIMATION id="anim" type="linear" span="5">
+			<controlpoint xx="0" yy="0" zz="0"/>
+			<controlpoint xx="5" yy="1" zz="0"/>
+			<controlpoint xx="7" yy="0" zz="1"/>
+		</ANIMATION>
+	</ANIMATIONS>
+	
+</SCENE>
