@@ -1,6 +1,7 @@
 /**
  * Plane
  * @param scene CGFscene where the Rectangle will be displayed
+ * @param parts divisions along each axis (X, Z)
  * @constructor
  */
 function Plane(scene, parts) {

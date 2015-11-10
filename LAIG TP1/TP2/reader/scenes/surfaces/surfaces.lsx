@@ -47,6 +47,24 @@
 	    <LEAF id="triangle3" type="triangle" args="1 1 0 0 1 1 0 0 0" />
 	    <LEAF id="triangle4" type="triangle" args="1 1 0 0 0 0 0 1 -1" />
 	    <LEAF id="plane" type="plane" args="50"/>
+	    <LEAF id="patch" type="patch" args="3 200 200" >
+			<controlpoint xx="-2" yy="-2" zz="1" />
+			<controlpoint xx="-2" yy="-1" zz="-2" />
+			<controlpoint xx="-2" yy="1" zz="5" />
+			<controlpoint xx="-2" yy="2" zz="-1" />
+			<controlpoint xx="0" yy="-2" zz="0" />
+			<controlpoint xx="0" yy="-1" zz="-1" />
+			<controlpoint xx="0" yy="1" zz="1.5" />
+			<controlpoint xx="0" yy="2" zz="0" />
+			<controlpoint xx="2" yy="-2" zz="-1" />
+			<controlpoint xx="2" yy="-1" zz="2" />
+			<controlpoint xx="2" yy="1" zz="-5" />
+			<controlpoint xx="2" yy="2" zz="1" />
+			<controlpoint xx="4" yy="-2" zz="-1" />
+			<controlpoint xx="4" yy="-1" zz="2" />
+			<controlpoint xx="4" yy="1" zz="-5" />
+			<controlpoint xx="4" yy="2" zz="1" />
+		</LEAF>
 	</LEAVES>
 	
 	<NODES>
@@ -54,10 +72,10 @@
 		
 		<NODE id="root">
 	        <MATERIAL id="null" />         
-	        <TEXTURE id="texture" />
+	        <TEXTURE id="null" />
 	
 	        <DESCENDANTS>
-	            <DESCENDANT id="plane" />
+	            <DESCENDANT id="patch" />
 	        </DESCENDANTS>
 	    </NODE>
 	</NODES>
