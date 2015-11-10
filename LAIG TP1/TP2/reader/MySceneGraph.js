@@ -67,6 +67,8 @@ function MySceneGraph(scenename, scene, interface) {
 	this.reader.open('scenes/'+scenename+'/'+scenename+'.lsx', this);
 }
 
+function getString(str) {return str;};
+
 /**
  * Displays the graph
  */
@@ -595,6 +597,8 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 	all_func["plane"] = [parseInt];
 	all_args["patch"] = ["order", "partsU", "partsV"];
 	all_func["patch"] = [parseInt, parseInt, parseInt];
+	all_args["terrain"] = ["texture", "heightmap"];
+	all_func["terrain"] = [getString, getString];
 
 	var elems = [];
 	elems = this.parseElement(errors, rootElement, 'LEAVES', 1, 1, true);
@@ -651,7 +655,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 		var err_found = false;
 		for(var temp = 0; temp < all_args[elems].length; temp++) {
 			leaf[all_args[elems][temp]] = (all_func[elems])[temp](args[temp]);
-			if(isNaN(leaf[all_args[elems][temp]])) {
+			if(((all_func[elems])[temp] !== getString) && isNaN(leaf[all_args[elems][temp]])) {
 				err_found = true;
 				break;
 			}
@@ -686,6 +690,15 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 			if(this.parseControlPoints(errors, leaves[i], "Patch", leaf, Math.pow(leaf["order"]+1, 2), true)) {
 				this.leaves[id] = new SceneLeaf(new Patch(this.scene, leaf["order"], leaf["partsU"], leaf["partsV"], leaf["controlpoints"]), id, this.leaves);
 			}
+			break;
+		case "terrain":
+			var tex = new CGFtexture(this.scene, 'scenes/'+this.scenename+'/'+leaf["texture"]);
+			var heightmap;
+			if(leaf["texture"] !== leaf["heightmap"])
+				heightmap = new CGFtexture(this.scene, 'scenes/'+this.scenename+'/'+leaf["heightmap"]);
+			else
+				heightmap = tex;
+			this.leaves[id] = new SceneLeaf(new Terrain(this.scene, tex, heightmap), id, this.leaves);
 			break;
 		}
 	}
