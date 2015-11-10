@@ -683,8 +683,8 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 			this.leaves[id] = new SceneLeaf(new Plane(this.scene, leaf["parts"]), id, this.leaves);
 			break;
 		case "patch":
-			if(parseControlPoints(errors, leaves[i], leaf, "Patch", math.pow(leaf["order"]+1, 2), true)) {
-				//this.leaves[id] = new SceneLeaf(new Patch(this.scene, leaf["order"], leaf["partsU"], leaf["partsV"], leaf["controlpoints"]), id, this.leaves);
+			if(this.parseControlPoints(errors, leaves[i], "Patch", leaf, Math.pow(leaf["order"]+1, 2), true)) {
+				this.leaves[id] = new SceneLeaf(new Patch(this.scene, leaf["order"], leaf["partsU"], leaf["partsV"], leaf["controlpoints"]), id, this.leaves);
 			}
 			break;
 		}
