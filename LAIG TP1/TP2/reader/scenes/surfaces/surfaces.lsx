@@ -28,9 +28,17 @@
 	</LIGHTS>
 	
 	<TEXTURES>
-    	<TEXTURE id="texture">
-        	<file path="textures/test.png" />                             <!-- path to file -->
-        	<amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    	<TEXTURE id="spaceship_top">
+        	<file path="textures/spaceship_top.png" />
+        	<amplif_factor s="1" t="1" />             
+    	</TEXTURE>
+    	<TEXTURE id="spaceship_bottom">
+        	<file path="textures/spaceship_bottom.png" />
+        	<amplif_factor s="1" t="1" />             
+    	</TEXTURE>
+    	<TEXTURE id="spaceship_back">
+        	<file path="textures/spaceship_back.png" />
+        	<amplif_factor s="1" t="1" />             
     	</TEXTURE>
 	</TEXTURES>
 	
@@ -47,45 +55,120 @@
 	    <LEAF id="triangle3" type="triangle" args="1 1 0 0 1 1 0 0 0" />
 	    <LEAF id="triangle4" type="triangle" args="1 1 0 0 0 0 0 1 -1" />
 	    <LEAF id="plane" type="plane" args="50"/>
-	    <LEAF id="patch" type="patch" args="3 200 200" >
-			<controlpoint xx="-2" yy="-2" zz="1" />
-			<controlpoint xx="-2" yy="-1" zz="-2" />
-			<controlpoint xx="-2" yy="1" zz="5" />
-			<controlpoint xx="-2" yy="2" zz="-1" />
-			<controlpoint xx="0" yy="-2" zz="0" />
-			<controlpoint xx="0" yy="-1" zz="-1" />
-			<controlpoint xx="0" yy="1" zz="1.5" />
-			<controlpoint xx="0" yy="2" zz="0" />
-			<controlpoint xx="2" yy="-2" zz="-1" />
-			<controlpoint xx="2" yy="-1" zz="2" />
-			<controlpoint xx="2" yy="1" zz="-5" />
-			<controlpoint xx="2" yy="2" zz="1" />
-			<controlpoint xx="4" yy="-2" zz="-1" />
-			<controlpoint xx="4" yy="-1" zz="2" />
-			<controlpoint xx="4" yy="1" zz="-5" />
-			<controlpoint xx="4" yy="2" zz="1" />
+	    <LEAF id="spaceship_body-leaf" type="patch" args="3 200 200" >
+			<controlpoint xx="3" yy="0" zz="1" />
+			<controlpoint xx="3" yy="0.1" zz="1.33333" />
+			<controlpoint xx="3" yy="0.1" zz="1.66666" />
+			<controlpoint xx="3" yy="0" zz="2" />
+			<controlpoint xx="2" yy="0" zz="1" />
+			<controlpoint xx="2" yy="0.5" zz="1.33333" />
+			<controlpoint xx="2" yy="0.5" zz="1.66666" />
+			<controlpoint xx="2" yy="0" zz="2" />
+			<controlpoint xx="1" yy="0" zz="0" />
+			<controlpoint xx="1" yy="0.5" zz="1" />
+			<controlpoint xx="1" yy="0.5" zz="2" />
+			<controlpoint xx="1" yy="0" zz="3" />
+			<controlpoint xx="0" yy="0" zz="0" />
+			<controlpoint xx="0" yy="1" zz="1" />
+			<controlpoint xx="0" yy="1" zz="2" />
+			<controlpoint xx="0" yy="0" zz="3" />
+		</LEAF>
+	    <LEAF id="spaceship_front-leaf" type="patch" args="3 200 200" >
+			<controlpoint xx="3" yy="0" zz="1" />
+			<controlpoint xx="3" yy="-0.1" zz="1.33333" />
+			<controlpoint xx="3" yy="-0.1" zz="1.66666" />
+			<controlpoint xx="3" yy="0" zz="2" />
+			<controlpoint xx="3" yy="0" zz="1" />
+			<controlpoint xx="3.3" yy="-0.03" zz="1.33333" />
+			<controlpoint xx="3.3" yy="-0.03" zz="1.66666" />
+			<controlpoint xx="3" yy="0" zz="2" />
+			<controlpoint xx="3" yy="0" zz="1" />
+			<controlpoint xx="3.3" yy="0.03" zz="1.33333" />
+			<controlpoint xx="3.3" yy="0.03" zz="1.66666" />
+			<controlpoint xx="3" yy="0" zz="2" />
+			<controlpoint xx="3" yy="0" zz="1" />
+			<controlpoint xx="3" yy="0.1" zz="1.33333" />
+			<controlpoint xx="3" yy="0.1" zz="1.66666" />
+			<controlpoint xx="3" yy="0" zz="2" />
+		</LEAF>
+	    <LEAF id="spaceship_back-leaf" type="patch" args="3 200 200" >
+			<controlpoint xx="0" yy="0" zz="0" />
+			<controlpoint xx="0" yy="1" zz="1" />
+			<controlpoint xx="0" yy="1" zz="2" />
+			<controlpoint xx="0" yy="0" zz="3" />
+			<controlpoint xx="0" yy="0" zz="0" />
+			<controlpoint xx="0.6" yy="0.3" zz="1" />
+			<controlpoint xx="0.6" yy="0.3" zz="2" />
+			<controlpoint xx="0" yy="0" zz="3" />
+			<controlpoint xx="0" yy="0" zz="0" />
+			<controlpoint xx="0.6" yy="-0.3" zz="1" />
+			<controlpoint xx="0.6" yy="-0.3" zz="2" />
+			<controlpoint xx="0" yy="0" zz="3" />
+			<controlpoint xx="0" yy="0" zz="0" />
+			<controlpoint xx="0" yy="-1" zz="1" />
+			<controlpoint xx="0" yy="-1" zz="2" />
+			<controlpoint xx="0" yy="0" zz="3" />
 		</LEAF>
 	</LEAVES>
 	
 	<NODES>
-	    <ROOT id="root" /> 
+	    <ROOT id="spaceship" /> 
 		
-		<NODE id="root">
+		<NODE id="spaceship">
+	        <MATERIAL id="null" />         
+	        <TEXTURE id="null" />
+	        
+	        <ROTATION axis="z" angle="-90" />
+	
+	        <DESCENDANTS>
+	            <DESCENDANT id="spaceship_top" />
+	            <DESCENDANT id="spaceship_bottom" />
+	            <DESCENDANT id="spaceship_back" />
+	            <DESCENDANT id="spaceship_front" />
+	        </DESCENDANTS>
+	    </NODE>
+		
+		<NODE id="spaceship_top">
+	        <MATERIAL id="null" />         
+	        <TEXTURE id="spaceship_top" />
+	
+	        <DESCENDANTS>
+	            <DESCENDANT id="spaceship_body-leaf" />
+	        </DESCENDANTS>
+	    </NODE>
+		
+		<NODE id="spaceship_bottom">
+	        <MATERIAL id="null" />         
+	        <TEXTURE id="spaceship_bottom" />
+	        
+	        <TRANSLATION x="0" y="0" z="3" />
+	        <ROTATION axis="x" angle="180" />
+	
+	        <DESCENDANTS>
+	            <DESCENDANT id="spaceship_body-leaf" />
+	        </DESCENDANTS>
+	    </NODE>
+		
+		<NODE id="spaceship_front">
 	        <MATERIAL id="null" />         
 	        <TEXTURE id="null" />
 	
 	        <DESCENDANTS>
-	            <DESCENDANT id="patch" />
+	            <DESCENDANT id="spaceship_front-leaf" />
+	        </DESCENDANTS>
+	    </NODE>
+		
+		<NODE id="spaceship_back">
+	        <MATERIAL id="null" />         
+	        <TEXTURE id="spaceship_back" />
+	
+	        <DESCENDANTS>
+	            <DESCENDANT id="spaceship_back-leaf" />
 	        </DESCENDANTS>
 	    </NODE>
 	</NODES>
 	
 	<ANIMATIONS>
-		<ANIMATION id="anim" type="linear" span="5">
-			<controlpoint xx="0" yy="0" zz="0"/>
-			<controlpoint xx="5" yy="1" zz="0"/>
-			<controlpoint xx="7" yy="0" zz="1"/>
-		</ANIMATION>
 	</ANIMATIONS>
 	
 </SCENE>
