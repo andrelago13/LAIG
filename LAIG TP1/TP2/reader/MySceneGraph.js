@@ -696,12 +696,13 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
  * Parses a "controlpoint" elements inside a block
  * @param errors errors and warnings array
  * @param rootElement node containing controlpoints
+ * @param id animation ID
  * @param dest_array array having "id" and storing result
  * @param message1 left error message
  * @param message2 right error message
  * @return false if an error occurred, true upon success
  */
-MySceneGraph.prototype.parseControlPoints= function(errors, rootElement, dest_array, type, minNum, mandatory) {
+MySceneGraph.prototype.parseControlPoints= function(errors, rootElement, id, dest_array, type, minNum, mandatory) {
 	var controlpoints = [];
 	for(var i = 0; i < rootElement.childNodes.length; i++) {
 		if(rootElement.childNodes[i].nodeName === "controlpoint") {
@@ -710,12 +711,12 @@ MySceneGraph.prototype.parseControlPoints= function(errors, rootElement, dest_ar
 	}
 	
 	if(mandatory && controlpoints.length != minNum) {
-		this.addWarning(errors, "" + type + " '" + dest_array['id'] + "' doesn't have " + minNum + " required control points. Ignoring");
+		this.addWarning(errors, "" + type + " '" + id + "' doesn't have " + minNum + " required control points. Ignoring");
 		return false;
 	}
 	
 	if(!mandatory && controlpoints.length < minNum) {
-		this.addWarning(errors, "" + type + " '" + dest_array['id'] + "' has less then " + minNum + " control points. Ignoring");
+		this.addWarning(errors, "" + type + " '" + id + "' has less than " + minNum + " control points. Ignoring");
 		return false;
 	}
 	
@@ -925,7 +926,7 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
 		var invalidAnim = false;
 		switch(type) {
 		case 'linear':
-			invalidAnim = !this.parseLinearAnimation(animation, errors, anims[i]);
+			invalidAnim = !this.parseLinearAnimation(id, animation, errors, anims[i]);
 			if(!invalidAnim) {
 				anim_obj = new LinearAnimation(id, animation['span'], animation['controlpoints']);
 			}
@@ -949,14 +950,15 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
 
 /**
  * Parses the "ANIMATIONS" block
+ * @param id animation ID
  * @param destAnim animation array to store the result
  * @param errors errors and warnings array
  * @param animation_elem LSX element of the animation
  * @return true if no error occurred, false otherwise
  */
-MySceneGraph.prototype.parseLinearAnimation= function(destAnim, errors, animation_elem) {
+MySceneGraph.prototype.parseLinearAnimation= function(id, destAnim, errors, animation_elem) {
 	
-	return this.parseControlPoints(errors, animation_elem, destAnim, "Linear animation", 2, false);
+	return this.parseControlPoints(errors, animation_elem, id, destAnim, "Linear animation", 2, false);
 };
 
 /**
