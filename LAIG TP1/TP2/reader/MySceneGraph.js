@@ -932,7 +932,15 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
 			}
 			break;
 		case 'circular':
-			var id = this.parseRequiredAttribute(errors, anims[i], 'center', 'ff ff ff');
+			animation['center'] = this.parseRequiredAttribute(errors, anims[i], 'center', 'ff ff ff');
+			if (animation['center'] === null) continue;
+			animation['radius'] = this.parseRequiredAttribute(errors, anims[i], 'radius', 'ff');
+			if (animation['radius'] === null) continue;
+			animation['startang'] = this.parseRequiredAttribute(errors, anims[i], 'startang', 'ff');
+			if (animation['startang'] === null) continue;
+			animation['rotang'] = this.parseRequiredAttribute(errors, anims[i], 'rotang', 'ff');
+			if (animation['rotang'] === null) continue;
+			anim_obj = new CircularAnimation(id, animation['span'], animation['center'], animation['radius'], this.radians(animation['startang']), this.radians(animation['rotang']));
 			break;
 		default:
 			this.addWarning("Invalid type '" + type + "' for animation '" + id + "'. Ignoring animation.");
@@ -1076,7 +1084,7 @@ MySceneGraph.prototype.parseAttributeWithDefault= function(errors, element, name
 		this.addWarning(errors, "Could not read '" + name + "' attribute of '" + element.nodeName + "' element. Assuming default value: " + defaultValue);
 		return defaultValue;
 	}
-	
+
 	var attribute = this.parseAttributeType(element, name, type);
 	if (attribute === null) {
 		this.addWarning(errors, "'" + name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'. Assuming default value: " + defaultValue);
@@ -1103,7 +1111,7 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, t
 		this.addError(errors, "could not read '" + name + "' attribute of '" + element.nodeName + "' element.");
 		return;
 	}
-	
+
 	var attribute = this.parseAttributeType(element, name, type);
 	if (attribute === null)
 		this.addError(errors, "'" + name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'.");
@@ -1127,6 +1135,9 @@ MySceneGraph.prototype.parseAttributeType = function(element, name, type)
 		break;
 	case "tt":
 		attribute = this.reader.getBoolean(element, name, false);
+		break;
+	case "ff ff ff":
+		attribute = this.reader.getVector3(element, name, false);
 		break;
 	default:
 		attribute = this.reader.getString(element, name, false);
@@ -1202,4 +1213,14 @@ MySceneGraph.prototype.toggleLight = function(light)
 {
 	if (this.scene !== null)
 		this.scene.lights[light].disable();
+}
+
+/**
+ * Converts an angle from degrees to radians
+ * @param deg the angle in degrees
+ * @returns {Number} the angle in radians
+ */
+MySceneGraph.prototype.radians = function(deg)
+{
+	return deg * (Math.PI/180);
 }
