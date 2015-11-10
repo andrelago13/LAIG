@@ -1056,7 +1056,7 @@ MySceneGraph.prototype.validateNodes= function(errors) {
 MySceneGraph.prototype.createGraph= function(nodeID) {
 	if (typeof this.graphNodes[nodeID] != 'undefined') return this.graphNodes[nodeID]; // Node already created
 	if (typeof this.leaves[nodeID] != 'undefined') return this.leaves[nodeID]; // Node is a leaf
-
+	
 	var material = this.nodes[nodeID]["material"];
 	if (material === "null")
 		material = null;
