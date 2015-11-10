@@ -12,11 +12,6 @@ function Plane(scene, parts) {
 		this.parts = parts;
 	}
 
-	this.minS = 0;
-	this.maxS = 1;
-	this.minT = 0;
-	this.maxT = 1;
-
 	this.initBuffers();
 };
 
@@ -37,7 +32,7 @@ Plane.prototype.initBuffers = function () {
 	for(var x = 0; x <= this.parts; ++x) {
 		for(z = 0; z <= this.parts; ++z) {
 			this.vertices.push(x/this.parts, 0, z/this.parts);
-			this.texCoords.push(x/this.parts, 0, z/this.parts);
+			this.texCoords.push(x/this.parts, z/this.parts);
 			++verts;
 			this.normals.push(0, 1, 0);
 			
@@ -59,17 +54,19 @@ Plane.prototype.initBuffers = function () {
  */
 Plane.prototype.setAmplifFactor = function(amplif_s, amplif_t) {
 	
-	// TODO
+	if(typeof amplif_s == 'undefined' || amplif_s <= 0) {
+		amplif_s = 1;
+	}
+	if(typeof amplif_t == 'undefined' || amplif_t <= 0) {
+		amplif_t = 1;
+	}
 	
-	/*var dist_s = Math.abs(this.left_top_x - this.right_bottom_x);
-	var dist_t = Math.abs(this.left_top_y - this.right_bottom_y);
-         
-    this.texCoords = [
-     		this.minS, this.maxT*dist_t/amplif_t,
-     		this.maxS*dist_s/amplif_s, this.maxT*dist_t/amplif_t,
-     		this.minS, this.minT,
-     		this.maxS*dist_s/amplif_s, this.minT
-    ];
+	this.texCoords = [];
+	for(var x = 0; x <= this.parts; ++x) {
+		for(z = 0; z <= this.parts; ++z) {
+			this.texCoords.push(x/this.parts/amplif_s, z/this.parts/amplif_t);
+		}
+	}
 	
-	this.updateTexCoordsGLBuffers();*/
+	this.updateTexCoordsGLBuffers();
 }

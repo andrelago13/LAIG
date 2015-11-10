@@ -28,6 +28,10 @@
 	</LIGHTS>
 	
 	<TEXTURES>
+    	<TEXTURE id="texture">
+        	<file path="textures/test.png" />                             <!-- path to file -->
+        	<amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    	</TEXTURE>
 	</TEXTURES>
 	
 	<MATERIALS>
@@ -46,11 +50,11 @@
 	</LEAVES>
 	
 	<NODES>
-	    <ROOT id="root" />     
+	    <ROOT id="root" /> 
 		
 		<NODE id="root">
 	        <MATERIAL id="null" />         
-	        <TEXTURE id="null" />
+	        <TEXTURE id="texture" />
 	
 	        <DESCENDANTS>
 	            <DESCENDANT id="plane" />
