@@ -118,7 +118,9 @@
 	        <MATERIAL id="null" />         
 	        <TEXTURE id="null" />
 	        
-	        <ROTATION axis="z" angle="-90" />
+	        <animationref id="anim" />
+	        
+	        <TRANSLATION x="-1.5" y="0" z="-1.5" />
 	
 	        <DESCENDANTS>
 	            <DESCENDANT id="spaceship_top" />
@@ -169,6 +171,7 @@
 	</NODES>
 	
 	<ANIMATIONS>
+		<ANIMATION id="anim" span="3" type="circular" center="0 2 0" radius="2" startang="0" rotang="360" />
 	</ANIMATIONS>
 	
 </SCENE>
