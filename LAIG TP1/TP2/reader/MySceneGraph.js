@@ -709,29 +709,29 @@ MySceneGraph.prototype.parseControlPoints= function(errors, rootElement, id, des
 			controlpoints.push(rootElement.childNodes[i]);
 		}
 	}
-	
+
 	if(mandatory && controlpoints.length != minNum) {
 		this.addWarning(errors, "" + type + " '" + id + "' doesn't have " + minNum + " required control points. Ignoring");
 		return false;
 	}
-	
+
 	if(!mandatory && controlpoints.length < minNum) {
 		this.addWarning(errors, "" + type + " '" + id + "' has less than " + minNum + " control points. Ignoring");
 		return false;
 	}
-	
+
 	dest_array['controlpoints'] = [];
-	
+
 	for(var i = 0; i < controlpoints.length; i++) {
 		var elem = controlpoints[i];
 		var xx = this.parseRequiredAttribute(errors, controlpoints[i], 'xx', 'ff');
 		var yy = this.parseRequiredAttribute(errors, controlpoints[i], 'yy', 'ff');
 		var zz = this.parseRequiredAttribute(errors, controlpoints[i], 'zz', 'ff');
 		var point = [xx, yy, zz];
-		
+
 		dest_array['controlpoints'].push(point);
 	}
-	
+
 	return true;
 }
 
@@ -814,7 +814,7 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 			if(anim_id == null)
 				continue;
 		}
-		
+
 		var transforms = [];
 		var elements = elems[i].childNodes;
 
@@ -932,8 +932,7 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
 			}
 			break;
 		case 'circular':
-			//invalidAnim = this.parseCircularAnimation(animation, errors, anims[i]);
-			console.log("FUNCTION NOT YET AVAILABLE FOR PARSE CIRCULAR ANIM");
+			var id = this.parseRequiredAttribute(errors, anims[i], 'center', 'ff ff ff');
 			break;
 		default:
 			this.addWarning("Invalid type '" + type + "' for animation '" + id + "'. Ignoring animation.");
@@ -957,7 +956,7 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
  * @return true if no error occurred, false otherwise
  */
 MySceneGraph.prototype.parseLinearAnimation= function(id, destAnim, errors, animation_elem) {
-	
+
 	return this.parseControlPoints(errors, animation_elem, id, destAnim, "Linear animation", 2, false);
 };
 
@@ -1077,27 +1076,8 @@ MySceneGraph.prototype.parseAttributeWithDefault= function(errors, element, name
 		this.addWarning(errors, "Could not read '" + name + "' attribute of '" + element.nodeName + "' element. Assuming default value: " + defaultValue);
 		return defaultValue;
 	}
-	var attribute = null;
-	switch (type)
-	{
-	case "cc":
-		attribute = this.reader.getItem(element, name, ["x", "y", "z"], false);
-		break;
-	case "ff":
-		attribute = this.reader.getFloat(element, name, false);
-		if (isNaN(attribute)) attribute = null;
-		break;
-	case "ss":
-		attribute = this.reader.getString(element, name, false);
-		break;
-	case "tt":
-		attribute = this.reader.getBoolean(element, name, false);
-		break;
-	default:
-		attribute = this.reader.getString(element, name, false);
-	break;
-	}
-
+	
+	var attribute = this.parseAttributeType(element, name, type);
 	if (attribute === null) {
 		this.addWarning(errors, "'" + name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'. Assuming default value: " + defaultValue);
 		attribute = defaultValue;
@@ -1123,6 +1103,15 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, t
 		this.addError(errors, "could not read '" + name + "' attribute of '" + element.nodeName + "' element.");
 		return;
 	}
+	
+	var attribute = this.parseAttributeType(element, name, type);
+	if (attribute === null)
+		this.addError(errors, "'" + name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'.");
+	return attribute;
+}
+
+MySceneGraph.prototype.parseAttributeType = function(element, name, type)
+{
 	var attribute = null;
 	switch (type)
 	{
@@ -1143,11 +1132,8 @@ MySceneGraph.prototype.parseRequiredAttribute= function(errors, element, name, t
 		attribute = this.reader.getString(element, name, false);
 	break;
 	}
-	if (attribute === null)
-		this.addError(errors, "'" + name + "' attribute of '" + element.nodeName + "' element should be of the type '" + type + "'.");
 	return attribute;
 }
-
 
 /**
  * Parses an inner element from another element, with a specified name. Returns an array
