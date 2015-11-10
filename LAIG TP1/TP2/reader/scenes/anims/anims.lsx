@@ -60,7 +60,7 @@
 	</NODES>
 	
 	<ANIMATIONS>
-		<ANIMATION id="anim2" type="linear" span="5">
+		<ANIMATION id="anim" type="linear" span="5">
 			<controlpoint xx="0" yy="0" zz="0"/>
 			<controlpoint xx="5" yy="1" zz="0"/>
 			<controlpoint xx="7" yy="0" zz="1"/>
