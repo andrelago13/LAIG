@@ -940,7 +940,7 @@ MySceneGraph.prototype.parseAnimations= function(errors, rootElement) {
 			if (animation['startang'] === null) continue;
 			animation['rotang'] = this.parseRequiredAttribute(errors, anims[i], 'rotang', 'ff');
 			if (animation['rotang'] === null) continue;
-			anim_obj = new CircularAnimation(id, animation['span'], animation['center'], animation['radius'], animation['startang'], animation['rotang']);
+			anim_obj = new CircularAnimation(id, animation['span'], animation['center'], animation['radius'], this.radians(animation['startang']), this.radians(animation['rotang']));
 			break;
 		default:
 			this.addWarning("Invalid type '" + type + "' for animation '" + id + "'. Ignoring animation.");
@@ -1213,4 +1213,14 @@ MySceneGraph.prototype.toggleLight = function(light)
 {
 	if (this.scene !== null)
 		this.scene.lights[light].disable();
+}
+
+/**
+ * Converts an angle from degrees to radians
+ * @param deg the angle in degrees
+ * @returns {Number} the angle in radians
+ */
+MySceneGraph.prototype.radians = function(deg)
+{
+	return deg * (Math.PI/180);
 }

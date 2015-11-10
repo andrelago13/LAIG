@@ -51,7 +51,7 @@
 	        <MATERIAL id="null" />         
 	        <TEXTURE id="null" />
 	        
-	        <animationref id="anim" />
+	        <animationref id="anim2" />
 	
 	        <DESCENDANTS>
 	            <DESCENDANT id="rectangle" />
@@ -65,7 +65,7 @@
 			<controlpoint xx="5" yy="1" zz="0"/>
 			<controlpoint xx="7" yy="0" zz="1"/>
 		</ANIMATION>
-		<ANIMATION id="anim2" span="3" type="circular" center="1 0 0" radius="3" startang="0" rotang="90" />
+		<ANIMATION id="anim2" span="3" type="circular" center="1 1 0" radius="3" startang="30" rotang="90" />
 	</ANIMATIONS>
 	
 </SCENE>
