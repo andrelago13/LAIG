@@ -109,11 +109,11 @@
 			<controlpoint xx="0" yy="-1" zz="2" />
 			<controlpoint xx="0" yy="0" zz="3" />
 		</LEAF>
-		<LEAF id="terrain" type="terrain" texture="textures/terrain.jpg" heightmap="textures/heightmap_128.jpg"/>
+		<LEAF id="terrain" type="terrain" args="textures/terrain.jpg textures/heightmap_128.jpg" texture="textures/terrain.jpg" heightmap="textures/heightmap_128.jpg"/>
 	</LEAVES>
 	
 	<NODES>
-	    <ROOT id="root" /> 
+	    <ROOT id="plane" /> 
 		
 		<NODE id="root">
 	        <MATERIAL id="null" />         
