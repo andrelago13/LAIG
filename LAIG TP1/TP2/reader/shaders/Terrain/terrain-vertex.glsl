@@ -13,6 +13,6 @@ uniform sampler2D uSampler2; // Heightmap
 
 void main()
 {
-	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition + Heightmap.r, 1.0);
+	gl_Position = uPMatrix * uMVMatrix * (vec4(aVertexPosition, 1.0) + texture2D(uSampler, aTextureCoord));
 	vTextureCoord = aTextureCoord;
 }

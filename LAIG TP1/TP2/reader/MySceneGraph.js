@@ -597,8 +597,6 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 	all_func["plane"] = [parseInt];
 	all_args["patch"] = ["order", "partsU", "partsV"];
 	all_func["patch"] = [parseInt, parseInt, parseInt];
-	all_args["terrain"] = ["texture", "heightmap"];
-	all_func["terrain"] = [getString, getString];
 
 	var elems = [];
 	elems = this.parseElement(errors, rootElement, 'LEAVES', 1, 1, true);
@@ -626,43 +624,47 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 
 		// Get leaf type
 		elems = this.parseRequiredAttribute(errors, leaves[i], 'type', 'ss');
-		var args = this.parseRequiredAttribute(errors, leaves[i], 'args', 'ss');
-		args = args.split(' ');
 		if(elems == null)
 			continue;
-
-		// Prepare list of arguments, allowing multiple spaces between arguments
-		var temp_args = [];
-		for(var temp = 0; temp < args.length; temp++) {
-			if(args[temp] !== "")
-				temp_args.push(args[temp]);
-		}
-		args = temp_args;
-
-		if(typeof all_args[elems] == 'undefined') {
-			this.addError(errors, "illegal LEAF type '" + elems + "' found.");
-			break;
-		}	
 		leaf["type"] = elems;
 
-		// Validate leaf type's number of arguments
-		if(args.length != all_args[elems].length) {
-			this.addError(errors, "illegal number of arguments for leaf '" + id + "' of type '" + elems + "'.");
-			continue;
-		}
+		if (typeof all_args[elems] != 'undefined')
+		{
+			var args = this.parseRequiredAttribute(errors, leaves[i], 'args', 'ss');
+			args = args.split(' ');
 
-		// Get leaf parameters
-		var err_found = false;
-		for(var temp = 0; temp < all_args[elems].length; temp++) {
-			leaf[all_args[elems][temp]] = (all_func[elems])[temp](args[temp]);
-			if(((all_func[elems])[temp] !== getString) && isNaN(leaf[all_args[elems][temp]])) {
-				err_found = true;
-				break;
+			// Prepare list of arguments, allowing multiple spaces between arguments
+			var temp_args = [];
+			for(var temp = 0; temp < args.length; temp++) {
+				if(args[temp] !== "")
+					temp_args.push(args[temp]);
 			}
-		}
-		if(err_found) {
-			this.addError(errors, "invalid argumens for leaf '" + id + "' of type '" + elems + "'.");
-			continue;
+			args = temp_args;
+
+			if(typeof all_args[elems] == 'undefined') {
+				this.addError(errors, "illegal LEAF type '" + elems + "' found.");
+				break;
+			}	
+
+			// Validate leaf type's number of arguments
+			if(args.length != all_args[elems].length) {
+				this.addError(errors, "illegal number of arguments for leaf '" + id + "' of type '" + elems + "'.");
+				continue;
+			}
+
+			// Get leaf parameters
+			var err_found = false;
+			for(var temp = 0; temp < all_args[elems].length; temp++) {
+				leaf[all_args[elems][temp]] = (all_func[elems])[temp](args[temp]);
+				if(((all_func[elems])[temp] !== getString) && isNaN(leaf[all_args[elems][temp]])) {
+					err_found = true;
+					break;
+				}
+			}
+			if(err_found) {
+				this.addError(errors, "invalid argumens for leaf '" + id + "' of type '" + elems + "'.");
+				continue;
+			}
 		}
 
 		// Generate SceneLeaf objet for the leaf
@@ -698,7 +700,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 				heightmap = new CGFtexture(this.scene, 'scenes/'+this.scenename+'/'+leaf["heightmap"]);
 			else
 				heightmap = tex;
-			this.leaves[id] = new SceneLeaf(new Terrain(this.scene, tex, heightmap), id, this.leaves);
+			this.leaves[id] = new SceneLeaf(new Terrain(this.scene, 1000, tex, heightmap), id, this.leaves);
 			break;
 		}
 	}
@@ -1056,7 +1058,7 @@ MySceneGraph.prototype.validateNodes= function(errors) {
 MySceneGraph.prototype.createGraph= function(nodeID) {
 	if (typeof this.graphNodes[nodeID] != 'undefined') return this.graphNodes[nodeID]; // Node already created
 	if (typeof this.leaves[nodeID] != 'undefined') return this.leaves[nodeID]; // Node is a leaf
-	
+
 	var material = this.nodes[nodeID]["material"];
 	if (material === "null")
 		material = null;

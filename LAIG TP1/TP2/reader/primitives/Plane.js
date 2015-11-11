@@ -12,7 +12,7 @@ function Plane(scene, parts) {
 	} else {
 		this.parts = parts;
 	}
-
+	
 	this.initBuffers();
 };
 
