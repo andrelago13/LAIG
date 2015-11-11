@@ -116,7 +116,7 @@ SceneNode.prototype.getMatrix = function(t) {
 	if (this.animation === null) return this.m;
 	
 	var result = mat4.create();
-	mat4.multiply(result, this.m, this.animation.getMatrix(t));
+	mat4.multiply(result, this.animation.getMatrix(t), this.m);
 	return result;
 }
 

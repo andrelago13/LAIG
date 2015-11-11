@@ -109,21 +109,10 @@
 			<controlpoint xx="0" yy="-1" zz="2" />
 			<controlpoint xx="0" yy="0" zz="3" />
 		</LEAF>
-		<LEAF id="terrain" type="terrain" args="textures/terrain.jpg textures/heightmap_128.jpg" texture="textures/terrain.jpg" heightmap="textures/heightmap_128.jpg"/>
 	</LEAVES>
 	
 	<NODES>
-	    <ROOT id="plane" /> 
-		
-		<NODE id="root">
-	        <MATERIAL id="null" />         
-	        <TEXTURE id="null" />
-	
-	        <DESCENDANTS>
-	            <DESCENDANT id="spaceship" />
-	            <DESCENDANT id="mountains" />
-	        </DESCENDANTS>
-	    </NODE>
+	    <ROOT id="spaceship" /> 
 		
 		<NODE id="spaceship">
 	        <MATERIAL id="null" />         
@@ -131,6 +120,7 @@
 	        
 	        <animationref id="anim" />
 	        
+	        <ROTATION axis="y" angle="90"/>
 	        <TRANSLATION x="-1.5" y="0" z="-1.5" />
 	
 	        <DESCENDANTS>
@@ -179,19 +169,10 @@
 	            <DESCENDANT id="spaceship_back-leaf" />
 	        </DESCENDANTS>
 	    </NODE>
-	    
-	    <NODE id="mountains">
-	    	<MATERIAL id="null" />         
-	        <TEXTURE id="null" />
-	
-	        <DESCENDANTS>
-	            <DESCENDANT id="terrain" />
-	        </DESCENDANTS>
-	    </NODE>
 	</NODES>
 	
 	<ANIMATIONS>
-		<ANIMATION id="anim" span="3" type="circular" center="0 2 0" radius="2" startang="0" rotang="360" />
+		<ANIMATION id="anim" span="6" type="circular" center="0 0 0" radius="4" startang="90" rotang="360" />
 	</ANIMATIONS>
 	
 </SCENE>
