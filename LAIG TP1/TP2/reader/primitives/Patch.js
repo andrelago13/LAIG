@@ -83,20 +83,6 @@ Patch.prototype.display = function () {
 };
 
 /**
- * Initializes the Patch buffers (vertices, indices, normals and texCoords)
- */
-Plane.prototype.initBuffers = function () {
-	
-	this.vertices = [];
-	this.indices = [];
-	this.normals = [];
-	this.texCoords = [];
-     		
-    this.primitiveType=this.scene.gl.TRIANGLES;
-    this.initGLBuffers();
-};
-
-/**
  * Does nothing
  */
 Patch.prototype.setAmplifFactor = function(amplif_s, amplif_t) {}
