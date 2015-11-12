@@ -22,12 +22,10 @@ function Plane(scene, partsU, partsV) {
 	                      [0, 0, 1],
 	                      [1, 0, 1]];
 	
-	Patch.call(this, this.scene, 1, this.partsU, this.partsV, this.controlpoints);
-	
-	//this.patch = new Patch(this.scene, 1, this.partsU, this.partsV, this.controlpoints);
+	this.patch = new Patch(this.scene, 1, this.partsU, this.partsV, this.controlpoints);
 };
 
-Plane.prototype = Object.create(Patch.prototype);
+Plane.prototype = Object.create(Plane.prototype);
 Plane.prototype.constructor=Plane;
 
 /**
@@ -38,5 +36,5 @@ Plane.prototype.constructor=Plane;
 Plane.prototype.setAmplifFactor = function(amplif_s, amplif_t) {}
 
 Plane.prototype.display = function () {
-	Patch.calldisplay();
+	this.patch.display();
 };
