@@ -22,15 +22,13 @@ function Plane(scene, partsU, partsV) {
 	                      [0, 0, 1],
 	                      [1, 0, 1]];
 	
-	this.patch = new Patch(this.scene, 1, this.partsU, this.partsV, this.controlpoints);
+	Patch.call(this, this.scene, 1, this.partsU, this.partsV, this.controlpoints);
+	
+	//this.patch = new Patch(this.scene, 1, this.partsU, this.partsV, this.controlpoints);
 };
 
-Plane.prototype = Object.create(CGFobject.prototype);
+Plane.prototype = Object.create(Patch.prototype);
 Plane.prototype.constructor=Plane;
-
-Plane.prototype.display = function() {
-	this.patch.display();
-};
 
 /**
  * Updates the Plane amplification factors
@@ -38,3 +36,7 @@ Plane.prototype.display = function() {
  * @param amplif_t t domain amplification factor
  */
 Plane.prototype.setAmplifFactor = function(amplif_s, amplif_t) {}
+
+Plane.prototype.display = function () {
+	Patch.calldisplay();
+};

@@ -3,7 +3,7 @@ function Terrain(scene, parts, texture, heightmap) {
 	this.initBuffers();
 	this.texture = texture;
 	this.heightmap = heightmap;
-	this.plane = new Plane(scene, parts);
+	this.plane = new Plane(scene, parts, parts);
 	
 	this.shader = new CGFshader(this.scene.gl, "../reader/shaders/Terrain/terrain-vertex.glsl", "../reader/shaders/Terrain/terrain-fragment.glsl");
 	this.shader.setUniformsValues({uSampler2: 1});
