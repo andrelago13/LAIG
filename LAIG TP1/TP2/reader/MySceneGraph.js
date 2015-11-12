@@ -597,8 +597,6 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 	all_func["plane"] = [parseInt];
 	all_args["patch"] = ["order", "partsU", "partsV"];
 	all_func["patch"] = [parseInt, parseInt, parseInt];
-	all_args["terrain"] = ["texture", "heightmap"];
-	all_func["terrain"] = [getString, getString];
 
 	var elems = [];
 	elems = this.parseElement(errors, rootElement, 'LEAVES', 1, 1, true);
@@ -696,13 +694,17 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 			}
 			break;
 		case "terrain":
+			leaf["texture"] = this.parseRequiredAttribute(errors, leaves[i], 'texture', 'ss');
+			if (leaf["texture"] === null) continue;
+			leaf["heightmap"] = this.parseRequiredAttribute(errors, leaves[i], 'heightmap', 'ss');
+			if (leaf["heightmap"] === null) continue;
 			var tex = new CGFtexture(this.scene, 'scenes/'+this.scenename+'/'+leaf["texture"]);
 			var heightmap;
 			if(leaf["texture"] !== leaf["heightmap"])
 				heightmap = new CGFtexture(this.scene, 'scenes/'+this.scenename+'/'+leaf["heightmap"]);
 			else
 				heightmap = tex;
-			this.leaves[id] = new SceneLeaf(new Terrain(this.scene, 10, tex, heightmap), id, this.leaves);
+			this.leaves[id] = new SceneLeaf(new Terrain(this.scene, 128, tex, heightmap), id, this.leaves);
 			break;
 		}
 	}
