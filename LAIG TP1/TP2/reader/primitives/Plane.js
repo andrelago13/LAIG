@@ -4,12 +4,17 @@
  * @param parts parts the plane is divided into along each axis
  * @constructor
  */
-function Plane(scene, parts) {
+function Plane(scene, partsU, partsV) {
 	this.scene = scene;
-	if(typeof parts == 'undefined' || parts <= 0) {
-		this.parts = 0;
+	if(typeof partsU == 'undefined' || partsU <= 0) {
+		this.partsU = 0;
 	} else {
-		this.parts = parts;
+		this.partsU = partsU;
+	}
+	if(typeof partsV == 'undefined' || partsV <= 0) {
+		this.partsV = 0;
+	} else {
+		this.partsV = partsV;
 	}
 	
 	this.controlpoints = [[0, 0, 0],
@@ -17,7 +22,7 @@ function Plane(scene, parts) {
 	                      [0, 0, 1],
 	                      [1, 0, 1]];
 	
-	this.patch = new Patch(this.scene, 1, this.parts, this.parts, this.controlpoints);
+	this.patch = new Patch(this.scene, 1, this.partsU, this.partsV, this.controlpoints);
 };
 
 Plane.prototype = Object.create(CGFobject.prototype);
