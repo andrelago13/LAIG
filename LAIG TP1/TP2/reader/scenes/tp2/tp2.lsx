@@ -109,7 +109,7 @@
 			<controlpoint xx="0" yy="-1" zz="2" />
 			<controlpoint xx="0" yy="0" zz="3" />
 		</LEAF>
-		<LEAF id="terrain" type="terrain" texture="textures/terrain.jpg" heightmap="textures/heightmap_128.jpg" />
+		<LEAF id="terrain" type="terrain" texture="textures/terrain-t.png" heightmap="textures/terrain-hm.png" />
 	</LEAVES>
 	
 	<NODES>
@@ -121,9 +121,20 @@
 			
 			<DESCENDANTS>
 				<DESCENDANT id="spaceship" />
-				<DESCENDANT id="terrain" />
+				<DESCENDANT id="terrain-node" />
 			</DESCENDANTS>
 		</NODE>
+		
+		<NODE id="terrain-node">
+	        <MATERIAL id="null" />         
+	        <TEXTURE id="null" />
+	        
+	        <SCALE sx="10" sy="10" sz="10" />
+	
+	        <DESCENDANTS>
+	            <DESCENDANT id="terrain" />
+	        </DESCENDANTS>
+	    </NODE>
 		
 		<NODE id="spaceship">
 	        <MATERIAL id="null" />         
