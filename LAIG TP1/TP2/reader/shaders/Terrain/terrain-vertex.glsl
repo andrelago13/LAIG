@@ -1,10 +1,10 @@
-vec3 aVertexPosition;
-vec3 aVertexNormal;
-vec2 aTextureCoord;
+attribute vec3 aVertexPosition;
+attribute vec3 aVertexNormal;
+attribute vec2 aTextureCoord;
 
-mat4 uMVMatrix;
-mat4 uPMatrix;
-mat4 uNMatrix;
+uniform mat4 uMVMatrix;
+uniform mat4 uPMatrix;
+uniform mat4 uNMatrix;
 
 varying vec2 vTextureCoord;
 
@@ -13,6 +13,7 @@ uniform sampler2D uSampler2; // Heightmap
 
 void main()
 {
-	gl_Position = uPMatrix * uMVMatrix * (vec4(aVertexPosition, 1.0) + texture2D(uSampler, aTextureCoord));
+	vec4 newVertexPos = vec4(aVertexPosition.x, texture2D(uSampler2, aTextureCoord).r * 0.2, aVertexPosition.z, 1.0);
+	gl_Position = uPMatrix * uMVMatrix * newVertexPos;
 	vTextureCoord = aTextureCoord;
 }
