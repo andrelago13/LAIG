@@ -13,7 +13,7 @@ uniform sampler2D uSampler2; // Heightmap
 
 void main()
 {
-	vec4 newVertexPos = vec4(aVertexPosition.x, texture2D(uSampler2, aTextureCoord).r * 0.25, aVertexPosition.z, 1.0);
+	vec4 newVertexPos = vec4(aVertexPosition.x, texture2D(uSampler2, aTextureCoord * 0.98 + vec2(0.01, 0.01)).r * 0.25, aVertexPosition.z, 1.0);
 	gl_Position = uPMatrix * uMVMatrix * newVertexPos;
 	vTextureCoord = aTextureCoord;
 }
