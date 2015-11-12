@@ -120,7 +120,8 @@
 			<TEXTURE id="null" />
 			
 			<DESCENDANTS>
-				<DESCENDANT id="spaceship" />
+				<DESCENDANT id="spaceship-main" />
+				<DESCENDANT id="spaceship-test-linear" />
 				<DESCENDANT id="terrain-node" />
 			</DESCENDANTS>
 		</NODE>
@@ -136,7 +137,7 @@
 	        </DESCENDANTS>
 	    </NODE>
 		
-		<NODE id="spaceship">
+		<NODE id="spaceship-main">
 	        <MATERIAL id="null" />         
 	        <TEXTURE id="null" />
 	        
@@ -203,6 +204,32 @@
 	        <ANIMATION id="spaceship-anim-7" />
 	        <ANIMATION id="spaceship-anim-8" />
 	        <ANIMATION id="spaceship-anim-9" />
+	
+	        <DESCENDANTS>
+	            <DESCENDANT id="spaceship" />
+	        </DESCENDANTS>
+	    </NODE>
+		
+		<NODE id="spaceship-test-linear">
+	        <MATERIAL id="null" />         
+	        <TEXTURE id="null" />
+	        
+	        <ANIMATION id="spaceship-anim-linear" />
+	        <ANIMATION id="spaceship-anim-linear" />
+	        <ANIMATION id="spaceship-anim-linear" />
+	        <ANIMATION id="spaceship-anim-linear" />
+	        <ANIMATION id="spaceship-anim-linear" />
+	        <ANIMATION id="spaceship-anim-linear" />
+	        <ANIMATION id="spaceship-anim-linear" />
+	
+	        <DESCENDANTS>
+	            <DESCENDANT id="spaceship" />
+	        </DESCENDANTS>
+	    </NODE>
+		
+		<NODE id="spaceship">
+	        <MATERIAL id="null" />         
+	        <TEXTURE id="null" />
 	        
 	        <SCALE sx="0.3" sy="0.3" sz="0.3" />
 	        <ROTATION axis="y" angle="-90"/>
@@ -278,6 +305,15 @@
 		</ANIMATION>
 		<ANIMATION id="spaceship-anim-8" span="0.37" type="circular" center="4 1 2" radius="1" startang="270" rotang="-90" />
 		<ANIMATION id="spaceship-anim-9" span="0.75" type="circular" center="2 1 2" radius="1" startang="0" rotang="180" />
+		<ANIMATION id="spaceship-anim-linear" span="6.66" type="linear">
+			<controlpoint xx="1" yy="3" zz="2" />
+			<controlpoint xx="1" yy="3" zz="7" />
+			<controlpoint xx="7" yy="3" zz="7" />
+			<controlpoint xx="8" yy="3" zz="5" />
+			<controlpoint xx="5" yy="3" zz="5" />
+			<controlpoint xx="3" yy="3" zz="2" />
+			<controlpoint xx="1" yy="3" zz="2" />
+		</ANIMATION>
 	</ANIMATIONS>
 	
 </SCENE>
