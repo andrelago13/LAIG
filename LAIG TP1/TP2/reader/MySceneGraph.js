@@ -823,7 +823,7 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 			continue;
 
 		// GET NODE'S ANIMATION
-		var animation = this.parseElement(errors, elems[i], 'animationref', 0, 0, false);
+		var animation = this.parseElement(errors, elems[i], 'ANIMATION', 0, 0, false);
 		var anim_ids = [];
 		if(animation != null) {
 			for(var an = 0; an < animation.length; ++an) {

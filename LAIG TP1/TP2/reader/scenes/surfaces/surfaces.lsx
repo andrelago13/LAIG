@@ -129,8 +129,8 @@
 	        <MATERIAL id="null" />         
 	        <TEXTURE id="null" />
 	        
-	        <animationref id="anim" />
-	        <animationref id="anim1" />
+	        <ANIMATION id="anim" />
+	        <ANIMATION id="anim1" />
 	        
 	        <ROTATION axis="y" angle="-90"/>
 	        <TRANSLATION x="-1.5" y="0" z="-1.5" />
