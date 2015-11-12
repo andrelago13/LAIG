@@ -593,8 +593,8 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 	all_func["sphere"] = [parseFloat, parseInt, parseInt];
 	all_args["triangle"] = ["v1-x", "v1-y", "v1-z", "v2-x", "v2-y", "v2-z", "v3-x", "v3-y", "v3-z"];
 	all_func["triangle"] = [parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat, parseFloat];
-	all_args["plane"] = ["parts"];
-	all_func["plane"] = [parseInt];
+	all_args["plane"] = ["partsU", "partsV"];
+	all_func["plane"] = [parseInt, parseInt];
 	all_args["patch"] = ["order", "partsU", "partsV"];
 	all_func["patch"] = [parseInt, parseInt, parseInt];
 
@@ -686,7 +686,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 					id, this.leaves);
 			break;
 		case "plane":
-			this.leaves[id] = new SceneLeaf(new Plane(this.scene, leaf["parts"]), id, this.leaves);
+			this.leaves[id] = new SceneLeaf(new Plane(this.scene, leaf["partsU"], leaf["partsV"]), id, this.leaves);
 			break;
 		case "patch":
 			if(this.parseControlPoints(errors, leaves[i], "Patch", leaf, Math.pow(leaf["order"]+1, 2), true)) {

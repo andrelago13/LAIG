@@ -54,7 +54,7 @@
 	    <LEAF id="triangle2" type="triangle" args="0 0 1 0 0 0 0 1 0" />
 	    <LEAF id="triangle3" type="triangle" args="1 1 0 0 1 1 0 0 0" />
 	    <LEAF id="triangle4" type="triangle" args="1 1 0 0 0 0 0 1 -1" />
-	    <LEAF id="plane" type="plane" args="50"/>
+	    <LEAF id="plane" type="plane" args="50 50"/>
 	    <LEAF id="spaceship_body-leaf" type="patch" args="3 200 200" >
 			<controlpoint xx="3" yy="0" zz="1" />
 			<controlpoint xx="3" yy="0.1" zz="1.33333" />
@@ -113,7 +113,7 @@
 	</LEAVES>
 	
 	<NODES>
-	    <ROOT id="root" /> 
+	    <ROOT id="plane" /> 
 		
 		<NODE id="root">
 			<MATERIAL id="null" />
