@@ -20,5 +20,6 @@ CircularAnimation.prototype.getMatrix = function(t) {
 	mat4.translate(m, m, this.center);
 	mat4.rotate(m, m, this.startang + (t / this.span) * this.rotang, [0, 1, 0]);
 	mat4.translate(m, m, [this.radius, 0, 0]);
+	mat4.rotate(m, m, Math.PI, [0, 1, 0]);
 	return m;
 }

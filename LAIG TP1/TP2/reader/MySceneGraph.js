@@ -821,15 +821,17 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 			continue;
 
 		// GET NODE'S ANIMATION
-		var animation = this.parseElement(errors, elems[i], 'animationref', 0, 1, false);
-		if (animation == null)
-			continue;
-		var anim_id = null;
-		if(animation.length == 1)
-		{
-			anim_id = this.parseRequiredAttribute(errors, animation[0], 'id', 'ss');
-			if(anim_id == null)
-				continue;
+		var animation = this.parseElement(errors, elems[i], 'animationref', 0, 0, false);
+		var anim_ids = [];
+		if(animation != null) {
+			for(var an = 0; an < animation.length; ++an) {
+				var anim_id = this.parseAttributeWithDefault(errors, animation[an], "id", "ss", null);
+				if(anim_id != null) {
+					anim_ids.push(anim_id);
+				} else {
+					this.addWarning(errors, "Invalid animation found in node '" + id + "'. Skipping animation.");
+				}
+			}
 		}
 
 		var transforms = [];
@@ -889,7 +891,7 @@ MySceneGraph.prototype.parseNodes= function(errors, rootElement) {
 		node = [];
 		node["material"] = mat_id;
 		node["texture"] = tex_id;
-		node["animation"] = anim_id;
+		node["animations"] = anim_ids;
 		var transform_obj = new TransformMatrix(transforms);
 		node["transforms"] = transform_obj.matrix;
 		node["descendants"] = desc;
@@ -1037,14 +1039,16 @@ MySceneGraph.prototype.validateNodes= function(errors) {
 		}
 
 		// CHECK IF THE ANIMATION EXISTS
-		var anim_id = this.nodes[i]["animation"];
-		if (anim_id !== null)
+		var anim_ids = this.nodes[i]["animations"];
+		if (anim_ids !== null)
 		{
-			if (typeof this.animations[anim_id] == 'undefined')
-			{
-				this.addWarning(errors, "ANIMATION id '" + anim_id + "' not found for NODE '" + i + "'");
-				this.nodes[i]["animation"] = null;
-				continue;
+			for(var an_index = 0; an_index < anim_ids.length; ++an_index) {
+				if (typeof this.animations[anim_ids[an_index]] == 'undefined')
+				{
+					this.addWarning(errors, "ANIMATION id '" + anim_ids[an_index] + "' not found for NODE '" + i + "'");
+					this.nodes[i]["animations"].splice(an_index, 1);
+					--an_index;
+				}
 			}
 		}
 	}
@@ -1073,10 +1077,16 @@ MySceneGraph.prototype.createGraph= function(nodeID) {
 	else if (texture !== "clear")
 		texture = this.textures[texture];
 
-	var animation = this.nodes[nodeID]["animation"]
-	if (animation !== null) animation = this.animations[animation];
+	var animation = this.nodes[nodeID]["animations"];
+	var anim_list = [];
+	if (animation !== null) {
+		for(var an_index = 0; an_index < animation.length; ++an_index) {
+			anim_list.push(this.animations[animation[an_index]]);
+		}
+	}
+	var anim_set = new AnimationSet(anim_list);
 
-	this.graphNodes[nodeID] = new SceneNode(nodeID, material, texture, animation, this.nodes[nodeID]["transforms"], this.scene);
+	this.graphNodes[nodeID] = new SceneNode(nodeID, material, texture, anim_set, this.nodes[nodeID]["transforms"], this.scene);
 
 	for (var i = 0; i < this.nodes[nodeID]["descendants"].length; i++)
 	{

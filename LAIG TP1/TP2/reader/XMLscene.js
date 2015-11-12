@@ -29,7 +29,6 @@ XMLscene.prototype.init = function (application) {
 	this.enableTextures(true);
 
 	this.lightStatus = [false, false, false, false, false, false, false, false, false];
-	this.setUpdatePeriod(10);
 	this.timerStarted = false;
 	this.startingTime = 0;
 	this.currTime = 0;
@@ -145,6 +144,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.initLights();
 	this.initPrimitives();
 	this.ready = true;
+	this.setUpdatePeriod(10);
 };
 
 /**

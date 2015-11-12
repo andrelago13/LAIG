@@ -119,8 +119,9 @@
 	        <TEXTURE id="null" />
 	        
 	        <animationref id="anim" />
+	        <animationref id="anim1" />
 	        
-	        <ROTATION axis="y" angle="90"/>
+	        <ROTATION axis="y" angle="-90"/>
 	        <TRANSLATION x="-1.5" y="0" z="-1.5" />
 	
 	        <DESCENDANTS>
@@ -173,6 +174,12 @@
 	
 	<ANIMATIONS>
 		<ANIMATION id="anim" span="6" type="circular" center="0 0 0" radius="4" startang="90" rotang="360" />
+		<ANIMATION id="anim1" span="6" type="linear">
+			<controlpoint xx="0" yy="0" zz="-4" />
+			<controlpoint xx="-4" yy="0" zz="-4" />
+			<controlpoint xx="0" yy="0" zz="-4" />
+			<controlpoint xx="0" yy="0" zz="0" />
+		</ANIMATION>
 	</ANIMATIONS>
 	
 </SCENE>
