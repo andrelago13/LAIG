@@ -113,7 +113,7 @@
 	</LEAVES>
 	
 	<NODES>
-	    <ROOT id="plane" /> 
+	    <ROOT id="root" /> 
 		
 		<NODE id="root">
 			<MATERIAL id="null" />

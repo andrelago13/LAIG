@@ -704,7 +704,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 				heightmap = new CGFtexture(this.scene, 'scenes/'+this.scenename+'/'+leaf["heightmap"]);
 			else
 				heightmap = tex;
-			this.leaves[id] = new SceneLeaf(new Terrain(this.scene, 128, tex, heightmap), id, this.leaves);
+			this.leaves[id] = new SceneLeaf(new Terrain(this.scene, tex, heightmap), id, this.leaves);
 			break;
 		}
 	}
