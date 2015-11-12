@@ -35,7 +35,6 @@ XMLscene.prototype.init = function (application) {
 };
 
 XMLscene.prototype.update = function(currTime) {
-	console.log("HERE");
 	if (!this.timerStarted && this.ready)
 	{
 		this.startingTime = currTime;
@@ -190,7 +189,6 @@ XMLscene.prototype.display = function () {
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
 		this.graph.display(this.currTime);
-		console.log("HERE2");
 		this.setUpdatePeriod(10);
 	};
 
