@@ -15,7 +15,7 @@ LinearAnimation.prototype.constructor = LinearAnimation;
 
 LinearAnimation.prototype.getMatrix = function(t) {
 	var m = mat4.create();
-	if (t > this.span)
+	if (t >= this.span)
 	{
 		mat4.translate(m, m, this.controlPoints[this.controlPoints.length - 1]);
 		mat4.rotate(m, m, this.calculateRotation(this.controlPoints[this.controlPoints.length - 2], this.controlPoints[this.controlPoints.length - 1]), [0, 1, 0]);
@@ -33,6 +33,7 @@ LinearAnimation.prototype.getMatrix = function(t) {
 		else
 			break;
 	}
+	
 	var s = totalS - currentDist;
 	var interp = this.lerp(this.controlPoints[i - 1], this.controlPoints[i], s / dist);
 	mat4.translate(m, m, interp);
