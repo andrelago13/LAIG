@@ -109,7 +109,7 @@
 			<controlpoint xx="0" yy="-1" zz="2" />
 			<controlpoint xx="0" yy="0" zz="3" />
 		</LEAF>
-		<LEAF id="terrain" type="terrain" texture="textures/terrain.jpg" heightmap="textures/heightmap_128.jpg" />
+		<LEAF id="terrain" type="terrain" texture="textures/terrain-t.png" heightmap="textures/terrain-hm.png" />
 	</LEAVES>
 	
 	<NODES>
@@ -121,17 +121,38 @@
 			
 			<DESCENDANTS>
 				<DESCENDANT id="spaceship" />
-				<DESCENDANT id="terrain" />
+				<DESCENDANT id="terrain-node" />
 			</DESCENDANTS>
 		</NODE>
+		
+		<NODE id="terrain-node">
+	        <MATERIAL id="null" />         
+	        <TEXTURE id="null" />
+	        
+	        <SCALE sx="10" sy="10" sz="10" />
+	
+	        <DESCENDANTS>
+	            <DESCENDANT id="terrain" />
+	        </DESCENDANTS>
+	    </NODE>
 		
 		<NODE id="spaceship">
 	        <MATERIAL id="null" />         
 	        <TEXTURE id="null" />
 	        
-	        <ANIMATION id="anim" />
-	        <ANIMATION id="anim1" />
+	        <ANIMATION id="spaceship-anim-1" />
+	        <ANIMATION id="spaceship-anim-2" />
+	        <ANIMATION id="spaceship-anim-3" />
+	        <ANIMATION id="spaceship-anim-4" />
+	        <ANIMATION id="spaceship-anim-5" />
+	        <ANIMATION id="spaceship-anim-6" />
+	        <ANIMATION id="spaceship-anim-7" />
+	        <ANIMATION id="spaceship-anim-8" />
+	        <ANIMATION id="spaceship-anim-9" />
+	        <ANIMATION id="spaceship-anim-10" />
+	        <ANIMATION id="spaceship-anim-11" />
 	        
+	        <SCALE sx="0.3" sy="0.3" sz="0.3" />
 	        <ROTATION axis="y" angle="-90"/>
 	        <TRANSLATION x="-1.5" y="0" z="-1.5" />
 	
@@ -184,13 +205,16 @@
 	</NODES>
 	
 	<ANIMATIONS>
-		<ANIMATION id="anim" span="6" type="circular" center="0 0 0" radius="4" startang="90" rotang="360" />
-		<ANIMATION id="anim1" span="6" type="linear">
-			<controlpoint xx="0" yy="0" zz="-4" />
-			<controlpoint xx="-4" yy="0" zz="-4" />
-			<controlpoint xx="0" yy="0" zz="-4" />
-			<controlpoint xx="0" yy="0" zz="0" />
+		<ANIMATION id="spaceship-anim-1" span="6" type="linear">
+			<controlpoint xx="1" yy="1" zz="1" />
+			<controlpoint xx="1" yy="1" zz="7" />
 		</ANIMATION>
+		<ANIMATION id="spaceship-anim-2" span="3" type="circular" center="3 1 7" radius="2" startang="180" rotang="90" />
+		<ANIMATION id="spaceship-anim-3" span="5" type="linear">
+			<controlpoint xx="3" yy="1" zz="9" />
+			<controlpoint xx="7" yy="1" zz="9" />
+		</ANIMATION>
+		<ANIMATION id="spaceship-anim-4" span="1" type="circular" center="7 1 8" radius="1" startang="270" rotang="45" />
 	</ANIMATIONS>
 	
 </SCENE>
