@@ -113,7 +113,11 @@
 	</LEAVES>
 	
 	<NODES>
+<<<<<<< HEAD
 	    <ROOT id="terrain" /> 
+=======
+	    <ROOT id="root" /> 
+>>>>>>> branch 'Gustavo' of https://github.com/andrelago13/LAIG.git
 		
 		<NODE id="root">
 			<MATERIAL id="null" />
