@@ -2,12 +2,12 @@
 	
 	<INITIALS>
 	    <frustum near="0.1" far="500.0"/>                      	<!-- frustum planes-->
-	    <translation x="-5" y="-1" z="-5" />                 	<!-- initial translate -->
+	    <translation x="0" y="0" z="0" />                 	<!-- initial translate -->
 	    <rotation axis="x" angle="0" />                  		<!-- initial rotation 3 -->
 	    <rotation axis="y" angle="0" />                 		<!-- initial rotation 2 -->
 	    <rotation axis="z" angle="0" />                  		<!-- initial rotation 1 -->
 	    <scale sx="1" sy="1" sz="1" />                  	<!-- initial scaling -->
-	    <reference length="0" />                          		<!-- axis length; "0" means no axis-->
+	    <reference length="1" />                          		<!-- axis length; "0" means no axis-->
 	</INITIALS>
 	
 	
@@ -18,16 +18,38 @@
 	
 	
 	<LIGHTS>
-	    <LIGHT id="screen">                                    <!-- light identifier -->
+	    <LIGHT id="main">                                    <!-- light identifier -->
 	        <enable value ="1" />                         <!-- enable/disable -->
 	        <position x="1" y="1" z="1" w="1" />       <!-- light position -->
 	        <ambient r="0.1" g="0.1" b="0.1" a="1" />        <!-- ambient component -->
 	        <diffuse r="1" g="1" b="1" a="1" />        <!-- diffuse component -->
 	        <specular r="1" g="1" b="1" a="1" />       	<!-- specular component --> <!-- no specular here because it's a wide source of light -->
 	    </LIGHT>
+	    <LIGHT id="floor">
+	        <enable value ="1" /> 
+	        <position x="5" y="-3" z="5" w="1" /> 
+	        <ambient r="0.1" g="0.1" b="0.1" a="1" />
+	        <diffuse r="0.3" g="0.3" b="0.3" a="1" />
+	        <specular r="0.3" g="0.3" b="0.3" a="1" />
+	    </LIGHT>
+	    <LIGHT id="sun">
+	        <enable value ="1" /> 
+	        <position x="6.4" y="1" z="4" w="1" /> 
+	        <ambient r="0.1" g="0.1" b="0.1" a="1" />
+	        <diffuse r="0.3" g="0.3" b="0.3" a="1" />
+	        <specular r="0.3" g="0.3" b="0.3" a="1" />
+	    </LIGHT>
 	</LIGHTS>
 	
 	<TEXTURES>
+    	<TEXTURE id="house_front">
+        	<file path="textures/house-front.png" />
+        	<amplif_factor s="1" t="1" />             
+    	</TEXTURE>
+    	<TEXTURE id="roof">
+        	<file path="textures/roof.jpg" />
+        	<amplif_factor s="1" t="1" />             
+    	</TEXTURE>
     	<TEXTURE id="spaceship_top">
         	<file path="textures/spaceship_top.png" />
         	<amplif_factor s="1" t="1" />             
@@ -47,14 +69,10 @@
 	
 	<LEAVES>
 	    <LEAF id="rectangle" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
-	    <LEAF id="cylinder" type="cylinder" args="1 1 1 5 20" />
-	    <LEAF id="circle" type="cylinder" args="0 1 0 1 20" />
-	    <LEAF id="sphere" type="sphere" args="1 20 20" />
-	    <LEAF id="triangle" type="triangle" args="0 0 0 0 0 1 0 1 0" />
-	    <LEAF id="triangle2" type="triangle" args="0 0 1 0 0 0 0 1 0" />
-	    <LEAF id="triangle3" type="triangle" args="1 1 0 0 1 1 0 0 0" />
-	    <LEAF id="triangle4" type="triangle" args="1 1 0 0 0 0 0 1 -1" />
-	    <LEAF id="plane" type="plane" args="50 50"/>
+	    <LEAF id="rectangle-lean" type="rectangle" args="0 0.7071 1 0" />
+	    <LEAF id="triangle" type="triangle" args="0 0 0 1 0 0 0.5 0.5 0" />
+	    <LEAF id="plane" type="plane" args="20 20"/>
+	    <LEAF id="plane-large" type="plane" args="80 80"/>
 	    <LEAF id="spaceship_body-leaf" type="patch" args="3 200 200" >
 			<controlpoint xx="3" yy="0" zz="1" />
 			<controlpoint xx="3" yy="0.1" zz="1.33333" />
@@ -123,6 +141,153 @@
 				<DESCENDANT id="spaceship-main" />
 				<DESCENDANT id="spaceship-test-linear" />
 				<DESCENDANT id="terrain-node" />
+				<DESCENDANT id="house" />
+				<DESCENDANT id="floor-plane" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="floor-plane">
+			<MATERIAL id="null" />
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="10" y="0" z="0" />
+			<ROTATION axis="z" angle="180" />
+			<SCALE sx="10" sy="1" sz="10" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="plane-large" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="house">
+			<MATERIAL id="null" />
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="6.2" y="0.1" z="3.8" />
+			<SCALE sx="0.1" sy="0.1" sz="0.1" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="house-wall-left" />
+				<DESCENDANT id="house-wall-right" />
+				<DESCENDANT id="house-wall-front" />
+				<DESCENDANT id="house-wall-back" />
+				<DESCENDANT id="house-roof" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="house-roof">
+			<MATERIAL id="null" />
+			<TEXTURE id="roof" />
+			
+			<TRANSLATION x="0" y="1" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="house-roof-right" />
+				<DESCENDANT id="house-roof-left" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="house-roof-right">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="1" y="0" z="1" />
+			<ROTATION axis="z" angle="45" />
+			<ROTATION axis="y" angle="90"/>
+			
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle-lean" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="house-roof-left">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<ROTATION axis="z" angle="-45" />
+			<ROTATION axis="y" angle="-90"/>
+			
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle-lean" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="house-wall-back">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="1" y="0" z="0" />
+			<ROTATION axis="y" angle="180" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="house-wall" />
+				<DESCENDANT id="house-wall-top" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="house-wall-front">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="1" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="house-wall-front-square" />
+				<DESCENDANT id="house-wall-top" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="house-wall-front-square">
+			<MATERIAL id="null" />
+			<TEXTURE id="house_front" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="house-wall" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="house-wall-right">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="1" y="0" z="1" />
+			<ROTATION axis="y" angle="90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="house-wall" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="house-wall-left">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<ROTATION axis="y" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="house-wall" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="house-wall">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0.5" y="0.5" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="house-wall-top">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="1" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="triangle" />
 			</DESCENDANTS>
 		</NODE>
 		

@@ -63,9 +63,9 @@ Triangle.prototype.initBuffers = function () {
     var beta = Math.acos((Math.pow(bc, 2) + Math.pow(ab, 2) - Math.pow(ac, 2))/(2*ab*bc));
     
     this.texCoords = [
-		this.minS, this.minT,
-		this.maxS, this.minT,
-		(ab - bc*Math.cos(beta))/ab, bc*Math.sin(beta)/ab
+		this.minS, this.maxT,
+		this.maxS, this.maxT,
+		(ab - bc*Math.cos(beta))/ab, (bc*Math.sin(beta)/ab)
     ];
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
@@ -85,9 +85,9 @@ Triangle.prototype.setAmplifFactor = function(amplif_s, amplif_t) {
     var beta = Math.acos((Math.pow(bc, 2) + Math.pow(ab, 2) - Math.pow(ac, 2))/(2*ab*bc));
     
     this.texCoords = [
-		this.minS, this.minT,
-		this.maxS, this.minT*ab/amplif_s,
-		((ab - bc*Math.cos(beta))/ab)*ab/amplif_s, (bc*Math.sin(beta)/ab)*ab/amplif_t
+		this.minS, this.maxT,
+		this.maxS, this.maxT*ab/amplif_s,
+		((ab - bc*Math.cos(beta))/ab)*ab/amplif_s, 1 - (bc*Math.sin(beta)/ab)*ab/amplif_t
     ];	
 	
 	this.updateTexCoordsGLBuffers();
