@@ -23,6 +23,8 @@ Terrain.prototype.display = function() {
 	this.scene.setActiveShader(this.shader);
 	this.texture.bind();
 	this.heightmap.bind(1);
+	this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_WRAP_S, this.scene.gl["CLAMP_TO_EDGE"]);
+	this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_WRAP_T, this.scene.gl["CLAMP_TO_EDGE"]);
 	this.plane.display();
 	this.scene.setActiveShader(activeShader);
 }
