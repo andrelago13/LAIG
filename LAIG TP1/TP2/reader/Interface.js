@@ -27,3 +27,9 @@ Interface.prototype.init = function(application) {
 Interface.prototype.addLightToggler = function(i, id){
 	this.lights.add(this.scene.lightStatus, i, this.scene.lightStatus[i]).name(id);
 }
+
+Interface.prototype.processKeyDown = function(event) {
+	if(event.keyIdentifier === "U+0020" && event.type === "keydown") {
+		this.scene.resetAnims();
+	}
+}

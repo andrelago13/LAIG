@@ -34,6 +34,10 @@ XMLscene.prototype.init = function (application) {
 	this.currTime = 0;
 };
 
+XMLscene.prototype.resetAnims = function() {
+	this.timerStarted = false;
+}
+
 XMLscene.prototype.update = function(currTime) {
 	if (!this.timerStarted && this.ready)
 	{
@@ -144,6 +148,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.initLights();
 	this.initPrimitives();
 	this.ready = true;
+	console.log("Press SPACE to reset the animations.");
 };
 
 /**
