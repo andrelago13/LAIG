@@ -401,11 +401,11 @@
 	
 	<ANIMATIONS>
 		<ANIMATION id="spaceship-lift-1" span="0.5" type="linear">
-			<controlpoint xx="7" yy="0.2" zz="4.8" />
-			<controlpoint xx="6" yy="0.2" zz="4.8" />
+			<controlpoint xx="7" yy="0.1" zz="4.8" />
+			<controlpoint xx="6" yy="0.1" zz="4.8" />
 		</ANIMATION>
 		<ANIMATION id="spaceship-lift-2" span="1.5" type="linear">
-			<controlpoint xx="6" yy="0.2" zz="4.8" />
+			<controlpoint xx="6" yy="0.1" zz="4.8" />
 			<controlpoint xx="2" yy="1" zz="4.8" />
 		</ANIMATION>
 		<ANIMATION id="spaceship-lift-3" span="0.7" type="circular" center="2 1 5.8" radius="1" startang="90" rotang="90" />
