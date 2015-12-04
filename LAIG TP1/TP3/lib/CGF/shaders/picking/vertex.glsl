@@ -1,11 +1,13 @@
 attribute vec3 aVertexPosition;
 
+uniform bool uUseTexture;
+
 uniform mat4 uMVMatrix;
 uniform mat4 uPMatrix;
 
-uniform vec4 uPickColor;
-
 varying vec4 vFinalColor;
+
+uniform vec4 uPickColor;
 
 void main() {
 

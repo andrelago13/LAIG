@@ -1,5 +1,8 @@
+CGFversion = "0.18";
+CGFdate = " (20151123)";
+console.log("WebCGF - Library for Computer Graphics @ FEUP (WebGL) - v" + CGFversion + CGFdate);
 var Detector = {
-    canvas: !! window.CanvasRenderingContext2D,
+    canvas: !!window.CanvasRenderingContext2D,
     webgl: (function() {
         try {
             var a = document.createElement('canvas');
@@ -8,7 +11,7 @@ var Detector = {
             return false;
         }
     })(),
-    workers: !! window.Worker,
+    workers: !!window.Worker,
     fileapi: window.File && window.FileReader && window.FileList && window.Blob,
     getWebGLErrorMessage: function() {
         var a = document.createElement('div');
@@ -46,1163 +49,1593 @@ if (typeof module === 'object') module.exports = Detector;
                 return a.exports;
             });
         } else a.exports = window;
-        else a.exports = exports;
-        (function(a) {
-            if (!b) var b = 0.000001;
-            if (!c) var c = (typeof Float32Array !== 'undefined') ? Float32Array : Array;
-            var d = {};
-            d.setMatrixArrayType = function(a) {
-                c = a;
-            };
-            if (typeof a !== 'undefined') a.glMatrix = d;;
-            var e = {};
-            e.create = function() {
-                var a = new c(2);
-                a[0] = 0;
-                a[1] = 0;
-                return a;
-            };
-            e.clone = function(a) {
-                var b = new c(2);
-                b[0] = a[0];
-                b[1] = a[1];
-                return b;
-            };
-            e.fromValues = function(a, b) {
-                var d = new c(2);
-                d[0] = a;
-                d[1] = b;
-                return d;
-            };
-            e.copy = function(a, b) {
-                a[0] = b[0];
-                a[1] = b[1];
-                return a;
-            };
-            e.set = function(a, b, c) {
-                a[0] = b;
-                a[1] = c;
-                return a;
-            };
-            e.add = function(a, b, c) {
-                a[0] = b[0] + c[0];
-                a[1] = b[1] + c[1];
-                return a;
-            };
-            e.subtract = function(a, b, c) {
-                a[0] = b[0] - c[0];
-                a[1] = b[1] - c[1];
-                return a;
-            };
-            e.sub = e.subtract;
-            e.multiply = function(a, b, c) {
-                a[0] = b[0] * c[0];
-                a[1] = b[1] * c[1];
-                return a;
-            };
-            e.mul = e.multiply;
-            e.divide = function(a, b, c) {
-                a[0] = b[0] / c[0];
-                a[1] = b[1] / c[1];
-                return a;
-            };
-            e.div = e.divide;
-            e.min = function(a, b, c) {
-                a[0] = Math.min(b[0], c[0]);
-                a[1] = Math.min(b[1], c[1]);
-                return a;
-            };
-            e.max = function(a, b, c) {
-                a[0] = Math.max(b[0], c[0]);
-                a[1] = Math.max(b[1], c[1]);
-                return a;
-            };
-            e.scale = function(a, b, c) {
-                a[0] = b[0] * c;
-                a[1] = b[1] * c;
-                return a;
-            };
-            e.distance = function(a, b) {
-                var c = b[0] - a[0],
-                    d = b[1] - a[1];
-                return Math.sqrt(c * c + d * d);
-            };
-            e.dist = e.distance;
-            e.squaredDistance = function(a, b) {
-                var c = b[0] - a[0],
-                    d = b[1] - a[1];
-                return c * c + d * d;
-            };
-            e.sqrDist = e.squaredDistance;
-            e.length = function(a) {
-                var b = a[0],
-                    c = a[1];
-                return Math.sqrt(b * b + c * c);
-            };
-            e.len = e.length;
-            e.squaredLength = function(a) {
-                var b = a[0],
-                    c = a[1];
-                return b * b + c * c;
-            };
-            e.sqrLen = e.squaredLength;
-            e.negate = function(a, b) {
-                a[0] = -b[0];
-                a[1] = -b[1];
-                return a;
-            };
-            e.normalize = function(a, b) {
-                var c = b[0],
-                    d = b[1];
-                var e = c * c + d * d;
-                if (e > 0) {
-                    e = 1 / Math.sqrt(e);
-                    a[0] = b[0] * e;
-                    a[1] = b[1] * e;
-                }
-                return a;
-            };
-            e.dot = function(a, b) {
-                return a[0] * b[0] + a[1] * b[1];
-            };
-            e.cross = function(a, b, c) {
-                var d = b[0] * c[1] - b[1] * c[0];
-                a[0] = a[1] = 0;
-                a[2] = d;
-                return a;
-            };
-            e.lerp = function(a, b, c, d) {
-                var e = b[0],
-                    f = b[1];
-                a[0] = e + d * (c[0] - e);
-                a[1] = f + d * (c[1] - f);
-                return a;
-            };
-            e.transformMat2 = function(a, b, c) {
-                var d = b[0],
-                    e = b[1];
-                a[0] = c[0] * d + c[2] * e;
-                a[1] = c[1] * d + c[3] * e;
-                return a;
-            };
-            e.transformMat2d = function(a, b, c) {
-                var d = b[0],
-                    e = b[1];
-                a[0] = c[0] * d + c[2] * e + c[4];
-                a[1] = c[1] * d + c[3] * e + c[5];
-                return a;
-            };
-            e.transformMat3 = function(a, b, c) {
-                var d = b[0],
-                    e = b[1];
-                a[0] = c[0] * d + c[3] * e + c[6];
-                a[1] = c[1] * d + c[4] * e + c[7];
-                return a;
-            };
-            e.transformMat4 = function(a, b, c) {
-                var d = b[0],
-                    e = b[1];
-                a[0] = c[0] * d + c[4] * e + c[12];
-                a[1] = c[1] * d + c[5] * e + c[13];
-                return a;
-            };
-            e.forEach = (function() {
-                var a = e.create();
-                return function(b, c, d, e, f, g) {
-                    var h, i;
-                    if (!c) c = 2;
-                    if (!d) d = 0;
-                    if (e) i = Math.min((e * c) + d, b.length);
-                    else i = b.length;
-                    for (h = d; h < i; h += c) {
-                        a[0] = b[h];
-                        a[1] = b[h + 1];
-                        f(a, a, g);
-                        b[h] = a[0];
-                        b[h + 1] = a[1];
-                    }
-                    return b;
-                };
-            })();
-            e.str = function(a) {
-                return 'vec2(' + a[0] + ', ' + a[1] + ')';
-            };
-            if (typeof a !== 'undefined') a.vec2 = e;;
-            var f = {};
-            f.create = function() {
-                var a = new c(3);
-                a[0] = 0;
-                a[1] = 0;
-                a[2] = 0;
-                return a;
-            };
-            f.clone = function(a) {
-                var b = new c(3);
-                b[0] = a[0];
-                b[1] = a[1];
-                b[2] = a[2];
-                return b;
-            };
-            f.fromValues = function(a, b, d) {
-                var e = new c(3);
-                e[0] = a;
-                e[1] = b;
-                e[2] = d;
-                return e;
-            };
-            f.copy = function(a, b) {
-                a[0] = b[0];
-                a[1] = b[1];
-                a[2] = b[2];
-                return a;
-            };
-            f.set = function(a, b, c, d) {
-                a[0] = b;
-                a[1] = c;
-                a[2] = d;
-                return a;
-            };
-            f.add = function(a, b, c) {
-                a[0] = b[0] + c[0];
-                a[1] = b[1] + c[1];
-                a[2] = b[2] + c[2];
-                return a;
-            };
-            f.subtract = function(a, b, c) {
-                a[0] = b[0] - c[0];
-                a[1] = b[1] - c[1];
-                a[2] = b[2] - c[2];
-                return a;
-            };
-            f.sub = f.subtract;
-            f.multiply = function(a, b, c) {
-                a[0] = b[0] * c[0];
-                a[1] = b[1] * c[1];
-                a[2] = b[2] * c[2];
-                return a;
-            };
-            f.mul = f.multiply;
-            f.divide = function(a, b, c) {
-                a[0] = b[0] / c[0];
-                a[1] = b[1] / c[1];
-                a[2] = b[2] / c[2];
-                return a;
-            };
-            f.div = f.divide;
-            f.min = function(a, b, c) {
-                a[0] = Math.min(b[0], c[0]);
-                a[1] = Math.min(b[1], c[1]);
-                a[2] = Math.min(b[2], c[2]);
-                return a;
-            };
-            f.max = function(a, b, c) {
-                a[0] = Math.max(b[0], c[0]);
-                a[1] = Math.max(b[1], c[1]);
-                a[2] = Math.max(b[2], c[2]);
-                return a;
-            };
-            f.scale = function(a, b, c) {
-                a[0] = b[0] * c;
-                a[1] = b[1] * c;
-                a[2] = b[2] * c;
-                return a;
-            };
-            f.distance = function(a, b) {
-                var c = b[0] - a[0],
-                    d = b[1] - a[1],
-                    e = b[2] - a[2];
-                return Math.sqrt(c * c + d * d + e * e);
-            };
-            f.dist = f.distance;
-            f.squaredDistance = function(a, b) {
-                var c = b[0] - a[0],
-                    d = b[1] - a[1],
-                    e = b[2] - a[2];
-                return c * c + d * d + e * e;
-            };
-            f.sqrDist = f.squaredDistance;
-            f.length = function(a) {
-                var b = a[0],
-                    c = a[1],
-                    d = a[2];
-                return Math.sqrt(b * b + c * c + d * d);
-            };
-            f.len = f.length;
-            f.squaredLength = function(a) {
-                var b = a[0],
-                    c = a[1],
-                    d = a[2];
-                return b * b + c * c + d * d;
-            };
-            f.sqrLen = f.squaredLength;
-            f.negate = function(a, b) {
-                a[0] = -b[0];
-                a[1] = -b[1];
-                a[2] = -b[2];
-                return a;
-            };
-            f.normalize = function(a, b) {
-                var c = b[0],
-                    d = b[1],
-                    e = b[2];
-                var f = c * c + d * d + e * e;
-                if (f > 0) {
-                    f = 1 / Math.sqrt(f);
-                    a[0] = b[0] * f;
-                    a[1] = b[1] * f;
-                    a[2] = b[2] * f;
-                }
-                return a;
-            };
-            f.dot = function(a, b) {
-                return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-            };
-            f.cross = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = c[0],
-                    h = c[1],
-                    i = c[2];
-                a[0] = e * i - f * h;
-                a[1] = f * g - d * i;
-                a[2] = d * h - e * g;
-                return a;
-            };
-            f.lerp = function(a, b, c, d) {
-                var e = b[0],
-                    f = b[1],
-                    g = b[2];
-                a[0] = e + d * (c[0] - e);
-                a[1] = f + d * (c[1] - f);
-                a[2] = g + d * (c[2] - g);
-                return a;
-            };
-            f.transformMat4 = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2];
-                a[0] = c[0] * d + c[4] * e + c[8] * f + c[12];
-                a[1] = c[1] * d + c[5] * e + c[9] * f + c[13];
-                a[2] = c[2] * d + c[6] * e + c[10] * f + c[14];
-                return a;
-            };
-            f.transformQuat = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = c[0],
-                    h = c[1],
-                    i = c[2],
-                    j = c[3],
-                    k = j * d + h * f - i * e,
-                    l = j * e + i * d - g * f,
-                    m = j * f + g * e - h * d,
-                    n = -g * d - h * e - i * f;
-                a[0] = k * j + n * -g + l * -i - m * -h;
-                a[1] = l * j + n * -h + m * -g - k * -i;
-                a[2] = m * j + n * -i + k * -h - l * -g;
-                return a;
-            };
-            f.forEach = (function() {
-                var a = f.create();
-                return function(b, c, d, e, f, g) {
-                    var h, i;
-                    if (!c) c = 3;
-                    if (!d) d = 0;
-                    if (e) i = Math.min((e * c) + d, b.length);
-                    else i = b.length;
-                    for (h = d; h < i; h += c) {
-                        a[0] = b[h];
-                        a[1] = b[h + 1];
-                        a[2] = b[h + 2];
-                        f(a, a, g);
-                        b[h] = a[0];
-                        b[h + 1] = a[1];
-                        b[h + 2] = a[2];
-                    }
-                    return b;
-                };
-            })();
-            f.str = function(a) {
-                return 'vec3(' + a[0] + ', ' + a[1] + ', ' + a[2] + ')';
-            };
-            if (typeof a !== 'undefined') a.vec3 = f;;
-            var g = {};
-            g.create = function() {
-                var a = new c(4);
-                a[0] = 0;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 0;
-                return a;
-            };
-            g.clone = function(a) {
-                var b = new c(4);
-                b[0] = a[0];
-                b[1] = a[1];
-                b[2] = a[2];
-                b[3] = a[3];
-                return b;
-            };
-            g.fromValues = function(a, b, d, e) {
-                var f = new c(4);
-                f[0] = a;
-                f[1] = b;
-                f[2] = d;
-                f[3] = e;
-                return f;
-            };
-            g.copy = function(a, b) {
-                a[0] = b[0];
-                a[1] = b[1];
-                a[2] = b[2];
-                a[3] = b[3];
-                return a;
-            };
-            g.set = function(a, b, c, d, e) {
-                a[0] = b;
-                a[1] = c;
-                a[2] = d;
-                a[3] = e;
-                return a;
-            };
-            g.add = function(a, b, c) {
-                a[0] = b[0] + c[0];
-                a[1] = b[1] + c[1];
-                a[2] = b[2] + c[2];
-                a[3] = b[3] + c[3];
-                return a;
-            };
-            g.subtract = function(a, b, c) {
-                a[0] = b[0] - c[0];
-                a[1] = b[1] - c[1];
-                a[2] = b[2] - c[2];
-                a[3] = b[3] - c[3];
-                return a;
-            };
-            g.sub = g.subtract;
-            g.multiply = function(a, b, c) {
-                a[0] = b[0] * c[0];
-                a[1] = b[1] * c[1];
-                a[2] = b[2] * c[2];
-                a[3] = b[3] * c[3];
-                return a;
-            };
-            g.mul = g.multiply;
-            g.divide = function(a, b, c) {
-                a[0] = b[0] / c[0];
-                a[1] = b[1] / c[1];
-                a[2] = b[2] / c[2];
-                a[3] = b[3] / c[3];
-                return a;
-            };
-            g.div = g.divide;
-            g.min = function(a, b, c) {
-                a[0] = Math.min(b[0], c[0]);
-                a[1] = Math.min(b[1], c[1]);
-                a[2] = Math.min(b[2], c[2]);
-                a[3] = Math.min(b[3], c[3]);
-                return a;
-            };
-            g.max = function(a, b, c) {
-                a[0] = Math.max(b[0], c[0]);
-                a[1] = Math.max(b[1], c[1]);
-                a[2] = Math.max(b[2], c[2]);
-                a[3] = Math.max(b[3], c[3]);
-                return a;
-            };
-            g.scale = function(a, b, c) {
-                a[0] = b[0] * c;
-                a[1] = b[1] * c;
-                a[2] = b[2] * c;
-                a[3] = b[3] * c;
-                return a;
-            };
-            g.distance = function(a, b) {
-                var c = b[0] - a[0],
-                    d = b[1] - a[1],
-                    e = b[2] - a[2],
-                    f = b[3] - a[3];
-                return Math.sqrt(c * c + d * d + e * e + f * f);
-            };
-            g.dist = g.distance;
-            g.squaredDistance = function(a, b) {
-                var c = b[0] - a[0],
-                    d = b[1] - a[1],
-                    e = b[2] - a[2],
-                    f = b[3] - a[3];
-                return c * c + d * d + e * e + f * f;
-            };
-            g.sqrDist = g.squaredDistance;
-            g.length = function(a) {
-                var b = a[0],
-                    c = a[1],
-                    d = a[2],
-                    e = a[3];
-                return Math.sqrt(b * b + c * c + d * d + e * e);
-            };
-            g.len = g.length;
-            g.squaredLength = function(a) {
-                var b = a[0],
-                    c = a[1],
-                    d = a[2],
-                    e = a[3];
-                return b * b + c * c + d * d + e * e;
-            };
-            g.sqrLen = g.squaredLength;
-            g.negate = function(a, b) {
-                a[0] = -b[0];
-                a[1] = -b[1];
-                a[2] = -b[2];
-                a[3] = -b[3];
-                return a;
-            };
-            g.normalize = function(a, b) {
-                var c = b[0],
-                    d = b[1],
-                    e = b[2],
-                    f = b[3];
-                var g = c * c + d * d + e * e + f * f;
-                if (g > 0) {
-                    g = 1 / Math.sqrt(g);
-                    a[0] = b[0] * g;
-                    a[1] = b[1] * g;
-                    a[2] = b[2] * g;
-                    a[3] = b[3] * g;
-                }
-                return a;
-            };
-            g.dot = function(a, b) {
-                return a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
-            };
-            g.lerp = function(a, b, c, d) {
-                var e = b[0],
-                    f = b[1],
-                    g = b[2],
-                    h = b[3];
-                a[0] = e + d * (c[0] - e);
-                a[1] = f + d * (c[1] - f);
-                a[2] = g + d * (c[2] - g);
-                a[3] = h + d * (c[3] - h);
-                return a;
-            };
-            g.transformMat4 = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3];
-                a[0] = c[0] * d + c[4] * e + c[8] * f + c[12] * g;
-                a[1] = c[1] * d + c[5] * e + c[9] * f + c[13] * g;
-                a[2] = c[2] * d + c[6] * e + c[10] * f + c[14] * g;
-                a[3] = c[3] * d + c[7] * e + c[11] * f + c[15] * g;
-                return a;
-            };
-            g.transformQuat = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = c[0],
-                    h = c[1],
-                    i = c[2],
-                    j = c[3],
-                    k = j * d + h * f - i * e,
-                    l = j * e + i * d - g * f,
-                    m = j * f + g * e - h * d,
-                    n = -g * d - h * e - i * f;
-                a[0] = k * j + n * -g + l * -i - m * -h;
-                a[1] = l * j + n * -h + m * -g - k * -i;
-                a[2] = m * j + n * -i + k * -h - l * -g;
-                return a;
-            };
-            g.forEach = (function() {
-                var a = g.create();
-                return function(b, c, d, e, f, g) {
-                    var h, i;
-                    if (!c) c = 4;
-                    if (!d) d = 0;
-                    if (e) i = Math.min((e * c) + d, b.length);
-                    else i = b.length;
-                    for (h = d; h < i; h += c) {
-                        a[0] = b[h];
-                        a[1] = b[h + 1];
-                        a[2] = b[h + 2];
-                        a[3] = b[h + 3];
-                        f(a, a, g);
-                        b[h] = a[0];
-                        b[h + 1] = a[1];
-                        b[h + 2] = a[2];
-                        b[h + 3] = a[3];
-                    }
-                    return b;
-                };
-            })();
-            g.str = function(a) {
-                return 'vec4(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ')';
-            };
-            if (typeof a !== 'undefined') a.vec4 = g;;
-            var h = {};
-            var i = new Float32Array([1, 0, 0, 1]);
-            h.create = function() {
-                var a = new c(4);
-                a[0] = 1;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 1;
-                return a;
-            };
-            h.clone = function(a) {
-                var b = new c(4);
-                b[0] = a[0];
-                b[1] = a[1];
-                b[2] = a[2];
-                b[3] = a[3];
-                return b;
-            };
-            h.copy = function(a, b) {
-                a[0] = b[0];
-                a[1] = b[1];
-                a[2] = b[2];
-                a[3] = b[3];
-                return a;
-            };
-            h.identity = function(a) {
-                a[0] = 1;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 1;
-                return a;
-            };
-            h.transpose = function(a, b) {
-                if (a === b) {
-                    var c = b[1];
-                    a[1] = b[2];
-                    a[2] = c;
-                } else {
-                    a[0] = b[0];
-                    a[1] = b[2];
-                    a[2] = b[1];
-                    a[3] = b[3];
-                }
-                return a;
-            };
-            h.invert = function(a, b) {
-                var c = b[0],
-                    d = b[1],
-                    e = b[2],
-                    f = b[3],
-                    g = c * f - e * d;
-                if (!g) return null;
-                g = 1.0 / g;
-                a[0] = f * g;
-                a[1] = -d * g;
-                a[2] = -e * g;
-                a[3] = c * g;
-                return a;
-            };
-            h.adjoint = function(a, b) {
-                var c = b[0];
-                a[0] = b[3];
-                a[1] = -b[1];
-                a[2] = -b[2];
-                a[3] = c;
-                return a;
-            };
-            h.determinant = function(a) {
-                return a[0] * a[3] - a[2] * a[1];
-            };
-            h.multiply = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3];
-                var h = c[0],
-                    i = c[1],
-                    j = c[2],
-                    k = c[3];
-                a[0] = d * h + e * j;
-                a[1] = d * i + e * k;
-                a[2] = f * h + g * j;
-                a[3] = f * i + g * k;
-                return a;
-            };
-            h.mul = h.multiply;
-            h.rotate = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = Math.sin(c),
-                    i = Math.cos(c);
-                a[0] = d * i + e * h;
-                a[1] = d * -h + e * i;
-                a[2] = f * i + g * h;
-                a[3] = f * -h + g * i;
-                return a;
-            };
-            h.scale = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = c[0],
-                    i = c[1];
-                a[0] = d * h;
-                a[1] = e * i;
-                a[2] = f * h;
-                a[3] = g * i;
-                return a;
-            };
-            h.str = function(a) {
-                return 'mat2(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ')';
-            };
-            if (typeof a !== 'undefined') a.mat2 = h;;
-            var j = {};
-            var k = new Float32Array([1, 0, 0, 1, 0, 0]);
-            j.create = function() {
-                var a = new c(6);
-                a[0] = 1;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 1;
-                a[4] = 0;
-                a[5] = 0;
-                return a;
-            };
-            j.clone = function(a) {
-                var b = new c(6);
-                b[0] = a[0];
-                b[1] = a[1];
-                b[2] = a[2];
-                b[3] = a[3];
-                b[4] = a[4];
-                b[5] = a[5];
-                return b;
-            };
-            j.copy = function(a, b) {
-                a[0] = b[0];
-                a[1] = b[1];
-                a[2] = b[2];
-                a[3] = b[3];
-                a[4] = b[4];
-                a[5] = b[5];
-                return a;
-            };
-            j.identity = function(a) {
-                a[0] = 1;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 1;
-                a[4] = 0;
-                a[5] = 0;
-                return a;
-            };
-            j.invert = function(a, b) {
-                var c = b[0],
-                    d = b[1],
-                    e = b[2],
-                    f = b[3],
-                    g = b[4],
-                    h = b[5];
-                var i = c * f - d * e;
-                if (!i) return null;
-                i = 1.0 / i;
-                a[0] = f * i;
-                a[1] = -d * i;
-                a[2] = -e * i;
-                a[3] = c * i;
-                a[4] = (e * h - f * g) * i;
-                a[5] = (d * g - c * h) * i;
-                return a;
-            };
-            j.determinant = function(a) {
-                return a[0] * a[3] - a[1] * a[2];
-            };
-            j.multiply = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = b[4],
-                    i = b[5],
-                    j = c[0],
-                    k = c[1],
-                    l = c[2],
-                    m = c[3],
-                    n = c[4],
-                    o = c[5];
-                a[0] = d * j + e * l;
-                a[1] = d * k + e * m;
-                a[2] = f * j + g * l;
-                a[3] = f * k + g * m;
-                a[4] = j * h + l * i + n;
-                a[5] = k * h + m * i + o;
-                return a;
-            };
-            j.mul = j.multiply;
-            j.rotate = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = b[4],
-                    i = b[5],
-                    j = Math.sin(c),
-                    k = Math.cos(c);
-                a[0] = d * k + e * j;
-                a[1] = -d * j + e * k;
-                a[2] = f * k + g * j;
-                a[3] = -f * j + k * g;
-                a[4] = k * h + j * i;
-                a[5] = k * i - j * h;
-                return a;
-            };
-            j.scale = function(a, b, c) {
-                var d = c[0],
-                    e = c[1];
-                a[0] = b[0] * d;
+    else a.exports = exports;
+    (function(a) {
+        if (!b) var b = 0.000001;
+        if (!c) var c = (typeof Float32Array !== 'undefined') ? Float32Array : Array;
+        var d = {};
+        d.setMatrixArrayType = function(a) {
+            c = a;
+        };
+        if (typeof a !== 'undefined') a.glMatrix = d;;
+        var e = {};
+        e.create = function() {
+            var a = new c(2);
+            a[0] = 0;
+            a[1] = 0;
+            return a;
+        };
+        e.clone = function(a) {
+            var b = new c(2);
+            b[0] = a[0];
+            b[1] = a[1];
+            return b;
+        };
+        e.fromValues = function(a, b) {
+            var d = new c(2);
+            d[0] = a;
+            d[1] = b;
+            return d;
+        };
+        e.copy = function(a, b) {
+            a[0] = b[0];
+            a[1] = b[1];
+            return a;
+        };
+        e.set = function(a, b, c) {
+            a[0] = b;
+            a[1] = c;
+            return a;
+        };
+        e.add = function(a, b, c) {
+            a[0] = b[0] + c[0];
+            a[1] = b[1] + c[1];
+            return a;
+        };
+        e.subtract = function(a, b, c) {
+            a[0] = b[0] - c[0];
+            a[1] = b[1] - c[1];
+            return a;
+        };
+        e.sub = e.subtract;
+        e.multiply = function(a, b, c) {
+            a[0] = b[0] * c[0];
+            a[1] = b[1] * c[1];
+            return a;
+        };
+        e.mul = e.multiply;
+        e.divide = function(a, b, c) {
+            a[0] = b[0] / c[0];
+            a[1] = b[1] / c[1];
+            return a;
+        };
+        e.div = e.divide;
+        e.min = function(a, b, c) {
+            a[0] = Math.min(b[0], c[0]);
+            a[1] = Math.min(b[1], c[1]);
+            return a;
+        };
+        e.max = function(a, b, c) {
+            a[0] = Math.max(b[0], c[0]);
+            a[1] = Math.max(b[1], c[1]);
+            return a;
+        };
+        e.scale = function(a, b, c) {
+            a[0] = b[0] * c;
+            a[1] = b[1] * c;
+            return a;
+        };
+        e.distance = function(a, b) {
+            var c = b[0] - a[0],
+                d = b[1] - a[1];
+            return Math.sqrt(c * c + d * d);
+        };
+        e.dist = e.distance;
+        e.squaredDistance = function(a, b) {
+            var c = b[0] - a[0],
+                d = b[1] - a[1];
+            return c * c + d * d;
+        };
+        e.sqrDist = e.squaredDistance;
+        e.length = function(a) {
+            var b = a[0],
+                c = a[1];
+            return Math.sqrt(b * b + c * c);
+        };
+        e.len = e.length;
+        e.squaredLength = function(a) {
+            var b = a[0],
+                c = a[1];
+            return b * b + c * c;
+        };
+        e.sqrLen = e.squaredLength;
+        e.negate = function(a, b) {
+            a[0] = -b[0];
+            a[1] = -b[1];
+            return a;
+        };
+        e.normalize = function(a, b) {
+            var c = b[0],
+                d = b[1];
+            var e = c * c + d * d;
+            if (e > 0) {
+                e = 1 / Math.sqrt(e);
+                a[0] = b[0] * e;
                 a[1] = b[1] * e;
-                a[2] = b[2] * d;
-                a[3] = b[3] * e;
-                a[4] = b[4] * d;
-                a[5] = b[5] * e;
-                return a;
-            };
-            j.translate = function(a, b, c) {
-                a[0] = b[0];
-                a[1] = b[1];
-                a[2] = b[2];
-                a[3] = b[3];
-                a[4] = b[4] + c[0];
-                a[5] = b[5] + c[1];
-                return a;
-            };
-            j.str = function(a) {
-                return 'mat2d(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ', ' + a[4] + ', ' + a[5] + ')';
-            };
-            if (typeof a !== 'undefined') a.mat2d = j;;
-            var l = {};
-            var m = new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1]);
-            l.create = function() {
-                var a = new c(9);
-                a[0] = 1;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 0;
-                a[4] = 1;
-                a[5] = 0;
-                a[6] = 0;
-                a[7] = 0;
-                a[8] = 1;
-                return a;
-            };
-            l.clone = function(a) {
-                var b = new c(9);
-                b[0] = a[0];
-                b[1] = a[1];
-                b[2] = a[2];
-                b[3] = a[3];
-                b[4] = a[4];
-                b[5] = a[5];
-                b[6] = a[6];
-                b[7] = a[7];
-                b[8] = a[8];
-                return b;
-            };
-            l.copy = function(a, b) {
-                a[0] = b[0];
-                a[1] = b[1];
-                a[2] = b[2];
-                a[3] = b[3];
-                a[4] = b[4];
-                a[5] = b[5];
-                a[6] = b[6];
-                a[7] = b[7];
-                a[8] = b[8];
-                return a;
-            };
-            l.identity = function(a) {
-                a[0] = 1;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 0;
-                a[4] = 1;
-                a[5] = 0;
-                a[6] = 0;
-                a[7] = 0;
-                a[8] = 1;
-                return a;
-            };
-            l.transpose = function(a, b) {
-                if (a === b) {
-                    var c = b[1],
-                        d = b[2],
-                        e = b[5];
-                    a[1] = b[3];
-                    a[2] = b[6];
-                    a[3] = c;
-                    a[5] = b[7];
-                    a[6] = d;
-                    a[7] = e;
-                } else {
-                    a[0] = b[0];
-                    a[1] = b[3];
-                    a[2] = b[6];
-                    a[3] = b[1];
-                    a[4] = b[4];
-                    a[5] = b[7];
-                    a[6] = b[2];
-                    a[7] = b[5];
-                    a[8] = b[8];
+            }
+            return a;
+        };
+        e.dot = function(a, b) {
+            return a[0] * b[0] + a[1] * b[1];
+        };
+        e.cross = function(a, b, c) {
+            var d = b[0] * c[1] - b[1] * c[0];
+            a[0] = a[1] = 0;
+            a[2] = d;
+            return a;
+        };
+        e.lerp = function(a, b, c, d) {
+            var e = b[0],
+                f = b[1];
+            a[0] = e + d * (c[0] - e);
+            a[1] = f + d * (c[1] - f);
+            return a;
+        };
+        e.transformMat2 = function(a, b, c) {
+            var d = b[0],
+                e = b[1];
+            a[0] = c[0] * d + c[2] * e;
+            a[1] = c[1] * d + c[3] * e;
+            return a;
+        };
+        e.transformMat2d = function(a, b, c) {
+            var d = b[0],
+                e = b[1];
+            a[0] = c[0] * d + c[2] * e + c[4];
+            a[1] = c[1] * d + c[3] * e + c[5];
+            return a;
+        };
+        e.transformMat3 = function(a, b, c) {
+            var d = b[0],
+                e = b[1];
+            a[0] = c[0] * d + c[3] * e + c[6];
+            a[1] = c[1] * d + c[4] * e + c[7];
+            return a;
+        };
+        e.transformMat4 = function(a, b, c) {
+            var d = b[0],
+                e = b[1];
+            a[0] = c[0] * d + c[4] * e + c[12];
+            a[1] = c[1] * d + c[5] * e + c[13];
+            return a;
+        };
+        e.forEach = (function() {
+            var a = e.create();
+            return function(b, c, d, e, f, g) {
+                var h, i;
+                if (!c) c = 2;
+                if (!d) d = 0;
+                if (e) i = Math.min((e * c) + d, b.length);
+                else i = b.length;
+                for (h = d; h < i; h += c) {
+                    a[0] = b[h];
+                    a[1] = b[h + 1];
+                    f(a, a, g);
+                    b[h] = a[0];
+                    b[h + 1] = a[1];
                 }
-                return a;
-            };
-            l.invert = function(a, b) {
-                var c = b[0],
-                    d = b[1],
-                    e = b[2],
-                    f = b[3],
-                    g = b[4],
-                    h = b[5],
-                    i = b[6],
-                    j = b[7],
-                    k = b[8],
-                    l = k * g - h * j,
-                    m = -k * f + h * i,
-                    n = j * f - g * i,
-                    o = c * l + d * m + e * n;
-                if (!o) return null;
-                o = 1.0 / o;
-                a[0] = l * o;
-                a[1] = (-k * d + e * j) * o;
-                a[2] = (h * d - e * g) * o;
-                a[3] = m * o;
-                a[4] = (k * c - e * i) * o;
-                a[5] = (-h * c + e * f) * o;
-                a[6] = n * o;
-                a[7] = (-j * c + d * i) * o;
-                a[8] = (g * c - d * f) * o;
-                return a;
-            };
-            l.adjoint = function(a, b) {
-                var c = b[0],
-                    d = b[1],
-                    e = b[2],
-                    f = b[3],
-                    g = b[4],
-                    h = b[5],
-                    i = b[6],
-                    j = b[7],
-                    k = b[8];
-                a[0] = (g * k - h * j);
-                a[1] = (e * j - d * k);
-                a[2] = (d * h - e * g);
-                a[3] = (h * i - f * k);
-                a[4] = (c * k - e * i);
-                a[5] = (e * f - c * h);
-                a[6] = (f * j - g * i);
-                a[7] = (d * i - c * j);
-                a[8] = (c * g - d * f);
-                return a;
-            };
-            l.determinant = function(a) {
-                var b = a[0],
-                    c = a[1],
-                    d = a[2],
-                    e = a[3],
-                    f = a[4],
-                    g = a[5],
-                    h = a[6],
-                    i = a[7],
-                    j = a[8];
-                return b * (j * f - g * i) + c * (-j * e + g * h) + d * (i * e - f * h);
-            };
-            l.multiply = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = b[4],
-                    i = b[5],
-                    j = b[6],
-                    k = b[7],
-                    l = b[8],
-                    m = c[0],
-                    n = c[1],
-                    o = c[2],
-                    p = c[3],
-                    q = c[4],
-                    r = c[5],
-                    s = c[6],
-                    t = c[7],
-                    u = c[8];
-                a[0] = m * d + n * g + o * j;
-                a[1] = m * e + n * h + o * k;
-                a[2] = m * f + n * i + o * l;
-                a[3] = p * d + q * g + r * j;
-                a[4] = p * e + q * h + r * k;
-                a[5] = p * f + q * i + r * l;
-                a[6] = s * d + t * g + u * j;
-                a[7] = s * e + t * h + u * k;
-                a[8] = s * f + t * i + u * l;
-                return a;
-            };
-            l.mul = l.multiply;
-            l.translate = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = b[4],
-                    i = b[5],
-                    j = b[6],
-                    k = b[7],
-                    l = b[8],
-                    m = c[0],
-                    n = c[1];
-                a[0] = d;
-                a[1] = e;
-                a[2] = f;
-                a[3] = g;
-                a[4] = h;
-                a[5] = i;
-                a[6] = m * d + n * g + j;
-                a[7] = m * e + n * h + k;
-                a[8] = m * f + n * i + l;
-                return a;
-            };
-            l.rotate = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = b[4],
-                    i = b[5],
-                    j = b[6],
-                    k = b[7],
-                    l = b[8],
-                    m = Math.sin(c),
-                    n = Math.cos(c);
-                a[0] = n * d + m * g;
-                a[1] = n * e + m * h;
-                a[2] = n * f + m * i;
-                a[3] = n * g - m * d;
-                a[4] = n * h - m * e;
-                a[5] = n * i - m * f;
-                a[6] = j;
-                a[7] = k;
-                a[8] = l;
-                return a;
-            };
-            l.scale = function(a, b, c) {
-                var d = c[0],
-                    e = c[2];
-                a[0] = d * b[0];
-                a[1] = d * b[1];
-                a[2] = d * b[2];
-                a[3] = e * b[3];
-                a[4] = e * b[4];
-                a[5] = e * b[5];
-                a[6] = b[6];
-                a[7] = b[7];
-                a[8] = b[8];
-                return a;
-            };
-            l.fromMat2d = function(a, b) {
-                a[0] = b[0];
-                a[1] = b[1];
-                a[2] = 0;
-                a[3] = b[2];
-                a[4] = b[3];
-                a[5] = 0;
-                a[6] = b[4];
-                a[7] = b[5];
-                a[8] = 1;
-                return a;
-            };
-            l.fromQuat = function(a, b) {
-                var c = b[0],
-                    d = b[1],
-                    e = b[2],
-                    f = b[3],
-                    g = c + c,
-                    h = d + d,
-                    i = e + e,
-                    j = c * g,
-                    k = c * h,
-                    l = c * i,
-                    m = d * h,
-                    n = d * i,
-                    o = e * i,
-                    p = f * g,
-                    q = f * h,
-                    r = f * i;
-                a[0] = 1 - (m + o);
-                a[1] = k + r;
-                a[2] = l - q;
-                a[3] = k - r;
-                a[4] = 1 - (j + o);
-                a[5] = n + p;
-                a[6] = l + q;
-                a[7] = n - p;
-                a[8] = 1 - (j + m);
-                return a;
-            };
-            l.str = function(a) {
-                return 'mat3(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ', ' + a[4] + ', ' + a[5] + ', ' + a[6] + ', ' + a[7] + ', ' + a[8] + ')';
-            };
-            if (typeof a !== 'undefined') a.mat3 = l;;
-            var n = {};
-            var o = new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
-            n.create = function() {
-                var a = new c(16);
-                a[0] = 1;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 0;
-                a[4] = 0;
-                a[5] = 1;
-                a[6] = 0;
-                a[7] = 0;
-                a[8] = 0;
-                a[9] = 0;
-                a[10] = 1;
-                a[11] = 0;
-                a[12] = 0;
-                a[13] = 0;
-                a[14] = 0;
-                a[15] = 1;
-                return a;
-            };
-            n.clone = function(a) {
-                var b = new c(16);
-                b[0] = a[0];
-                b[1] = a[1];
-                b[2] = a[2];
-                b[3] = a[3];
-                b[4] = a[4];
-                b[5] = a[5];
-                b[6] = a[6];
-                b[7] = a[7];
-                b[8] = a[8];
-                b[9] = a[9];
-                b[10] = a[10];
-                b[11] = a[11];
-                b[12] = a[12];
-                b[13] = a[13];
-                b[14] = a[14];
-                b[15] = a[15];
                 return b;
             };
-            n.copy = function(a, b) {
+        })();
+        e.str = function(a) {
+            return 'vec2(' + a[0] + ', ' + a[1] + ')';
+        };
+        if (typeof a !== 'undefined') a.vec2 = e;;
+        var f = {};
+        f.create = function() {
+            var a = new c(3);
+            a[0] = 0;
+            a[1] = 0;
+            a[2] = 0;
+            return a;
+        };
+        f.clone = function(a) {
+            var b = new c(3);
+            b[0] = a[0];
+            b[1] = a[1];
+            b[2] = a[2];
+            return b;
+        };
+        f.fromValues = function(a, b, d) {
+            var e = new c(3);
+            e[0] = a;
+            e[1] = b;
+            e[2] = d;
+            return e;
+        };
+        f.copy = function(a, b) {
+            a[0] = b[0];
+            a[1] = b[1];
+            a[2] = b[2];
+            return a;
+        };
+        f.set = function(a, b, c, d) {
+            a[0] = b;
+            a[1] = c;
+            a[2] = d;
+            return a;
+        };
+        f.add = function(a, b, c) {
+            a[0] = b[0] + c[0];
+            a[1] = b[1] + c[1];
+            a[2] = b[2] + c[2];
+            return a;
+        };
+        f.subtract = function(a, b, c) {
+            a[0] = b[0] - c[0];
+            a[1] = b[1] - c[1];
+            a[2] = b[2] - c[2];
+            return a;
+        };
+        f.sub = f.subtract;
+        f.multiply = function(a, b, c) {
+            a[0] = b[0] * c[0];
+            a[1] = b[1] * c[1];
+            a[2] = b[2] * c[2];
+            return a;
+        };
+        f.mul = f.multiply;
+        f.divide = function(a, b, c) {
+            a[0] = b[0] / c[0];
+            a[1] = b[1] / c[1];
+            a[2] = b[2] / c[2];
+            return a;
+        };
+        f.div = f.divide;
+        f.min = function(a, b, c) {
+            a[0] = Math.min(b[0], c[0]);
+            a[1] = Math.min(b[1], c[1]);
+            a[2] = Math.min(b[2], c[2]);
+            return a;
+        };
+        f.max = function(a, b, c) {
+            a[0] = Math.max(b[0], c[0]);
+            a[1] = Math.max(b[1], c[1]);
+            a[2] = Math.max(b[2], c[2]);
+            return a;
+        };
+        f.scale = function(a, b, c) {
+            a[0] = b[0] * c;
+            a[1] = b[1] * c;
+            a[2] = b[2] * c;
+            return a;
+        };
+        f.distance = function(a, b) {
+            var c = b[0] - a[0],
+                d = b[1] - a[1],
+                e = b[2] - a[2];
+            return Math.sqrt(c * c + d * d + e * e);
+        };
+        f.dist = f.distance;
+        f.squaredDistance = function(a, b) {
+            var c = b[0] - a[0],
+                d = b[1] - a[1],
+                e = b[2] - a[2];
+            return c * c + d * d + e * e;
+        };
+        f.sqrDist = f.squaredDistance;
+        f.length = function(a) {
+            var b = a[0],
+                c = a[1],
+                d = a[2];
+            return Math.sqrt(b * b + c * c + d * d);
+        };
+        f.len = f.length;
+        f.squaredLength = function(a) {
+            var b = a[0],
+                c = a[1],
+                d = a[2];
+            return b * b + c * c + d * d;
+        };
+        f.sqrLen = f.squaredLength;
+        f.negate = function(a, b) {
+            a[0] = -b[0];
+            a[1] = -b[1];
+            a[2] = -b[2];
+            return a;
+        };
+        f.normalize = function(a, b) {
+            var c = b[0],
+                d = b[1],
+                e = b[2];
+            var f = c * c + d * d + e * e;
+            if (f > 0) {
+                f = 1 / Math.sqrt(f);
+                a[0] = b[0] * f;
+                a[1] = b[1] * f;
+                a[2] = b[2] * f;
+            }
+            return a;
+        };
+        f.dot = function(a, b) {
+            return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+        };
+        f.cross = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = c[0],
+                h = c[1],
+                i = c[2];
+            a[0] = e * i - f * h;
+            a[1] = f * g - d * i;
+            a[2] = d * h - e * g;
+            return a;
+        };
+        f.lerp = function(a, b, c, d) {
+            var e = b[0],
+                f = b[1],
+                g = b[2];
+            a[0] = e + d * (c[0] - e);
+            a[1] = f + d * (c[1] - f);
+            a[2] = g + d * (c[2] - g);
+            return a;
+        };
+        f.transformMat4 = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2];
+            a[0] = c[0] * d + c[4] * e + c[8] * f + c[12];
+            a[1] = c[1] * d + c[5] * e + c[9] * f + c[13];
+            a[2] = c[2] * d + c[6] * e + c[10] * f + c[14];
+            return a;
+        };
+        f.transformQuat = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = c[0],
+                h = c[1],
+                i = c[2],
+                j = c[3],
+                k = j * d + h * f - i * e,
+                l = j * e + i * d - g * f,
+                m = j * f + g * e - h * d,
+                n = -g * d - h * e - i * f;
+            a[0] = k * j + n * -g + l * -i - m * -h;
+            a[1] = l * j + n * -h + m * -g - k * -i;
+            a[2] = m * j + n * -i + k * -h - l * -g;
+            return a;
+        };
+        f.forEach = (function() {
+            var a = f.create();
+            return function(b, c, d, e, f, g) {
+                var h, i;
+                if (!c) c = 3;
+                if (!d) d = 0;
+                if (e) i = Math.min((e * c) + d, b.length);
+                else i = b.length;
+                for (h = d; h < i; h += c) {
+                    a[0] = b[h];
+                    a[1] = b[h + 1];
+                    a[2] = b[h + 2];
+                    f(a, a, g);
+                    b[h] = a[0];
+                    b[h + 1] = a[1];
+                    b[h + 2] = a[2];
+                }
+                return b;
+            };
+        })();
+        f.str = function(a) {
+            return 'vec3(' + a[0] + ', ' + a[1] + ', ' + a[2] + ')';
+        };
+        if (typeof a !== 'undefined') a.vec3 = f;;
+        var g = {};
+        g.create = function() {
+            var a = new c(4);
+            a[0] = 0;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 0;
+            return a;
+        };
+        g.clone = function(a) {
+            var b = new c(4);
+            b[0] = a[0];
+            b[1] = a[1];
+            b[2] = a[2];
+            b[3] = a[3];
+            return b;
+        };
+        g.fromValues = function(a, b, d, e) {
+            var f = new c(4);
+            f[0] = a;
+            f[1] = b;
+            f[2] = d;
+            f[3] = e;
+            return f;
+        };
+        g.copy = function(a, b) {
+            a[0] = b[0];
+            a[1] = b[1];
+            a[2] = b[2];
+            a[3] = b[3];
+            return a;
+        };
+        g.set = function(a, b, c, d, e) {
+            a[0] = b;
+            a[1] = c;
+            a[2] = d;
+            a[3] = e;
+            return a;
+        };
+        g.add = function(a, b, c) {
+            a[0] = b[0] + c[0];
+            a[1] = b[1] + c[1];
+            a[2] = b[2] + c[2];
+            a[3] = b[3] + c[3];
+            return a;
+        };
+        g.subtract = function(a, b, c) {
+            a[0] = b[0] - c[0];
+            a[1] = b[1] - c[1];
+            a[2] = b[2] - c[2];
+            a[3] = b[3] - c[3];
+            return a;
+        };
+        g.sub = g.subtract;
+        g.multiply = function(a, b, c) {
+            a[0] = b[0] * c[0];
+            a[1] = b[1] * c[1];
+            a[2] = b[2] * c[2];
+            a[3] = b[3] * c[3];
+            return a;
+        };
+        g.mul = g.multiply;
+        g.divide = function(a, b, c) {
+            a[0] = b[0] / c[0];
+            a[1] = b[1] / c[1];
+            a[2] = b[2] / c[2];
+            a[3] = b[3] / c[3];
+            return a;
+        };
+        g.div = g.divide;
+        g.min = function(a, b, c) {
+            a[0] = Math.min(b[0], c[0]);
+            a[1] = Math.min(b[1], c[1]);
+            a[2] = Math.min(b[2], c[2]);
+            a[3] = Math.min(b[3], c[3]);
+            return a;
+        };
+        g.max = function(a, b, c) {
+            a[0] = Math.max(b[0], c[0]);
+            a[1] = Math.max(b[1], c[1]);
+            a[2] = Math.max(b[2], c[2]);
+            a[3] = Math.max(b[3], c[3]);
+            return a;
+        };
+        g.scale = function(a, b, c) {
+            a[0] = b[0] * c;
+            a[1] = b[1] * c;
+            a[2] = b[2] * c;
+            a[3] = b[3] * c;
+            return a;
+        };
+        g.distance = function(a, b) {
+            var c = b[0] - a[0],
+                d = b[1] - a[1],
+                e = b[2] - a[2],
+                f = b[3] - a[3];
+            return Math.sqrt(c * c + d * d + e * e + f * f);
+        };
+        g.dist = g.distance;
+        g.squaredDistance = function(a, b) {
+            var c = b[0] - a[0],
+                d = b[1] - a[1],
+                e = b[2] - a[2],
+                f = b[3] - a[3];
+            return c * c + d * d + e * e + f * f;
+        };
+        g.sqrDist = g.squaredDistance;
+        g.length = function(a) {
+            var b = a[0],
+                c = a[1],
+                d = a[2],
+                e = a[3];
+            return Math.sqrt(b * b + c * c + d * d + e * e);
+        };
+        g.len = g.length;
+        g.squaredLength = function(a) {
+            var b = a[0],
+                c = a[1],
+                d = a[2],
+                e = a[3];
+            return b * b + c * c + d * d + e * e;
+        };
+        g.sqrLen = g.squaredLength;
+        g.negate = function(a, b) {
+            a[0] = -b[0];
+            a[1] = -b[1];
+            a[2] = -b[2];
+            a[3] = -b[3];
+            return a;
+        };
+        g.normalize = function(a, b) {
+            var c = b[0],
+                d = b[1],
+                e = b[2],
+                f = b[3];
+            var g = c * c + d * d + e * e + f * f;
+            if (g > 0) {
+                g = 1 / Math.sqrt(g);
+                a[0] = b[0] * g;
+                a[1] = b[1] * g;
+                a[2] = b[2] * g;
+                a[3] = b[3] * g;
+            }
+            return a;
+        };
+        g.dot = function(a, b) {
+            return a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
+        };
+        g.lerp = function(a, b, c, d) {
+            var e = b[0],
+                f = b[1],
+                g = b[2],
+                h = b[3];
+            a[0] = e + d * (c[0] - e);
+            a[1] = f + d * (c[1] - f);
+            a[2] = g + d * (c[2] - g);
+            a[3] = h + d * (c[3] - h);
+            return a;
+        };
+        g.transformMat4 = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3];
+            a[0] = c[0] * d + c[4] * e + c[8] * f + c[12] * g;
+            a[1] = c[1] * d + c[5] * e + c[9] * f + c[13] * g;
+            a[2] = c[2] * d + c[6] * e + c[10] * f + c[14] * g;
+            a[3] = c[3] * d + c[7] * e + c[11] * f + c[15] * g;
+            return a;
+        };
+        g.transformQuat = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = c[0],
+                h = c[1],
+                i = c[2],
+                j = c[3],
+                k = j * d + h * f - i * e,
+                l = j * e + i * d - g * f,
+                m = j * f + g * e - h * d,
+                n = -g * d - h * e - i * f;
+            a[0] = k * j + n * -g + l * -i - m * -h;
+            a[1] = l * j + n * -h + m * -g - k * -i;
+            a[2] = m * j + n * -i + k * -h - l * -g;
+            return a;
+        };
+        g.forEach = (function() {
+            var a = g.create();
+            return function(b, c, d, e, f, g) {
+                var h, i;
+                if (!c) c = 4;
+                if (!d) d = 0;
+                if (e) i = Math.min((e * c) + d, b.length);
+                else i = b.length;
+                for (h = d; h < i; h += c) {
+                    a[0] = b[h];
+                    a[1] = b[h + 1];
+                    a[2] = b[h + 2];
+                    a[3] = b[h + 3];
+                    f(a, a, g);
+                    b[h] = a[0];
+                    b[h + 1] = a[1];
+                    b[h + 2] = a[2];
+                    b[h + 3] = a[3];
+                }
+                return b;
+            };
+        })();
+        g.str = function(a) {
+            return 'vec4(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ')';
+        };
+        if (typeof a !== 'undefined') a.vec4 = g;;
+        var h = {};
+        var i = new Float32Array([1, 0, 0, 1]);
+        h.create = function() {
+            var a = new c(4);
+            a[0] = 1;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 1;
+            return a;
+        };
+        h.clone = function(a) {
+            var b = new c(4);
+            b[0] = a[0];
+            b[1] = a[1];
+            b[2] = a[2];
+            b[3] = a[3];
+            return b;
+        };
+        h.copy = function(a, b) {
+            a[0] = b[0];
+            a[1] = b[1];
+            a[2] = b[2];
+            a[3] = b[3];
+            return a;
+        };
+        h.identity = function(a) {
+            a[0] = 1;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 1;
+            return a;
+        };
+        h.transpose = function(a, b) {
+            if (a === b) {
+                var c = b[1];
+                a[1] = b[2];
+                a[2] = c;
+            } else {
+                a[0] = b[0];
+                a[1] = b[2];
+                a[2] = b[1];
+                a[3] = b[3];
+            }
+            return a;
+        };
+        h.invert = function(a, b) {
+            var c = b[0],
+                d = b[1],
+                e = b[2],
+                f = b[3],
+                g = c * f - e * d;
+            if (!g) return null;
+            g = 1.0 / g;
+            a[0] = f * g;
+            a[1] = -d * g;
+            a[2] = -e * g;
+            a[3] = c * g;
+            return a;
+        };
+        h.adjoint = function(a, b) {
+            var c = b[0];
+            a[0] = b[3];
+            a[1] = -b[1];
+            a[2] = -b[2];
+            a[3] = c;
+            return a;
+        };
+        h.determinant = function(a) {
+            return a[0] * a[3] - a[2] * a[1];
+        };
+        h.multiply = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3];
+            var h = c[0],
+                i = c[1],
+                j = c[2],
+                k = c[3];
+            a[0] = d * h + e * j;
+            a[1] = d * i + e * k;
+            a[2] = f * h + g * j;
+            a[3] = f * i + g * k;
+            return a;
+        };
+        h.mul = h.multiply;
+        h.rotate = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = Math.sin(c),
+                i = Math.cos(c);
+            a[0] = d * i + e * h;
+            a[1] = d * -h + e * i;
+            a[2] = f * i + g * h;
+            a[3] = f * -h + g * i;
+            return a;
+        };
+        h.scale = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = c[0],
+                i = c[1];
+            a[0] = d * h;
+            a[1] = e * i;
+            a[2] = f * h;
+            a[3] = g * i;
+            return a;
+        };
+        h.str = function(a) {
+            return 'mat2(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ')';
+        };
+        if (typeof a !== 'undefined') a.mat2 = h;;
+        var j = {};
+        var k = new Float32Array([1, 0, 0, 1, 0, 0]);
+        j.create = function() {
+            var a = new c(6);
+            a[0] = 1;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 1;
+            a[4] = 0;
+            a[5] = 0;
+            return a;
+        };
+        j.clone = function(a) {
+            var b = new c(6);
+            b[0] = a[0];
+            b[1] = a[1];
+            b[2] = a[2];
+            b[3] = a[3];
+            b[4] = a[4];
+            b[5] = a[5];
+            return b;
+        };
+        j.copy = function(a, b) {
+            a[0] = b[0];
+            a[1] = b[1];
+            a[2] = b[2];
+            a[3] = b[3];
+            a[4] = b[4];
+            a[5] = b[5];
+            return a;
+        };
+        j.identity = function(a) {
+            a[0] = 1;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 1;
+            a[4] = 0;
+            a[5] = 0;
+            return a;
+        };
+        j.invert = function(a, b) {
+            var c = b[0],
+                d = b[1],
+                e = b[2],
+                f = b[3],
+                g = b[4],
+                h = b[5];
+            var i = c * f - d * e;
+            if (!i) return null;
+            i = 1.0 / i;
+            a[0] = f * i;
+            a[1] = -d * i;
+            a[2] = -e * i;
+            a[3] = c * i;
+            a[4] = (e * h - f * g) * i;
+            a[5] = (d * g - c * h) * i;
+            return a;
+        };
+        j.determinant = function(a) {
+            return a[0] * a[3] - a[1] * a[2];
+        };
+        j.multiply = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = b[4],
+                i = b[5],
+                j = c[0],
+                k = c[1],
+                l = c[2],
+                m = c[3],
+                n = c[4],
+                o = c[5];
+            a[0] = d * j + e * l;
+            a[1] = d * k + e * m;
+            a[2] = f * j + g * l;
+            a[3] = f * k + g * m;
+            a[4] = j * h + l * i + n;
+            a[5] = k * h + m * i + o;
+            return a;
+        };
+        j.mul = j.multiply;
+        j.rotate = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = b[4],
+                i = b[5],
+                j = Math.sin(c),
+                k = Math.cos(c);
+            a[0] = d * k + e * j;
+            a[1] = -d * j + e * k;
+            a[2] = f * k + g * j;
+            a[3] = -f * j + k * g;
+            a[4] = k * h + j * i;
+            a[5] = k * i - j * h;
+            return a;
+        };
+        j.scale = function(a, b, c) {
+            var d = c[0],
+                e = c[1];
+            a[0] = b[0] * d;
+            a[1] = b[1] * e;
+            a[2] = b[2] * d;
+            a[3] = b[3] * e;
+            a[4] = b[4] * d;
+            a[5] = b[5] * e;
+            return a;
+        };
+        j.translate = function(a, b, c) {
+            a[0] = b[0];
+            a[1] = b[1];
+            a[2] = b[2];
+            a[3] = b[3];
+            a[4] = b[4] + c[0];
+            a[5] = b[5] + c[1];
+            return a;
+        };
+        j.str = function(a) {
+            return 'mat2d(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ', ' + a[4] + ', ' + a[5] + ')';
+        };
+        if (typeof a !== 'undefined') a.mat2d = j;;
+        var l = {};
+        var m = new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1]);
+        l.create = function() {
+            var a = new c(9);
+            a[0] = 1;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 0;
+            a[4] = 1;
+            a[5] = 0;
+            a[6] = 0;
+            a[7] = 0;
+            a[8] = 1;
+            return a;
+        };
+        l.clone = function(a) {
+            var b = new c(9);
+            b[0] = a[0];
+            b[1] = a[1];
+            b[2] = a[2];
+            b[3] = a[3];
+            b[4] = a[4];
+            b[5] = a[5];
+            b[6] = a[6];
+            b[7] = a[7];
+            b[8] = a[8];
+            return b;
+        };
+        l.copy = function(a, b) {
+            a[0] = b[0];
+            a[1] = b[1];
+            a[2] = b[2];
+            a[3] = b[3];
+            a[4] = b[4];
+            a[5] = b[5];
+            a[6] = b[6];
+            a[7] = b[7];
+            a[8] = b[8];
+            return a;
+        };
+        l.identity = function(a) {
+            a[0] = 1;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 0;
+            a[4] = 1;
+            a[5] = 0;
+            a[6] = 0;
+            a[7] = 0;
+            a[8] = 1;
+            return a;
+        };
+        l.transpose = function(a, b) {
+            if (a === b) {
+                var c = b[1],
+                    d = b[2],
+                    e = b[5];
+                a[1] = b[3];
+                a[2] = b[6];
+                a[3] = c;
+                a[5] = b[7];
+                a[6] = d;
+                a[7] = e;
+            } else {
+                a[0] = b[0];
+                a[1] = b[3];
+                a[2] = b[6];
+                a[3] = b[1];
+                a[4] = b[4];
+                a[5] = b[7];
+                a[6] = b[2];
+                a[7] = b[5];
+                a[8] = b[8];
+            }
+            return a;
+        };
+        l.invert = function(a, b) {
+            var c = b[0],
+                d = b[1],
+                e = b[2],
+                f = b[3],
+                g = b[4],
+                h = b[5],
+                i = b[6],
+                j = b[7],
+                k = b[8],
+                l = k * g - h * j,
+                m = -k * f + h * i,
+                n = j * f - g * i,
+                o = c * l + d * m + e * n;
+            if (!o) return null;
+            o = 1.0 / o;
+            a[0] = l * o;
+            a[1] = (-k * d + e * j) * o;
+            a[2] = (h * d - e * g) * o;
+            a[3] = m * o;
+            a[4] = (k * c - e * i) * o;
+            a[5] = (-h * c + e * f) * o;
+            a[6] = n * o;
+            a[7] = (-j * c + d * i) * o;
+            a[8] = (g * c - d * f) * o;
+            return a;
+        };
+        l.adjoint = function(a, b) {
+            var c = b[0],
+                d = b[1],
+                e = b[2],
+                f = b[3],
+                g = b[4],
+                h = b[5],
+                i = b[6],
+                j = b[7],
+                k = b[8];
+            a[0] = (g * k - h * j);
+            a[1] = (e * j - d * k);
+            a[2] = (d * h - e * g);
+            a[3] = (h * i - f * k);
+            a[4] = (c * k - e * i);
+            a[5] = (e * f - c * h);
+            a[6] = (f * j - g * i);
+            a[7] = (d * i - c * j);
+            a[8] = (c * g - d * f);
+            return a;
+        };
+        l.determinant = function(a) {
+            var b = a[0],
+                c = a[1],
+                d = a[2],
+                e = a[3],
+                f = a[4],
+                g = a[5],
+                h = a[6],
+                i = a[7],
+                j = a[8];
+            return b * (j * f - g * i) + c * (-j * e + g * h) + d * (i * e - f * h);
+        };
+        l.multiply = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = b[4],
+                i = b[5],
+                j = b[6],
+                k = b[7],
+                l = b[8],
+                m = c[0],
+                n = c[1],
+                o = c[2],
+                p = c[3],
+                q = c[4],
+                r = c[5],
+                s = c[6],
+                t = c[7],
+                u = c[8];
+            a[0] = m * d + n * g + o * j;
+            a[1] = m * e + n * h + o * k;
+            a[2] = m * f + n * i + o * l;
+            a[3] = p * d + q * g + r * j;
+            a[4] = p * e + q * h + r * k;
+            a[5] = p * f + q * i + r * l;
+            a[6] = s * d + t * g + u * j;
+            a[7] = s * e + t * h + u * k;
+            a[8] = s * f + t * i + u * l;
+            return a;
+        };
+        l.mul = l.multiply;
+        l.translate = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = b[4],
+                i = b[5],
+                j = b[6],
+                k = b[7],
+                l = b[8],
+                m = c[0],
+                n = c[1];
+            a[0] = d;
+            a[1] = e;
+            a[2] = f;
+            a[3] = g;
+            a[4] = h;
+            a[5] = i;
+            a[6] = m * d + n * g + j;
+            a[7] = m * e + n * h + k;
+            a[8] = m * f + n * i + l;
+            return a;
+        };
+        l.rotate = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = b[4],
+                i = b[5],
+                j = b[6],
+                k = b[7],
+                l = b[8],
+                m = Math.sin(c),
+                n = Math.cos(c);
+            a[0] = n * d + m * g;
+            a[1] = n * e + m * h;
+            a[2] = n * f + m * i;
+            a[3] = n * g - m * d;
+            a[4] = n * h - m * e;
+            a[5] = n * i - m * f;
+            a[6] = j;
+            a[7] = k;
+            a[8] = l;
+            return a;
+        };
+        l.scale = function(a, b, c) {
+            var d = c[0],
+                e = c[2];
+            a[0] = d * b[0];
+            a[1] = d * b[1];
+            a[2] = d * b[2];
+            a[3] = e * b[3];
+            a[4] = e * b[4];
+            a[5] = e * b[5];
+            a[6] = b[6];
+            a[7] = b[7];
+            a[8] = b[8];
+            return a;
+        };
+        l.fromMat2d = function(a, b) {
+            a[0] = b[0];
+            a[1] = b[1];
+            a[2] = 0;
+            a[3] = b[2];
+            a[4] = b[3];
+            a[5] = 0;
+            a[6] = b[4];
+            a[7] = b[5];
+            a[8] = 1;
+            return a;
+        };
+        l.fromQuat = function(a, b) {
+            var c = b[0],
+                d = b[1],
+                e = b[2],
+                f = b[3],
+                g = c + c,
+                h = d + d,
+                i = e + e,
+                j = c * g,
+                k = c * h,
+                l = c * i,
+                m = d * h,
+                n = d * i,
+                o = e * i,
+                p = f * g,
+                q = f * h,
+                r = f * i;
+            a[0] = 1 - (m + o);
+            a[1] = k + r;
+            a[2] = l - q;
+            a[3] = k - r;
+            a[4] = 1 - (j + o);
+            a[5] = n + p;
+            a[6] = l + q;
+            a[7] = n - p;
+            a[8] = 1 - (j + m);
+            return a;
+        };
+        l.str = function(a) {
+            return 'mat3(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ', ' + a[4] + ', ' + a[5] + ', ' + a[6] + ', ' + a[7] + ', ' + a[8] + ')';
+        };
+        if (typeof a !== 'undefined') a.mat3 = l;;
+        var n = {};
+        var o = new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+        n.create = function() {
+            var a = new c(16);
+            a[0] = 1;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 0;
+            a[4] = 0;
+            a[5] = 1;
+            a[6] = 0;
+            a[7] = 0;
+            a[8] = 0;
+            a[9] = 0;
+            a[10] = 1;
+            a[11] = 0;
+            a[12] = 0;
+            a[13] = 0;
+            a[14] = 0;
+            a[15] = 1;
+            return a;
+        };
+        n.clone = function(a) {
+            var b = new c(16);
+            b[0] = a[0];
+            b[1] = a[1];
+            b[2] = a[2];
+            b[3] = a[3];
+            b[4] = a[4];
+            b[5] = a[5];
+            b[6] = a[6];
+            b[7] = a[7];
+            b[8] = a[8];
+            b[9] = a[9];
+            b[10] = a[10];
+            b[11] = a[11];
+            b[12] = a[12];
+            b[13] = a[13];
+            b[14] = a[14];
+            b[15] = a[15];
+            return b;
+        };
+        n.copy = function(a, b) {
+            a[0] = b[0];
+            a[1] = b[1];
+            a[2] = b[2];
+            a[3] = b[3];
+            a[4] = b[4];
+            a[5] = b[5];
+            a[6] = b[6];
+            a[7] = b[7];
+            a[8] = b[8];
+            a[9] = b[9];
+            a[10] = b[10];
+            a[11] = b[11];
+            a[12] = b[12];
+            a[13] = b[13];
+            a[14] = b[14];
+            a[15] = b[15];
+            return a;
+        };
+        n.identity = function(a) {
+            a[0] = 1;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 0;
+            a[4] = 0;
+            a[5] = 1;
+            a[6] = 0;
+            a[7] = 0;
+            a[8] = 0;
+            a[9] = 0;
+            a[10] = 1;
+            a[11] = 0;
+            a[12] = 0;
+            a[13] = 0;
+            a[14] = 0;
+            a[15] = 1;
+            return a;
+        };
+        n.transpose = function(a, b) {
+            if (a === b) {
+                var c = b[1],
+                    d = b[2],
+                    e = b[3],
+                    f = b[6],
+                    g = b[7],
+                    h = b[11];
+                a[1] = b[4];
+                a[2] = b[8];
+                a[3] = b[12];
+                a[4] = c;
+                a[6] = b[9];
+                a[7] = b[13];
+                a[8] = d;
+                a[9] = f;
+                a[11] = b[14];
+                a[12] = e;
+                a[13] = g;
+                a[14] = h;
+            } else {
+                a[0] = b[0];
+                a[1] = b[4];
+                a[2] = b[8];
+                a[3] = b[12];
+                a[4] = b[1];
+                a[5] = b[5];
+                a[6] = b[9];
+                a[7] = b[13];
+                a[8] = b[2];
+                a[9] = b[6];
+                a[10] = b[10];
+                a[11] = b[14];
+                a[12] = b[3];
+                a[13] = b[7];
+                a[14] = b[11];
+                a[15] = b[15];
+            }
+            return a;
+        };
+        n.invert = function(a, b) {
+            var c = b[0],
+                d = b[1],
+                e = b[2],
+                f = b[3],
+                g = b[4],
+                h = b[5],
+                i = b[6],
+                j = b[7],
+                k = b[8],
+                l = b[9],
+                m = b[10],
+                n = b[11],
+                o = b[12],
+                p = b[13],
+                q = b[14],
+                r = b[15],
+                s = c * h - d * g,
+                t = c * i - e * g,
+                u = c * j - f * g,
+                v = d * i - e * h,
+                w = d * j - f * h,
+                x = e * j - f * i,
+                y = k * p - l * o,
+                z = k * q - m * o,
+                A = k * r - n * o,
+                B = l * q - m * p,
+                C = l * r - n * p,
+                D = m * r - n * q,
+                E = s * D - t * C + u * B + v * A - w * z + x * y;
+            if (!E) return null;
+            E = 1.0 / E;
+            a[0] = (h * D - i * C + j * B) * E;
+            a[1] = (e * C - d * D - f * B) * E;
+            a[2] = (p * x - q * w + r * v) * E;
+            a[3] = (m * w - l * x - n * v) * E;
+            a[4] = (i * A - g * D - j * z) * E;
+            a[5] = (c * D - e * A + f * z) * E;
+            a[6] = (q * u - o * x - r * t) * E;
+            a[7] = (k * x - m * u + n * t) * E;
+            a[8] = (g * C - h * A + j * y) * E;
+            a[9] = (d * A - c * C - f * y) * E;
+            a[10] = (o * w - p * u + r * s) * E;
+            a[11] = (l * u - k * w - n * s) * E;
+            a[12] = (h * z - g * B - i * y) * E;
+            a[13] = (c * B - d * z + e * y) * E;
+            a[14] = (p * t - o * v - q * s) * E;
+            a[15] = (k * v - l * t + m * s) * E;
+            return a;
+        };
+        n.adjoint = function(a, b) {
+            var c = b[0],
+                d = b[1],
+                e = b[2],
+                f = b[3],
+                g = b[4],
+                h = b[5],
+                i = b[6],
+                j = b[7],
+                k = b[8],
+                l = b[9],
+                m = b[10],
+                n = b[11],
+                o = b[12],
+                p = b[13],
+                q = b[14],
+                r = b[15];
+            a[0] = (h * (m * r - n * q) - l * (i * r - j * q) + p * (i * n - j * m));
+            a[1] = -(d * (m * r - n * q) - l * (e * r - f * q) + p * (e * n - f * m));
+            a[2] = (d * (i * r - j * q) - h * (e * r - f * q) + p * (e * j - f * i));
+            a[3] = -(d * (i * n - j * m) - h * (e * n - f * m) + l * (e * j - f * i));
+            a[4] = -(g * (m * r - n * q) - k * (i * r - j * q) + o * (i * n - j * m));
+            a[5] = (c * (m * r - n * q) - k * (e * r - f * q) + o * (e * n - f * m));
+            a[6] = -(c * (i * r - j * q) - g * (e * r - f * q) + o * (e * j - f * i));
+            a[7] = (c * (i * n - j * m) - g * (e * n - f * m) + k * (e * j - f * i));
+            a[8] = (g * (l * r - n * p) - k * (h * r - j * p) + o * (h * n - j * l));
+            a[9] = -(c * (l * r - n * p) - k * (d * r - f * p) + o * (d * n - f * l));
+            a[10] = (c * (h * r - j * p) - g * (d * r - f * p) + o * (d * j - f * h));
+            a[11] = -(c * (h * n - j * l) - g * (d * n - f * l) + k * (d * j - f * h));
+            a[12] = -(g * (l * q - m * p) - k * (h * q - i * p) + o * (h * m - i * l));
+            a[13] = (c * (l * q - m * p) - k * (d * q - e * p) + o * (d * m - e * l));
+            a[14] = -(c * (h * q - i * p) - g * (d * q - e * p) + o * (d * i - e * h));
+            a[15] = (c * (h * m - i * l) - g * (d * m - e * l) + k * (d * i - e * h));
+            return a;
+        };
+        n.determinant = function(a) {
+            var b = a[0],
+                c = a[1],
+                d = a[2],
+                e = a[3],
+                f = a[4],
+                g = a[5],
+                h = a[6],
+                i = a[7],
+                j = a[8],
+                k = a[9],
+                l = a[10],
+                m = a[11],
+                n = a[12],
+                o = a[13],
+                p = a[14],
+                q = a[15],
+                r = b * g - c * f,
+                s = b * h - d * f,
+                t = b * i - e * f,
+                u = c * h - d * g,
+                v = c * i - e * g,
+                w = d * i - e * h,
+                x = j * o - k * n,
+                y = j * p - l * n,
+                z = j * q - m * n,
+                A = k * p - l * o,
+                B = k * q - m * o,
+                C = l * q - m * p;
+            return r * C - s * B + t * A + u * z - v * y + w * x;
+        };
+        n.multiply = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = b[4],
+                i = b[5],
+                j = b[6],
+                k = b[7],
+                l = b[8],
+                m = b[9],
+                n = b[10],
+                o = b[11],
+                p = b[12],
+                q = b[13],
+                r = b[14],
+                s = b[15];
+            var t = c[0],
+                u = c[1],
+                v = c[2],
+                w = c[3];
+            a[0] = t * d + u * h + v * l + w * p;
+            a[1] = t * e + u * i + v * m + w * q;
+            a[2] = t * f + u * j + v * n + w * r;
+            a[3] = t * g + u * k + v * o + w * s;
+            t = c[4];
+            u = c[5];
+            v = c[6];
+            w = c[7];
+            a[4] = t * d + u * h + v * l + w * p;
+            a[5] = t * e + u * i + v * m + w * q;
+            a[6] = t * f + u * j + v * n + w * r;
+            a[7] = t * g + u * k + v * o + w * s;
+            t = c[8];
+            u = c[9];
+            v = c[10];
+            w = c[11];
+            a[8] = t * d + u * h + v * l + w * p;
+            a[9] = t * e + u * i + v * m + w * q;
+            a[10] = t * f + u * j + v * n + w * r;
+            a[11] = t * g + u * k + v * o + w * s;
+            t = c[12];
+            u = c[13];
+            v = c[14];
+            w = c[15];
+            a[12] = t * d + u * h + v * l + w * p;
+            a[13] = t * e + u * i + v * m + w * q;
+            a[14] = t * f + u * j + v * n + w * r;
+            a[15] = t * g + u * k + v * o + w * s;
+            return a;
+        };
+        n.mul = n.multiply;
+        n.translate = function(a, b, c) {
+            var d = c[0],
+                e = c[1],
+                f = c[2],
+                g, h, i, j, k, l, m, n, o, p, q, r;
+            if (b === a) {
+                a[12] = b[0] * d + b[4] * e + b[8] * f + b[12];
+                a[13] = b[1] * d + b[5] * e + b[9] * f + b[13];
+                a[14] = b[2] * d + b[6] * e + b[10] * f + b[14];
+                a[15] = b[3] * d + b[7] * e + b[11] * f + b[15];
+            } else {
+                g = b[0];
+                h = b[1];
+                i = b[2];
+                j = b[3];
+                k = b[4];
+                l = b[5];
+                m = b[6];
+                n = b[7];
+                o = b[8];
+                p = b[9];
+                q = b[10];
+                r = b[11];
+                a[0] = g;
+                a[1] = h;
+                a[2] = i;
+                a[3] = j;
+                a[4] = k;
+                a[5] = l;
+                a[6] = m;
+                a[7] = n;
+                a[8] = o;
+                a[9] = p;
+                a[10] = q;
+                a[11] = r;
+                a[12] = g * d + k * e + o * f + b[12];
+                a[13] = h * d + l * e + p * f + b[13];
+                a[14] = i * d + m * e + q * f + b[14];
+                a[15] = j * d + n * e + r * f + b[15];
+            }
+            return a;
+        };
+        n.scale = function(a, b, c) {
+            var d = c[0],
+                e = c[1],
+                f = c[2];
+            a[0] = b[0] * d;
+            a[1] = b[1] * d;
+            a[2] = b[2] * d;
+            a[3] = b[3] * d;
+            a[4] = b[4] * e;
+            a[5] = b[5] * e;
+            a[6] = b[6] * e;
+            a[7] = b[7] * e;
+            a[8] = b[8] * f;
+            a[9] = b[9] * f;
+            a[10] = b[10] * f;
+            a[11] = b[11] * f;
+            a[12] = b[12];
+            a[13] = b[13];
+            a[14] = b[14];
+            a[15] = b[15];
+            return a;
+        };
+        n.rotate = function(a, c, d, e) {
+            var f = e[0],
+                g = e[1],
+                h = e[2],
+                i = Math.sqrt(f * f + g * g + h * h),
+                j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, A, B, C, D, E, F, G;
+            if (Math.abs(i) < b) return null;
+            i = 1 / i;
+            f *= i;
+            g *= i;
+            h *= i;
+            j = Math.sin(d);
+            k = Math.cos(d);
+            l = 1 - k;
+            m = c[0];
+            n = c[1];
+            o = c[2];
+            p = c[3];
+            q = c[4];
+            r = c[5];
+            s = c[6];
+            t = c[7];
+            u = c[8];
+            v = c[9];
+            w = c[10];
+            x = c[11];
+            y = f * f * l + k;
+            z = g * f * l + h * j;
+            A = h * f * l - g * j;
+            B = f * g * l - h * j;
+            C = g * g * l + k;
+            D = h * g * l + f * j;
+            E = f * h * l + g * j;
+            F = g * h * l - f * j;
+            G = h * h * l + k;
+            a[0] = m * y + q * z + u * A;
+            a[1] = n * y + r * z + v * A;
+            a[2] = o * y + s * z + w * A;
+            a[3] = p * y + t * z + x * A;
+            a[4] = m * B + q * C + u * D;
+            a[5] = n * B + r * C + v * D;
+            a[6] = o * B + s * C + w * D;
+            a[7] = p * B + t * C + x * D;
+            a[8] = m * E + q * F + u * G;
+            a[9] = n * E + r * F + v * G;
+            a[10] = o * E + s * F + w * G;
+            a[11] = p * E + t * F + x * G;
+            if (c !== a) {
+                a[12] = c[12];
+                a[13] = c[13];
+                a[14] = c[14];
+                a[15] = c[15];
+            }
+            return a;
+        };
+        n.rotateX = function(a, b, c) {
+            var d = Math.sin(c),
+                e = Math.cos(c),
+                f = b[4],
+                g = b[5],
+                h = b[6],
+                i = b[7],
+                j = b[8],
+                k = b[9],
+                l = b[10],
+                m = b[11];
+            if (b !== a) {
                 a[0] = b[0];
                 a[1] = b[1];
                 a[2] = b[2];
                 a[3] = b[3];
+                a[12] = b[12];
+                a[13] = b[13];
+                a[14] = b[14];
+                a[15] = b[15];
+            }
+            a[4] = f * e + j * d;
+            a[5] = g * e + k * d;
+            a[6] = h * e + l * d;
+            a[7] = i * e + m * d;
+            a[8] = j * e - f * d;
+            a[9] = k * e - g * d;
+            a[10] = l * e - h * d;
+            a[11] = m * e - i * d;
+            return a;
+        };
+        n.rotateY = function(a, b, c) {
+            var d = Math.sin(c),
+                e = Math.cos(c),
+                f = b[0],
+                g = b[1],
+                h = b[2],
+                i = b[3],
+                j = b[8],
+                k = b[9],
+                l = b[10],
+                m = b[11];
+            if (b !== a) {
                 a[4] = b[4];
                 a[5] = b[5];
                 a[6] = b[6];
                 a[7] = b[7];
+                a[12] = b[12];
+                a[13] = b[13];
+                a[14] = b[14];
+                a[15] = b[15];
+            }
+            a[0] = f * e - j * d;
+            a[1] = g * e - k * d;
+            a[2] = h * e - l * d;
+            a[3] = i * e - m * d;
+            a[8] = f * d + j * e;
+            a[9] = g * d + k * e;
+            a[10] = h * d + l * e;
+            a[11] = i * d + m * e;
+            return a;
+        };
+        n.rotateZ = function(a, b, c) {
+            var d = Math.sin(c),
+                e = Math.cos(c),
+                f = b[0],
+                g = b[1],
+                h = b[2],
+                i = b[3],
+                j = b[4],
+                k = b[5],
+                l = b[6],
+                m = b[7];
+            if (b !== a) {
                 a[8] = b[8];
                 a[9] = b[9];
                 a[10] = b[10];
@@ -1211,847 +1644,417 @@ if (typeof module === 'object') module.exports = Detector;
                 a[13] = b[13];
                 a[14] = b[14];
                 a[15] = b[15];
+            }
+            a[0] = f * e + j * d;
+            a[1] = g * e + k * d;
+            a[2] = h * e + l * d;
+            a[3] = i * e + m * d;
+            a[4] = j * e - f * d;
+            a[5] = k * e - g * d;
+            a[6] = l * e - h * d;
+            a[7] = m * e - i * d;
+            return a;
+        };
+        n.fromRotationTranslation = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = d + d,
+                i = e + e,
+                j = f + f,
+                k = d * h,
+                l = d * i,
+                m = d * j,
+                n = e * i,
+                o = e * j,
+                p = f * j,
+                q = g * h,
+                r = g * i,
+                s = g * j;
+            a[0] = 1 - (n + p);
+            a[1] = l + s;
+            a[2] = m - r;
+            a[3] = 0;
+            a[4] = l - s;
+            a[5] = 1 - (k + p);
+            a[6] = o + q;
+            a[7] = 0;
+            a[8] = m + r;
+            a[9] = o - q;
+            a[10] = 1 - (k + n);
+            a[11] = 0;
+            a[12] = c[0];
+            a[13] = c[1];
+            a[14] = c[2];
+            a[15] = 1;
+            return a;
+        };
+        n.fromQuat = function(a, b) {
+            var c = b[0],
+                d = b[1],
+                e = b[2],
+                f = b[3],
+                g = c + c,
+                h = d + d,
+                i = e + e,
+                j = c * g,
+                k = c * h,
+                l = c * i,
+                m = d * h,
+                n = d * i,
+                o = e * i,
+                p = f * g,
+                q = f * h,
+                r = f * i;
+            a[0] = 1 - (m + o);
+            a[1] = k + r;
+            a[2] = l - q;
+            a[3] = 0;
+            a[4] = k - r;
+            a[5] = 1 - (j + o);
+            a[6] = n + p;
+            a[7] = 0;
+            a[8] = l + q;
+            a[9] = n - p;
+            a[10] = 1 - (j + m);
+            a[11] = 0;
+            a[12] = 0;
+            a[13] = 0;
+            a[14] = 0;
+            a[15] = 1;
+            return a;
+        };
+        n.frustum = function(a, b, c, d, e, f, g) {
+            var h = 1 / (c - b),
+                i = 1 / (e - d),
+                j = 1 / (f - g);
+            a[0] = (f * 2) * h;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 0;
+            a[4] = 0;
+            a[5] = (f * 2) * i;
+            a[6] = 0;
+            a[7] = 0;
+            a[8] = (c + b) * h;
+            a[9] = (e + d) * i;
+            a[10] = (g + f) * j;
+            a[11] = -1;
+            a[12] = 0;
+            a[13] = 0;
+            a[14] = (g * f * 2) * j;
+            a[15] = 0;
+            return a;
+        };
+        n.perspective = function(a, b, c, d, e) {
+            var f = 1.0 / Math.tan(b / 2),
+                g = 1 / (d - e);
+            a[0] = f / c;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 0;
+            a[4] = 0;
+            a[5] = f;
+            a[6] = 0;
+            a[7] = 0;
+            a[8] = 0;
+            a[9] = 0;
+            a[10] = (e + d) * g;
+            a[11] = -1;
+            a[12] = 0;
+            a[13] = 0;
+            a[14] = (2 * e * d) * g;
+            a[15] = 0;
+            return a;
+        };
+        n.ortho = function(a, b, c, d, e, f, g) {
+            var h = 1 / (b - c),
+                i = 1 / (d - e),
+                j = 1 / (f - g);
+            a[0] = -2 * h;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 0;
+            a[4] = 0;
+            a[5] = -2 * i;
+            a[6] = 0;
+            a[7] = 0;
+            a[8] = 0;
+            a[9] = 0;
+            a[10] = 2 * j;
+            a[11] = 0;
+            a[12] = (b + c) * h;
+            a[13] = (e + d) * i;
+            a[14] = (g + f) * j;
+            a[15] = 1;
+            return a;
+        };
+        n.lookAt = function(a, c, d, e) {
+            var f, g, h, i, j, k, l, m, o, p, q = c[0],
+                r = c[1],
+                s = c[2],
+                t = e[0],
+                u = e[1],
+                v = e[2],
+                w = d[0],
+                x = d[1],
+                y = d[2];
+            if (Math.abs(q - w) < b && Math.abs(r - x) < b && Math.abs(s - y) < b) return n.identity(a);
+            l = q - w;
+            m = r - x;
+            o = s - y;
+            p = 1 / Math.sqrt(l * l + m * m + o * o);
+            l *= p;
+            m *= p;
+            o *= p;
+            f = u * o - v * m;
+            g = v * l - t * o;
+            h = t * m - u * l;
+            p = Math.sqrt(f * f + g * g + h * h);
+            if (!p) {
+                f = 0;
+                g = 0;
+                h = 0;
+            } else {
+                p = 1 / p;
+                f *= p;
+                g *= p;
+                h *= p;
+            }
+            i = m * h - o * g;
+            j = o * f - l * h;
+            k = l * g - m * f;
+            p = Math.sqrt(i * i + j * j + k * k);
+            if (!p) {
+                i = 0;
+                j = 0;
+                k = 0;
+            } else {
+                p = 1 / p;
+                i *= p;
+                j *= p;
+                k *= p;
+            }
+            a[0] = f;
+            a[1] = i;
+            a[2] = l;
+            a[3] = 0;
+            a[4] = g;
+            a[5] = j;
+            a[6] = m;
+            a[7] = 0;
+            a[8] = h;
+            a[9] = k;
+            a[10] = o;
+            a[11] = 0;
+            a[12] = -(f * q + g * r + h * s);
+            a[13] = -(i * q + j * r + k * s);
+            a[14] = -(l * q + m * r + o * s);
+            a[15] = 1;
+            return a;
+        };
+        n.str = function(a) {
+            return 'mat4(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ', ' + a[4] + ', ' + a[5] + ', ' + a[6] + ', ' + a[7] + ', ' + a[8] + ', ' + a[9] + ', ' + a[10] + ', ' + a[11] + ', ' + a[12] + ', ' + a[13] + ', ' + a[14] + ', ' + a[15] + ')';
+        };
+        if (typeof a !== 'undefined') a.mat4 = n;;
+        var p = {};
+        var q = new Float32Array([0, 0, 0, 1]);
+        p.create = function() {
+            var a = new c(4);
+            a[0] = 0;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 1;
+            return a;
+        };
+        p.clone = g.clone;
+        p.fromValues = g.fromValues;
+        p.copy = g.copy;
+        p.set = g.set;
+        p.identity = function(a) {
+            a[0] = 0;
+            a[1] = 0;
+            a[2] = 0;
+            a[3] = 1;
+            return a;
+        };
+        p.setAxisAngle = function(a, b, c) {
+            c = c * 0.5;
+            var d = Math.sin(c);
+            a[0] = d * b[0];
+            a[1] = d * b[1];
+            a[2] = d * b[2];
+            a[3] = Math.cos(c);
+            return a;
+        };
+        p.add = g.add;
+        p.multiply = function(a, b, c) {
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = c[0],
+                i = c[1],
+                j = c[2],
+                k = c[3];
+            a[0] = d * k + g * h + e * j - f * i;
+            a[1] = e * k + g * i + f * h - d * j;
+            a[2] = f * k + g * j + d * i - e * h;
+            a[3] = g * k - d * h - e * i - f * j;
+            return a;
+        };
+        p.mul = p.multiply;
+        p.scale = g.scale;
+        p.rotateX = function(a, b, c) {
+            c *= 0.5;
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = Math.sin(c),
+                i = Math.cos(c);
+            a[0] = d * i + g * h;
+            a[1] = e * i + f * h;
+            a[2] = f * i - e * h;
+            a[3] = g * i - d * h;
+            return a;
+        };
+        p.rotateY = function(a, b, c) {
+            c *= 0.5;
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = Math.sin(c),
+                i = Math.cos(c);
+            a[0] = d * i - f * h;
+            a[1] = e * i + g * h;
+            a[2] = f * i + d * h;
+            a[3] = g * i - e * h;
+            return a;
+        };
+        p.rotateZ = function(a, b, c) {
+            c *= 0.5;
+            var d = b[0],
+                e = b[1],
+                f = b[2],
+                g = b[3],
+                h = Math.sin(c),
+                i = Math.cos(c);
+            a[0] = d * i + e * h;
+            a[1] = e * i - d * h;
+            a[2] = f * i + g * h;
+            a[3] = g * i - f * h;
+            return a;
+        };
+        p.calculateW = function(a, b) {
+            var c = b[0],
+                d = b[1],
+                e = b[2];
+            a[0] = c;
+            a[1] = d;
+            a[2] = e;
+            a[3] = -Math.sqrt(Math.abs(1.0 - c * c - d * d - e * e));
+            return a;
+        };
+        p.dot = g.dot;
+        p.lerp = g.lerp;
+        p.slerp = function(a, b, c, d) {
+            var e = b[0],
+                f = b[1],
+                g = b[2],
+                h = b[3],
+                i = c[0],
+                j = c[1],
+                k = c[2],
+                l = c[3];
+            var m = e * i + f * j + g * k + h * l,
+                n, o, p, q;
+            if (Math.abs(m) >= 1.0) {
+                if (a !== b) {
+                    a[0] = e;
+                    a[1] = f;
+                    a[2] = g;
+                    a[3] = h;
+                }
                 return a;
-            };
-            n.identity = function(a) {
-                a[0] = 1;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 0;
-                a[4] = 0;
-                a[5] = 1;
-                a[6] = 0;
-                a[7] = 0;
-                a[8] = 0;
-                a[9] = 0;
-                a[10] = 1;
-                a[11] = 0;
-                a[12] = 0;
-                a[13] = 0;
-                a[14] = 0;
-                a[15] = 1;
+            }
+            n = Math.acos(m);
+            o = Math.sqrt(1.0 - m * m);
+            if (Math.abs(o) < 0.001) {
+                a[0] = (e * 0.5 + i * 0.5);
+                a[1] = (f * 0.5 + j * 0.5);
+                a[2] = (g * 0.5 + k * 0.5);
+                a[3] = (h * 0.5 + l * 0.5);
                 return a;
-            };
-            n.transpose = function(a, b) {
-                if (a === b) {
-                    var c = b[1],
-                        d = b[2],
-                        e = b[3],
-                        f = b[6],
-                        g = b[7],
-                        h = b[11];
-                    a[1] = b[4];
-                    a[2] = b[8];
-                    a[3] = b[12];
-                    a[4] = c;
-                    a[6] = b[9];
-                    a[7] = b[13];
-                    a[8] = d;
-                    a[9] = f;
-                    a[11] = b[14];
-                    a[12] = e;
-                    a[13] = g;
-                    a[14] = h;
+            }
+            p = Math.sin((1 - d) * n) / o;
+            q = Math.sin(d * n) / o;
+            a[0] = (e * p + i * q);
+            a[1] = (f * p + j * q);
+            a[2] = (g * p + k * q);
+            a[3] = (h * p + l * q);
+            return a;
+        };
+        p.invert = function(a, b) {
+            var c = b[0],
+                d = b[1],
+                e = b[2],
+                f = b[3],
+                g = c * c + d * d + e * e + f * f,
+                h = g ? 1.0 / g : 0;
+            a[0] = -c * h;
+            a[1] = -d * h;
+            a[2] = -e * h;
+            a[3] = f * h;
+            return a;
+        };
+        p.conjugate = function(a, b) {
+            a[0] = -b[0];
+            a[1] = -b[1];
+            a[2] = -b[2];
+            a[3] = b[3];
+            return a;
+        };
+        p.length = g.length;
+        p.len = p.length;
+        p.squaredLength = g.squaredLength;
+        p.sqrLen = p.squaredLength;
+        p.normalize = g.normalize;
+        p.fromMat3 = (function() {
+            var a = [1, 2, 0];
+            return function(b, c) {
+                var d = c[0] + c[4] + c[8];
+                var e;
+                if (d > 0.0) {
+                    e = Math.sqrt(d + 1.0);
+                    b[3] = 0.5 * e;
+                    e = 0.5 / e;
+                    b[0] = (c[7] - c[5]) * e;
+                    b[1] = (c[2] - c[6]) * e;
+                    b[2] = (c[3] - c[1]) * e;
                 } else {
-                    a[0] = b[0];
-                    a[1] = b[4];
-                    a[2] = b[8];
-                    a[3] = b[12];
-                    a[4] = b[1];
-                    a[5] = b[5];
-                    a[6] = b[9];
-                    a[7] = b[13];
-                    a[8] = b[2];
-                    a[9] = b[6];
-                    a[10] = b[10];
-                    a[11] = b[14];
-                    a[12] = b[3];
-                    a[13] = b[7];
-                    a[14] = b[11];
-                    a[15] = b[15];
+                    var f = 0;
+                    if (c[4] > c[0]) f = 1;
+                    if (c[8] > c[f * 3 + f]) f = 2;
+                    var g = a[f];
+                    var h = a[g];
+                    e = Math.sqrt(c[f * 3 + f] - c[g * 3 + g] - c[h * 3 + h] + 1.0);
+                    b[f] = 0.5 * e;
+                    e = 0.5 / e;
+                    b[3] = (c[h * 3 + g] - c[g * 3 + h]) * e;
+                    b[g] = (c[g * 3 + f] + c[f * 3 + g]) * e;
+                    b[h] = (c[h * 3 + f] + c[f * 3 + h]) * e;
                 }
-                return a;
+                return b;
             };
-            n.invert = function(a, b) {
-                var c = b[0],
-                    d = b[1],
-                    e = b[2],
-                    f = b[3],
-                    g = b[4],
-                    h = b[5],
-                    i = b[6],
-                    j = b[7],
-                    k = b[8],
-                    l = b[9],
-                    m = b[10],
-                    n = b[11],
-                    o = b[12],
-                    p = b[13],
-                    q = b[14],
-                    r = b[15],
-                    s = c * h - d * g,
-                    t = c * i - e * g,
-                    u = c * j - f * g,
-                    v = d * i - e * h,
-                    w = d * j - f * h,
-                    x = e * j - f * i,
-                    y = k * p - l * o,
-                    z = k * q - m * o,
-                    A = k * r - n * o,
-                    B = l * q - m * p,
-                    C = l * r - n * p,
-                    D = m * r - n * q,
-                    E = s * D - t * C + u * B + v * A - w * z + x * y;
-                if (!E) return null;
-                E = 1.0 / E;
-                a[0] = (h * D - i * C + j * B) * E;
-                a[1] = (e * C - d * D - f * B) * E;
-                a[2] = (p * x - q * w + r * v) * E;
-                a[3] = (m * w - l * x - n * v) * E;
-                a[4] = (i * A - g * D - j * z) * E;
-                a[5] = (c * D - e * A + f * z) * E;
-                a[6] = (q * u - o * x - r * t) * E;
-                a[7] = (k * x - m * u + n * t) * E;
-                a[8] = (g * C - h * A + j * y) * E;
-                a[9] = (d * A - c * C - f * y) * E;
-                a[10] = (o * w - p * u + r * s) * E;
-                a[11] = (l * u - k * w - n * s) * E;
-                a[12] = (h * z - g * B - i * y) * E;
-                a[13] = (c * B - d * z + e * y) * E;
-                a[14] = (p * t - o * v - q * s) * E;
-                a[15] = (k * v - l * t + m * s) * E;
-                return a;
-            };
-            n.adjoint = function(a, b) {
-                var c = b[0],
-                    d = b[1],
-                    e = b[2],
-                    f = b[3],
-                    g = b[4],
-                    h = b[5],
-                    i = b[6],
-                    j = b[7],
-                    k = b[8],
-                    l = b[9],
-                    m = b[10],
-                    n = b[11],
-                    o = b[12],
-                    p = b[13],
-                    q = b[14],
-                    r = b[15];
-                a[0] = (h * (m * r - n * q) - l * (i * r - j * q) + p * (i * n - j * m));
-                a[1] = -(d * (m * r - n * q) - l * (e * r - f * q) + p * (e * n - f * m));
-                a[2] = (d * (i * r - j * q) - h * (e * r - f * q) + p * (e * j - f * i));
-                a[3] = -(d * (i * n - j * m) - h * (e * n - f * m) + l * (e * j - f * i));
-                a[4] = -(g * (m * r - n * q) - k * (i * r - j * q) + o * (i * n - j * m));
-                a[5] = (c * (m * r - n * q) - k * (e * r - f * q) + o * (e * n - f * m));
-                a[6] = -(c * (i * r - j * q) - g * (e * r - f * q) + o * (e * j - f * i));
-                a[7] = (c * (i * n - j * m) - g * (e * n - f * m) + k * (e * j - f * i));
-                a[8] = (g * (l * r - n * p) - k * (h * r - j * p) + o * (h * n - j * l));
-                a[9] = -(c * (l * r - n * p) - k * (d * r - f * p) + o * (d * n - f * l));
-                a[10] = (c * (h * r - j * p) - g * (d * r - f * p) + o * (d * j - f * h));
-                a[11] = -(c * (h * n - j * l) - g * (d * n - f * l) + k * (d * j - f * h));
-                a[12] = -(g * (l * q - m * p) - k * (h * q - i * p) + o * (h * m - i * l));
-                a[13] = (c * (l * q - m * p) - k * (d * q - e * p) + o * (d * m - e * l));
-                a[14] = -(c * (h * q - i * p) - g * (d * q - e * p) + o * (d * i - e * h));
-                a[15] = (c * (h * m - i * l) - g * (d * m - e * l) + k * (d * i - e * h));
-                return a;
-            };
-            n.determinant = function(a) {
-                var b = a[0],
-                    c = a[1],
-                    d = a[2],
-                    e = a[3],
-                    f = a[4],
-                    g = a[5],
-                    h = a[6],
-                    i = a[7],
-                    j = a[8],
-                    k = a[9],
-                    l = a[10],
-                    m = a[11],
-                    n = a[12],
-                    o = a[13],
-                    p = a[14],
-                    q = a[15],
-                    r = b * g - c * f,
-                    s = b * h - d * f,
-                    t = b * i - e * f,
-                    u = c * h - d * g,
-                    v = c * i - e * g,
-                    w = d * i - e * h,
-                    x = j * o - k * n,
-                    y = j * p - l * n,
-                    z = j * q - m * n,
-                    A = k * p - l * o,
-                    B = k * q - m * o,
-                    C = l * q - m * p;
-                return r * C - s * B + t * A + u * z - v * y + w * x;
-            };
-            n.multiply = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = b[4],
-                    i = b[5],
-                    j = b[6],
-                    k = b[7],
-                    l = b[8],
-                    m = b[9],
-                    n = b[10],
-                    o = b[11],
-                    p = b[12],
-                    q = b[13],
-                    r = b[14],
-                    s = b[15];
-                var t = c[0],
-                    u = c[1],
-                    v = c[2],
-                    w = c[3];
-                a[0] = t * d + u * h + v * l + w * p;
-                a[1] = t * e + u * i + v * m + w * q;
-                a[2] = t * f + u * j + v * n + w * r;
-                a[3] = t * g + u * k + v * o + w * s;
-                t = c[4];
-                u = c[5];
-                v = c[6];
-                w = c[7];
-                a[4] = t * d + u * h + v * l + w * p;
-                a[5] = t * e + u * i + v * m + w * q;
-                a[6] = t * f + u * j + v * n + w * r;
-                a[7] = t * g + u * k + v * o + w * s;
-                t = c[8];
-                u = c[9];
-                v = c[10];
-                w = c[11];
-                a[8] = t * d + u * h + v * l + w * p;
-                a[9] = t * e + u * i + v * m + w * q;
-                a[10] = t * f + u * j + v * n + w * r;
-                a[11] = t * g + u * k + v * o + w * s;
-                t = c[12];
-                u = c[13];
-                v = c[14];
-                w = c[15];
-                a[12] = t * d + u * h + v * l + w * p;
-                a[13] = t * e + u * i + v * m + w * q;
-                a[14] = t * f + u * j + v * n + w * r;
-                a[15] = t * g + u * k + v * o + w * s;
-                return a;
-            };
-            n.mul = n.multiply;
-            n.translate = function(a, b, c) {
-                var d = c[0],
-                    e = c[1],
-                    f = c[2],
-                    g, h, i, j, k, l, m, n, o, p, q, r;
-                if (b === a) {
-                    a[12] = b[0] * d + b[4] * e + b[8] * f + b[12];
-                    a[13] = b[1] * d + b[5] * e + b[9] * f + b[13];
-                    a[14] = b[2] * d + b[6] * e + b[10] * f + b[14];
-                    a[15] = b[3] * d + b[7] * e + b[11] * f + b[15];
-                } else {
-                    g = b[0];
-                    h = b[1];
-                    i = b[2];
-                    j = b[3];
-                    k = b[4];
-                    l = b[5];
-                    m = b[6];
-                    n = b[7];
-                    o = b[8];
-                    p = b[9];
-                    q = b[10];
-                    r = b[11];
-                    a[0] = g;
-                    a[1] = h;
-                    a[2] = i;
-                    a[3] = j;
-                    a[4] = k;
-                    a[5] = l;
-                    a[6] = m;
-                    a[7] = n;
-                    a[8] = o;
-                    a[9] = p;
-                    a[10] = q;
-                    a[11] = r;
-                    a[12] = g * d + k * e + o * f + b[12];
-                    a[13] = h * d + l * e + p * f + b[13];
-                    a[14] = i * d + m * e + q * f + b[14];
-                    a[15] = j * d + n * e + r * f + b[15];
-                }
-                return a;
-            };
-            n.scale = function(a, b, c) {
-                var d = c[0],
-                    e = c[1],
-                    f = c[2];
-                a[0] = b[0] * d;
-                a[1] = b[1] * d;
-                a[2] = b[2] * d;
-                a[3] = b[3] * d;
-                a[4] = b[4] * e;
-                a[5] = b[5] * e;
-                a[6] = b[6] * e;
-                a[7] = b[7] * e;
-                a[8] = b[8] * f;
-                a[9] = b[9] * f;
-                a[10] = b[10] * f;
-                a[11] = b[11] * f;
-                a[12] = b[12];
-                a[13] = b[13];
-                a[14] = b[14];
-                a[15] = b[15];
-                return a;
-            };
-            n.rotate = function(a, c, d, e) {
-                var f = e[0],
-                    g = e[1],
-                    h = e[2],
-                    i = Math.sqrt(f * f + g * g + h * h),
-                    j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, A, B, C, D, E, F, G;
-                if (Math.abs(i) < b) return null;
-                i = 1 / i;
-                f *= i;
-                g *= i;
-                h *= i;
-                j = Math.sin(d);
-                k = Math.cos(d);
-                l = 1 - k;
-                m = c[0];
-                n = c[1];
-                o = c[2];
-                p = c[3];
-                q = c[4];
-                r = c[5];
-                s = c[6];
-                t = c[7];
-                u = c[8];
-                v = c[9];
-                w = c[10];
-                x = c[11];
-                y = f * f * l + k;
-                z = g * f * l + h * j;
-                A = h * f * l - g * j;
-                B = f * g * l - h * j;
-                C = g * g * l + k;
-                D = h * g * l + f * j;
-                E = f * h * l + g * j;
-                F = g * h * l - f * j;
-                G = h * h * l + k;
-                a[0] = m * y + q * z + u * A;
-                a[1] = n * y + r * z + v * A;
-                a[2] = o * y + s * z + w * A;
-                a[3] = p * y + t * z + x * A;
-                a[4] = m * B + q * C + u * D;
-                a[5] = n * B + r * C + v * D;
-                a[6] = o * B + s * C + w * D;
-                a[7] = p * B + t * C + x * D;
-                a[8] = m * E + q * F + u * G;
-                a[9] = n * E + r * F + v * G;
-                a[10] = o * E + s * F + w * G;
-                a[11] = p * E + t * F + x * G;
-                if (c !== a) {
-                    a[12] = c[12];
-                    a[13] = c[13];
-                    a[14] = c[14];
-                    a[15] = c[15];
-                }
-                return a;
-            };
-            n.rotateX = function(a, b, c) {
-                var d = Math.sin(c),
-                    e = Math.cos(c),
-                    f = b[4],
-                    g = b[5],
-                    h = b[6],
-                    i = b[7],
-                    j = b[8],
-                    k = b[9],
-                    l = b[10],
-                    m = b[11];
-                if (b !== a) {
-                    a[0] = b[0];
-                    a[1] = b[1];
-                    a[2] = b[2];
-                    a[3] = b[3];
-                    a[12] = b[12];
-                    a[13] = b[13];
-                    a[14] = b[14];
-                    a[15] = b[15];
-                }
-                a[4] = f * e + j * d;
-                a[5] = g * e + k * d;
-                a[6] = h * e + l * d;
-                a[7] = i * e + m * d;
-                a[8] = j * e - f * d;
-                a[9] = k * e - g * d;
-                a[10] = l * e - h * d;
-                a[11] = m * e - i * d;
-                return a;
-            };
-            n.rotateY = function(a, b, c) {
-                var d = Math.sin(c),
-                    e = Math.cos(c),
-                    f = b[0],
-                    g = b[1],
-                    h = b[2],
-                    i = b[3],
-                    j = b[8],
-                    k = b[9],
-                    l = b[10],
-                    m = b[11];
-                if (b !== a) {
-                    a[4] = b[4];
-                    a[5] = b[5];
-                    a[6] = b[6];
-                    a[7] = b[7];
-                    a[12] = b[12];
-                    a[13] = b[13];
-                    a[14] = b[14];
-                    a[15] = b[15];
-                }
-                a[0] = f * e - j * d;
-                a[1] = g * e - k * d;
-                a[2] = h * e - l * d;
-                a[3] = i * e - m * d;
-                a[8] = f * d + j * e;
-                a[9] = g * d + k * e;
-                a[10] = h * d + l * e;
-                a[11] = i * d + m * e;
-                return a;
-            };
-            n.rotateZ = function(a, b, c) {
-                var d = Math.sin(c),
-                    e = Math.cos(c),
-                    f = b[0],
-                    g = b[1],
-                    h = b[2],
-                    i = b[3],
-                    j = b[4],
-                    k = b[5],
-                    l = b[6],
-                    m = b[7];
-                if (b !== a) {
-                    a[8] = b[8];
-                    a[9] = b[9];
-                    a[10] = b[10];
-                    a[11] = b[11];
-                    a[12] = b[12];
-                    a[13] = b[13];
-                    a[14] = b[14];
-                    a[15] = b[15];
-                }
-                a[0] = f * e + j * d;
-                a[1] = g * e + k * d;
-                a[2] = h * e + l * d;
-                a[3] = i * e + m * d;
-                a[4] = j * e - f * d;
-                a[5] = k * e - g * d;
-                a[6] = l * e - h * d;
-                a[7] = m * e - i * d;
-                return a;
-            };
-            n.fromRotationTranslation = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = d + d,
-                    i = e + e,
-                    j = f + f,
-                    k = d * h,
-                    l = d * i,
-                    m = d * j,
-                    n = e * i,
-                    o = e * j,
-                    p = f * j,
-                    q = g * h,
-                    r = g * i,
-                    s = g * j;
-                a[0] = 1 - (n + p);
-                a[1] = l + s;
-                a[2] = m - r;
-                a[3] = 0;
-                a[4] = l - s;
-                a[5] = 1 - (k + p);
-                a[6] = o + q;
-                a[7] = 0;
-                a[8] = m + r;
-                a[9] = o - q;
-                a[10] = 1 - (k + n);
-                a[11] = 0;
-                a[12] = c[0];
-                a[13] = c[1];
-                a[14] = c[2];
-                a[15] = 1;
-                return a;
-            };
-            n.fromQuat = function(a, b) {
-                var c = b[0],
-                    d = b[1],
-                    e = b[2],
-                    f = b[3],
-                    g = c + c,
-                    h = d + d,
-                    i = e + e,
-                    j = c * g,
-                    k = c * h,
-                    l = c * i,
-                    m = d * h,
-                    n = d * i,
-                    o = e * i,
-                    p = f * g,
-                    q = f * h,
-                    r = f * i;
-                a[0] = 1 - (m + o);
-                a[1] = k + r;
-                a[2] = l - q;
-                a[3] = 0;
-                a[4] = k - r;
-                a[5] = 1 - (j + o);
-                a[6] = n + p;
-                a[7] = 0;
-                a[8] = l + q;
-                a[9] = n - p;
-                a[10] = 1 - (j + m);
-                a[11] = 0;
-                a[12] = 0;
-                a[13] = 0;
-                a[14] = 0;
-                a[15] = 1;
-                return a;
-            };
-            n.frustum = function(a, b, c, d, e, f, g) {
-                var h = 1 / (c - b),
-                    i = 1 / (e - d),
-                    j = 1 / (f - g);
-                a[0] = (f * 2) * h;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 0;
-                a[4] = 0;
-                a[5] = (f * 2) * i;
-                a[6] = 0;
-                a[7] = 0;
-                a[8] = (c + b) * h;
-                a[9] = (e + d) * i;
-                a[10] = (g + f) * j;
-                a[11] = -1;
-                a[12] = 0;
-                a[13] = 0;
-                a[14] = (g * f * 2) * j;
-                a[15] = 0;
-                return a;
-            };
-            n.perspective = function(a, b, c, d, e) {
-                var f = 1.0 / Math.tan(b / 2),
-                    g = 1 / (d - e);
-                a[0] = f / c;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 0;
-                a[4] = 0;
-                a[5] = f;
-                a[6] = 0;
-                a[7] = 0;
-                a[8] = 0;
-                a[9] = 0;
-                a[10] = (e + d) * g;
-                a[11] = -1;
-                a[12] = 0;
-                a[13] = 0;
-                a[14] = (2 * e * d) * g;
-                a[15] = 0;
-                return a;
-            };
-            n.ortho = function(a, b, c, d, e, f, g) {
-                var h = 1 / (b - c),
-                    i = 1 / (d - e),
-                    j = 1 / (f - g);
-                a[0] = -2 * h;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 0;
-                a[4] = 0;
-                a[5] = -2 * i;
-                a[6] = 0;
-                a[7] = 0;
-                a[8] = 0;
-                a[9] = 0;
-                a[10] = 2 * j;
-                a[11] = 0;
-                a[12] = (b + c) * h;
-                a[13] = (e + d) * i;
-                a[14] = (g + f) * j;
-                a[15] = 1;
-                return a;
-            };
-            n.lookAt = function(a, c, d, e) {
-                var f, g, h, i, j, k, l, m, o, p, q = c[0],
-                    r = c[1],
-                    s = c[2],
-                    t = e[0],
-                    u = e[1],
-                    v = e[2],
-                    w = d[0],
-                    x = d[1],
-                    y = d[2];
-                if (Math.abs(q - w) < b && Math.abs(r - x) < b && Math.abs(s - y) < b) return n.identity(a);
-                l = q - w;
-                m = r - x;
-                o = s - y;
-                p = 1 / Math.sqrt(l * l + m * m + o * o);
-                l *= p;
-                m *= p;
-                o *= p;
-                f = u * o - v * m;
-                g = v * l - t * o;
-                h = t * m - u * l;
-                p = Math.sqrt(f * f + g * g + h * h);
-                if (!p) {
-                    f = 0;
-                    g = 0;
-                    h = 0;
-                } else {
-                    p = 1 / p;
-                    f *= p;
-                    g *= p;
-                    h *= p;
-                }
-                i = m * h - o * g;
-                j = o * f - l * h;
-                k = l * g - m * f;
-                p = Math.sqrt(i * i + j * j + k * k);
-                if (!p) {
-                    i = 0;
-                    j = 0;
-                    k = 0;
-                } else {
-                    p = 1 / p;
-                    i *= p;
-                    j *= p;
-                    k *= p;
-                }
-                a[0] = f;
-                a[1] = i;
-                a[2] = l;
-                a[3] = 0;
-                a[4] = g;
-                a[5] = j;
-                a[6] = m;
-                a[7] = 0;
-                a[8] = h;
-                a[9] = k;
-                a[10] = o;
-                a[11] = 0;
-                a[12] = -(f * q + g * r + h * s);
-                a[13] = -(i * q + j * r + k * s);
-                a[14] = -(l * q + m * r + o * s);
-                a[15] = 1;
-                return a;
-            };
-            n.str = function(a) {
-                return 'mat4(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ', ' + a[4] + ', ' + a[5] + ', ' + a[6] + ', ' + a[7] + ', ' + a[8] + ', ' + a[9] + ', ' + a[10] + ', ' + a[11] + ', ' + a[12] + ', ' + a[13] + ', ' + a[14] + ', ' + a[15] + ')';
-            };
-            if (typeof a !== 'undefined') a.mat4 = n;;
-            var p = {};
-            var q = new Float32Array([0, 0, 0, 1]);
-            p.create = function() {
-                var a = new c(4);
-                a[0] = 0;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 1;
-                return a;
-            };
-            p.clone = g.clone;
-            p.fromValues = g.fromValues;
-            p.copy = g.copy;
-            p.set = g.set;
-            p.identity = function(a) {
-                a[0] = 0;
-                a[1] = 0;
-                a[2] = 0;
-                a[3] = 1;
-                return a;
-            };
-            p.setAxisAngle = function(a, b, c) {
-                c = c * 0.5;
-                var d = Math.sin(c);
-                a[0] = d * b[0];
-                a[1] = d * b[1];
-                a[2] = d * b[2];
-                a[3] = Math.cos(c);
-                return a;
-            };
-            p.add = g.add;
-            p.multiply = function(a, b, c) {
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = c[0],
-                    i = c[1],
-                    j = c[2],
-                    k = c[3];
-                a[0] = d * k + g * h + e * j - f * i;
-                a[1] = e * k + g * i + f * h - d * j;
-                a[2] = f * k + g * j + d * i - e * h;
-                a[3] = g * k - d * h - e * i - f * j;
-                return a;
-            };
-            p.mul = p.multiply;
-            p.scale = g.scale;
-            p.rotateX = function(a, b, c) {
-                c *= 0.5;
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = Math.sin(c),
-                    i = Math.cos(c);
-                a[0] = d * i + g * h;
-                a[1] = e * i + f * h;
-                a[2] = f * i - e * h;
-                a[3] = g * i - d * h;
-                return a;
-            };
-            p.rotateY = function(a, b, c) {
-                c *= 0.5;
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = Math.sin(c),
-                    i = Math.cos(c);
-                a[0] = d * i - f * h;
-                a[1] = e * i + g * h;
-                a[2] = f * i + d * h;
-                a[3] = g * i - e * h;
-                return a;
-            };
-            p.rotateZ = function(a, b, c) {
-                c *= 0.5;
-                var d = b[0],
-                    e = b[1],
-                    f = b[2],
-                    g = b[3],
-                    h = Math.sin(c),
-                    i = Math.cos(c);
-                a[0] = d * i + e * h;
-                a[1] = e * i - d * h;
-                a[2] = f * i + g * h;
-                a[3] = g * i - f * h;
-                return a;
-            };
-            p.calculateW = function(a, b) {
-                var c = b[0],
-                    d = b[1],
-                    e = b[2];
-                a[0] = c;
-                a[1] = d;
-                a[2] = e;
-                a[3] = -Math.sqrt(Math.abs(1.0 - c * c - d * d - e * e));
-                return a;
-            };
-            p.dot = g.dot;
-            p.lerp = g.lerp;
-            p.slerp = function(a, b, c, d) {
-                var e = b[0],
-                    f = b[1],
-                    g = b[2],
-                    h = b[3],
-                    i = c[0],
-                    j = c[1],
-                    k = c[2],
-                    l = c[3];
-                var m = e * i + f * j + g * k + h * l,
-                    n, o, p, q;
-                if (Math.abs(m) >= 1.0) {
-                    if (a !== b) {
-                        a[0] = e;
-                        a[1] = f;
-                        a[2] = g;
-                        a[3] = h;
-                    }
-                    return a;
-                }
-                n = Math.acos(m);
-                o = Math.sqrt(1.0 - m * m);
-                if (Math.abs(o) < 0.001) {
-                    a[0] = (e * 0.5 + i * 0.5);
-                    a[1] = (f * 0.5 + j * 0.5);
-                    a[2] = (g * 0.5 + k * 0.5);
-                    a[3] = (h * 0.5 + l * 0.5);
-                    return a;
-                }
-                p = Math.sin((1 - d) * n) / o;
-                q = Math.sin(d * n) / o;
-                a[0] = (e * p + i * q);
-                a[1] = (f * p + j * q);
-                a[2] = (g * p + k * q);
-                a[3] = (h * p + l * q);
-                return a;
-            };
-            p.invert = function(a, b) {
-                var c = b[0],
-                    d = b[1],
-                    e = b[2],
-                    f = b[3],
-                    g = c * c + d * d + e * e + f * f,
-                    h = g ? 1.0 / g : 0;
-                a[0] = -c * h;
-                a[1] = -d * h;
-                a[2] = -e * h;
-                a[3] = f * h;
-                return a;
-            };
-            p.conjugate = function(a, b) {
-                a[0] = -b[0];
-                a[1] = -b[1];
-                a[2] = -b[2];
-                a[3] = b[3];
-                return a;
-            };
-            p.length = g.length;
-            p.len = p.length;
-            p.squaredLength = g.squaredLength;
-            p.sqrLen = p.squaredLength;
-            p.normalize = g.normalize;
-            p.fromMat3 = (function() {
-                var a = [1, 2, 0];
-                return function(b, c) {
-                    var d = c[0] + c[4] + c[8];
-                    var e;
-                    if (d > 0.0) {
-                        e = Math.sqrt(d + 1.0);
-                        b[3] = 0.5 * e;
-                        e = 0.5 / e;
-                        b[0] = (c[7] - c[5]) * e;
-                        b[1] = (c[2] - c[6]) * e;
-                        b[2] = (c[3] - c[1]) * e;
-                    } else {
-                        var f = 0;
-                        if (c[4] > c[0]) f = 1;
-                        if (c[8] > c[f * 3 + f]) f = 2;
-                        var g = a[f];
-                        var h = a[g];
-                        e = Math.sqrt(c[f * 3 + f] - c[g * 3 + g] - c[h * 3 + h] + 1.0);
-                        b[f] = 0.5 * e;
-                        e = 0.5 / e;
-                        b[3] = (c[h * 3 + g] - c[g * 3 + h]) * e;
-                        b[g] = (c[g * 3 + f] + c[f * 3 + g]) * e;
-                        b[h] = (c[h * 3 + f] + c[f * 3 + h]) * e;
-                    }
-                    return b;
-                };
-            })();
-            p.str = function(a) {
-                return 'quat(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ')';
-            };
-            if (typeof a !== 'undefined') a.quat = p;;
-        })(a.exports);
+        })();
+        p.str = function(a) {
+            return 'quat(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ')';
+        };
+        if (typeof a !== 'undefined') a.quat = p;;
+    })(a.exports);
 })();
 var dat = dat || {};
 dat.gui = dat.gui || {};
@@ -2535,178 +2538,178 @@ dat.color.toString = function(a) {
 }(dat.utils.common);
 dat.color.interpret = function(a, b) {
     var c, d, e = [{
-            litmus: b.isString,
-            conversions: {
-                THREE_CHAR_HEX: {
-                    read: function(a) {
-                        a = a.match(/^#([A-F0-9])([A-F0-9])([A-F0-9])$/i);
-                        return null === a ? !1 : {
-                            space: "HEX",
-                            hex: parseInt("0x" + a[1].toString() + a[1].toString() + a[2].toString() + a[2].toString() + a[3].toString() + a[3].toString())
-                        };
-                    },
-                    write: a
+        litmus: b.isString,
+        conversions: {
+            THREE_CHAR_HEX: {
+                read: function(a) {
+                    a = a.match(/^#([A-F0-9])([A-F0-9])([A-F0-9])$/i);
+                    return null === a ? !1 : {
+                        space: "HEX",
+                        hex: parseInt("0x" + a[1].toString() + a[1].toString() + a[2].toString() + a[2].toString() + a[3].toString() + a[3].toString())
+                    };
                 },
-                SIX_CHAR_HEX: {
-                    read: function(a) {
-                        a = a.match(/^#([A-F0-9]{6})$/i);
-                        return null === a ? !1 : {
-                            space: "HEX",
-                            hex: parseInt("0x" + a[1].toString())
-                        };
-                    },
-                    write: a
+                write: a
+            },
+            SIX_CHAR_HEX: {
+                read: function(a) {
+                    a = a.match(/^#([A-F0-9]{6})$/i);
+                    return null === a ? !1 : {
+                        space: "HEX",
+                        hex: parseInt("0x" + a[1].toString())
+                    };
                 },
-                CSS_RGB: {
-                    read: function(a) {
-                        a = a.match(/^rgb\(\s*(.+)\s*,\s*(.+)\s*,\s*(.+)\s*\)/);
-                        return null === a ? !1 : {
-                            space: "RGB",
-                            r: parseFloat(a[1]),
-                            g: parseFloat(a[2]),
-                            b: parseFloat(a[3])
-                        };
-                    },
-                    write: a
+                write: a
+            },
+            CSS_RGB: {
+                read: function(a) {
+                    a = a.match(/^rgb\(\s*(.+)\s*,\s*(.+)\s*,\s*(.+)\s*\)/);
+                    return null === a ? !1 : {
+                        space: "RGB",
+                        r: parseFloat(a[1]),
+                        g: parseFloat(a[2]),
+                        b: parseFloat(a[3])
+                    };
                 },
-                CSS_RGBA: {
-                    read: function(a) {
-                        a = a.match(/^rgba\(\s*(.+)\s*,\s*(.+)\s*,\s*(.+)\s*\,\s*(.+)\s*\)/);
-                        return null === a ? !1 : {
-                            space: "RGB",
-                            r: parseFloat(a[1]),
-                            g: parseFloat(a[2]),
-                            b: parseFloat(a[3]),
-                            a: parseFloat(a[4])
-                        };
-                    },
-                    write: a
+                write: a
+            },
+            CSS_RGBA: {
+                read: function(a) {
+                    a = a.match(/^rgba\(\s*(.+)\s*,\s*(.+)\s*,\s*(.+)\s*\,\s*(.+)\s*\)/);
+                    return null === a ? !1 : {
+                        space: "RGB",
+                        r: parseFloat(a[1]),
+                        g: parseFloat(a[2]),
+                        b: parseFloat(a[3]),
+                        a: parseFloat(a[4])
+                    };
+                },
+                write: a
+            }
+        }
+    }, {
+        litmus: b.isNumber,
+        conversions: {
+            HEX: {
+                read: function(a) {
+                    return {
+                        space: "HEX",
+                        hex: a,
+                        conversionName: "HEX"
+                    };
+                },
+                write: function(a) {
+                    return a.hex;
                 }
             }
-        }, {
-            litmus: b.isNumber,
-            conversions: {
-                HEX: {
-                    read: function(a) {
-                        return {
-                            space: "HEX",
-                            hex: a,
-                            conversionName: "HEX"
-                        };
-                    },
-                    write: function(a) {
-                        return a.hex;
-                    }
+        }
+    }, {
+        litmus: b.isArray,
+        conversions: {
+            RGB_ARRAY: {
+                read: function(a) {
+                    return 3 != a.length ? !1 : {
+                        space: "RGB",
+                        r: a[0],
+                        g: a[1],
+                        b: a[2]
+                    };
+                },
+                write: function(a) {
+                    return [a.r, a.g, a.b];
+                }
+            },
+            RGBA_ARRAY: {
+                read: function(a) {
+                    return 4 != a.length ? !1 : {
+                        space: "RGB",
+                        r: a[0],
+                        g: a[1],
+                        b: a[2],
+                        a: a[3]
+                    };
+                },
+                write: function(a) {
+                    return [a.r, a.g, a.b, a.a];
                 }
             }
-        }, {
-            litmus: b.isArray,
-            conversions: {
-                RGB_ARRAY: {
-                    read: function(a) {
-                        return 3 != a.length ? !1 : {
-                            space: "RGB",
-                            r: a[0],
-                            g: a[1],
-                            b: a[2]
-                        };
-                    },
-                    write: function(a) {
-                        return [a.r, a.g, a.b];
-                    }
+        }
+    }, {
+        litmus: b.isObject,
+        conversions: {
+            RGBA_OBJ: {
+                read: function(a) {
+                    return b.isNumber(a.r) && b.isNumber(a.g) && b.isNumber(a.b) && b.isNumber(a.a) ? {
+                        space: "RGB",
+                        r: a.r,
+                        g: a.g,
+                        b: a.b,
+                        a: a.a
+                    } : !1;
                 },
-                RGBA_ARRAY: {
-                    read: function(a) {
-                        return 4 != a.length ? !1 : {
-                            space: "RGB",
-                            r: a[0],
-                            g: a[1],
-                            b: a[2],
-                            a: a[3]
-                        };
-                    },
-                    write: function(a) {
-                        return [a.r, a.g, a.b, a.a];
-                    }
+                write: function(a) {
+                    return {
+                        r: a.r,
+                        g: a.g,
+                        b: a.b,
+                        a: a.a
+                    };
+                }
+            },
+            RGB_OBJ: {
+                read: function(a) {
+                    return b.isNumber(a.r) && b.isNumber(a.g) && b.isNumber(a.b) ? {
+                        space: "RGB",
+                        r: a.r,
+                        g: a.g,
+                        b: a.b
+                    } : !1;
+                },
+                write: function(a) {
+                    return {
+                        r: a.r,
+                        g: a.g,
+                        b: a.b
+                    };
+                }
+            },
+            HSVA_OBJ: {
+                read: function(a) {
+                    return b.isNumber(a.h) && b.isNumber(a.s) && b.isNumber(a.v) && b.isNumber(a.a) ? {
+                        space: "HSV",
+                        h: a.h,
+                        s: a.s,
+                        v: a.v,
+                        a: a.a
+                    } : !1;
+                },
+                write: function(a) {
+                    return {
+                        h: a.h,
+                        s: a.s,
+                        v: a.v,
+                        a: a.a
+                    };
+                }
+            },
+            HSV_OBJ: {
+                read: function(a) {
+                    return b.isNumber(a.h) && b.isNumber(a.s) && b.isNumber(a.v) ? {
+                        space: "HSV",
+                        h: a.h,
+                        s: a.s,
+                        v: a.v
+                    } : !1;
+                },
+                write: function(a) {
+                    return {
+                        h: a.h,
+                        s: a.s,
+                        v: a.v
+                    };
                 }
             }
-        }, {
-            litmus: b.isObject,
-            conversions: {
-                RGBA_OBJ: {
-                    read: function(a) {
-                        return b.isNumber(a.r) && b.isNumber(a.g) && b.isNumber(a.b) && b.isNumber(a.a) ? {
-                            space: "RGB",
-                            r: a.r,
-                            g: a.g,
-                            b: a.b,
-                            a: a.a
-                        } : !1;
-                    },
-                    write: function(a) {
-                        return {
-                            r: a.r,
-                            g: a.g,
-                            b: a.b,
-                            a: a.a
-                        };
-                    }
-                },
-                RGB_OBJ: {
-                    read: function(a) {
-                        return b.isNumber(a.r) && b.isNumber(a.g) && b.isNumber(a.b) ? {
-                            space: "RGB",
-                            r: a.r,
-                            g: a.g,
-                            b: a.b
-                        } : !1;
-                    },
-                    write: function(a) {
-                        return {
-                            r: a.r,
-                            g: a.g,
-                            b: a.b
-                        };
-                    }
-                },
-                HSVA_OBJ: {
-                    read: function(a) {
-                        return b.isNumber(a.h) && b.isNumber(a.s) && b.isNumber(a.v) && b.isNumber(a.a) ? {
-                            space: "HSV",
-                            h: a.h,
-                            s: a.s,
-                            v: a.v,
-                            a: a.a
-                        } : !1;
-                    },
-                    write: function(a) {
-                        return {
-                            h: a.h,
-                            s: a.s,
-                            v: a.v,
-                            a: a.a
-                        };
-                    }
-                },
-                HSV_OBJ: {
-                    read: function(a) {
-                        return b.isNumber(a.h) && b.isNumber(a.s) && b.isNumber(a.v) ? {
-                            space: "HSV",
-                            h: a.h,
-                            s: a.s,
-                            v: a.v
-                        } : !1;
-                    },
-                    write: function(a) {
-                        return {
-                            h: a.h,
-                            s: a.s,
-                            v: a.v
-                        };
-                    }
-                }
-            }
-        }];
+        }
+    }];
     return function() {
         d = !1;
         var a = 1 < arguments.length ? b.toArray(arguments) : arguments[0];
@@ -2873,8 +2876,9 @@ dat.GUI = dat.gui.GUI = function(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o) {
         b.appendChild(f);
         if (A) {
             var h = function() {
-                i.style.display = a.useLocalStorage ? "block" : "none";
-            }, b = document.getElementById("dg-save-locally"),
+                    i.style.display = a.useLocalStorage ? "block" : "none";
+                },
+                b = document.getElementById("dg-save-locally"),
                 i = document.getElementById("dg-local-explain");
             b.style.display = "block";
             b = document.getElementById("dg-local-storage");
@@ -3827,7 +3831,6 @@ CGFshader.prototype.createUniformSetter = function(a, b, c, d) {
         }(this.getBindPointForSamplerType(a, e), g);
     }
     if (e === a.SAMPLER_2D || e === a.SAMPLER_CUBE) return function(b) {
-        console.log(b);
         a.uniform1i(d, b);
     };
     throw ("unknown type: 0x" + e.toString(16));
@@ -3848,6 +3851,11 @@ CGFshader.prototype.compile_program = function(a, b) {
     var d = c.createProgram();
     c.attachShader(d, a);
     c.attachShader(d, b);
+    try {
+        c.bindAttribLocation(d, 0, "aVertexPosition");
+    } catch (e) {
+        console.log("CGFshader: could not bind 'aVertexPosition' to location 0. Do you have this attribute in your shader?");
+    };
     c.linkProgram(d);
     if (!c.getProgramParameter(d, c.LINK_STATUS)) {
         console.log(c.getProgramInfoLog(d));
@@ -3857,21 +3865,21 @@ CGFshader.prototype.compile_program = function(a, b) {
     c.useProgram(d);
     this.uniforms = {};
     this.uniformSetters = {};
-    var e = c.getProgramParameter(d, c.ACTIVE_UNIFORMS);
-    for (var f = 0; f < e; ++f) {
-        var g = c.getActiveUniform(d, f);
-        var h = c.getUniformLocation(d, g.name);
-        setProperty(this.uniforms, g.name, h);
-        setProperty(this.uniformSetters, g.name, this.createUniformSetter(c, d, g, h));
+    var f = c.getProgramParameter(d, c.ACTIVE_UNIFORMS);
+    for (var g = 0; g < f; ++g) {
+        var h = c.getActiveUniform(d, g);
+        var i = c.getUniformLocation(d, h.name);
+        setProperty(this.uniforms, h.name, i);
+        setProperty(this.uniformSetters, h.name, this.createUniformSetter(c, d, h, i));
     }
     this.attributes = {};
     this.attributeSetters = {};
-    var i = c.getProgramParameter(d, c.ACTIVE_ATTRIBUTES);
-    for (var f = 0; f < i; ++f) {
-        var j = c.getActiveAttrib(d, f);
-        var h = c.getAttribLocation(d, j.name);
-        setProperty(this.attributes, j.name, h);
-        setProperty(this.attributeSetters, j.name, this.createAttributeSetter(c, h));
+    var j = c.getProgramParameter(d, c.ACTIVE_ATTRIBUTES);
+    for (var g = 0; g < j; ++g) {
+        var k = c.getActiveAttrib(d, g);
+        var i = c.getAttribLocation(d, k.name);
+        setProperty(this.attributes, k.name, i);
+        setProperty(this.attributeSetters, k.name, this.createAttributeSetter(c, i));
     }
 };
 CGFshader.prototype.update = function() {};
@@ -4189,12 +4197,11 @@ CGFinterface.prototype.init = function(a) {
     b.oncontextmenu = function(a) {
         return false;
     };
-    var d = this;
     b.addEventListener("mousedown", function(a) {
         a.preventDefault();
         a.stopPropagation();
         c.processMouseDown(a);
-        d.onPick(a);
+        c.scene.onPick(a);
     });
     b.addEventListener("mouseup", function(a) {
         a.preventDefault();
@@ -4215,7 +4222,7 @@ CGFinterface.prototype.init = function(a) {
         a.preventDefault();
         a.stopPropagation();
         c.processTouchEnd(a);
-        d.onPick(a);
+        c.scene.onPick(a);
     });
     b.addEventListener("touchmove", function(a) {
         a.preventDefault();
@@ -4323,21 +4330,6 @@ CGFinterface.prototype.processTouches = function() {
 CGFinterface.prototype.distanceBetweenPoints = function(a, b) {
     return Math.sqrt((a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1]));
 };
-CGFinterface.prototype.onPick = function(a) {
-    if (this.pickEnabled == false) return;
-    if (this.pickScene == undefined) return;
-    if (this.pickScene == null) return;
-    this.pickScene.onPick(a);
-};
-CGFinterface.prototype.setPickEnabled = function(a) {
-    this.pickEnabled = a;
-};
-CGFinterface.prototype.unregisterPickScene = function(a) {
-    this.pickScene = null;
-};
-CGFinterface.prototype.registerPickScene = function(a) {
-    this.pickScene = a;
-};
 
 function CGFscene() {}
 CGFscene.prototype.init = function(a) {
@@ -4415,20 +4407,40 @@ CGFscene.prototype.rotate = function(a, b, c, d) {
 CGFscene.prototype.scale = function(a, b, c) {
     mat4.scale(this.activeMatrix, this.activeMatrix, [a, b, c]);
 };
+CGFscene.prototype.setEmission = function(a, b, c, d) {
+    this.activeShader.setUniformsValues({
+        uFrontMaterial: {
+            emission: [a, b, c, d]
+        }
+    });
+};
 CGFscene.prototype.setAmbient = function(a, b, c, d) {
-    this.gl.uniform4fv(this.activeShader.uniforms.uFrontMaterial.ambient, [a, b, c, d]);
+    this.activeShader.setUniformsValues({
+        uFrontMaterial: {
+            ambient: [a, b, c, d]
+        }
+    });
 };
 CGFscene.prototype.setDiffuse = function(a, b, c, d) {
-    this.gl.uniform4fv(this.activeShader.uniforms.uFrontMaterial.diffuse, [a, b, c, d]);
+    this.activeShader.setUniformsValues({
+        uFrontMaterial: {
+            diffuse: [a, b, c, d]
+        }
+    });
 };
 CGFscene.prototype.setSpecular = function(a, b, c, d) {
-    this.gl.uniform4fv(this.activeShader.uniforms.uFrontMaterial.specular, [a, b, c, d]);
+    this.activeShader.setUniformsValues({
+        uFrontMaterial: {
+            specular: [a, b, c, d]
+        }
+    });
 };
 CGFscene.prototype.setShininess = function(a) {
-    this.gl.uniform1f(this.activeShader.uniforms.uFrontMaterial.shininess, a);
-};
-CGFscene.prototype.setEmission = function(a, b, c, d) {
-    this.gl.uniform4fv(this.activeShader.uniforms.uFrontMaterial.emission, [a, b, c, d]);
+    this.activeShader.setUniformsValues({
+        uFrontMaterial: {
+            shininess: a
+        }
+    });
 };
 CGFscene.prototype.getProjectionMatrix = function() {
     return this.camera.getProjectionMatrix(this.gl.canvas.width, this.gl.canvas.height);
@@ -4463,27 +4475,23 @@ CGFscene.prototype.displayWithPick = function() {
     if (a != null) {
         var b = a[0][0];
         var c = a[0][1];
-        this.activeShader.bind();
+        this.setActiveShader(this.pickShader);
         var d = new Uint8Array(4);
         this.pickMode = true;
-        this.gl.uniform1i(this.activeShader.uniforms.uPickMode, this.pickMode);
         var e = this.texturesEnabled;
         this.texturesEnabled = false;
         this.display();
         this.texturesEnabled = e;
-        this.activeShader.bind();
         this.pickMode = false;
-        this.gl.uniform1i(this.activeShader.uniforms.uPickMode, this.pickMode);
         this.gl.readPixels(b, c, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, d);
         if (d != null && d != undefined) {
-            console.log(d[0] + " " + d[1] + " " + d[2] + " " + d[3]);
             this.pickResults.splice(0, this.pickResults.length);
             var f = this.getPickData(d);
-            if (f != null) this.pickResults.push([f[0], f[3]]);
+            if (f != null) this.pickResults.push([f[0], f[1]]);
             else this.pickResults.push([undefined, undefined]);
         }
+        this.setActiveShader(this.defaultShader);
     }
-    this.activeShader.bind();
     this.display();
 };
 CGFscene.prototype.setGlobalAmbientLight = function(a, b, c, d) {
@@ -4491,6 +4499,7 @@ CGFscene.prototype.setGlobalAmbientLight = function(a, b, c, d) {
     this.gl.uniform4f(this.activeShader.uniforms.uGlobalAmbient, a, b, c, d);
 };
 CGFscene.prototype.onPick = function(a) {
+    if (this.pickEnabled == false) return;
     var b = a.clientX,
         c = a.clientY;
     var d = a.target.getBoundingClientRect();
@@ -4498,9 +4507,6 @@ CGFscene.prototype.onPick = function(a) {
         var e = b - d.left;
         y_in_canvas = d.bottom - c;
         this.picksRequests.push([e, y_in_canvas]);
-        var f = this.picksRequests.length + " pick requests: ";
-        for (i = 0; i < this.picksRequests.length; i++) f = f + "[" + this.picksRequests[i][0] + ", " + this.picksRequests[i][1] + "] ";
-        console.log(f);
     }
 };
 CGFscene.prototype.getNextPickRequest = function() {
@@ -4508,48 +4514,34 @@ CGFscene.prototype.getNextPickRequest = function() {
     return this.picksRequests.splice(0, 1);
 };
 CGFscene.prototype.registerForPick = function(a, b) {
-    this.gl.uniform4fv(this.activeShader.uniforms.uPickColor, this.getPickColor(b, a));
+    if (this.pickMode) {
+        var c = this.intToRGB(a);
+        this.pickData[a] = [b, a, c];
+        this.gl.uniform4fv(this.pickShader.uniforms.uPickColor, c);
+    }
 };
-CGFscene.prototype.clearPickRegistration = function(a, b) {
-    this.gl.uniform4fv(this.activeShader.uniforms.uPickColor, [0, 0, 0, 0]);
+CGFscene.prototype.clearPickRegistration = function() {
+    if (this.pickMode) this.gl.uniform4fv(this.pickShader.uniforms.uPickColor, [0, 0, 0, 0]);
 };
-CGFscene.prototype.hexToRGB = function(a) {
-    function b(a) {
-        return parseInt((e(a)).substring(0, 2), 16);
-    }
-
-    function c(a) {
-        return parseInt((e(a)).substring(2, 4), 16);
-    }
-
-    function d(a) {
-        return parseInt((e(a)).substring(4, 6), 16);
-    }
-
-    function e(a) {
-        return (a.charAt(0) == "#") ? a.substring(1, 7) : a;
-    }
-    return [b(a) / 255.0, c(a) / 255.0, d(a) / 255.0, 1.0];
-};
-CGFscene.prototype.getPickColor = function(a, b) {
-    if (this.pickData[b] == null) {
-        var c = "#" + Math.random().toString(16).slice(2, 8);
-        while (this.pickIds[c] != null) c = "#" + Math.random().toString(16).slice(2, 8);
-        this.pickIds[c] = b;
-        this.pickData[b] = [a, c, this.hexToRGB(c), b];
-    }
-    return this.pickData[b][2];
+CGFscene.prototype.intToRGB = function(a) {
+    var b = a >> 16;
+    var c = a % 65536 >> 8;
+    var d = a % 256;
+    return [b / 255.0, c / 255.0, d / 255.0, 1.0];
 };
 CGFscene.prototype.getPickData = function(a) {
     var b = 65536 * a[0] + 256 * a[1] + a[2];
-    var c = "#" + b.toString(16);
-    var d = this.pickIds[c];
-    return this.pickData[d];
+    return this.pickData[b];
+};
+CGFscene.prototype.setPickEnabled = function(a) {
+    this.pickEnabled = a;
 };
 CGFscene.prototype.setActiveShader = function(a) {
-    a.importUniforms(this.activeShader);
-    this.activeShader = a;
-    this.activeShader.bind();
+    if (this.pickMode == false) {
+        a.importUniforms(this.activeShader);
+        this.activeShader = a;
+        this.activeShader.bind();
+    }
     return;
 };
 var CGFcameraAxis = Object.freeze({
@@ -4642,7 +4634,7 @@ CGFcamera.prototype.zoom = function(a) {
 function CGFinterfaceCamera(a, b, c) {
     CGFcamera.call(this, a, b, c, [10, 10, 10], [0, 0, 0]);
     this.translation = [0, 0, 0];
-    this.rotation = [30 * degToRad, 45 * degToRad, 0];
+    this.rotation = [0.52, 0.79, 0];
     this.distance = 50;
     this._positionMatrix = mat4.create();
     this._invPositionMatrix = mat4.create();
@@ -4778,7 +4770,7 @@ CGFlight.prototype.update = function() {
 };
 CGFlight.prototype.updateShader = function() {
     var a = this.scene.gl;
-    try {
+    if (!this.scene.pickMode) try {
         var b = this.scene.activeShader.uniforms.uLight[this.id];
         a.uniform1i(b.enabled, this.enabled);
         a.uniform4fv(b.position, this.tPosition);
@@ -4791,7 +4783,9 @@ CGFlight.prototype.updateShader = function() {
         a.uniform1f(b.constant_attenuation, this.constant_attenuation);
         a.uniform1f(b.linear_attenuation, this.linear_attenuation);
         a.uniform1f(b.quadratic_attenuation, this.quadratic_attenuation);
-    } catch (c) {};;
+    } catch (c) {
+        console.log("CGFlight.updateShader: Problem updating light " + this.id);
+    };;
 };
 CGFlight.prototype.setVisible = function(a) {
     this.visible = a;
@@ -4888,22 +4882,20 @@ CGFplane.prototype.initBuffers = function() {
     this.normals = [];
     for (var a = 0; a < this.numDivisions; ++a)
         for (var b = 0; b < this.numDivisions; ++b) {
-            this.vertices.push(a);
-            this.vertices.push(0);
-            this.vertices.push(b);
-            this.normals.push(0);
-            this.normals.push(1);
-            this.normals.push(0);
+            this.vertices.push(a, 0, b);
+            this.normals.push(0, 1, 0);
         }
-    for (var a = 0; a < this.numDivisions - 1; ++a)
-        for (var b = 0; b < this.numDivisions - 1; ++b) {
-            this.indices.push(b * this.numDivisions + a);
-            this.indices.push(b * this.numDivisions + (a + 1));
-            this.indices.push((b + 1) * this.numDivisions + a);
-            this.indices.push(b * this.numDivisions + (a + 1));
-            this.indices.push((b + 1) * this.numDivisions + (a + 1));
-            this.indices.push((b + 1) * this.numDivisions + a);
+    var c = 0;
+    for (var a = 0; a < this.numDivisions - 1; ++a) {
+        this.indices.push(c);
+        var b;
+        for (b = 0; b < this.numDivisions - 1; ++b) {
+            this.indices.push(c + (b + 1));
+            this.indices.push(c + this.numDivisions + b);
         }
+        c += this.numDivisions;
+        this.indices.push(c + b);
+    }
     this.primitiveType = this.scene.gl.TRIANGLE_STRIP;
     this.initGLBuffers();
 };

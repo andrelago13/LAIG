@@ -32,6 +32,8 @@ XMLscene.prototype.init = function (application) {
 	this.timerStarted = false;
 	this.startingTime = 0;
 	this.currTime = 0;
+	
+	this.cubemap = new Cubemap(this, ["scenes/TP3/textures/cubemap/right.jpg", "scenes/TP3/textures/cubemap/left.jpg", "scenes/TP3/textures/cubemap/up.jpg", "scenes/TP3/textures/cubemap/down.jpg", "scenes/TP3/textures/cubemap/front.jpg", "scenes/TP3/textures/cubemap/back.jpg"]);
 };
 
 XMLscene.prototype.resetAnims = function() {
