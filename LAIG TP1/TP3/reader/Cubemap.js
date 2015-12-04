@@ -16,10 +16,11 @@ function Cubemap(scene, srcs) {
 		this.images[i].onload = function() {
 			loaded++;
 			console.log("Texture loaded: " + this.src);
-			if (loaded == 6)
+			if (loaded === 6)
 			{
 				c.texID = c.gl.createTexture();
 				c.gl.bindTexture(c.gl.TEXTURE_CUBE_MAP, c.texID);
+				console.log("texID: " + c.texID, "target: " + c.texID.target);
 				c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, this);
 		        c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, this);
 				c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, this);
@@ -38,3 +39,20 @@ function Cubemap(scene, srcs) {
 		this.images[i].src = srcs[i];
 	}
 }
+
+Cubemap.prototype.bind = function(a) {
+    var b = a || 0;
+    if (this.texID != -1) {
+        this.gl.activeTexture(this.gl.TEXTURE0 + b);
+        this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.texID);
+        if (b == 0) this.scene.activeTexture = this;
+        return true;
+    } else return false;
+};
+
+Cubemap.prototype.unbind = function(a) {
+    var b = a || 0;
+    this.gl.activeTexture(this.gl.TEXTURE0 + b);
+    this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, null);
+    if (b == 0) this.scene.activeTexture = null;
+};
