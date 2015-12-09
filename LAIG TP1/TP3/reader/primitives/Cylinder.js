@@ -8,7 +8,7 @@
  * @param slices ammount of slices the Cylinder will be divided into along it's perimeter
  * @constructor
  */
-function Cylinder(scene, height, bottom_radius, top_radius, stacks, slices) {
+function Cylinder(scene, height, bottom_radius, top_radius, stacks, slices, half) {
 	CGFobject.call(this,scene);
 	
 	this.height = height;
@@ -16,6 +16,7 @@ function Cylinder(scene, height, bottom_radius, top_radius, stacks, slices) {
 	this.top_radius = top_radius;
 	this.stacks = stacks;
 	this.slices = slices;
+	this.half = typeof half == 'undefined' ? true : half;
 
 	this.initBuffers();
 };
@@ -28,7 +29,8 @@ Cylinder.prototype.constructor=Cylinder;
  */
 Cylinder.prototype.initBuffers = function () {
 	
-	var delta = 2*Math.PI / this.slices;
+	var delta = Math.PI / this.slices;
+	if (!this.half) delta *= 2;
 	this.indices = [];
  	this.vertices = [];
  	this.normals = [];

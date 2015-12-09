@@ -13,7 +13,7 @@
 	
 	<ILLUMINATION>
 	    <ambient r="0.1" g="0.1" b="0.1" a="1" />            <!-- global ambient -->
-	    <background r="0.8" g="0.8" b="0.8" a="1" />         <!-- background color -->
+	    <background r="0.8" g="0.2" b="0.2" a="1" />         <!-- background color -->
 	</ILLUMINATION>
 	
 	
@@ -31,11 +31,11 @@
 	</TEXTURES>
 	
 	<MATERIALS>
-		<MATERIAL id="plastic">                                
+		<MATERIAL id="piece_joker">                                
 	        <shininess value="20" />
-	        <specular r="0.8" g="0.8" b="0.8" a="1" />        <!-- specular reflection -->
-	        <diffuse r="0.8" g="0.8" b="0.8" a="1" />         <!-- diffuse reflection -->
-	        <ambient r="0.8" g="0.8" b="0.8" a="1" />         <!-- ambient reflection -->
+	        <specular r="0.8" g="0.8" b="0.8" a="0.1" />        <!-- specular reflection -->
+	        <diffuse r="0.8" g="0.8" b="0.8" a="0.1" />         <!-- diffuse reflection -->
+	        <ambient r="0.8" g="0.8" b="0.8" a="0.1" />         <!-- ambient reflection -->
 	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
 	    </MATERIAL>
 	</MATERIALS>
@@ -69,14 +69,18 @@
 	    <ROOT id="piece" /> 
 		
 		<NODE id="piece">
-			<MATERIAL id="plastic" />
+			<MATERIAL id="piece_joker" />
 			<TEXTURE id="null" />
+			
+			<ROTATION axis="y" angle="45" />
 			
 			<DESCENDANTS>
 				<DESCENDANT id="piece_quarter" />
 				<DESCENDANT id="piece_quarter2" />
 				<DESCENDANT id="piece_quarter3" />
 				<DESCENDANT id="piece_quarter4" />
+				<DESCENDANT id="piece_cover_square_top" />
+				<DESCENDANT id="piece_cover_square_bottom" />
 			</DESCENDANTS>
 		</NODE>
 		
@@ -155,9 +159,35 @@
 			<ROTATION axis="x" angle="-90" />
 			<SCALE sx="0.05" sy="0.05" sz="1" />
 			<TRANSLATION x="9" y="0" z="0.3" />
+			<ROTATION axis="z" angle="-90" />
 			
 			<DESCENDANTS>
 				<DESCENDANT id="circle" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="piece_cover_square_bottom">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<ROTATION axis="x" angle="180" />
+			<TRANSLATION x="0" y="-0.3" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="piece_cover_square_top" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="piece_cover_square_top">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<ROTATION axis="x" angle="-90" />
+			<SCALE sx="0.1" sy="0.1" sz="0.3" />
+			<TRANSLATION x="0" y="0" z="1" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle" />
 			</DESCENDANTS>
 		</NODE>
 		
@@ -166,8 +196,8 @@
 			<TEXTURE id="null" />
 			
 			<ROTATION axis="x" angle="-90" />
-			<SCALE sx="0.5" sy="0.1" sz="0.3" />
-			<TRANSLATION x="0.4" y="0" z="1" />
+			<SCALE sx="0.4" sy="0.1" sz="0.3" />
+			<TRANSLATION x="0.625" y="0" z="1" />
 			
 			<DESCENDANTS>
 				<DESCENDANT id="rectangle" />
@@ -181,6 +211,7 @@
 			<ROTATION axis="x" angle="90" />
 			<SCALE sx="0.1" sy="0.1" sz="0.3" />
 			<TRANSLATION x="4.5" y="0" z="-1" />
+			<ROTATION axis="z" angle="-90" />
 			
 			<DESCENDANTS>
 				<DESCENDANT id="cylinder" />
@@ -191,8 +222,8 @@
 			<MATERIAL id="null" />
 			<TEXTURE id="null" />
 			
-			<SCALE sx="0.45" sy="0.3" sz="1" />
-			<TRANSLATION x="0.5" y="0.5" z="0" />
+			<SCALE sx="0.4" sy="0.3" sz="1" />
+			<TRANSLATION x="0.625" y="0.5" z="0" />
 			
 			<DESCENDANTS>
 				<DESCENDANT id="piece_side1" />

@@ -1,5 +1,8 @@
 attribute vec3 aVertexPosition;
 attribute vec3 aVertexNormal;
+attribute vec2 aTextureCoord;
+
+uniform bool uUseTexture;
 
 struct lightProperties {
     vec4 position;                  // Default: (0, 0, 1, 0)
@@ -13,7 +16,7 @@ struct lightProperties {
     float constant_attenuation;     // Default: 1 (value must be >= 0)
     float linear_attenuation;       // Default: 0 (value must be >= 0)
     float quadratic_attenuation;    // Default: 0 (value must be >= 0)
-    bool enabled;                   // Deafult: false
+    bool enabled;                   // Default: false
 };
 
 struct materialProperties {
@@ -28,8 +31,8 @@ uniform mat4 uMVMatrix;
 uniform mat4 uPMatrix;
 uniform mat4 uNMatrix;
 
-uniform bool uLightEnabled;
-uniform bool uLightModelTwoSided;
+uniform bool uLightEnabled;	// not being used
+uniform bool uLightModelTwoSided;	// not being used
 
 #define NUMBER_OF_LIGHTS 8
 
@@ -41,6 +44,7 @@ uniform materialProperties uFrontMaterial;
 uniform materialProperties uBackMaterial;
 
 varying vec4 vFinalColor;
+varying vec2 vTextureCoord;
 
 vec4 lighting(vec4 vertex, vec3 E, vec3 N) {
 
@@ -94,7 +98,7 @@ vec4 lighting(vec4 vertex, vec3 E, vec3 N) {
         }
     }
 
-	result += uGlobalAmbient * uFrontMaterial.ambient  + uFrontMaterial.emission;
+	result += uGlobalAmbient * uFrontMaterial.ambient + uFrontMaterial.emission;
     result = clamp(result, vec4(0.0), vec4(1.0));
 
     result.a = 0.1;
@@ -115,5 +119,9 @@ void main() {
     vFinalColor = lighting(vertex, E, N);
 
 	gl_Position = uPMatrix * vertex;
+
+    if (uUseTexture)
+        vTextureCoord = aTextureCoord;
+
 }
 

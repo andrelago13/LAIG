@@ -20,10 +20,14 @@ XMLscene.prototype.init = function (application) {
 	this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
 	this.gl.clearDepth(100.0);
-	this.gl.enable(this.gl.DEPTH_TEST);
-	this.gl.enable(this.gl.CULL_FACE);
-	this.gl.depthFunc(this.gl.LEQUAL);
-
+	//this.gl.enable(this.gl.DEPTH_TEST);
+	//this.gl.enable(this.gl.CULL_FACE);
+	//this.gl.depthFunc(this.gl.LEQUAL);
+	this.gl.depthFunc(this.gl.LESS);
+	this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+	this.gl.enable(this.gl.BLEND);
+	this.gl.disable(this.gl.DEPTH_TEST);
+	
 	this.axis=new CGFaxis(this);
 	this.initialTransform = mat4.create();
 	this.enableTextures(true);
@@ -34,6 +38,8 @@ XMLscene.prototype.init = function (application) {
 	this.currTime = 0;
 	
 	this.setUpdatePeriod(10);
+	
+	this.shader = new CGFshader(this.gl, "shaders/Gouraud/textured/multiple_light-vertex.glsl", "shaders/Gouraud/textured/fragment.glsl");
 };
 
 XMLscene.prototype.resetAnims = function() {
@@ -58,8 +64,6 @@ XMLscene.prototype.initLights = function () {
 	if(typeof globalAmbient != 'undefined')
 		this.setGlobalAmbientLight(globalAmbient["r"], globalAmbient["g"], globalAmbient["b"], globalAmbient["a"]);
 
-	//this.shader.bind();
-
 	for (var i = 0; i < this.graph.lights.length; i++)
 	{
 		if(typeof this.graph.lights[i] == 'undefined')
@@ -82,8 +86,6 @@ XMLscene.prototype.initLights = function () {
 		this.lights[i].update();
 		this.graph.interface.addLightToggler(i, this.graph.lights[i]["id"]);
 	}
-
-	//this.shader.unbind();
 };
 
 /**
@@ -170,15 +172,12 @@ XMLscene.prototype.updateLights = function(){
  * 
  */
 XMLscene.prototype.display = function () {
-	// ---- BEGIN Background, camera and axis setup
-	//this.shader.bind();
-	//this.setActiveShader();
 	this.setActiveShader(this.defaultShader);
 
 	// Clear image and depth buffer everytime we update the scene
 	this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 	this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-
+	
 	// Initialize Model-View matrix as identity (no transformation)
 	this.updateProjectionMatrix();
 	this.loadIdentity();
@@ -193,11 +192,6 @@ XMLscene.prototype.display = function () {
 
 	// ---- END Background, camera and axis setup
 
-	// guarantees that the graph is only displayed when correctly loaded 
-	if (this.ready) {
-		this.graph.display(this.currTime);
-	};
-
 	for (var i = 0; i < this.graph.lights.length; i++) {
 		this.pushMatrix();
 		this.multMatrix(this.initialTransform);
@@ -205,5 +199,9 @@ XMLscene.prototype.display = function () {
 		this.popMatrix();
 	}
 	
-	//this.shader.unbind();
+	// guarantees that the graph is only displayed when correctly loaded 
+	if (this.ready) {
+		this.setActiveShader(this.shader);
+		this.graph.graphNodes["piece"].display(this.currTime);
+	};
 };
