@@ -31,6 +31,13 @@
 	</TEXTURES>
 	
 	<MATERIALS>
+		<MATERIAL id="plastic">                                
+	        <shininess value="20" />
+	        <specular r="0.8" g="0.8" b="0.8" a="1" />        <!-- specular reflection -->
+	        <diffuse r="0.8" g="0.8" b="0.8" a="1" />         <!-- diffuse reflection -->
+	        <ambient r="0.8" g="0.8" b="0.8" a="1" />         <!-- ambient reflection -->
+	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+	    </MATERIAL>
 	</MATERIALS>
 	
 	<LEAVES>
@@ -41,7 +48,7 @@
 	    <LEAF id="plane-large" type="plane" args="80 80"/>
 	    <LEAF id="sphere" type="sphere" args="1 40 40" />
 		<LEAF id="terrain" type="terrain" texture="textures/terrain-t.png" heightmap="textures/terrain-hm.png" />
-		<LEAF id="cylinder" type="cylinder" args="1 0.5 0.5 10 10" />
+		<LEAF id="cylinder" type="cylinder" args="1 0.5 0.5 1 20" />
 		<LEAF id="circle" type="cylinder" args="0 1 0 1 20" />
 		<LEAF id="round_convex" type="patch" args="2 50 50" >
 			<controlpoint xx="0" yy="-0.5" zz="0.5" />
@@ -62,7 +69,7 @@
 	    <ROOT id="piece" /> 
 		
 		<NODE id="piece">
-			<MATERIAL id="null" />
+			<MATERIAL id="plastic" />
 			<TEXTURE id="null" />
 			
 			<DESCENDANTS>
