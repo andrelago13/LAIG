@@ -33,10 +33,7 @@ XMLscene.prototype.init = function (application) {
 	this.startingTime = 0;
 	this.currTime = 0;
 	
-	this.cubemap = new Cubemap(this, ["scenes/TP3/textures/cubemap/right.jpg", "scenes/TP3/textures/cubemap/left.jpg", "scenes/TP3/textures/cubemap/up.jpg", "scenes/TP3/textures/cubemap/down.jpg", "scenes/TP3/textures/cubemap/front.jpg", "scenes/TP3/textures/cubemap/back.jpg"]);
-	this.glassShader = new CGFshader(this.gl, "../reader/shaders/Glass/glass-vertex.glsl", "../reader/shaders/Glass/glass-fragment.glsl");
-	this.glassShader.setUniformsValues({uCubeMap: 1, uCameraPos: this.camera.position});
-	this.teapot = new Teapot(this);
+	this.setUpdatePeriod(10);
 };
 
 XMLscene.prototype.resetAnims = function() {
@@ -199,7 +196,6 @@ XMLscene.prototype.display = function () {
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
 		this.graph.display(this.currTime);
-		this.setUpdatePeriod(10);
 	};
 
 	for (var i = 0; i < this.graph.lights.length; i++) {
@@ -208,15 +204,6 @@ XMLscene.prototype.display = function () {
 		this.updateLights();
 		this.popMatrix();
 	}
-	
-	this.setActiveShader(this.glassShader);
-	this.cubemap.bind(1);
-	this.glassShader.setUniformsValues({uCameraPos: this.camera.position});
-		this.pushMatrix();
-			this.scale(0.1, 0.1, 0.1);
-			this.teapot.display();
-		this.popMatrix();
-	this.setActiveShader(this.defaultShader);
 	
 	//this.shader.unbind();
 };

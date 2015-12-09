@@ -20,13 +20,12 @@ function Cubemap(scene, srcs) {
 			{
 				c.texID = c.gl.createTexture();
 				c.gl.bindTexture(c.gl.TEXTURE_CUBE_MAP, c.texID);
-				console.log("texID: " + c.texID, "target: " + c.texID.target);
-				c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, this);
-		        c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, this);
-				c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, this);
-				c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, this);
-				c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, this);
-				c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, this);
+				c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, c.images[0]);
+		        c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, c.images[1]);
+				c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, c.images[2]);
+				c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, c.images[3]);
+				c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, c.images[4]);
+				c.gl.texImage2D(c.gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, c.gl.RGBA, c.gl.RGBA, c.gl.UNSIGNED_BYTE, c.images[5]);
 				c.gl.texParameteri(c.gl.TEXTURE_CUBE_MAP, c.gl.TEXTURE_MAG_FILTER, c.gl.LINEAR);
 				if (isPowerOfTwo(this.width) && isPowerOfTwo(this.height)) c.gl.texParameteri(c.gl.TEXTURE_CUBE_MAP, c.gl.TEXTURE_MIN_FILTER, c.gl.LINEAR);
 				else {
