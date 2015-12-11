@@ -2,6 +2,8 @@
 :-use_module(library(lists)).
 :-use_module(library(codesio)).
 
+:- ensure_loaded('server_handlers.pl').
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%                                        Server                                                   %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -28,13 +30,13 @@ server :-
 server_loop(Socket) :-
 	repeat,
 	socket_server_accept(Socket, _Client, Stream, [type(text)]),
-		% write('Accepted connection'), nl,
+		write('Accepted connection'), nl,
 	    % Parse Request
 		catch((
 			read_request(Stream, Request),
 			read_header(Stream)
 		),_Exception,(
-			% write('Error parsing request.'),nl,
+			write('Error parsing request.'),nl,
 			close_stream(Stream),
 			fail
 		)),
@@ -50,7 +52,7 @@ server_loop(Socket) :-
 		format(Stream, 'Content-Type: text/plain~n~n', []),
 		format(Stream, '~p', [MyReply]),
 	
-		% write('Finnished Connection'),nl,nl,
+		write('Finnished Connection'),nl,nl,
 		close_stream(Stream),
 	(Request = quit), !.
 	
@@ -96,17 +98,4 @@ check_end_of_header(_).
 % Function to Output Request Lines (uncomment the line bellow to see more information on received HTTP Requests)
 % print_header_line(LineCodes) :- catch((atom_codes(Line,LineCodes),write(Line),nl),_,fail), !.
 print_header_line(_).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%                                       Commands                                                  %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Require your Prolog Files here
-
-parse_input(handshake, handshake).
-parse_input(test(C,N), Res) :- test(C,Res,N).
-parse_input(quit, goodbye).
-
-test(_,[],N) :- N =< 0.
-test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).
 	
