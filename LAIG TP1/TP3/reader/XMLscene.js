@@ -185,7 +185,7 @@ XMLscene.prototype.display = function () {
 	this.applyViewMatrix();
 
 	// Draw axis
-	//this.axis.display();
+	this.axis.display();
 
 	this.setDefaultAppearance();
 

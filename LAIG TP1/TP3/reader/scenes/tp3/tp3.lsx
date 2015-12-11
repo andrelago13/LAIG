@@ -20,7 +20,7 @@
 	<LIGHTS>
 	    <LIGHT id="main">                                    <!-- light identifier -->
 	        <enable value ="1" />                         <!-- enable/disable -->
-	        <position x="1" y="1" z="1" w="1" />       <!-- light position -->
+	        <position x="1" y="2" z="1" w="1" />       <!-- light position -->
 	        <ambient r="0.1" g="0.1" b="0.1" a="1" />        <!-- ambient component -->
 	        <diffuse r="1" g="1" b="1" a="1" />        <!-- diffuse component -->
 	        <specular r="1" g="1" b="1" a="1" />       	<!-- specular component --> <!-- no specular here because it's a wide source of light -->
@@ -66,7 +66,524 @@
 	</LEAVES>
 	
 	<NODES>
-	    <ROOT id="cell" /> 
+	    <ROOT id="root" /> 
+	    
+	    <NODE id="root">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="clear" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="board" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="board">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="clear" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="board_margins" />
+				<DESCENDANT id="cell_row_1" />
+				<DESCENDANT id="cell_row_2" />
+				<DESCENDANT id="cell_row_3" />
+				<DESCENDANT id="cell_row_4" />
+				<DESCENDANT id="cell_row_5" />
+				<DESCENDANT id="cell_row_6" />
+				<DESCENDANT id="cell_row_7" />
+				<DESCENDANT id="cell_row_8" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="board_margins">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="board_margin_1" />
+				<DESCENDANT id="board_margin_2" />
+				<DESCENDANT id="board_margin_3" />
+				<DESCENDANT id="board_margin_4" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="board_margin_1">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="board_margin" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="board_margin_2">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0.05" y="0" z="0" />
+			<ROTATION axis="y" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="board_margin" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="board_margin_3">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="7.95" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="board_margin" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="board_margin_4">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="8" y="0" z="0" />
+			<ROTATION axis="y" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="board_margin" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="board_margin">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<SCALE sx="8" sy="0.151" sz="0.05" />
+			<TRANSLATION x="0.5" y="0" z="0.5" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cube_bottomless" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_1">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_row" />
+				<DESCENDANT id="separator_quarter_row" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_2">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="1" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_row" />
+				<DESCENDANT id="separator_row" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_3">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="2" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_row" />
+				<DESCENDANT id="separator_row" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_4">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="3" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_row" />
+				<DESCENDANT id="separator_row" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_5">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="4" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_row" />
+				<DESCENDANT id="separator_row" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_6">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="5" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_row" />
+				<DESCENDANT id="separator_row" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_7">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="6" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_row" />
+				<DESCENDANT id="separator_row" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_8">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="7" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_row" />
+				<DESCENDANT id="separator_row" />
+				<DESCENDANT id="separator_quarter_row_bottom" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_quarter_row_bottom">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="8" y="0" z="1" />
+			<ROTATION  axis="y" angle="180" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="separator_quarter_row" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_quarter_row">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="separator_quarter_row_sep1" />
+				<DESCENDANT id="separator_quarter_row_sep2" />
+				<DESCENDANT id="separator_quarter_row_sep3" />
+				<DESCENDANT id="separator_quarter_row_sep4" />
+				<DESCENDANT id="separator_quarter_row_sep5" />
+				<DESCENDANT id="separator_quarter_row_sep6" />
+				<DESCENDANT id="separator_quarter_row_sep7" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_quarter_row_sep1">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="1" y="0" z="0" />
+			<ROTATION axis="y" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_quarter" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_quarter_row_sep2">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="2" y="0" z="0" />
+			<ROTATION axis="y" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_quarter" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_quarter_row_sep3">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="3" y="0" z="0" />
+			<ROTATION axis="y" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_quarter" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_quarter_row_sep4">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="4" y="0" z="0" />
+			<ROTATION axis="y" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_quarter" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_quarter_row_sep5">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="5" y="0" z="0" />
+			<ROTATION axis="y" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_quarter" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_quarter_row_sep6">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="6" y="0" z="0" />
+			<ROTATION axis="y" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_quarter" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_quarter_row_sep7">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="7" y="0" z="0" />
+			<ROTATION axis="y" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_quarter" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_row_cell1" />
+				<DESCENDANT id="cell_row_cell2" />
+				<DESCENDANT id="cell_row_cell3" />
+				<DESCENDANT id="cell_row_cell4" />
+				<DESCENDANT id="cell_row_cell5" />
+				<DESCENDANT id="cell_row_cell6" />
+				<DESCENDANT id="cell_row_cell7" />
+				<DESCENDANT id="cell_row_cell8" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_cell1">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_cell2">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="1" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_cell3">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="2" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_cell4">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="3" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_cell5">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="4" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_cell6">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="5" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_cell7">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="6" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_row_cell8">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="7" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_row">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="separator_row_separator_first" />
+				<DESCENDANT id="separator_row_separator_1" />
+				<DESCENDANT id="separator_row_separator_2" />
+				<DESCENDANT id="separator_row_separator_3" />
+				<DESCENDANT id="separator_row_separator_4" />
+				<DESCENDANT id="separator_row_separator_5" />
+				<DESCENDANT id="separator_row_separator_6" />
+				<DESCENDANT id="separator_row_separator_7" />
+				<DESCENDANT id="separator_row_separator_last" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_row_separator_first">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_quarter" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_row_separator_1">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="1" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_row_separator_2">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="2" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_row_separator_3">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="3" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_row_separator_4">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="4" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_row_separator_5">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="5" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_row_separator_6">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="6" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_row_separator_7">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="7" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="separator_row_separator_last">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="8" y="0" z="0" />
+			<ROTATION axis="y" angle="180" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_quarter" />
+			</DESCENDANTS>
+		</NODE>
 	    
 	    <NODE id="cell">
 	    	<MATERIAL id="null" />
@@ -89,10 +606,137 @@
 			</DESCENDANTS>
 		</NODE>
 	    
+	    <NODE id="cell_separator_quarter">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<SCALE sx="0.5" sy="1" sz="1" />
+			<TRANSLATION x="0.2" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_piece" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_separator">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_1" />
+				<DESCENDANT id="cell_separator_2" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_separator_1">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_piece" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_separator_2">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<ROTATION axis="y" angle="90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cell_separator_piece" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cell_separator_piece">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<SCALE sx="0.4" sy="0.15" sz="0.1" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cube_bottomless" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cube_bottomless">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cube_bottomless_1" />
+				<DESCENDANT id="cube_bottomless_2" />
+				<DESCENDANT id="cube_bottomless_3" />
+				<DESCENDANT id="cube_bottomless_4" />
+				<DESCENDANT id="cube_bottomless_5" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cube_bottomless_1">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0.5" z="0.5" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cube_bottomless_2">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0.5" z="-0.5" />
+			<ROTATION axis="y" angle="180" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cube_bottomless_3">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0.5" y="0.5" z="0" />
+			<ROTATION axis="y" angle="90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cube_bottomless_4">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="-0.5" y="0.5" z="0" />
+			<ROTATION axis="y" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cube_bottomless_5">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="1" z="0" />
+			<ROTATION axis="x" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle" />
+			</DESCENDANTS>
+		</NODE>
+	    
 		<NODE id="piece">
 			<MATERIAL id="plastic" />
 			<TEXTURE id="null" />
 			
+			<TRANSLATION x="0.5" y="0" z="0.5" />
+			<SCALE sx="1.2" sy="1" sz="1.2" />
 			<ROTATION axis="y" angle="45" />
 			
 			<DESCENDANTS>
