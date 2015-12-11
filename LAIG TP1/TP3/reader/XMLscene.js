@@ -26,7 +26,7 @@ XMLscene.prototype.init = function (application) {
 	this.gl.depthFunc(this.gl.LESS);
 	this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 	this.gl.enable(this.gl.BLEND);
-	this.gl.disable(this.gl.DEPTH_TEST);
+	//this.gl.disable(this.gl.DEPTH_TEST);
 	
 	this.axis=new CGFaxis(this);
 	this.initialTransform = mat4.create();
@@ -202,6 +202,6 @@ XMLscene.prototype.display = function () {
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
 		this.setActiveShader(this.shader);
-		this.graph.graphNodes["piece"].display(this.currTime);
+		this.graph.display(this.currTime);
 	};
 };

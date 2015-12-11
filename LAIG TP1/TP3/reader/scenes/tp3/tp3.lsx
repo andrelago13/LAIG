@@ -13,7 +13,7 @@
 	
 	<ILLUMINATION>
 	    <ambient r="0.1" g="0.1" b="0.1" a="1" />            <!-- global ambient -->
-	    <background r="0.8" g="0.8" b="0.8" a="1" />         <!-- background color -->
+	    <background r="0.9" g="0.9" b="0.9" a="1" />         <!-- background color -->
 	</ILLUMINATION>
 	
 	
@@ -31,11 +31,11 @@
 	</TEXTURES>
 	
 	<MATERIALS>
-		<MATERIAL id="piece_joker">                                
+	    <MATERIAL id="plastic">                                
 	        <shininess value="20" />
-	        <specular r="0.8" g="0.8" b="0.8" a="0.1" />        <!-- specular reflection -->
-	        <diffuse r="0.8" g="0.8" b="0.8" a="0.1" />         <!-- diffuse reflection -->
-	        <ambient r="0.8" g="0.8" b="0.8" a="0.1" />         <!-- ambient reflection -->
+	        <specular r="1" g="1" b="1" a="1" />        <!-- specular reflection -->
+	        <diffuse r="1" g="1" b="1" a="1" />         <!-- diffuse reflection -->
+	        <ambient r="1" g="1" b="1" a="1" />         <!-- ambient reflection -->
 	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
 	    </MATERIAL>
 	</MATERIALS>
@@ -68,8 +68,54 @@
 	<NODES>
 	    <ROOT id="piece" /> 
 		
+		<NODE id="pieces">
+			<MATERIAL id="plastic" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="piece_orange" />
+				<DESCENDANT id="piece_black" />
+				<DESCENDANT id="piece_joker" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="piece_orange">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="piece" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="piece_black">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="2" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="piece" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="piece_joker">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="1" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="piece" />
+			</DESCENDANTS>
+		</NODE>
+		
 		<NODE id="piece">
-			<MATERIAL id="piece_joker" />
+			<MATERIAL id="null" />
 			<TEXTURE id="null" />
 			
 			<ROTATION axis="y" angle="45" />

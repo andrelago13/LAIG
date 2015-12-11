@@ -18,6 +18,8 @@ void main() {
 		gl_FragColor = textureColor * vFinalColor;
 	}
 	else
+	{
 		gl_FragColor = vFinalColor;
+	}
 
 }
