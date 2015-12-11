@@ -29,7 +29,7 @@ Cylinder.prototype.constructor=Cylinder;
  */
 Cylinder.prototype.initBuffers = function () {
 	
-	var delta = Math.PI / this.slices;
+	var delta = 2*Math.PI / this.slices;
 	if (!this.half) delta *= 2;
 	this.indices = [];
  	this.vertices = [];

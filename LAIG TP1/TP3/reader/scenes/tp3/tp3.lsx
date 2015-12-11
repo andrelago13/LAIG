@@ -49,7 +49,7 @@
 	    <LEAF id="sphere" type="sphere" args="1 40 40" />
 		<LEAF id="terrain" type="terrain" texture="textures/terrain-t.png" heightmap="textures/terrain-hm.png" />
 		<LEAF id="cylinder" type="cylinder" args="1 0.5 0.5 1 20" />
-		<LEAF id="circle" type="cylinder" args="0 1 0 1 20" />
+		<LEAF id="circle" type="cylinder" args="0 0.5 0 1 20" />
 		<LEAF id="round_convex" type="patch" args="2 50 50" >
 			<controlpoint xx="0" yy="-0.5" zz="0.5" />
 			<controlpoint xx="0" yy="0" zz="0.5" />
@@ -659,6 +659,27 @@
 			</DESCENDANTS>
 		</NODE>
 	    
+	    <NODE id="cube">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cube_bottomless" />
+				<DESCENDANT id="cube_bottom" />
+			</DESCENDANTS>
+		</NODE>
+	    
+	    <NODE id="cube_bottom">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<ROTATION axis="x" angle="90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle" />
+			</DESCENDANTS>
+		</NODE>
+	    
 	    <NODE id="cube_bottomless">
 	    	<MATERIAL id="null" />
 			<TEXTURE id="null" />
@@ -728,6 +749,118 @@
 			
 			<DESCENDANTS>
 				<DESCENDANT id="rectangle" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="base">
+			<MATERIAL id="plastic" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0.5" y="0" z="0.5" />
+			<SCALE sx="0.88" sy="1" sz="0.88" />
+			<TRANSLATION x="-0.5" y="0" z="-0.5" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="base_rect_top" />
+				<DESCENDANT id="base_rect_main" />
+				<DESCENDANT id="base_rect_bottom" />
+				<DESCENDANT id="base_cyl_1" />
+				<DESCENDANT id="base_cyl_2" />
+				<DESCENDANT id="base_cyl_3" />
+				<DESCENDANT id="base_cyl_4" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="base_cyl_1">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="base_cyl" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="base_cyl_2">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0.8" y="0" z="0" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="base_cyl" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="base_cyl_3">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="0.8" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="base_cyl" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="base_cyl_4">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0.8" y="0" z="0.8" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="base_cyl" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="base_cyl">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<SCALE sx="0.2" sy="0.09998" sz="0.2" />
+			<TRANSLATION x="0.5" y="0" z="0.5" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="covered_cylinder" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="base_rect_top">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0.1" y="0" z="0" />
+			<SCALE sx="0.8" sy="0.09999" sz="0.8" />
+			<TRANSLATION x="0.5" y="0" z="0.5" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cube" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="base_rect_main">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="0.1" />
+			<SCALE sx="1" sy="0.1" sz="0.8" />
+			<TRANSLATION x="0.5" y="0" z="0.5" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cube" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="base_rect_bottom">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0.1" y="0" z="0.2" />
+			<SCALE sx="0.8" sy="0.09999" sz="0.8" />
+			<TRANSLATION x="0.5" y="0" z="0.5" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cube" />
 			</DESCENDANTS>
 		</NODE>
 	    
@@ -916,6 +1049,41 @@
 			
 			<DESCENDANTS>
 				<DESCENDANT id="rectangle" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="covered_cylinder">
+			<MATERIAL id="plastic" />
+			<TEXTURE id="null" />
+			
+			<ROTATION axis="x" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="covered_cylinder_circle1" />
+				<DESCENDANT id="covered_cylinder_circle2" />
+				<DESCENDANT id="cylinder" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="covered_cylinder_circle1">
+			<MATERIAL id="plastic" />
+			<TEXTURE id="null" />
+			
+			<ROTATION axis="y" angle="180" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="circle" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="covered_cylinder_circle2">
+			<MATERIAL id="plastic" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0" y="0" z="1" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="circle" />
 			</DESCENDANTS>
 		</NODE>
 	</NODES>
