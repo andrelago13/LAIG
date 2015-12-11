@@ -66,56 +66,31 @@
 	</LEAVES>
 	
 	<NODES>
-	    <ROOT id="piece" /> 
-		
-		<NODE id="pieces">
-			<MATERIAL id="plastic" />
+	    <ROOT id="cell" /> 
+	    
+	    <NODE id="cell">
+	    	<MATERIAL id="null" />
 			<TEXTURE id="null" />
 			
-			<TRANSLATION x="0" y="0" z="0" />
-			
 			<DESCENDANTS>
-				<DESCENDANT id="piece_orange" />
-				<DESCENDANT id="piece_black" />
-				<DESCENDANT id="piece_joker" />
+				<DESCENDANT id="cell_ground" />
 			</DESCENDANTS>
 		</NODE>
-		
-		<NODE id="piece_orange">
-			<MATERIAL id="null" />
+	    
+	    <NODE id="cell_ground">
+	    	<MATERIAL id="null" />
 			<TEXTURE id="null" />
 			
-			<TRANSLATION x="0" y="0" z="0" />
+			<ROTATION axis="x" angle="-90" />
+			<TRANSLATION x="0.5" y="-0.5" z="0" />
 			
 			<DESCENDANTS>
-				<DESCENDANT id="piece" />
+				<DESCENDANT id="rectangle" />
 			</DESCENDANTS>
 		</NODE>
-		
-		<NODE id="piece_black">
-			<MATERIAL id="null" />
-			<TEXTURE id="null" />
-			
-			<TRANSLATION x="2" y="0" z="0" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="piece" />
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="piece_joker">
-			<MATERIAL id="null" />
-			<TEXTURE id="null" />
-			
-			<TRANSLATION x="1" y="0" z="0" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="piece" />
-			</DESCENDANTS>
-		</NODE>
-		
+	    
 		<NODE id="piece">
-			<MATERIAL id="null" />
+			<MATERIAL id="plastic" />
 			<TEXTURE id="null" />
 			
 			<ROTATION axis="y" angle="45" />
