@@ -6,7 +6,14 @@ parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
 
 % modx inputs
+parse_input(Request, Reply) :-
+        no_game_request(Request),
+        no_game_request_handler(Request, Reply).
 
+no_game_request(start_game).
+
+no_game_request_handler(start_game, Game) :-
+        start_game(Game, 8, 1).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%                                       Commands                                                  %%%%
