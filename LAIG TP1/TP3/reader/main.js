@@ -29,7 +29,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js'
 
 main=function()
 {
-	/*// Standard application, scene and interface setup
+	// Standard application, scene and interface setup
     var app = new CGFapplication(document.body);
     var myScene = new XMLscene();
     var myInterface = new Interface();
@@ -51,14 +51,7 @@ main=function()
 	var myGraph = new MySceneGraph(filename, myScene, myInterface);
 	
 	// start
-    app.run();*/
-	console.log("running");
-	var test = new Client();
-	test.getRequestReply("handshake", testf);
+    app.run();
 }
 
 ]);
-
-function testf(data) {
-	console.log(Reply.getText(data));
-}
