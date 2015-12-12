@@ -198,9 +198,6 @@ XMLscene.prototype.display = function () {
 	}
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
-		//this.setActiveShader(this.shader);
-		console.time("frame");
 		this.graph.display(this.currTime);
-		console.timeEnd("frame");
 	};
 };

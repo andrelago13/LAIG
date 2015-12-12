@@ -42,7 +42,6 @@ SceneNode.prototype.display = function(t, texture, parentAppearance) {
 		var newTexture = texture;
 		var newMaterial = parentAppearance;
 		if (this.material != null) {
-			this.material.apply();
 			newMaterial = this.material;
 		} else if(parentAppearance != null) {
 			newMaterial = parentAppearance;
