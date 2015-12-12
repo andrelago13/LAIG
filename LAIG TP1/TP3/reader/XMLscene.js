@@ -39,6 +39,7 @@ XMLscene.prototype.init = function (application) {
 	this.setUpdatePeriod(10);
 	
 	this.shader = new CGFshader(this.gl, "shaders/Gouraud/textured/multiple_light-vertex.glsl", "shaders/Gouraud/textured/fragment.glsl");
+	this.setActiveShader(this.shader);
 };
 
 XMLscene.prototype.resetAnims = function() {
@@ -171,8 +172,7 @@ XMLscene.prototype.updateLights = function(){
  * 
  */
 XMLscene.prototype.display = function () {
-	this.setActiveShader(this.shader);
-
+	
 	// Clear image and depth buffer everytime we update the scene
 	this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 	this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -180,7 +180,7 @@ XMLscene.prototype.display = function () {
 	// Initialize Model-View matrix as identity (no transformation)
 	this.updateProjectionMatrix();
 	this.loadIdentity();
-
+	
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
 
