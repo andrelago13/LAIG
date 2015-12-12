@@ -37,6 +37,7 @@ function SceneNode(id, material, texture, animation, transforms, scene) {
 SceneNode.prototype.display = function(t, texture, parentAppearance) {
 	this.scene.pushMatrix();
 	this.scene.multMatrix(this.getMatrix(t));
+	var currentAppearance = parentAppearance;
 	for(var i = 0; i < this.descendants.length; i++) {
 		var newTexture = texture;
 		var newMaterial = parentAppearance;
@@ -44,8 +45,10 @@ SceneNode.prototype.display = function(t, texture, parentAppearance) {
 			this.material.apply();
 			newMaterial = this.material;
 		} else if(parentAppearance != null) {
-			parentAppearance.apply();
+			newMaterial = parentAppearance;
 		}
+		if (currentAppearance !== newMaterial)
+			newMaterial.apply();
 		if (this.texture == "clear")
 		{
 			if (texture != null)
@@ -114,7 +117,7 @@ SceneNode.prototype.setTexture = function(tex) {
  */
 SceneNode.prototype.getMatrix = function(t) {
 	if (this.animationSet === null) return this.m;
-	
+
 	var result = mat4.create();
 	mat4.multiply(result, this.animationSet.getMatrix(t), this.m);
 	return result;

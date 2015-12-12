@@ -20,12 +20,12 @@ XMLscene.prototype.init = function (application) {
 	this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
 	this.gl.clearDepth(100.0);
-	//this.gl.enable(this.gl.DEPTH_TEST);
+	this.gl.enable(this.gl.DEPTH_TEST);
 	this.gl.enable(this.gl.CULL_FACE);
 	//this.gl.depthFunc(this.gl.LEQUAL);
-	this.gl.depthFunc(this.gl.LESS);
-	this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
-	this.gl.enable(this.gl.BLEND);
+	//this.gl.depthFunc(this.gl.LESS);
+	//this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+	//this.gl.enable(this.gl.BLEND);
 	
 	this.axis=new CGFaxis(this);
 	this.initialTransform = mat4.create();
@@ -171,7 +171,7 @@ XMLscene.prototype.updateLights = function(){
  * 
  */
 XMLscene.prototype.display = function () {
-	this.setActiveShader(this.defaultShader);
+	this.setActiveShader(this.shader);
 
 	// Clear image and depth buffer everytime we update the scene
 	this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -190,17 +190,17 @@ XMLscene.prototype.display = function () {
 	this.setDefaultAppearance();
 
 	// ---- END Background, camera and axis setup
-
 	for (var i = 0; i < this.graph.lights.length; i++) {
 		this.pushMatrix();
 		this.multMatrix(this.initialTransform);
 		this.updateLights();
 		this.popMatrix();
 	}
-	
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
-		this.setActiveShader(this.shader);
+		//this.setActiveShader(this.shader);
+		console.time("frame");
 		this.graph.display(this.currTime);
+		console.timeEnd("frame");
 	};
 };
