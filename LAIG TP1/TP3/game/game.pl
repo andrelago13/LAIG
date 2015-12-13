@@ -2,6 +2,7 @@
 
 %start_game(-Game, +MaxScore, +Difficulty)
 start_game(Game, MaxScore, Difficulty) :-
+        length(Game, 6),
         game_board(Game, Board),
         create_board(Board),
         game_player(Game, 1),
