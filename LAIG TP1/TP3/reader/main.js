@@ -31,11 +31,13 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js'
                'game/Board.js',  
                'game/PlayerInfo.js',  
                'game/Cell.js',  
-               'Modx.js', 
+               'game/Modx.js', 
+               'game/State.js',
+               'game/StateWaitingForPlay.js', 
 
                main=function()
                {
-	if(!Tester.testing()) {
+	if(Tester.testing()) {
 		// Standard application, scene and interface setup
 		var app = new CGFapplication(document.body);
 		var myScene = new XMLscene();

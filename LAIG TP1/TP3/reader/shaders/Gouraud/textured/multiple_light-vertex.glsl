@@ -43,8 +43,6 @@ uniform lightProperties uLight[NUMBER_OF_LIGHTS];
 uniform materialProperties uFrontMaterial;
 uniform materialProperties uBackMaterial;
 
-uniform sampler2D uShadowmap;
-
 varying vec4 vFinalColor;
 varying vec2 vTextureCoord;
 varying float vDepth;

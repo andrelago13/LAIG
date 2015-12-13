@@ -40,6 +40,8 @@ XMLscene.prototype.init = function (application) {
 	
 	this.shader = new CGFshader(this.gl, "shaders/Gouraud/textured/multiple_light-vertex.glsl", "shaders/Gouraud/textured/fragment.glsl");
 	this.setActiveShader(this.shader);
+	
+	this.modx = new Modx(this);
 };
 
 XMLscene.prototype.resetAnims = function() {
@@ -82,7 +84,7 @@ XMLscene.prototype.initLights = function () {
 			this.lights[i].disable();
 			this.lightStatus[i] = false;
 		}
-		this.lights[i].setVisible(true);
+		this.lights[i].setVisible(false);
 		this.lights[i].update();
 		this.graph.interface.addLightToggler(i, this.graph.lights[i]["id"]);
 	}
@@ -200,6 +202,6 @@ XMLscene.prototype.display = function () {
 	}
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
-		this.graph.display(this.currTime);
+		this.modx.display();
 	};
 };

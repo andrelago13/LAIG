@@ -74,6 +74,7 @@
 			
 			<DESCENDANTS>
 				<DESCENDANT id="board" />
+				<DESCENDANT id="piece" />
 			</DESCENDANTS>
 		</NODE>
 	    
