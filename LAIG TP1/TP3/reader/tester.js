@@ -11,5 +11,7 @@ Tester.test = function() {
 }
 
 funct = function(data) {
-	console.log(Reply.getText(data));
+	var game = Reply.getText(data);
+	console.log(game);
+	var game_obj = new Game(game);
 }
