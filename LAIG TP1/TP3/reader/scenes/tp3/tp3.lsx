@@ -956,8 +956,8 @@
 			<TEXTURE id="null" />
 			
 			<ROTATION axis="x" angle="-90" />
-			<SCALE sx="0.05" sy="0.05" sz="1" />
-			<TRANSLATION x="9" y="0" z="0.3" />
+			<SCALE sx="0.1" sy="0.1" sz="1" />
+			<TRANSLATION x="4.5" y="0" z="0.3" />
 			<ROTATION axis="z" angle="-90" />
 			
 			<DESCENDANTS>
