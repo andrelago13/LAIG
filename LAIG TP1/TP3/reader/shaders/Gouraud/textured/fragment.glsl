@@ -4,8 +4,10 @@ precision highp float;
 
 varying vec4 vFinalColor;
 varying vec2 vTextureCoord;
+varying float vDepth;
 
 uniform sampler2D uSampler;
+uniform sampler2D uShadowmap;
 
 uniform bool uUseTexture;
 
@@ -21,5 +23,4 @@ void main() {
 	{
 		gl_FragColor = vFinalColor;
 	}
-
 }

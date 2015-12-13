@@ -21,8 +21,8 @@ XMLscene.prototype.init = function (application) {
 
 	this.gl.clearDepth(100.0);
 	this.gl.enable(this.gl.DEPTH_TEST);
-	this.gl.enable(this.gl.CULL_FACE);
-	//this.gl.depthFunc(this.gl.LEQUAL);
+	//this.gl.enable(this.gl.CULL_FACE);
+	this.gl.depthFunc(this.gl.LEQUAL);
 	//this.gl.depthFunc(this.gl.LESS);
 	//this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 	//this.gl.enable(this.gl.BLEND);
@@ -82,7 +82,7 @@ XMLscene.prototype.initLights = function () {
 			this.lights[i].disable();
 			this.lightStatus[i] = false;
 		}
-		this.lights[i].setVisible(false);
+		this.lights[i].setVisible(true);
 		this.lights[i].update();
 		this.graph.interface.addLightToggler(i, this.graph.lights[i]["id"]);
 	}
@@ -176,6 +176,8 @@ XMLscene.prototype.display = function () {
 	// Clear image and depth buffer everytime we update the scene
 	this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 	this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+	
+	this.setActiveShader(this.shader);
 	
 	// Initialize Model-View matrix as identity (no transformation)
 	this.updateProjectionMatrix();

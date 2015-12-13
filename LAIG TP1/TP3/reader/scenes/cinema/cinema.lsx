@@ -253,7 +253,7 @@
     <LEAF id="rectangle" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
     <LEAF id="cylinder" type="cylinder" args="1 1 1 5 20" />
     <LEAF id="circle" type="cylinder" args="0 1 0 1 20" />
-    <LEAF id="sphere" type="sphere" args="1 20 20" />
+    <LEAF id="sphere" type="sphere" args="1 4 20" />
     <LEAF id="triangle" type="triangle" args="0 0 0 0 0 1 0 1 0" />
     <LEAF id="triangle2" type="triangle" args="0 0 1 0 0 0 0 1 0" />
     <LEAF id="triangle3" type="triangle" args="1 1 0 0 1 1 0 0 0" />
