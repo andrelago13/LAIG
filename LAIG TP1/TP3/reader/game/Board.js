@@ -22,7 +22,7 @@ Board.prototype.parseBoard = function(board) {
 	
 }
 
-Board.prototype.get(x, y) {
+Board.prototype.get = function(x, y) {
 	return board[y][x];
 }
 	
