@@ -22,29 +22,29 @@ Cell.prototype.parseCell = function(cell) {
 
 }
 
-Cell.prototype.getXpiece() {
+Cell.prototype.getXpiece = function() {
 	return this.xPiece;
 }
 
-Cell.prototype.getSPieces() {
+Cell.prototype.getSPieces = function() {
 	return this.sPieces;
 }
 
-Cell.prototype.getTopSPiece() {
+Cell.prototype.getTopSPiece = function() {
 	if (sPieces.length === 0)
 		return null;
 	else
 		return sPieces[0];
 }
 
-Cell.prototype.setXpiece(xPiece) {
+Cell.prototype.setXpiece = function(xPiece) {
 	this.xPiece = xPiece;
 }
 
-Cell.prototype.pushSPiece(sPiece) {
+Cell.prototype.pushSPiece = function(sPiece) {
 	this.sPieces.push(sPiece);
 }
 
-Cell.prototype.popSpiece() {
+Cell.prototype.popSpiece = function() {
 	return this.sPieces.pop();
 }
