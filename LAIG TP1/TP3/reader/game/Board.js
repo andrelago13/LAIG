@@ -1,16 +1,16 @@
+Board.size = 8;
+
 /**
  * Board
  * @param board prolog board representation as list
  * @constructor
  */
 function Board() {
-	this.size = 8;
-
 	this.board = [];
-	for (var i = 0; i < 8; i++)
+	for (var i = 0; i < this.size; i++)
 	{
 		this.board[i] = [];
-		for (var j = 0; j < 8; j++)
+		for (var j = 0; j < this.size; j++)
 		{
 			this.board[j] = new Cell();
 		}

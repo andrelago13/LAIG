@@ -31,6 +31,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js'
                'game/Board.js',  
                'game/PlayerInfo.js',  
                'game/Cell.js',  
+               'Modx.js', 
 
                main=function()
                {

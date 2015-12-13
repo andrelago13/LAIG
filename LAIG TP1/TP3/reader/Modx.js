@@ -11,8 +11,9 @@ function Modx() {
 };
 Modx.prototype.constructor=Modx;
 
-Modx.prototype.parseModx = function(Modx) {
-	
+Modx.prototype.start = function() {
+	this.gameHistory = [new Game()];
+	return this.getGame();
 }
 
 Modx.prototype.getGame = function() {
