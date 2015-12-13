@@ -29,6 +29,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js'
                'tester.js', 
                'game/Game.js',
                'game/Board.js',  
+               'game/PlayerInfo.js',  
 
                main=function()
                {
