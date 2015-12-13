@@ -12,8 +12,9 @@ parse_input(Request, Reply) :-
 
 no_game_request(start_game).
 
-no_game_request_handler(start_game, Game) :-
-        start_game(Game, 8, 1).
+no_game_request_handler(start_game, GameRepresentation) :-
+        start_game(Game, 8, 1),
+        game_representation(Game, GameRepresentation).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%                                       Commands                                                  %%%%
@@ -21,3 +22,11 @@ no_game_request_handler(start_game, Game) :-
 
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                               Adaptation predicates                                             %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+game_representation([], []).
+game_representation([GameElem | Rest], [GameElem, '#' | RepresentationRest]) :-
+        game_representation(Rest, RepresentationRest).
