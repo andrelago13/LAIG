@@ -7,5 +7,5 @@ function StateWaitingForPlay(modx) {
 
 StateWaitingForPlay.prototype.display = function(t) {
 	this.modx.displayBoard();
-	this.modx.displayPiece(0, 0);
+	this.modx.displayPiece(1, 1, Modx.xPieceTypes.PLAYER1);
 }

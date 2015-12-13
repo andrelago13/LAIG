@@ -1,3 +1,10 @@
+Modx.xPieceTypes = {
+		NONE: -1,
+		JOKER: 0,
+		PLAYER1: 1,
+		PLAYER2: 2
+}
+
 /**
  * Modx
  * @constructor
@@ -29,7 +36,10 @@ Modx.prototype.displayBoard = function() {
 	this.scene.graph.graphNodes["board"].display(0);
 }
 
-Modx.prototype.displayPiece = function(x, y) {
-	// TODO
+Modx.prototype.displayPiece = function(x, y, type) {
+	// TODO change appearance according to type
+	this.scene.pushMatrix();
+	this.scene.translate(x, 0, y);
 	this.scene.graph.graphNodes["piece"].display(0);
+	this.scene.popMatrix();
 }
