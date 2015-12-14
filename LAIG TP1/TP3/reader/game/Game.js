@@ -104,3 +104,7 @@ Game.prototype.toArray = function() {
 	arr.push(this.getDifficulty());
 	return arr;
 }
+
+Game.prototype.toJSON = function() {
+	return JSON.stringify(this.toArray());
+}
