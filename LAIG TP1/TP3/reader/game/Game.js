@@ -87,3 +87,20 @@ Game.prototype.getDifficulty = function() {
 Game.prototype.setDifficulty = function(difficulty) {
 	this.difficulty = difficulty;
 }
+
+Game.prototype.getNumPlayers = function() {
+	return this.player_info.length;
+}
+
+Game.prototype.toArray = function() {
+	var arr = [];
+	arr.push(this.getBoard().toArray());
+	arr.push(this.getCurrPlayer());
+	var player_no = this.getNumPlayers();
+	for(var i = 0; i < player_no; ++i) {
+		arr.push(this.getPlayerInfo(i+1).toArray());
+	}
+	arr.push(this.getMaxScore());
+	arr.push(this.getDifficulty());
+	return arr;
+}

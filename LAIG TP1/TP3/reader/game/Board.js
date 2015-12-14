@@ -44,3 +44,17 @@ Board.prototype.getBoard = function() {
 Board.prototype.size = function() {
 	return this.board.length;
 }
+
+Board.prototype.toArray = function() {
+	var arr = [];
+	var b = this.getBoard();
+	var size = b.length;
+	for(var line = 0; line < size; ++line) {
+		var line_arr = [];
+		for(var col = 0; col < size; ++col) {
+			line_arr.push(b[line][col].toArray());
+		}
+		arr.push(line_arr);
+	}
+	return arr;
+}

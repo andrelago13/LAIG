@@ -6,4 +6,5 @@ function run_tests() {
 
 funct = function(data) {
 	var game_obj = new Game(data);
+	console.log(game_obj.toArray());
 }

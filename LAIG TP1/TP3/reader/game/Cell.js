@@ -51,3 +51,10 @@ Cell.prototype.popSpiece = function() {
 Cell.prototype.setSPieces = function(spieces) {
 	this.sPieces = spieces;
 }
+
+Cell.prototype.toArray = function() {
+	var arr = [];
+	arr.push(this.getSPieces());
+	arr.push(this.getXpiece());
+	return arr;
+}

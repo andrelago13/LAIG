@@ -37,3 +37,10 @@ PlayerInfo.prototype.setXPieces = function(xpieces) {
 PlayerInfo.prototype.getXPieces = function() {
 	return this.x_pieces;
 }
+
+PlayerInfo.prototype.toArray = function() {
+	var arr = [];
+	arr.push(this.getScore());
+	arr.push(this.getXPieces());
+	return arr;
+}
