@@ -40,6 +40,13 @@ XMLscene.prototype.init = function (application) {
 	
 	this.shader = new CGFshader(this.gl, "shaders/Gouraud/textured/multiple_light-vertex.glsl", "shaders/Gouraud/textured/fragment.glsl");
 	this.setActiveShader(this.shader);
+	//right, left, up, down, front, back
+	this.test = new Skybox(this, ["scenes/tp3/textures/cubemap/right.jpg", 
+	                              "scenes/tp3/textures/cubemap/left.jpg", 
+	                              "scenes/tp3/textures/cubemap/up.jpg", 
+	                              "scenes/tp3/textures/cubemap/down.jpg", 
+	                              "scenes/tp3/textures/cubemap/front.jpg", 
+	                              "scenes/tp3/textures/cubemap/back.jpg"]);
 	
 	this.modx = new Modx(this);
 };
@@ -188,6 +195,8 @@ XMLscene.prototype.display = function () {
 
 	// Draw axis
 	this.axis.display();
+	
+	this.test.display();
 
 	this.setDefaultAppearance();
 
@@ -198,6 +207,7 @@ XMLscene.prototype.display = function () {
 		this.updateLights();
 		this.popMatrix();
 	}
+	
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
 		this.modx.display();
