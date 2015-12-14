@@ -41,8 +41,8 @@ XMLscene.prototype.init = function (application) {
 	this.shader = new CGFshader(this.gl, "shaders/Gouraud/textured/multiple_light-vertex.glsl", "shaders/Gouraud/textured/fragment.glsl");
 	this.setActiveShader(this.shader);
 	//right, left, up, down, front, back
-	this.test = new Skybox(this, ["scenes/tp3/textures/cubemap/right.jpg", 
-	                              "scenes/tp3/textures/cubemap/left.jpg", 
+	this.test = new Skybox(this, ["scenes/tp3/textures/cubemap/left.jpg", 
+	                              "scenes/tp3/textures/cubemap/right.jpg", 
 	                              "scenes/tp3/textures/cubemap/up.jpg", 
 	                              "scenes/tp3/textures/cubemap/down.jpg", 
 	                              "scenes/tp3/textures/cubemap/front.jpg", 

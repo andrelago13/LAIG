@@ -1,7 +1,7 @@
 Cubemap.prototype = Object.create(CGFtexture.prototype);
 Cubemap.prototype.constructor = Cubemap;
 
-//right, left, up, down, front, back
+//left, right, up, down, front, back
 function Cubemap(scene, srcs) {
 	this.scene = scene;
 	this.texID = -1;
