@@ -1,17 +1,9 @@
-Tester.testing = function() {
-	return true;
-}
-
-function Tester() {};
-Tester.prototype.constructor=Tester;
-
-Tester.test = function() {
+function run_tests() {
+	console.log("testing");
 	var client = new Client();
-	client.getRequestReply("start_game", funct);
+	client.getRequestReply("start_game(8,1)", funct);
 }
 
 funct = function(data) {
-	var game = Reply.getText(data);
-	console.log(game);
-	var game_obj = new Game(game);
+	var game_obj = new Game(data);
 }

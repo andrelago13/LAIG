@@ -22,7 +22,7 @@ Client.defaultErrorHandler = function(){
  * @constructor
  */
 function Client(port) {
-	this.port = port || 8081;
+	this.port = port || Client.defaultPort;
 };
 Client.prototype.constructor=Client;
 

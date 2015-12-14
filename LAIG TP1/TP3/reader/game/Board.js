@@ -3,36 +3,41 @@
  * @param board prolog board representation as list
  * @constructor
  */
-function Board() {
-	this.size = 8;
+function Board(board_json) {
+	if(typeof board_json == 'undefined')
+		this.board = [];
+	else
+		this.parseBoard(board_json);
+}
 
-	this.board = [];
-	for (var i = 0; i < 8; i++)
-	{
-		this.board[i] = [];
-		for (var j = 0; j < 8; j++)
-		{
-			this.board[j] = new Cell();
-		}
-	}
-};
 Board.prototype.constructor=Board;
 
-Board.prototype.parseBoard = function(board) {
+Board.prototype.parseBoard = function(board_json) {
+	var board = [];
 	
+	for(var line = 0; line < board_json.length; ++line) {
+		var line_array = [];
+		for(var col = 0; col < board_json[line].length; ++col) {
+			line_array.push(new Cell(board_json[line][col]));
+		}
+		board.push(line_array);
+	}
+	
+	this.setBoard(board);
 }
 
 Board.prototype.get = function(x, y) {
 	return board[y][x];
 }
-	
-/*	BOARD EXAMPLE
-[[[[],0],[[],-1],[[],-1],[[],-1],[[],0],[[],-1],[[],-1],[[],-1]],
-[[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1]],
-[[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1]],
-[[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1]],
-[[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1]],
-[[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],0],[[],0],[[],-1]],
-[[[],0],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1]],
-[[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1],[[],-1]]]
-*/
+
+Board.prototype.setBoard = function(board) {
+	this.board = board;
+}
+
+Board.prototype.getBoard = function() {
+	return this.board;
+}
+
+Board.prototype.size = function() {
+	return this.board.length;
+}
