@@ -7,9 +7,8 @@ Board.size = 8;
  */
 
 function Board(board_json) {
-	if(typeof board_json == 'undefined')
-		this.board = [];
-	else
+	this.board = [];
+	if(typeof board_json != 'undefined')
 		this.parseBoard(board_json);
 }
 
@@ -30,7 +29,7 @@ Board.prototype.parseBoard = function(board_json) {
 }
 
 Board.prototype.get = function(x, y) {
-	return board[y][x];
+	return this.board[y][x];
 }
 
 Board.prototype.setBoard = function(board) {

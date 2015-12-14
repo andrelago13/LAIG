@@ -7,5 +7,14 @@ function StateWaitingForPlay(modx) {
 
 StateWaitingForPlay.prototype.display = function(t) {
 	this.modx.displayBoard();
-	this.modx.displayPiece(1, 1, Modx.xPieceTypes.PLAYER1);
+	this.modx.displayXPiece(1, 1, Modx.xPieceTypes.PLAYER1);
+	for (var y = 0; y < Board.size; y++)
+	{
+		for (var x = 0; x < Board.size; x++)
+		{
+			var cell = this.modx.getGame().getBoard().get(x, y);
+			if (cell.getXpiece() !== Modx.xPieceTypes.NONE)
+				this.modx.displayXPiece(x, y, Modx.xPieceTypes.JOKER);
+		}
+	}
 }

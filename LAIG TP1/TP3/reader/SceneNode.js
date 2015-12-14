@@ -43,8 +43,6 @@ SceneNode.prototype.display = function(t, texture, parentAppearance) {
 		var newMaterial = parentAppearance;
 		if (this.material != null) {
 			newMaterial = this.material;
-		} else if(parentAppearance != null) {
-			newMaterial = parentAppearance;
 		}
 		if (currentAppearance !== newMaterial)
 			newMaterial.apply();
@@ -116,7 +114,7 @@ SceneNode.prototype.setTexture = function(tex) {
  */
 SceneNode.prototype.getMatrix = function(t) {
 	if (this.animationSet === null) return this.m;
-
+	
 	var result = mat4.create();
 	mat4.multiply(result, this.animationSet.getMatrix(t), this.m);
 	return result;
