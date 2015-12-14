@@ -34,7 +34,7 @@
 	    <MATERIAL id="plastic">                                
 	        <shininess value="20" />
 	        <specular r="1" g="1" b="1" a="1" />        <!-- specular reflection -->
-	        <diffuse r="1" g="1" b="1" a="1" />         <!-- diffuse reflection -->
+	        <diffuse r="1" g="1" b="1" a="0.2" />         <!-- diffuse reflection -->
 	        <ambient r="1" g="1" b="1" a="1" />         <!-- ambient reflection -->
 	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
 	    </MATERIAL>

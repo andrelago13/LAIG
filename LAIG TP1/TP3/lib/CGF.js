@@ -4472,6 +4472,7 @@ CGFscene.prototype.display = function() {
 };
 CGFscene.prototype.displayWithPick = function() {
     var a = this.getNextPickRequest();
+    var currentShader = this.shader;
     if (a != null) {
         var b = a[0][0];
         var c = a[0][1];
@@ -4490,7 +4491,7 @@ CGFscene.prototype.displayWithPick = function() {
             if (f != null) this.pickResults.push([f[0], f[1]]);
             else this.pickResults.push([undefined, undefined]);
         }
-        this.setActiveShader(this.defaultShader);
+        this.setActiveShader(this.shader);
     }
     this.display();
 };
