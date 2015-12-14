@@ -10,13 +10,18 @@ Modx.xPieceTypes = {
  * @constructor
  */
 function Modx(scene) {
-	this.scene = scene;
-	this.setState(new StateWaitingForPlay(this));
+	var client = new Client();
+	var modx = this;
+	client.getRequestReply("start_game(8,1)", function(game) { return modx.start(game); });
 	this.gameHistory = [];
+	this.scene = scene;
+	this.state = null;
 };
 
-Modx.prototype.start = function() {
-	this.gameHistory = [new Game()];
+Modx.prototype.start = function(game) {
+	this.setState(new StateWaitingForPlay(this));
+	this.gameHistory = [];
+	this.gameHistory = [new Game(game)];
 	return this.getGame();
 }
 
@@ -29,14 +34,15 @@ Modx.prototype.setState = function(state) {
 }
 
 Modx.prototype.display = function(t) {
-	this.state.display(t);
+	if (this.state !== null)
+		this.state.display(t);
 }
 
 Modx.prototype.displayBoard = function() {
 	this.scene.graph.graphNodes["board"].display(0);
 }
 
-Modx.prototype.displayPiece = function(x, y, type) {
+Modx.prototype.displayXPiece = function(x, y, type) {
 	// TODO change appearance according to type
 	this.scene.pushMatrix();
 	this.scene.translate(x, 0, y);
