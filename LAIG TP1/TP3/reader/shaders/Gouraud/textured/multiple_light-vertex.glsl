@@ -46,6 +46,7 @@ uniform materialProperties uBackMaterial;
 varying vec4 vFinalColor;
 varying vec2 vTextureCoord;
 varying float vDepth;
+varying vec3 vRay;
 
 vec4 lighting(vec4 vertex, vec3 E, vec3 N) {
 
@@ -122,6 +123,8 @@ void main() {
 	gl_Position = uPMatrix * vertex;
 
     if (uUseTexture)
+    {
         vTextureCoord = aTextureCoord;
+    }
 }
 

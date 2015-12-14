@@ -5,6 +5,7 @@ precision highp float;
 varying vec4 vFinalColor;
 varying vec2 vTextureCoord;
 varying float vDepth;
+varying vec3 vRay;
 
 uniform sampler2D uSampler;
 

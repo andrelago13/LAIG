@@ -4536,7 +4536,7 @@ CGFscene.prototype.getPickData = function(a) {
 };
 CGFscene.prototype.setPickEnabled = function(a) {
     this.pickEnabled = a;
-};
+}
 CGFscene.prototype.setActiveShader = function(a) {
     if (this.pickMode == false) {
         a.importUniforms(this.activeShader);
