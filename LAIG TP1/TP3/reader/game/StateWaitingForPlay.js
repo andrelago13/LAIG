@@ -13,8 +13,9 @@ StateWaitingForPlay.prototype.display = function(t) {
 		for (var x = 0; x < Board.size; x++)
 		{
 			var cell = this.modx.getGame().getBoard().get(x, y);
-			if (cell.getXpiece() !== Modx.xPieceTypes.NONE)
-				this.modx.displayXPiece(x, y, Modx.xPieceTypes.JOKER);
+			var xPiece = cell.getXpiece();
+			if (xPiece !== Modx.xPieceTypes.NONE)
+				this.modx.displayXPiece(x, y, xPiece);
 		}
 	}
 }

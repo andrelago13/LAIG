@@ -46,6 +46,6 @@ Modx.prototype.displayXPiece = function(x, y, type) {
 	// TODO change appearance according to type
 	this.scene.pushMatrix();
 	this.scene.translate(x, 0, y);
-	this.scene.graph.graphNodes["piece"].display(0);
+	this.scene.graph.graphNodes["piece" + type].display(0);
 	this.scene.popMatrix();
 }
