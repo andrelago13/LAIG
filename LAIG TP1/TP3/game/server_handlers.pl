@@ -6,6 +6,11 @@ parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
 
 parse_input(start_game(X,Y), Game) :- start_game(Game, X, Y).
+parse_input(start_game(_,_), error_starting_game).
+parse_input(make_play(Game, X, Y), NewGame) :- place_xpiece(Game, [X, Y], NewGame).
+parse_input(make_play(_, _, _), error_invalid_piece).
+parse_input(available_moves(Game), Moves) :- available_moves(Game, Moves).
+parse_input(available_moves(_), error).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%                                       Commands                                                  %%%%
