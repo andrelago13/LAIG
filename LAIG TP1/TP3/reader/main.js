@@ -27,17 +27,17 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js'
                'communication/Client.js', 
                'communication/Reply.js',  
                'tester.js', 
-               'game/Game.js',
-               'game/Board.js',  
-               'game/PlayerInfo.js',  
-               'game/Cell.js',  
+               'game/Cell.js', 
+               'game/Board.js',
+               'game/PlayerInfo.js',   
+               'game/Game.js', 
                'game/Modx.js', 
                'game/State.js',
                'game/StateWaitingForPlay.js', 
 
                main=function()
                {
-	if(Tester.testing()) {
+	if(getUrlVars()['scene'] !== "#test") {
 		// Standard application, scene and interface setup
 		var app = new CGFapplication(document.body);
 		var myScene = new XMLscene();
@@ -62,7 +62,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js'
 		// start
 		app.run();
 	} else {
-		Tester.test();
+		run_tests();
 	}
                }
 

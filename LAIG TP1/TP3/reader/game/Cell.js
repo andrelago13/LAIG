@@ -2,24 +2,23 @@
 ////////////////////////////////NON STATIC MEMBERS	       ///////////////////////////////////////////
 
 
-/**
- * Cell
- * @param Cell prolog Cell representation as list
- * @constructor
- */
 function Cell() {
 	this.xPiece = 0;
 	this.sPieces = [];
 };
 
-function Cell(cell) {
-	this.parseCell(cell);
+function Cell(cell_json) {
+	this.parseCell(cell_json);
 }
 
 Cell.prototype.constructor=Cell;
 
-Cell.prototype.parseCell = function(cell) {
+Cell.spiece_index = 0;
+Cell.xpiece_index = 1;
 
+Cell.prototype.parseCell = function(cell_json) {
+	this.setXpiece(cell_json[Cell.xpiece_index]);
+	this.setSPieces(cell_json[Cell.spiece_index]);
 }
 
 Cell.prototype.getXpiece = function() {
@@ -47,4 +46,8 @@ Cell.prototype.pushSPiece = function(sPiece) {
 
 Cell.prototype.popSpiece = function() {
 	return this.sPieces.pop();
+}
+
+Cell.prototype.setSPieces = function(spieces) {
+	this.sPieces = spieces;
 }
