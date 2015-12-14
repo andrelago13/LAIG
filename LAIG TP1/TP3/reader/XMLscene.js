@@ -200,6 +200,7 @@ XMLscene.prototype.display = function () {
 		this.updateLights();
 		this.popMatrix();
 	}
+	
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
 		this.modx.display();

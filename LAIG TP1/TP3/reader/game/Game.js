@@ -112,20 +112,20 @@ Game.prototype.toJSON = function() {
 	return JSON.stringify(this.toArray());
 }
 
-Game.prototype.makePlay(successHandler, errorHandler, x, y) {
+Game.prototype.makePlay = function(successHandler, errorHandler, x, y) {
 	this.activeMakePlaySuccessHandler = successHandler;
 	this.activeMakePlayErrorHandler = errorHandler;
 	Client.getRequestReply("make_play(" + this.toJSON() + "," + x + "," + y + ")", this.makePlaySuccessHandler, errorHandler);
 }
 
-Game.prototype.makePlaySuccessHandler(data) {
+Game.prototype.makePlaySuccessHandler = function(data) {
 	var new_game = new Game(data);
 	this.activeMakePlaySuccessHandler(new_game);
 	this.activeMakePlaySuccessHandler = null;
 	this.activeMakePlayErrorHandler = null;
 }
 
-Game.prototype.makePlayErrorHandler(data) {
+Game.prototype.makePlayErrorHandler = function(data) {
 	this.activeMakePlaySuccessHandler = null;
 	this.activeMakePlayErrorHandler(data);
 	this.activeMakePlayErrorHandler = null;
