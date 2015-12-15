@@ -4491,7 +4491,7 @@ CGFscene.prototype.displayWithPick = function() {
             if (f != null) this.pickResults.push([f[0], f[1]]);
             else this.pickResults.push([undefined, undefined]);
         }
-        this.setActiveShader(this.shader);
+        this.setActiveShader(currentShader);
     }
     this.display();
 };
