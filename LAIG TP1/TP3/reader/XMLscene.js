@@ -26,7 +26,7 @@ XMLscene.prototype.init = function (application) {
 	this.gl.depthFunc(this.gl.LESS);
 	this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 	this.gl.enable(this.gl.BLEND);
-	
+
 	this.axis=new CGFaxis(this);
 	this.initialTransform = mat4.create();
 	this.enableTextures(true);
@@ -35,9 +35,9 @@ XMLscene.prototype.init = function (application) {
 	this.timerStarted = false;
 	this.startingTime = 0;
 	this.currTime = 0;
-	
+
 	this.setUpdatePeriod(10);
-	
+
 	this.shader = new CGFshader(this.gl, "shaders/Gouraud/textured/multiple_light-vertex.glsl", "shaders/Gouraud/textured/fragment.glsl");
 	this.setActiveShader(this.shader);
 	//right, left, up, down, front, back
@@ -47,7 +47,7 @@ XMLscene.prototype.init = function (application) {
 	                              "scenes/tp3/textures/cubemap/down.jpg", 
 	                              "scenes/tp3/textures/cubemap/front.jpg", 
 	                              "scenes/tp3/textures/cubemap/back.jpg"]);
-	
+
 	this.modx = new Modx(this);
 };
 
@@ -135,7 +135,16 @@ XMLscene.prototype.initPrimitives = function () {
  * 
  */
 XMLscene.prototype.initCameras = function () {
-	this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+	this.cameraName = "Player 1";
+	this.cameraNames = [];
+	this.cameras = [];
+
+	this.cameraNames[0] = "Player 1";
+	this.cameraNames[1] = "Player 2";
+	this.cameras["Player 1"] = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(Board.size / 2, 2 * Board.size, 2 * Board.size + Board.size / 2), vec3.fromValues(Board.size / 2, 0, Board.size / 2));
+	this.cameras["Player 2"] = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(Board.size / 2, 2 * Board.size, -2 * Board.size + Board.size / 2), vec3.fromValues(Board.size / 2, 0, Board.size / 2));
+
+	this.camera = this.cameras[this.cameraName];
 };
 
 /**
@@ -177,6 +186,10 @@ XMLscene.prototype.updateLights = function(){
 	}
 }
 
+XMLscene.prototype.updateCameras = function() {
+	this.camera = this.cameras[this.cameraName];
+}
+
 /**
  * 
  */
@@ -184,21 +197,22 @@ XMLscene.prototype.display = function () {
 	// Clear image and depth buffer everytime we update the scene
 	this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 	this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-	
+
 	// Initialize Model-View matrix as identity (no transformation)
 	this.updateProjectionMatrix();
 	this.loadIdentity();
-	
+
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
 
 	// Draw axis
 	this.axis.display();
-	
+
 	this.test.display();
 
 	this.setDefaultAppearance();
 
+	this.updateCameras();
 	// ---- END Background, camera and axis setup
 	for (var i = 0; i < this.graph.lights.length; i++) {
 		this.pushMatrix();
@@ -206,7 +220,7 @@ XMLscene.prototype.display = function () {
 		this.updateLights();
 		this.popMatrix();
 	}
-	
+
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
 		this.modx.display();

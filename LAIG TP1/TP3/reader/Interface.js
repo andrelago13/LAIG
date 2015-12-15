@@ -21,6 +21,8 @@ Interface.prototype.init = function(application) {
 	this.gui = new dat.GUI();
 	this.lights = this.gui.addFolder("Lights");
 	
+	this.gui.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
+	
 	return true;
 };
 
@@ -32,4 +34,8 @@ Interface.prototype.processKeyDown = function(event) {
 	if(event.keyIdentifier === "U+0020" && event.type === "keydown") {
 		this.scene.resetAnims();
 	}
+}
+
+Interface.prototype.processMouseDown = function(event) {
+	// Override function so that the camera can't be moved.
 }
