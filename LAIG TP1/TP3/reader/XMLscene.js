@@ -38,6 +38,7 @@ XMLscene.prototype.init = function (application) {
 	this.currTime = 0;
 
 	this.setUpdatePeriod(10);
+	this.setPickEnabled(false);
 
 	this.shader = new CGFshader(this.gl, "shaders/Gouraud/textured/multiple_light-vertex.glsl", "shaders/Gouraud/textured/fragment.glsl");
 	this.setActiveShader(this.shader);

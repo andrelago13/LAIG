@@ -4552,11 +4552,10 @@ CGFscene.prototype.setActiveShader = function(a) {
 };
 CGFscene.prototype.setActiveShaderSimple = function(a) {
     if (this.pickMode == false) {
-        var b = this.activeShader.getUniformValue('uPMatrix');
         this.activeShader = a;
         this.activeShader.bind();
-        a.setUniformsValues({
-            'uPMatrix': b
+        this.activeShader.setUniformsValues({
+            uPMatrix: this.pMatrix
         });
     }
     return;
