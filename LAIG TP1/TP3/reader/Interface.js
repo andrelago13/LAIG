@@ -31,7 +31,6 @@ Interface.prototype.init = function(application) {
 		scene.cameraTotalAnimTime = 1;
 	});
 	
-	this.gui.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
 	this.gui.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
 	
 	return true;
@@ -47,14 +46,10 @@ Interface.prototype.processKeyDown = function(event) {
 	}
 }
 
-/*Interface.prototype.processMouseDown = function(event) {
+Interface.prototype.processMouseDown = function(event) {
 	// Override function so that the camera can't be moved.
-<<<<<<< HEAD
 }
 
 Interface.prototype.processMouseMove = function(event) {
 	// Override function so that the camera can't be moved.
 }
-=======
-}*/
->>>>>>> branch 'master' of https://github.com/andrelago13/LAIG.git
