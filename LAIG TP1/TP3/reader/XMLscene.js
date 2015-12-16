@@ -137,12 +137,23 @@ XMLscene.prototype.initPrimitives = function () {
 XMLscene.prototype.initCameras = function () {
 	this.cameraName = "Player 1";
 	this.cameraNames = [];
+	this.cameraPositions = [];
 	this.cameras = [];
+	
+	this.cameraAnimTime = 0;
 
+	this.cameraPositions[0] = vec3.fromValues(Board.size / 2, 2 * Board.size, 2 * Board.size + Board.size / 2);
+	this.cameraPositions[1] = vec3.fromValues(Board.size / 2, 2 * Board.size, -2 * Board.size + Board.size / 2);
+	
+	this.oldCameraPosition = this.cameraPositions[0];
+	this.newCameraPosition = this.cameraPositions[0];
+	
 	this.cameraNames[0] = "Player 1";
 	this.cameraNames[1] = "Player 2";
-	this.cameras["Player 1"] = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(Board.size / 2, 2 * Board.size, 2 * Board.size + Board.size / 2), vec3.fromValues(Board.size / 2, 0, Board.size / 2));
-	this.cameras["Player 2"] = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(Board.size / 2, 2 * Board.size, -2 * Board.size + Board.size / 2), vec3.fromValues(Board.size / 2, 0, Board.size / 2));
+	this.cameras[0] = new CGFcamera(0.4, 0.1, 500, this.cameraPositions[0], vec3.fromValues(Board.size / 2, 0, Board.size / 2));
+	this.cameras[this.cameraNames[0]] = this.cameras[0];
+	this.cameras[1] = new CGFcamera(0.4, 0.1, 500, this.cameraPositions[1], vec3.fromValues(Board.size / 2, 0, Board.size / 2));
+	this.cameras[this.cameraNames[1]] = this.cameras[1];
 
 	this.camera = this.cameras[this.cameraName];
 };
