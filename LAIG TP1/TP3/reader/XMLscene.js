@@ -40,6 +40,7 @@ XMLscene.prototype.init = function (application) {
 
 	this.shader = new CGFshader(this.gl, "shaders/Gouraud/textured/multiple_light-vertex.glsl", "shaders/Gouraud/textured/fragment.glsl");
 	this.setActiveShader(this.shader);
+	
 	//right, left, up, down, front, back
 	this.test = new Skybox(this, ["scenes/tp3/textures/cubemap/left.jpg", 
 	                              "scenes/tp3/textures/cubemap/right.jpg", 
@@ -138,24 +139,25 @@ XMLscene.prototype.initCameras = function () {
 	this.cameraName = "Player 1";
 	this.cameraNames = [];
 	this.cameraPositions = [];
-	this.cameras = [];
-	
+
+	this.cameraTotalAnimTime = 0;
+	this.cameraAnimStartTime = 0;
 	this.cameraAnimTime = 0;
 
 	this.cameraPositions[0] = vec3.fromValues(Board.size / 2, 2 * Board.size, 2 * Board.size + Board.size / 2);
 	this.cameraPositions[1] = vec3.fromValues(Board.size / 2, 2 * Board.size, -2 * Board.size + Board.size / 2);
-	
-	this.oldCameraPosition = this.cameraPositions[0];
-	this.newCameraPosition = this.cameraPositions[0];
-	
+
+	this.oldCameraPosition = vec3.clone(this.cameraPositions[0]);
+	this.newCameraPosition = vec3.clone(this.cameraPositions[0]);
+
 	this.cameraNames[0] = "Player 1";
 	this.cameraNames[1] = "Player 2";
-	this.cameras[0] = new CGFcamera(0.4, 0.1, 500, this.cameraPositions[0], vec3.fromValues(Board.size / 2, 0, Board.size / 2));
-	this.cameras[this.cameraNames[0]] = this.cameras[0];
-	this.cameras[1] = new CGFcamera(0.4, 0.1, 500, this.cameraPositions[1], vec3.fromValues(Board.size / 2, 0, Board.size / 2));
-	this.cameras[this.cameraNames[1]] = this.cameras[1];
+	this.cameraNames[this.cameraNames[0]] = 0;
+	this.cameraNames[this.cameraNames[1]] = 1;
 
-	this.camera = this.cameras[this.cameraName];
+	var position = vec3.create();
+	vec3.copy(position, this.cameraPositions[0]);
+	this.camera = new CGFcamera(0.4, 0.1, 500, position, vec3.fromValues(Board.size / 2, 0, Board.size / 2));
 };
 
 /**
@@ -197,8 +199,12 @@ XMLscene.prototype.updateLights = function(){
 	}
 }
 
-XMLscene.prototype.updateCameras = function() {
-	this.camera = this.cameras[this.cameraName];
+XMLscene.prototype.updateCameras = function(t) {
+	if(this.cameraAnimTime < this.cameraTotalAnimTime)
+	{
+		vec3.lerp(this.camera.position, this.oldCameraPosition, this.newCameraPosition, this.cameraAnimTime / this.cameraTotalAnimTime);
+		this.cameraAnimTime = t - this.cameraAnimStartTime;
+	}
 }
 
 /**
@@ -223,7 +229,7 @@ XMLscene.prototype.display = function () {
 
 	this.setDefaultAppearance();
 
-	this.updateCameras();
+	this.updateCameras(this.currTime);
 	// ---- END Background, camera and axis setup
 	for (var i = 0; i < this.graph.lights.length; i++) {
 		this.pushMatrix();
@@ -234,6 +240,6 @@ XMLscene.prototype.display = function () {
 
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
-		this.modx.display();
+		this.modx.display(this.currTime);
 	};
 };

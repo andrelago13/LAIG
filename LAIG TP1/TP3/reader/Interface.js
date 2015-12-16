@@ -21,7 +21,15 @@ Interface.prototype.init = function(application) {
 	this.gui = new dat.GUI();
 	this.lights = this.gui.addFolder("Lights");
 	
-	this.gui.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
+	this.camera = this.gui.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
+	var scene = this.scene;
+	this.camera.onChange(function(value) {
+		scene.oldCameraPosition = vec3.clone(scene.camera.position);
+		scene.newCameraPosition = vec3.clone(scene.cameraPositions[scene.cameraNames[value]]);
+		scene.cameraAnimTime = 0;
+		scene.cameraAnimStartTime = scene.currTime;
+		scene.cameraTotalAnimTime = 1;
+	});
 	
 	return true;
 };
@@ -37,5 +45,9 @@ Interface.prototype.processKeyDown = function(event) {
 }
 
 Interface.prototype.processMouseDown = function(event) {
+	// Override function so that the camera can't be moved.
+}
+
+Interface.prototype.processMouseMove = function(event) {
 	// Override function so that the camera can't be moved.
 }
