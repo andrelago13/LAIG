@@ -16,6 +16,7 @@ XMLscene.prototype.init = function (application) {
 	CGFscene.prototype.init.call(this, application);
 	this.ready = false;
 	this.initCameras();
+	this.initPrimitives();
 
 	this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -40,13 +41,6 @@ XMLscene.prototype.init = function (application) {
 
 	this.shader = new CGFshader(this.gl, "shaders/Gouraud/textured/multiple_light-vertex.glsl", "shaders/Gouraud/textured/fragment.glsl");
 	this.setActiveShader(this.shader);
-	//right, left, up, down, front, back
-	this.test = new Skybox(this, ["scenes/tp3/textures/cubemap/left.jpg", 
-	                              "scenes/tp3/textures/cubemap/right.jpg", 
-	                              "scenes/tp3/textures/cubemap/up.jpg", 
-	                              "scenes/tp3/textures/cubemap/down.jpg", 
-	                              "scenes/tp3/textures/cubemap/front.jpg", 
-	                              "scenes/tp3/textures/cubemap/back.jpg"]);
 
 	this.modx = new Modx(this);
 };
@@ -122,13 +116,29 @@ XMLscene.prototype.setInitials = function () {
  * 
  */
 XMLscene.prototype.initPrimitives = function () {
-	this.primitives = [];
+	/*this.primitives = [];
 	for (var key in this.graph.leaves) {
 		if (this.graph.leaves[key]["type"] == "rectangle")
 		{
 			this.primitives.push([key, new Rectangle(this, 0, 1, 0, 1)]);
 		}
-	}
+	}*/
+	
+	this.scenarioNames = ["Afternoon Sky", "Moon Landing"];
+	this.scenarioName = "Afternoon Sky";
+	this.scenarios = [];
+	this.scenarios["Afternoon Sky"] = new Skybox(this, ["scenes/modx/textures/cubemap/left.jpg", 
+	                              "scenes/modx/textures/cubemap/right.jpg", 
+	                              "scenes/modx/textures/cubemap/up.jpg", 
+	                              "scenes/modx/textures/cubemap/down.jpg", 
+	                              "scenes/modx/textures/cubemap/front.jpg", 
+	                              "scenes/modx/textures/cubemap/back.jpg"]);
+	this.scenarios["Moon Landing"] = new Skybox(this, ["scenes/modx/textures/cubemap/left.png", 
+	    	                              "scenes/modx/textures/cubemap/right.png", 
+	    	                              "scenes/modx/textures/cubemap/up.png", 
+	    	                              "scenes/modx/textures/cubemap/down.png", 
+	    	                              "scenes/modx/textures/cubemap/front.png", 
+	    	                              "scenes/modx/textures/cubemap/back.png"]);
 }
 
 /**
@@ -219,7 +229,7 @@ XMLscene.prototype.display = function () {
 	// Draw axis
 	this.axis.display();
 
-	this.test.display();
+	this.scenarios[this.scenarioName].display();
 
 	this.setDefaultAppearance();
 

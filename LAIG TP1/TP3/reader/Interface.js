@@ -22,6 +22,7 @@ Interface.prototype.init = function(application) {
 	this.lights = this.gui.addFolder("Lights");
 	
 	this.gui.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
+	this.gui.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
 	
 	return true;
 };
@@ -36,6 +37,6 @@ Interface.prototype.processKeyDown = function(event) {
 	}
 }
 
-Interface.prototype.processMouseDown = function(event) {
+/*Interface.prototype.processMouseDown = function(event) {
 	// Override function so that the camera can't be moved.
-}
+}*/

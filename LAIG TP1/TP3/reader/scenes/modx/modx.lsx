@@ -77,6 +77,15 @@
 				<DESCENDANT id="piece" />
 			</DESCENDANTS>
 		</NODE>
+		
+	    <NODE id="test">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="clear" />
+	    
+	    	<DESCENDANTS>
+	    		<DESCENDANT id="cylinder"/>
+	    	</DESCENDANTS>
+	    </NODE>
 	    
 	    <NODE id="board">
 	    	<MATERIAL id="null" />
