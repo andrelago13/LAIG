@@ -210,6 +210,7 @@ XMLscene.prototype.updateLights = function(){
 }
 
 XMLscene.prototype.updateCameras = function(t) {
+	// TODO special case for when changing between Player 1 and Player 2 cameras
 	if(this.cameraAnimTime < this.cameraTotalAnimTime)
 	{
 		vec3.lerp(this.camera.position, this.oldCameraPosition, this.newCameraPosition, this.cameraAnimTime / this.cameraTotalAnimTime);
