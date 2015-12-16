@@ -11,9 +11,9 @@ Skybox.prototype.constructor = Skybox;
 
 Skybox.prototype.display = function() {
 	var currentShader = this.scene.activeShader;
-	this.scene.setActiveShader(this.cubemapShader);
+	this.scene.setActiveShaderSimple(this.cubemapShader);
 	this.cubemap.bind(2);
 	this.reversedSphere.display();
 	this.cubemap.unbind(2);
-	this.scene.setActiveShader(currentShader);
+	this.scene.setActiveShaderSimple(currentShader);
 }

@@ -1,5 +1,5 @@
-CGFversion = "0.18";
-CGFdate = " (20151123)";
+CGFversion = "0.19";
+CGFdate = " (20151216)";
 console.log("WebCGF - Library for Computer Graphics @ FEUP (WebGL) - v" + CGFversion + CGFdate);
 var Detector = {
     canvas: !!window.CanvasRenderingContext2D,
@@ -3940,6 +3940,9 @@ CGFshader.prototype.importUniforms = function(a) {
     this.bind();
     this.setUniformsValues(b);
 };
+CGFshader.prototype.getUniformValue = function(a) {
+    return this.gl.getUniform(this.program, this.uniforms[a]);
+};
 
 function CGFtexture(a, b) {
     this.scene = a;
@@ -4447,7 +4450,9 @@ CGFscene.prototype.getProjectionMatrix = function() {
 };
 CGFscene.prototype.updateProjectionMatrix = function() {
     this.pMatrix = this.getProjectionMatrix();
-    this.gl.uniformMatrix4fv(this.activeShader.uniforms.uPMatrix, false, this.pMatrix);
+    this.activeShader.setUniformsValues({
+        uPMatrix: this.pMatrix
+    });
 };
 CGFscene.prototype.applyViewMatrix = function() {
     mat4.mul(this.activeMatrix, this.activeMatrix, this.camera.getViewMatrix());
@@ -4472,8 +4477,8 @@ CGFscene.prototype.display = function() {
 };
 CGFscene.prototype.displayWithPick = function() {
     var a = this.getNextPickRequest();
-    var currentShader = this.shader;
     if (a != null) {
+        prevShader = this.activeShader;
         var b = a[0][0];
         var c = a[0][1];
         this.setActiveShader(this.pickShader);
@@ -4491,7 +4496,7 @@ CGFscene.prototype.displayWithPick = function() {
             if (f != null) this.pickResults.push([f[0], f[1]]);
             else this.pickResults.push([undefined, undefined]);
         }
-        this.setActiveShader(currentShader);
+        this.setActiveShader(prevShader);
     }
     this.display();
 };
@@ -4536,12 +4541,23 @@ CGFscene.prototype.getPickData = function(a) {
 };
 CGFscene.prototype.setPickEnabled = function(a) {
     this.pickEnabled = a;
-}
+};
 CGFscene.prototype.setActiveShader = function(a) {
     if (this.pickMode == false) {
         a.importUniforms(this.activeShader);
         this.activeShader = a;
         this.activeShader.bind();
+    }
+    return;
+};
+CGFscene.prototype.setActiveShaderSimple = function(a) {
+    if (this.pickMode == false) {
+        var b = this.activeShader.getUniformValue('uPMatrix');
+        this.activeShader = a;
+        this.activeShader.bind();
+        a.setUniformsValues({
+            'uPMatrix': b
+        });
     }
     return;
 };
