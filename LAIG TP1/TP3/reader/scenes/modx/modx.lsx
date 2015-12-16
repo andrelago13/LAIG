@@ -31,11 +31,25 @@
 	</TEXTURES>
 	
 	<MATERIALS>
-	    <MATERIAL id="plastic">                                
+	    <MATERIAL id="plastic_transparent">                                
 	        <shininess value="20" />
 	        <specular r="1" g="1" b="1" a="1" />        <!-- specular reflection -->
-	        <diffuse r="1" g="1" b="1" a="1" />         <!-- diffuse reflection -->
+	        <diffuse r="1" g="1" b="1" a="0.6" />         <!-- diffuse reflection -->
 	        <ambient r="1" g="1" b="1" a="1" />         <!-- ambient reflection -->
+	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+	    </MATERIAL>
+	    <MATERIAL id="plastic_yellow">                                
+	        <shininess value="20" />
+	        <specular r="1" g="1" b="0" a="1" />        <!-- specular reflection -->
+	        <diffuse r="1" g="1" b="0" a="1" />         <!-- diffuse reflection -->
+	        <ambient r="1" g="1" b="0" a="1" />         <!-- ambient reflection -->
+	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+	    </MATERIAL>
+	    <MATERIAL id="plastic_black">                                
+	        <shininess value="20" />
+	        <specular r="0.1" g="0.1" b="0.1" a="1" />        <!-- specular reflection -->
+	        <diffuse r="0.1" g="0.1" b="0.1" a="1" />         <!-- diffuse reflection -->
+	        <ambient r="0.1" g="0.1" b="0.1" a="1" />         <!-- ambient reflection -->
 	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
 	    </MATERIAL>
 	</MATERIALS>
@@ -74,7 +88,9 @@
 			
 			<DESCENDANTS>
 				<DESCENDANT id="board" />
-				<DESCENDANT id="piece" />
+				<DESCENDANT id="piece0" />
+				<DESCENDANT id="piece1" />
+				<DESCENDANT id="piece2" />
 			</DESCENDANTS>
 		</NODE>
 		
@@ -763,7 +779,7 @@
 		</NODE>
 	    
 		<NODE id="base">
-			<MATERIAL id="plastic" />
+			<MATERIAL id="null" />
 			<TEXTURE id="null" />
 			
 			<TRANSLATION x="0.5" y="0" z="0.5" />
@@ -873,9 +889,36 @@
 				<DESCENDANT id="cube" />
 			</DESCENDANTS>
 		</NODE>
+		
+		<NODE id="piece0">
+			<MATERIAL id="plastic_transparent" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="piece" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="piece1">
+			<MATERIAL id="plastic_yellow" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="piece" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="piece2">
+			<MATERIAL id="plastic_black" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="piece" />
+			</DESCENDANTS>
+		</NODE>
 	    
 		<NODE id="piece">
-			<MATERIAL id="plastic" />
+			<MATERIAL id="null" />
 			<TEXTURE id="null" />
 			
 			<TRANSLATION x="0.5" y="0" z="0.5" />
@@ -1063,7 +1106,7 @@
 		</NODE>
 	    
 		<NODE id="covered_cylinder">
-			<MATERIAL id="plastic" />
+			<MATERIAL id="null" />
 			<TEXTURE id="null" />
 			
 			<ROTATION axis="x" angle="-90" />
@@ -1076,7 +1119,7 @@
 		</NODE>
 	    
 		<NODE id="covered_cylinder_circle1">
-			<MATERIAL id="plastic" />
+			<MATERIAL id="null" />
 			<TEXTURE id="null" />
 			
 			<ROTATION axis="y" angle="180" />
@@ -1087,7 +1130,7 @@
 		</NODE>
 	    
 		<NODE id="covered_cylinder_circle2">
-			<MATERIAL id="plastic" />
+			<MATERIAL id="null" />
 			<TEXTURE id="null" />
 			
 			<TRANSLATION x="0" y="0" z="1" />
