@@ -34,10 +34,10 @@ StateWaitingForPlay.prototype.display = function(t) {
 				this.modx.displayXPiece(x, y, xPiece);
 		}
 	}
-	this.logPicking();
+	this.logPicking(t);
 }
 
-StateWaitingForPlay.prototype.logPicking = function ()
+StateWaitingForPlay.prototype.logPicking = function (t)
 {
 	if (this.scene.pickMode == false) {
 		if (this.scene.pickResults != null && this.scene.pickResults.length > 0) {
@@ -47,6 +47,9 @@ StateWaitingForPlay.prototype.logPicking = function ()
 				{
 					var customId = this.scene.pickResults[i][1];				
 					console.log("Picked object: " + obj + ", with pick id " + customId);
+					this.scene.setPickEnabled(false);
+					var modx = this.modx;
+					modx.setState(new StateMakingPlay(modx, t, obj, Modx.xPieceTypes.PLAYER1));
 				}
 			}
 			this.scene.pickResults.splice(0,this.scene.pickResults.length);

@@ -11,9 +11,9 @@ Modx.xPieceTypes = {
  * @constructor
  */
 function Modx(scene) {
-	var client = new Client();
+	this.client = new Client();
 	var modx = this;
-	client.getRequestReply("start_game(8,1)", function(game) { return modx.start(game); });
+	this.client.getRequestReply("start_game(8,1)", function(game) { return modx.start(game); });
 	this.gameHistory = [];
 	this.scene = scene;
 	this.state = null;

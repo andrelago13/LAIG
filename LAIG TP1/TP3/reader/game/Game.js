@@ -28,9 +28,6 @@ function Game(game_reply) {
 	this.setDifficulty(Game.defaultDifficulty);
 	var game_json = JSON.parse(Reply.getText(game_reply));
 	this.parseGame(game_json);
-	
-	this.activeMakePlayHandler = null;
-	this.activeMakePlayErrorHandler = null;
 };
 Game.prototype.constructor=Game;
 
@@ -112,21 +109,15 @@ Game.prototype.toJSON = function() {
 	return JSON.stringify(this.toArray());
 }
 
-Game.prototype.makePlay = function(successHandler, errorHandler, x, y) {
-	this.activeMakePlaySuccessHandler = successHandler;
-	this.activeMakePlayErrorHandler = errorHandler;
-	Client.getRequestReply("make_play(" + this.toJSON() + "," + x + "," + y + ")", this.makePlaySuccessHandler, errorHandler);
-}
-
-Game.prototype.makePlaySuccessHandler = function(data) {
-	var new_game = new Game(data);
-	this.activeMakePlaySuccessHandler(new_game);
-	this.activeMakePlaySuccessHandler = null;
-	this.activeMakePlayErrorHandler = null;
-}
-
-Game.prototype.makePlayErrorHandler = function(data) {
-	this.activeMakePlaySuccessHandler = null;
-	this.activeMakePlayErrorHandler(data);
-	this.activeMakePlayErrorHandler = null;
+Game.prototype.makePlay = function(modx, x, y, successHandler, errorHandler) {
+	var sh = this.activeMakePlaySuccessHandler = successHandler;
+	var eh = this.activeMakePlayErrorHandler = errorHandler;
+	modx.client.getRequestReply("make_play(" + this.toJSON() + "," + x + "," + y + ")", function(data) {
+		var newGame = new Game(data);
+		if (typeof sh != 'undefined')
+			sh(newGame);
+	}, function(data) {
+		if (typeof eh != 'undefined')
+			eh(newGame);
+	});
 }
