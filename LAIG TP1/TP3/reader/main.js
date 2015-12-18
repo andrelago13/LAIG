@@ -55,7 +55,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js'
 		// get scene name provided in URL, e.g. http://localhost/myproj/?scene=cinema
 		// or use "cinema" as default (assumes files in subfolder "scenes/<scenename>", check MySceneGraph constructor) 
 
-		var filename=getUrlVars()['scene'] || "cinema";
+		var filename=getUrlVars()['scene'] || "modx";
 
 		// create and load graph, and associate it to scene. 
 		// Check console for loading errors
