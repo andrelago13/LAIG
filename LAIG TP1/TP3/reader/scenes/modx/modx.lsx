@@ -91,6 +91,7 @@
 				<DESCENDANT id="piece0" />
 				<DESCENDANT id="piece1" />
 				<DESCENDANT id="piece2" />
+				<DESCENDANT id="cell" />
 			</DESCENDANTS>
 		</NODE>
 		
@@ -193,7 +194,6 @@
 			<TEXTURE id="null" />
 			
 			<DESCENDANTS>
-				<DESCENDANT id="cell_row" />
 				<DESCENDANT id="separator_quarter_row" />
 			</DESCENDANTS>
 		</NODE>
@@ -205,7 +205,6 @@
 			<TRANSLATION x="0" y="0" z="1" />
 			
 			<DESCENDANTS>
-				<DESCENDANT id="cell_row" />
 				<DESCENDANT id="separator_row" />
 			</DESCENDANTS>
 		</NODE>
@@ -217,7 +216,6 @@
 			<TRANSLATION x="0" y="0" z="2" />
 			
 			<DESCENDANTS>
-				<DESCENDANT id="cell_row" />
 				<DESCENDANT id="separator_row" />
 			</DESCENDANTS>
 		</NODE>
@@ -229,7 +227,6 @@
 			<TRANSLATION x="0" y="0" z="3" />
 			
 			<DESCENDANTS>
-				<DESCENDANT id="cell_row" />
 				<DESCENDANT id="separator_row" />
 			</DESCENDANTS>
 		</NODE>
@@ -241,7 +238,6 @@
 			<TRANSLATION x="0" y="0" z="4" />
 			
 			<DESCENDANTS>
-				<DESCENDANT id="cell_row" />
 				<DESCENDANT id="separator_row" />
 			</DESCENDANTS>
 		</NODE>
@@ -253,7 +249,6 @@
 			<TRANSLATION x="0" y="0" z="5" />
 			
 			<DESCENDANTS>
-				<DESCENDANT id="cell_row" />
 				<DESCENDANT id="separator_row" />
 			</DESCENDANTS>
 		</NODE>
@@ -265,7 +260,6 @@
 			<TRANSLATION x="0" y="0" z="6" />
 			
 			<DESCENDANTS>
-				<DESCENDANT id="cell_row" />
 				<DESCENDANT id="separator_row" />
 			</DESCENDANTS>
 		</NODE>
@@ -277,7 +271,6 @@
 			<TRANSLATION x="0" y="0" z="7" />
 			
 			<DESCENDANTS>
-				<DESCENDANT id="cell_row" />
 				<DESCENDANT id="separator_row" />
 				<DESCENDANT id="separator_quarter_row_bottom" />
 			</DESCENDANTS>

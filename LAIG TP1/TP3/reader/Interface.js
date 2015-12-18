@@ -32,7 +32,7 @@ Interface.prototype.init = function(application) {
 	});
 	
 	this.gui.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
-	
+	this.derp = 0;
 	return true;
 };
 
@@ -47,9 +47,8 @@ Interface.prototype.processKeyDown = function(event) {
 }
 
 Interface.prototype.processMouseDown = function(event) {
-	// Override function so that the camera can't be moved.
+	this.scene.onPick(event);
 }
 
 Interface.prototype.processMouseMove = function(event) {
-	// Override function so that the camera can't be moved.
 }
