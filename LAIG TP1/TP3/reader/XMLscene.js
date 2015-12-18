@@ -16,7 +16,7 @@ XMLscene.prototype.init = function (application) {
 	CGFscene.prototype.init.call(this, application);
 	this.ready = false;
 	this.initCameras();
-	this.initPrimitives();
+	this.initScenarios();
 
 	this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -116,30 +116,16 @@ XMLscene.prototype.setInitials = function () {
 /**
  * 
  */
-XMLscene.prototype.initPrimitives = function () {
-	/*this.primitives = [];
-	for (var key in this.graph.leaves) {
-		if (this.graph.leaves[key]["type"] == "rectangle")
-		{
-			this.primitives.push([key, new Rectangle(this, 0, 1, 0, 1)]);
-		}
-	}*/
+XMLscene.prototype.initScenarios = function () {
+	var moonscenario = new MoonLandingScenario(this);
+	var skyscenario = new AfternoonSkyScenario(this);
 	
-	this.scenarioNames = ["Afternoon Sky", "Moon Landing"];
-	this.scenarioName = "Afternoon Sky";
+	this.scenarioNames = [skyscenario.getName(), moonscenario.getName()];
+	this.scenarioName = this.scenarioNames[0];
 	this.scenarios = [];
-	this.scenarios["Afternoon Sky"] = new Skybox(this, ["scenes/modx/textures/cubemap/left.jpg", 
-	                              "scenes/modx/textures/cubemap/right.jpg", 
-	                              "scenes/modx/textures/cubemap/up.jpg", 
-	                              "scenes/modx/textures/cubemap/down.jpg", 
-	                              "scenes/modx/textures/cubemap/front.jpg", 
-	                              "scenes/modx/textures/cubemap/back.jpg"]);
-	this.scenarios["Moon Landing"] = new Skybox(this, ["scenes/modx/textures/cubemap/left.png", 
-	    	                              "scenes/modx/textures/cubemap/right.png", 
-	    	                              "scenes/modx/textures/cubemap/up.png", 
-	    	                              "scenes/modx/textures/cubemap/down.png", 
-	    	                              "scenes/modx/textures/cubemap/front.png", 
-	    	                              "scenes/modx/textures/cubemap/back.png"]);
+	
+	this.scenarios[skyscenario.getName()] = skyscenario;
+	this.scenarios[moonscenario.getName()] = moonscenario;
 }
 
 /**
@@ -191,7 +177,6 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.gl.clearColor(background["r"], background["g"], background["b"], background["a"]);
 	this.setInitials();
 	this.initLights();
-	this.initPrimitives();
 	this.ready = true;
 	console.log("Press SPACE to reset the animations.");
 };
@@ -235,8 +220,6 @@ XMLscene.prototype.display = function () {
 	// Draw axis
 	this.axis.display();
 
-	this.scenarios[this.scenarioName].display();
-
 	this.setDefaultAppearance();
 
 	this.updateCameras(this.currTime);
@@ -250,6 +233,7 @@ XMLscene.prototype.display = function () {
 
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
+		this.scenarios[this.scenarioName].display();
 		this.modx.display(this.currTime);
 	};
 };

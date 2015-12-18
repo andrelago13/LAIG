@@ -91,10 +91,21 @@
 				<DESCENDANT id="piece0" />
 				<DESCENDANT id="piece1" />
 				<DESCENDANT id="piece2" />
+				<DESCENDANT id="afternoon_sky_scenario"/>
+				<DESCENDANT id="moon_landing_scenario"/>
 			</DESCENDANTS>
 		</NODE>
 		
-	    <NODE id="test">
+	    <NODE id="afternoon_sky_scenario">
+	    	<MATERIAL id="null" />
+			<TEXTURE id="clear" />
+	    
+	    	<DESCENDANTS>
+	    		<DESCENDANT id="cylinder"/>
+	    	</DESCENDANTS>
+	    </NODE>
+		
+	    <NODE id="moon_landing_scenario">
 	    	<MATERIAL id="null" />
 			<TEXTURE id="clear" />
 	    

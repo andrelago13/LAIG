@@ -7,7 +7,7 @@
  * @constructor
  */
 function ReversedSphere(scene, radius, slices, stacks) {
- 	CGFobject.call(this,scene);
+ 	CGFobject.call(this, scene);
 	
  	this.radius=radius;
 	this.slices=slices;

@@ -46,10 +46,10 @@ Interface.prototype.processKeyDown = function(event) {
 	}
 }
 
-Interface.prototype.processMouseDown = function(event) {
+/*Interface.prototype.processMouseDown = function(event) {
 	// Override function so that the camera can't be moved.
 }
 
 Interface.prototype.processMouseMove = function(event) {
 	// Override function so that the camera can't be moved.
-}
+}*/
