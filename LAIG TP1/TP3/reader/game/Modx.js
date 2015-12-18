@@ -2,7 +2,8 @@ Modx.xPieceTypes = {
 		NONE: -1,
 		JOKER: 0,
 		PLAYER1: 1,
-		PLAYER2: 2
+		PLAYER2: 2,
+		HOVER: 0
 }
 
 /**
@@ -40,6 +41,17 @@ Modx.prototype.display = function(t) {
 
 Modx.prototype.displayBoard = function() {
 	this.scene.graph.graphNodes["board"].display(0);
+	for (var y = 0; y < Board.size; y++)
+	{
+		this.scene.pushMatrix();
+		this.scene.translate(0, 0, y);
+		for (var x = 0; x < Board.size; x++)
+		{
+			this.scene.graph.graphNodes["cell"].display(0);
+			this.scene.translate(1, 0, 0);
+		}
+		this.scene.popMatrix();
+	}
 }
 
 Modx.prototype.displayXPiece = function(x, y, type) {
