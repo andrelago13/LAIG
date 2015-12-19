@@ -64,7 +64,7 @@ StateWaitingForPlay.prototype.updatePicking = function ()
 StateWaitingForPlay.prototype.onClick = function(event) {
 	if (this.hovered !== null)
 	{
-		this.modx.setState(new StateMakingPlay(this.modx, this.hovered, this.modx.nextPieceType()));
+		this.modx.setState(new StatePlacingXPiece(this.modx, this.hovered, this.modx.nextPieceType()));
 		this.scene.setPickEnabled(false);
 	}
 }

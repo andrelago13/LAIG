@@ -1,9 +1,9 @@
-StateMakingPlay.prototype = Object.create(State.prototype);
-StateMakingPlay.prototype.constructor = StateMakingPlay;
+StatePlacingXPiece.prototype = Object.create(State.prototype);
+StatePlacingXPiece.prototype.constructor = StatePlacingXPiece;
 
-StateMakingPlay.totalAnimTime = 2;
+StatePlacingXPiece.totalAnimTime = 0;
 
-function StateMakingPlay(modx, coords, xPiece) {
+function StatePlacingXPiece(modx, coords, xPiece) {
 	this.init(modx);
 	this.newGame = null;
 	this.numJokersToPlace = null;
@@ -21,8 +21,8 @@ function StateMakingPlay(modx, coords, xPiece) {
 	this.startAnimTime = this.modx.scene.getCurrTime();
 }
 
-StateMakingPlay.prototype.display = function(t) {
-	if ((t - this.startAnimTime >= StateMakingPlay.totalAnimTime) && this.numJokersToPlace !== null)
+StatePlacingXPiece.prototype.display = function(t) {
+	if ((t - this.startAnimTime >= StatePlacingXPiece.totalAnimTime) && this.numJokersToPlace !== null)
 	{
 		this.modx.updateGame(this.newGame);
 		this.modx.setState(new StateWaitingForPlay(this.modx));

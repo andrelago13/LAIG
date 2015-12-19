@@ -238,7 +238,7 @@ XMLscene.prototype.display = function () {
 
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
-		this.scenarios[this.scenarioName].display();
+		this.scenarios[this.scenarioName].display(this.currTime);
 		this.modx.display(this.currTime);
 	};
 };
