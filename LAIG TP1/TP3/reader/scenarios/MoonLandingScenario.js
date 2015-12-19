@@ -15,7 +15,10 @@ function MoonLandingScenario(scene) {
 }
 
 MoonLandingScenario.prototype.display = function(t) {
+	this.scene.pushMatrix();
+	this.scene.rotate(t * 0.03, 0, 1, 0);
 	this.skybox.display(0);
+	this.scene.popMatrix();
 	if(typeof this.scene.graph != "undefined" && this.scene.graph.ready && typeof this.scene.graph.graphNodes != "undefined" && typeof this.scene.graph.graphNodes["moon_landing_scenario"] != "undefined" ) {
 		this.scene.graph.graphNodes["moon_landing_scenario"].display(t);
 	}

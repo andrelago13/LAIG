@@ -144,9 +144,9 @@ XMLscene.prototype.initCameras = function () {
 	this.cameraAnimStartTime = 0;
 	this.cameraAnimTime = 0;
 
-	this.cameraPositions[0] = vec3.fromValues(Board.size / 2, 2 * Board.size, 2 * Board.size + Board.size / 2);
-	this.cameraPositions[1] = vec3.fromValues(Board.size / 2, 2 * Board.size, -2 * Board.size + Board.size / 2);
-	this.cameraPositions[2] = vec3.fromValues(Board.size / 2, 3 * Board.size, Board.size / 2);
+	this.cameraPositions[0] = vec3.fromValues(Board.size / 2, 2 * Board.size, 2.5 * Board.size + Board.size / 2);
+	this.cameraPositions[1] = vec3.fromValues(Board.size / 2, 2 * Board.size, -2.5 * Board.size + Board.size / 2);
+	this.cameraPositions[2] = vec3.fromValues(Board.size / 2, 4.5 * Board.size, Board.size / 2);
 
 	this.oldCameraPosition = vec3.clone(this.cameraPositions[0]);
 	this.newCameraPosition = vec3.clone(this.cameraPositions[0]);
@@ -241,6 +241,7 @@ XMLscene.prototype.display = function () {
 
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
+		this.graph.graphNodes["piece_boxes"].display(0);
 		this.scenarios[this.scenarioName].display(this.currTime);
 		this.modx.display(this.currTime);
 	};
