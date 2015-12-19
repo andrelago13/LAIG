@@ -14,3 +14,6 @@ State.prototype.init = function(modx) {
 State.prototype.display = function(t) {
 	// Abstract
 }
+
+State.prototype.onClick = function(event) {
+}

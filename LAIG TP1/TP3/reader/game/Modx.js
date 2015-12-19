@@ -17,10 +17,11 @@ function Modx(scene) {
 	this.gameHistory = [];
 	this.scene = scene;
 	this.state = null;
+	this.numJokersToPlace = 0;
 };
 
 Modx.prototype.start = function(game) {
-	this.setState(new StateWaitingForPlay(this, 0));
+	this.setState(new StateWaitingForPlay(this));
 	this.gameHistory = [];
 	this.gameHistory = [new Game(game)];
 	return this.getGame();
@@ -58,9 +59,19 @@ Modx.prototype.displayBoard = function() {
 	}
 }
 
-Modx.prototype.displayXPiece = function(x, y, type) {
+Modx.prototype.displayXPiece = function(x, y, type, hover) {
 	this.scene.pushMatrix();
 	this.scene.translate(x, 0, y);
-	this.scene.graph.graphNodes["piece" + type].display(0);
+	var name = "piece" + type;
+	if (hover) name += "_hover";
+	this.scene.graph.graphNodes[name].display(0);
 	this.scene.popMatrix();
+}
+
+Modx.prototype.onClick = function(event) {
+	this.state.onClick(event);
+}
+
+Modx.prototype.nextPieceType = function() {
+	return (this.numJokersToPlace === 0) ? this.getGame().getCurrPlayer() : Modx.xPieceTypes.JOKER;
 }

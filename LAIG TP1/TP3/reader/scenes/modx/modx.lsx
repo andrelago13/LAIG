@@ -33,23 +33,44 @@
 	<MATERIALS>
 	    <MATERIAL id="plastic_transparent">                                
 	        <shininess value="20" />
-	        <specular r="1" g="1" b="1" a="1" />        <!-- specular reflection -->
-	        <diffuse r="1" g="1" b="1" a="0.6" />         <!-- diffuse reflection -->
-	        <ambient r="1" g="1" b="1" a="1" />         <!-- ambient reflection -->
+	        <specular r="0.5" g="0.5" b="0.5" a="1" />        <!-- specular reflection -->
+	        <diffuse r="0.8" g="0.8" b="0.8" a="0.6" />         <!-- diffuse reflection -->
+	        <ambient r="0.8" g="0.8" b="0.8" a="1" />         <!-- ambient reflection -->
 	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
 	    </MATERIAL>
 	    <MATERIAL id="plastic_yellow">                                
 	        <shininess value="20" />
-	        <specular r="1" g="1" b="0" a="1" />        <!-- specular reflection -->
+	        <specular r="0.5" g="0.5" b="0" a="1" />        <!-- specular reflection -->
 	        <diffuse r="1" g="1" b="0" a="1" />         <!-- diffuse reflection -->
 	        <ambient r="1" g="1" b="0" a="1" />         <!-- ambient reflection -->
 	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
 	    </MATERIAL>
 	    <MATERIAL id="plastic_black">                                
 	        <shininess value="20" />
-	        <specular r="0.1" g="0.1" b="0.1" a="1" />        <!-- specular reflection -->
+	        <specular r="0.05" g="0.05" b="0.05" a="1" />        <!-- specular reflection -->
 	        <diffuse r="0.1" g="0.1" b="0.1" a="1" />         <!-- diffuse reflection -->
 	        <ambient r="0.1" g="0.1" b="0.1" a="1" />         <!-- ambient reflection -->
+	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+	    </MATERIAL>
+	    <MATERIAL id="plastic_transparent_hover">                                
+	        <shininess value="20" />
+	        <specular r="0.35" g="0.35" b="0.35" a="1" />        <!-- specular reflection -->
+	        <diffuse r="0.7" g="0.7" b="0.7" a="0.3" />         <!-- diffuse reflection -->
+	        <ambient r="0.7" g="0.7" b="0.7" a="1" />         <!-- ambient reflection -->
+	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+	    </MATERIAL>
+	    <MATERIAL id="plastic_yellow_hover">                                
+	        <shininess value="20" />
+	        <specular r="0.5" g="0.5" b="0" a="1" />        <!-- specular reflection -->
+	        <diffuse r="1" g="1" b="0" a="0.6" />         <!-- diffuse reflection -->
+	        <ambient r="1" g="1" b="0" a="1" />         <!-- ambient reflection -->
+	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+	    </MATERIAL>
+	    <MATERIAL id="plastic_black_hover">                                
+	        <shininess value="20" />
+	        <specular r="0" g="0" b="0" a="1" />        <!-- specular reflection -->
+	        <diffuse r="0" g="0" b="0" a="0.7" />         <!-- diffuse reflection -->
+	        <ambient r="0" g="0" b="0" a="1" />         <!-- ambient reflection -->
 	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
 	    </MATERIAL>
 	</MATERIALS>
@@ -88,6 +109,9 @@
 			
 			<DESCENDANTS>
 				<DESCENDANT id="board" />
+				<DESCENDANT id="piece0_hover" />
+				<DESCENDANT id="piece1_hover" />
+				<DESCENDANT id="piece2_hover" />
 				<DESCENDANT id="piece0" />
 				<DESCENDANT id="piece1" />
 				<DESCENDANT id="piece2" />
@@ -914,6 +938,33 @@
 		
 		<NODE id="piece2">
 			<MATERIAL id="plastic_black" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="piece" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="piece0_hover">
+			<MATERIAL id="plastic_transparent_hover" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="piece" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="piece1_hover">
+			<MATERIAL id="plastic_yellow_hover" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="piece" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="piece2_hover">
+			<MATERIAL id="plastic_black_hover" />
 			<TEXTURE id="null" />
 			
 			<DESCENDANTS>

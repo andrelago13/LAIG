@@ -43,8 +43,12 @@ XMLscene.prototype.init = function (application) {
 	this.shader = new CGFshader(this.gl, "shaders/Gouraud/textured/multiple_light-vertex.glsl", "shaders/Gouraud/textured/fragment.glsl");
 	this.setActiveShader(this.shader);
 
-	this.modx = new Modx(this);
+	this.modx = new Modx(this, application.interface);
 };
+
+XMLscene.prototype.getCurrTime = function() {
+	return this.currTime;
+}
 
 XMLscene.prototype.resetAnims = function() {
 	this.timerStarted = false;

@@ -1,9 +1,9 @@
 StateWaitingForPlay.prototype = Object.create(State.prototype);
 StateWaitingForPlay.prototype.constructor = StateWaitingForPlay;
 
-function StateWaitingForPlay(modx, numJokersToPlace) {
+function StateWaitingForPlay(modx) {
 	this.init(modx);
-	this.numJokersToPlace = numJokersToPlace;
+	this.hovered = null;
 }
 
 StateWaitingForPlay.prototype.display = function(t) {
@@ -35,25 +35,31 @@ StateWaitingForPlay.prototype.display = function(t) {
 				this.modx.displayXPiece(x, y, xPiece);
 		}
 	}
-	this.logPicking(t);
+	this.logPicking();
+	if (this.hovered !== null)
+		this.modx.displayXPiece(this.hovered[0], this.hovered[1], this.modx.nextPieceType(), true);
 }
 
-StateWaitingForPlay.prototype.logPicking = function (t)
+StateWaitingForPlay.prototype.logPicking = function ()
 {
 	if (this.scene.pickMode == false) {
 		if (this.scene.pickResults != null && this.scene.pickResults.length > 0) {
-			for (var i=0; i< this.scene.pickResults.length; i++) {
-				var obj = this.scene.pickResults[i][0];
-				if (obj)
-				{
-					var customId = this.scene.pickResults[i][1];				
-					console.log("Picked object: " + obj + ", with pick id " + customId);
-					this.scene.setPickEnabled(false);
-					var modx = this.modx;
-					modx.setState(new StateMakingPlay(modx, t, obj, (this.numJokersToPlace === 0) ? modx.getGame().getCurrPlayer() : Modx.xPieceTypes.JOKER));
-				}
+			this.hovered = null;
+			var obj = this.scene.pickResults[0][0];
+			if (obj)
+			{
+				this.scene.setPickEnabled(false);
+				this.hovered = obj;
 			}
 			this.scene.pickResults.splice(0,this.scene.pickResults.length);
 		}		
+	}
+}
+
+StateWaitingForPlay.prototype.onClick = function(event) {
+	if (this.hovered !== null)
+	{
+		this.modx.setState(new StateMakingPlay(this.modx, this.hovered, this.modx.nextPieceType()));
+		this.scene.setPickEnabled(false);
 	}
 }
