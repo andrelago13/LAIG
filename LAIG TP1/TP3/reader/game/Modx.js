@@ -82,7 +82,7 @@ Modx.prototype.displaySPieces = function(x, y) {
 	{
 		this.scene.pushMatrix();
 		this.scene.translate(0, Modx.sPieceHeight * i, 0);
-		var name = "s_piece" + sPieces[i];
+		var name = "s_piece" + sPieces[sPieces.length - 1 - i];
 		this.scene.graph.graphNodes[name].display(0);
 		this.scene.popMatrix();
 	}
