@@ -5,12 +5,12 @@ MoonLandingScenario.NAME = "Moon Landing";
 
 function MoonLandingScenario(scene) {
 	this.scene = scene;
-	this.skybox = new Skybox(this.scene, ["scenes/modx/textures/cubemap/moon_left.png", 
-  	                              "scenes/modx/textures/cubemap/moon_right.png", 
-	                              "scenes/modx/textures/cubemap/moon_up.png", 
-	                              "scenes/modx/textures/cubemap/moon_down.png", 
-	                              "scenes/modx/textures/cubemap/moon_front.png", 
-	                              "scenes/modx/textures/cubemap/moon_back.png"]);
+	this.skybox = new Skybox(this.scene, ["scenes/modx/textures/moon_landing/cubemap/moon_left.png", 
+  	                              "scenes/modx/textures/moon_landing/cubemap/moon_right.png", 
+	                              "scenes/modx/textures/moon_landing/cubemap/moon_up.png", 
+	                              "scenes/modx/textures/moon_landing/cubemap/moon_down.png", 
+	                              "scenes/modx/textures/moon_landing/cubemap/moon_front.png", 
+	                              "scenes/modx/textures/moon_landing/cubemap/moon_back.png"]);
 }
 
 MoonLandingScenario.prototype.display = function(t) {
