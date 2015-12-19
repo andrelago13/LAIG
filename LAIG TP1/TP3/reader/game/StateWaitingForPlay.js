@@ -4,6 +4,11 @@ StateWaitingForPlay.prototype.constructor = StateWaitingForPlay;
 function StateWaitingForPlay(modx) {
 	this.init(modx);
 	this.hovered = null;
+	if (this.modx.lastMoveEvent !== null)
+	{
+		this.scene.setPickEnabled(true);
+		this.scene.onPick(this.modx.lastMoveEvent);
+	}
 }
 
 StateWaitingForPlay.prototype.display = function(t) {
@@ -35,12 +40,12 @@ StateWaitingForPlay.prototype.display = function(t) {
 				this.modx.displayXPiece(x, y, xPiece);
 		}
 	}
-	this.logPicking();
+	this.updatePicking();
 	if (this.hovered !== null)
 		this.modx.displayXPiece(this.hovered[0], this.hovered[1], this.modx.nextPieceType(), true);
 }
 
-StateWaitingForPlay.prototype.logPicking = function ()
+StateWaitingForPlay.prototype.updatePicking = function ()
 {
 	if (this.scene.pickMode == false) {
 		if (this.scene.pickResults != null && this.scene.pickResults.length > 0) {

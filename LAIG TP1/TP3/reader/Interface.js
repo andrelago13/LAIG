@@ -55,4 +55,6 @@ Interface.prototype.processMouseDown = function(event) {
 
 Interface.prototype.processMouseMove = function(event) {
 	this.scene.onPick(event);
+	if (this.scene.modx !== null)
+		this.scene.modx.lastMoveEvent = event;
 }

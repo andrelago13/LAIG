@@ -18,6 +18,7 @@ function Modx(scene) {
 	this.scene = scene;
 	this.state = null;
 	this.numJokersToPlace = 0;
+	this.lastMoveEvent = null;
 };
 
 Modx.prototype.start = function(game) {
@@ -69,7 +70,8 @@ Modx.prototype.displayXPiece = function(x, y, type, hover) {
 }
 
 Modx.prototype.onClick = function(event) {
-	this.state.onClick(event);
+	if (this.state !== null)
+		this.state.onClick(event);
 }
 
 Modx.prototype.nextPieceType = function() {
