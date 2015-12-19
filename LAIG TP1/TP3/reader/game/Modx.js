@@ -27,7 +27,11 @@ Modx.prototype.start = function(game) {
 }
 
 Modx.prototype.getGame = function() {
-	return this.gameHistory[0];
+	return this.gameHistory[this.gameHistory.length - 1];
+}
+
+Modx.prototype.updateGame = function(newGame) {
+	this.gameHistory.push(newGame);
 }
 
 Modx.prototype.setState = function(state) {

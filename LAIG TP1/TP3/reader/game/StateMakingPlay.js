@@ -5,20 +5,24 @@ StateMakingPlay.totalAnimTime = 2;
 
 function StateMakingPlay(modx, t, coords, xPiece) {
 	this.init(modx);
-	this.loaded = false;
 	var s = this;
-	this.modx.getGame().makePlay(modx, coords[0], coords[1], function() {
-		s.loaded = true;
+	this.modx.getGame().makePlay(modx, coords[0], coords[1], function(newGame) {
+		s.newGame = newGame;
 	});
 	this.coords = coords;
 	this.xPiece = xPiece;
 	this.init(modx);
 	this.startAnimTime = t;
+	
+	this.newGame = null;
 }
 
 StateMakingPlay.prototype.display = function(t) {
-	if ((t - this.startAnimTime >= StateMakingPlay.totalAnimTime) && this.loaded)
+	if ((t - this.startAnimTime >= StateMakingPlay.totalAnimTime) && this.newGame !== null)
+	{
+		this.modx.updateGame(this.newGame);
 		this.modx.setState(new StateWaitingForPlay(this.modx));
+	}
 	this.modx.displayBoard();
 	for (var y = 0; y < Board.size; y++)
 	{

@@ -49,7 +49,7 @@ StateWaitingForPlay.prototype.logPicking = function (t)
 					console.log("Picked object: " + obj + ", with pick id " + customId);
 					this.scene.setPickEnabled(false);
 					var modx = this.modx;
-					modx.setState(new StateMakingPlay(modx, t, obj, Modx.xPieceTypes.PLAYER1));
+					modx.setState(new StateMakingPlay(modx, t, obj, modx.getGame().getCurrPlayer()));
 				}
 			}
 			this.scene.pickResults.splice(0,this.scene.pickResults.length);
