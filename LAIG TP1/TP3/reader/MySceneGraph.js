@@ -647,9 +647,18 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 			}	
 
 			// Validate leaf type's number of arguments
-			if(args.length != all_args[elems].length) {
+			if(args.length != all_args[elems].length && elems != "cylinder") {
 				this.addError(errors, "illegal number of arguments for leaf '" + id + "' of type '" + elems + "'.");
 				continue;
+			} else if (elems == "cylinder") {
+				leaf["half"] = false;
+				if(args.length != all_args[elems].length && args.length != all_args[elems].length + 1) {
+					this.addError(errors, "illegal number of arguments for leaf '" + id + "' of type '" + elems + "'.");
+					continue;					
+				}
+				if(args.length == args.length != all_args[elems].length + 1) {
+					leaf["half"] = (args[all_args[elems].length] == "1" ? true : false);
+				}
 			}
 
 			// Get leaf parameters
@@ -682,7 +691,7 @@ MySceneGraph.prototype.parseLeaves= function(errors, rootElement) {
 					id, this.leaves);
 			break;
 		case "cylinder":
-			this.leaves[id] = new SceneLeaf(new Cylinder(this.scene, leaf["height"], leaf["bottom-radius"], leaf["top-radius"], leaf["sections-per-height"], leaf["parts-per-section"]),
+			this.leaves[id] = new SceneLeaf(new Cylinder(this.scene, leaf["height"], leaf["bottom-radius"], leaf["top-radius"], leaf["sections-per-height"], leaf["parts-per-section"], leaf["half"]),
 					id, this.leaves);
 			break;
 		case "plane":

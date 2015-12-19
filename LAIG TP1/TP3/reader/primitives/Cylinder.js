@@ -40,16 +40,25 @@ Cylinder.prototype.initBuffers = function () {
 	
 	for(var i = 0; i <= this.stacks; i++) {
 		for(var j = 0; j <= this.slices; j++) {
-			this.vertices.push((init_radius + i*radius_dif)*Math.cos(j*delta), (init_radius + i*radius_dif)*Math.sin(j*delta), this.height*i/this.stacks);
+			var vx = (init_radius + i*radius_dif)*Math.cos(j*delta);
+			var vy = (init_radius + i*radius_dif)*Math.sin(j*delta);
+			this.vertices.push(vx, vy, this.height*i/this.stacks);
 			
 			if(this.height > 0) {
 				var temp = Math.atan(Math.abs(this.top_radius-this.bottom_radius)/this.height);
 				this.normals.push(Math.cos(temp)*Math.cos(j*delta),
 						Math.cos(temp)*Math.sin(j*delta),
 						Math.sin(temp));
-			} else
-				this.normals.push(0, 0, 1);
-			this.texCoords.push(j/this.slices, i/this.stacks);
+				this.texCoords.push(j/this.slices, i/this.stacks);
+			} else {
+				if(this.top_radius == 0) {
+					this.normals.push(0, 0, 1);
+					this.texCoords.push((vx+0.5), (vy+0.5));
+				} else {
+					this.normals.push(0, 0, -1);
+					this.texCoords.push(1-(vx+0.5), 1-(vy+0.5));
+				}
+			}
 			
 			if(i > 0 && j > 0) {
 				var verts = this.vertices.length / 3;
