@@ -28,6 +28,22 @@
 	</LIGHTS>
 	
 	<TEXTURES>
+    	<TEXTURE id="asc_table_texture">
+        	<file path="textures/afternoon_sky/table.png" />
+        	<amplif_factor s="1" t="1" />
+    	</TEXTURE>
+    	<TEXTURE id="asc_tableside_texture">
+        	<file path="textures/afternoon_sky/table_side.png" />
+        	<amplif_factor s="1" t="1" />
+    	</TEXTURE>
+    	<TEXTURE id="mls_table_texture">
+        	<file path="textures/moon_landing/table.jpg" />
+        	<amplif_factor s="1" t="1" />
+    	</TEXTURE>
+    	<TEXTURE id="mls_tableside_texture">
+        	<file path="textures/moon_landing/table_side.png" />
+        	<amplif_factor s="1" t="1" />
+    	</TEXTURE>
 	</TEXTURES>
 	
 	<MATERIALS>
@@ -83,8 +99,10 @@
 	    <LEAF id="plane-large" type="plane" args="80 80"/>
 	    <LEAF id="sphere" type="sphere" args="1 40 40" />
 		<LEAF id="terrain" type="terrain" texture="textures/terrain-t.png" heightmap="textures/terrain-hm.png" />
-		<LEAF id="cylinder" type="cylinder" args="1 0.5 0.5 1 20" />
-		<LEAF id="circle" type="cylinder" args="0 0.5 0 1 20" />
+		<LEAF id="cylinder" type="cylinder" args="1 0.5 0.5 1 50" />
+		<LEAF id="half_cylinder" type="cylinder" args="1 0.5 0.5 1 20 1" />
+		<LEAF id="circle" type="cylinder" args="0 0.5 0 1 50" />
+		<LEAF id="half_circle" type="cylinder" args="0 0.5 0 1 20 1" />
 		<LEAF id="round_convex" type="patch" args="2 50 50" >
 			<controlpoint xx="0" yy="-0.5" zz="0.5" />
 			<controlpoint xx="0" yy="0" zz="0.5" />
@@ -126,18 +144,94 @@
 			<TEXTURE id="clear" />
 	    
 	    	<DESCENDANTS>
-	    		<DESCENDANT id="cylinder"/>
+	    		<DESCENDANT id="asc_table"/>
 	    	</DESCENDANTS>
 	    </NODE>
+	    
+		<NODE id="asc_table">
+			<MATERIAL id="null" />
+			<TEXTURE id="asc_tableside_texture" />
+			
+			<TRANSLATION x="4" y="-0.01" z="4" />
+			<SCALE sx="15" sy="0.1" sz="15" />
+			<ROTATION axis="x" angle="180" />
+			<ROTATION axis="x" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="asc_table_circle_1" />
+				<DESCENDANT id="asc_table_circle_2" />
+				<DESCENDANT id="cylinder" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="asc_table_circle_1">
+			<MATERIAL id="null" />
+			<TEXTURE id="asc_table_texture" />
+			
+			<ROTATION axis="y" angle="180" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="circle" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="asc_table_circle_2">
+			<MATERIAL id="null" />
+			<TEXTURE id="asc_table_texture" />
+			
+			<TRANSLATION x="0" y="0" z="1" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="circle" />
+			</DESCENDANTS>
+		</NODE>
 		
 	    <NODE id="moon_landing_scenario">
 	    	<MATERIAL id="null" />
 			<TEXTURE id="clear" />
 	    
 	    	<DESCENDANTS>
-	    		<DESCENDANT id="cylinder"/>
+	    		<DESCENDANT id="mls_table"/>
 	    	</DESCENDANTS>
 	    </NODE>
+	    
+		<NODE id="mls_table">
+			<MATERIAL id="null" />
+			<TEXTURE id="mls_tableside_texture" />
+			
+			<TRANSLATION x="4" y="-0.01" z="4" />
+			<SCALE sx="15" sy="0.1" sz="15" />
+			<ROTATION axis="x" angle="180" />
+			<ROTATION axis="x" angle="-90" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="mls_table_circle_1" />
+				<DESCENDANT id="mls_table_circle_2" />
+				<DESCENDANT id="cylinder" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="mls_table_circle_1">
+			<MATERIAL id="null" />
+			<TEXTURE id="mls_table_texture" />
+			
+			<ROTATION axis="y" angle="180" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="circle" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="mls_table_circle_2">
+			<MATERIAL id="null" />
+			<TEXTURE id="mls_table_texture" />
+			
+			<TRANSLATION x="0" y="0" z="1" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="circle" />
+			</DESCENDANTS>
+		</NODE>
 	    
 	    <NODE id="board">
 	    	<MATERIAL id="null" />
@@ -1068,7 +1162,7 @@
 			<ROTATION axis="z" angle="-90" />
 			
 			<DESCENDANTS>
-				<DESCENDANT id="circle" />
+				<DESCENDANT id="half_circle" />
 			</DESCENDANTS>
 		</NODE>
 		
@@ -1120,7 +1214,7 @@
 			<ROTATION axis="z" angle="-90" />
 			
 			<DESCENDANTS>
-				<DESCENDANT id="cylinder" />
+				<DESCENDANT id="half_cylinder" />
 			</DESCENDANTS>
 		</NODE>
 		

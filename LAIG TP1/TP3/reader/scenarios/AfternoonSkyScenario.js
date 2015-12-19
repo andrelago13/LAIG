@@ -5,12 +5,12 @@ AfternoonSkyScenario.NAME = "Afternoon Sky";
 
 function AfternoonSkyScenario(scene) {
 	this.scene = scene;
-	this.skybox = new Skybox(this.scene, ["scenes/modx/textures/cubemap/sky_left.jpg", 
-		                              "scenes/modx/textures/cubemap/sky_right.jpg", 
-		                              "scenes/modx/textures/cubemap/sky_up.jpg", 
-		                              "scenes/modx/textures/cubemap/sky_down.jpg", 
-		                              "scenes/modx/textures/cubemap/sky_front.jpg", 
-		                              "scenes/modx/textures/cubemap/sky_back.jpg"]);
+	this.skybox = new Skybox(this.scene, ["scenes/modx/textures/afternoon_sky/cubemap/sky_left.jpg", 
+		                              "scenes/modx/textures/afternoon_sky/cubemap/sky_right.jpg", 
+		                              "scenes/modx/textures/afternoon_sky/cubemap/sky_up.jpg", 
+		                              "scenes/modx/textures/afternoon_sky/cubemap/sky_down.jpg", 
+		                              "scenes/modx/textures/afternoon_sky/cubemap/sky_front.jpg", 
+		                              "scenes/modx/textures/afternoon_sky/cubemap/sky_back.jpg"]);
 }
 
 AfternoonSkyScenario.prototype.display = function(t) {
