@@ -47,7 +47,7 @@ Interface.prototype.processKeyDown = function(event) {
 	}
 }
 
-Interface.prototype.processMouseDown = function(event) {
+/*Interface.prototype.processMouseDown = function(event) {
 	this.scene.onPick(event);
 	if (this.scene.modx !== null)
 		this.scene.modx.onClick(event);
@@ -55,4 +55,4 @@ Interface.prototype.processMouseDown = function(event) {
 
 Interface.prototype.processMouseMove = function(event) {
 	this.scene.onPick(event);
-}
+}*/
