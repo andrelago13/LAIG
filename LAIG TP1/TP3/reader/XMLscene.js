@@ -146,14 +146,17 @@ XMLscene.prototype.initCameras = function () {
 
 	this.cameraPositions[0] = vec3.fromValues(Board.size / 2, 2 * Board.size, 2 * Board.size + Board.size / 2);
 	this.cameraPositions[1] = vec3.fromValues(Board.size / 2, 2 * Board.size, -2 * Board.size + Board.size / 2);
+	this.cameraPositions[2] = vec3.fromValues(Board.size / 2, 3 * Board.size, Board.size / 2);
 
 	this.oldCameraPosition = vec3.clone(this.cameraPositions[0]);
 	this.newCameraPosition = vec3.clone(this.cameraPositions[0]);
 
 	this.cameraNames[0] = "Player 1";
 	this.cameraNames[1] = "Player 2";
+	this.cameraNames[2] = "Top";
 	this.cameraNames[this.cameraNames[0]] = 0;
 	this.cameraNames[this.cameraNames[1]] = 1;
+	this.cameraNames[this.cameraNames[2]] = 2;
 
 	var position = vec3.create();
 	vec3.copy(position, this.cameraPositions[0]);

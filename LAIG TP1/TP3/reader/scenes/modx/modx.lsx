@@ -127,6 +127,9 @@
 			
 			<DESCENDANTS>
 				<DESCENDANT id="board" />
+				<DESCENDANT id="s_piece0" />
+				<DESCENDANT id="s_piece1" />
+				<DESCENDANT id="s_piece2" />
 				<DESCENDANT id="piece0_hover" />
 				<DESCENDANT id="piece1_hover" />
 				<DESCENDANT id="piece2_hover" />
@@ -1006,6 +1009,46 @@
 			<TRANSLATION x="0.1" y="0" z="0.2" />
 			<SCALE sx="0.8" sy="0.09999" sz="0.8" />
 			<TRANSLATION x="0.5" y="0" z="0.5" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="cube" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="s_piece0">
+			<MATERIAL id="plastic_transparent" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="s_piece" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="s_piece1">
+			<MATERIAL id="plastic_yellow" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="s_piece" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="s_piece2">
+			<MATERIAL id="plastic_black" />
+			<TEXTURE id="null" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="s_piece" />
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="s_piece">
+			<MATERIAL id="null" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0.5" y="0" z="0.5" />
+			<SCALE sx="0.9" sy="0.05" sz="0.9" />
+			<SCALE sx="0.95" sy="1" sz="0.95" />
 			
 			<DESCENDANTS>
 				<DESCENDANT id="cube" />

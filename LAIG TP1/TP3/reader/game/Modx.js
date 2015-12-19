@@ -6,6 +6,8 @@ Modx.xPieceTypes = {
 		HOVER: 0
 }
 
+Modx.sPieceHeight = 0.05;
+
 /**
  * Modx
  * @constructor
@@ -62,10 +64,28 @@ Modx.prototype.displayBoard = function() {
 
 Modx.prototype.displayXPiece = function(x, y, type, hover) {
 	this.scene.pushMatrix();
-	this.scene.translate(x, 0, y);
+	var cell = this.getGame().getBoard().get(x, y);
+	var sPieces = cell.getSPieces();
+	this.scene.translate(x, Modx.sPieceHeight * sPieces.length, y);
 	var name = "piece" + type;
 	if (hover) name += "_hover";
 	this.scene.graph.graphNodes[name].display(0);
+	this.scene.popMatrix();
+}
+
+Modx.prototype.displaySPieces = function(x, y) {
+	this.scene.pushMatrix();
+	this.scene.translate(x, 0, y);
+	var cell = this.getGame().getBoard().get(x, y);
+	var sPieces = cell.getSPieces();
+	for (var i = 0; i < sPieces.length; i++)
+	{
+		this.scene.pushMatrix();
+		this.scene.translate(0, Modx.sPieceHeight * i, 0);
+		var name = "s_piece" + sPieces[i];
+		this.scene.graph.graphNodes[name].display(0);
+		this.scene.popMatrix();
+	}
 	this.scene.popMatrix();
 }
 

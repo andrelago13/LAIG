@@ -32,6 +32,7 @@ StatePlacingXPiece.prototype.display = function(t) {
 	{
 		for (var x = 0; x < Board.size; x++)
 		{
+			this.modx.displaySPieces(x, y);
 			var cell = this.modx.getGame().getBoard().get(x, y);
 			var xPiece = cell.getXpiece();
 			if (xPiece !== Modx.xPieceTypes.NONE)

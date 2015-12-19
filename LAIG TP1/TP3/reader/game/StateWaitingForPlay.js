@@ -33,6 +33,9 @@ StateWaitingForPlay.prototype.display = function(t) {
 	{
 		for (var x = 0; x < Board.size; x++)
 		{
+			// Draw sPieces
+			this.modx.displaySPieces(x, y);
+			
 			// Draw xPiece
 			var cell = this.modx.getGame().getBoard().get(x, y);
 			var xPiece = cell.getXpiece();
