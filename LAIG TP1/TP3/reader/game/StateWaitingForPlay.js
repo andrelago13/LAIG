@@ -1,8 +1,9 @@
 StateWaitingForPlay.prototype = Object.create(State.prototype);
 StateWaitingForPlay.prototype.constructor = StateWaitingForPlay;
 
-function StateWaitingForPlay(modx) {
+function StateWaitingForPlay(modx, numJokersToPlace) {
 	this.init(modx);
+	this.numJokersToPlace = numJokersToPlace;
 }
 
 StateWaitingForPlay.prototype.display = function(t) {
@@ -49,7 +50,7 @@ StateWaitingForPlay.prototype.logPicking = function (t)
 					console.log("Picked object: " + obj + ", with pick id " + customId);
 					this.scene.setPickEnabled(false);
 					var modx = this.modx;
-					modx.setState(new StateMakingPlay(modx, t, obj, modx.getGame().getCurrPlayer()));
+					modx.setState(new StateMakingPlay(modx, t, obj, (this.numJokersToPlace === 0) ? modx.getGame().getCurrPlayer() : Modx.xPieceTypes.JOKER));
 				}
 			}
 			this.scene.pickResults.splice(0,this.scene.pickResults.length);

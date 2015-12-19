@@ -13,14 +13,14 @@ Modx.xPieceTypes = {
 function Modx(scene) {
 	this.client = new Client();
 	var modx = this;
-	this.client.getRequestReply("start_game(8,1)", function(game) { return modx.start(game); });
+	this.client.getRequestReply("start_game(8,1)", function(game) { modx.start(game); });
 	this.gameHistory = [];
 	this.scene = scene;
 	this.state = null;
 };
 
 Modx.prototype.start = function(game) {
-	this.setState(new StateWaitingForPlay(this));
+	this.setState(new StateWaitingForPlay(this, 0));
 	this.gameHistory = [];
 	this.gameHistory = [new Game(game)];
 	return this.getGame();

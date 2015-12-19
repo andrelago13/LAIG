@@ -4481,7 +4481,7 @@ CGFscene.prototype.displayWithPick = function() {
         prevShader = this.activeShader;
         var b = a[0][0];
         var c = a[0][1];
-        this.setActiveShader(this.pickShader);
+        this.setActiveShaderSimple(this.pickShader);
         var d = new Uint8Array(4);
         this.pickMode = true;
         var e = this.texturesEnabled;
@@ -4496,7 +4496,7 @@ CGFscene.prototype.displayWithPick = function() {
             if (f != null) this.pickResults.push([f[0], f[1]]);
             else this.pickResults.push([undefined, undefined]);
         }
-        this.setActiveShader(prevShader);
+        this.setActiveShaderSimple(prevShader);
     }
     this.display();
 };

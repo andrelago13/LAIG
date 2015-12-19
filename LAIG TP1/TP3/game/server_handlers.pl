@@ -11,6 +11,9 @@ parse_input(make_play(Game, X, Y), NewGame) :-
         place_xpiece(Game, [X, Y], Game1),
         end_play(Game1, NewGame).
 parse_input(make_play(_, _, _), error_invalid_piece).
+parse_input(num_jokers_to_place(Game), N) :-
+        game_board(Game, Board),
+        num_jokers_to_place(Board, N).
 parse_input(available_moves(Game), Moves) :- available_moves(Game, Moves).
 parse_input(available_moves(_), error).
 
