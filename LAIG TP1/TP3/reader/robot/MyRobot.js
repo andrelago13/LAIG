@@ -13,6 +13,8 @@ var ANGLE_LIMIT = 0.1;
  	// Rotation acceleration given when left/right keys are pressed
  	this.defaultRotation = 0.7;
  	
+	this.defaultApp = new CGFappearance(scene);
+ 	
  	// Measures time for animation purposes
  	this.time = 0;
  	
@@ -92,6 +94,39 @@ var ANGLE_LIMIT = 0.1;
  	this.rightArmStart;
  	this.leftArmStart;
  	this.animTimeStart;
+ 	
+ 	this.robotAndroidGreen = [];
+	robotGeneralAppearance = new CGFappearance(scene);
+	robotGeneralAppearance.setAmbient(102/255/1.3, 1/1.3, 0, 0.8);
+	robotGeneralAppearance.setDiffuse(102/255/1.3, 1/1.3, 0, 0.8);
+	robotGeneralAppearance.setSpecular(1, 1, 1);
+	robotGeneralAppearance.setShininess(400);
+	this.robotAndroidGreen[this.bodyApIndex] = robotGeneralAppearance;
+	this.robotAndroidGreen[this.bodyTopApIndex] = robotGeneralAppearance;
+	this.robotAndroidGreen[this.armsApIndex] = robotGeneralAppearance;
+	this.robotAndroidGreen[this.armTopApIndex] = robotGeneralAppearance;
+	this.robotAndroidGreen[this.antennaApIndex] = robotGeneralAppearance;
+	this.robotAndroidGreen[this.antennaTopApIndex] = robotGeneralAppearance;
+	this.robotAndroidGreen[this.headApIndex] = robotGeneralAppearance;
+	this.robotAndroidGreen[this.headBottomApIndex] = robotGeneralAppearance;
+	
+	robotEyeAppearance = new CGFappearance(scene);
+	robotEyeAppearance.setAmbient(0, 0, 0, 1);
+	robotEyeAppearance.setDiffuse(0, 0, 0, 1);
+	robotEyeAppearance.setSpecular(0.2, 0.2, 0.2, 1);
+	robotEyeAppearance.setShininess(10);
+	this.robotAndroidGreen[this.eyeApIndex] = robotEyeAppearance;
+	this.robotAndroidGreen[this.eyeFrontApIndex] = robotEyeAppearance;
+	
+	robotWheelAppearance = new CGFappearance(scene);
+	robotWheelAppearance.setAmbient(0.4, 0.4, 0.4, 1);
+	robotWheelAppearance.setDiffuse(0.6, 0.6, 0.6, 1);
+	robotWheelAppearance.setSpecular(0.2, 0.2, 0.2, 1);
+	robotWheelAppearance.setShininess(10);
+	robotWheelAppearance.loadTexture("robot/wheel.png");
+	robotWheelAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	this.robotAndroidGreen[this.wheelApIndex] = robotWheelAppearance;
+	this.robotAndroidGreen[this.wheelSideApIndex] = robotWheelAppearance;
  };
 
  MyRobot.prototype = Object.create(CGFobject.prototype);
@@ -603,7 +638,10 @@ MyRobot.prototype.displayMoveWheels = function() {
  
 MyRobot.prototype.display = function() {
 
-	this.scene.pushMatrix();
+	//console.log(this.robotAndroidGreen);
+	this.displayAppearance(this.robotAndroidGreen, 0.5);
+	this.defaultApp.apply();
+	/*this.scene.pushMatrix();
 	this.scene.translate(this.x, this.y, this.z);
 	 	 
 	 // Main robot body
@@ -623,7 +661,7 @@ MyRobot.prototype.display = function() {
 
 	this.scene.popMatrix();
 	 
-	 this.drawElements(this.primitiveType);
+	 this.drawElements(this.primitiveType);*/
  }
 
 MyRobot.prototype.displayLollipop = function(lollipopAppearanceSet) {
@@ -702,8 +740,8 @@ MyRobot.prototype.displayAppearance = function(appearanceSet, scale) {
 		this.updateVars(scale);
 	
 	this.scene.pushMatrix();
-	this.scene.translate(this.x, this.y, this.z);	
-	this.scene.rotate(this.angle, 0, 1, 0);
+	//this.scene.translate(this.x, this.y, this.z);	
+	//this.scene.rotate(this.angle, 0, 1, 0);
 	
 	if (typeof appearanceSet != "undefined") // texture set defined
 	{
