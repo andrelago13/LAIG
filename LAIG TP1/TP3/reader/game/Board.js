@@ -57,3 +57,12 @@ Board.prototype.toArray = function() {
 	}
 	return arr;
 }
+
+Board.prototype.setAllCellsValidity = function(value) {
+	var size = this.size();
+	for(var y = 0; y < size; ++y) {
+		for(var x = 0; x < size; ++x) {
+			this.board[y][x].setValidValue(value);
+		}
+	}
+}

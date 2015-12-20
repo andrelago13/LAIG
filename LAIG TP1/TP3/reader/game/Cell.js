@@ -5,6 +5,7 @@
 function Cell() {
 	this.xPiece = 0;
 	this.sPieces = [];
+	this.valid = true;
 };
 
 function Cell(cell_json) {
@@ -19,6 +20,7 @@ Cell.xpiece_index = 1;
 Cell.prototype.parseCell = function(cell_json) {
 	this.setXpiece(cell_json[Cell.xpiece_index]);
 	this.setSPieces(cell_json[Cell.spiece_index]);
+	this.valid = true;
 }
 
 Cell.prototype.getXpiece = function() {
@@ -57,4 +59,12 @@ Cell.prototype.toArray = function() {
 	arr.push(this.getSPieces());
 	arr.push(this.getXpiece());
 	return arr;
+}
+
+Cell.prototype.isValid = function() {
+	return this.valid;
+}
+
+Cell.prototype.setValidValue = function(valid) {
+	this.valid = valid;
 }

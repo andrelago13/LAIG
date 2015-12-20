@@ -9,9 +9,23 @@ function StateWaitingForPlay(modx) {
 		this.scene.setPickEnabled(true);
 		this.scene.onPick(this.modx.lastMoveEvent);
 	}
+
+	if(typeof this.modx.getGame() != 'undefined') {
+		var this_t = this;
+		this.modx.client.getRequestReply("available_moves(" + this.modx.getGame().toJSON() + ")", function(prolog_reply) {
+			this_t.updated = true;
+			var positions = JSON.parse(prolog_reply.target.responseText);
+			var board = this_t.modx.getGame().getBoard();
+			board.setAllCellsValidity(false);
+			var size = positions.length;
+			for(var i = 0; i < size; ++i) {
+				board.get(positions[i][0], positions[i][1]).setValidValue(true);
+			}
+		})
+	}
 }
 
-StateWaitingForPlay.prototype.display = function(t) {
+StateWaitingForPlay.prototype.display = function(t) {	
 	this.scene.setPickEnabled(true);
 	for (var y = 0; y < Board.size; y++)
 	{
@@ -44,7 +58,8 @@ StateWaitingForPlay.prototype.display = function(t) {
 		}
 	}
 	this.updatePicking();
-	if (this.hovered !== null)
+	var board = this.modx.getGame().getBoard();
+	if (this.hovered !== null && board.get(this.hovered[0], this.hovered[1]).isValid())
 		this.modx.displayXPiece(this.hovered[0], this.hovered[1], this.modx.nextPieceType(), true);
 	var p1_pieces = this.modx.getGame().getPlayerInfo(1).getXPieces();
 	var p2_pieces = this.modx.getGame().getPlayerInfo(2).getXPieces();
