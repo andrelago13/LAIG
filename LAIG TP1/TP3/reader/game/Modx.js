@@ -97,3 +97,36 @@ Modx.prototype.onClick = function(event) {
 Modx.prototype.nextPieceType = function() {
 	return (this.numJokersToPlace === 0) ? this.getGame().getCurrPlayer() : Modx.xPieceTypes.JOKER;
 }
+
+Modx.prototype.displayRemainingXPieces = function(player, numXpieces) {
+	this.scene.pushMatrix();
+	
+	var bsize = this.getGame().getBoard().size();
+	var name = "piece" + player;
+	var piece = this.scene.graph.graphNodes[name];
+	
+	if(player == 1) {
+		this.scene.translate(-0.5, 0, 8.5);
+		for(var cell = 1; cell <= numXpieces && cell <= 14; ++cell) {
+			this.scene.translate(1, 0, 0);
+			piece.display(0);
+			if(cell === 7) {
+				this.scene.translate(-7, 0, 1);
+			}
+		}
+	} else if (player == 2) {
+		this.scene.translate(7.5, 0, -1.5);
+		for(var cell = 1; cell <= numXpieces && cell <= 14; ++cell) {
+			this.scene.translate(-1, 0, 0);
+			piece.display(0);
+			if(cell === 7) {
+				this.scene.translate(7, 0, -1);
+			}
+		}
+	}
+	
+	
+	
+	this.scene.popMatrix();
+	
+}
