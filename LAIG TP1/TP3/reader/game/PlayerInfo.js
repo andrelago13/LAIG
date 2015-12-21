@@ -9,17 +9,17 @@
  */
 function PlayerInfo(pinfo_json) {
 	this.score = 0;
-	this.x_pieces = 0;
+	this.num_x_pieces = 0;
 	this.parsePlayerInfo(pinfo_json);
 };
 PlayerInfo.prototype.PlayerInfo=PlayerInfo;
 
 PlayerInfo.score_index = 0;
-PlayerInfo.xpieces_index = 1;
+PlayerInfo.num_xpieces_index = 1;
 
 PlayerInfo.prototype.parsePlayerInfo = function(pinfo_json) {
 	this.setScore(pinfo_json[PlayerInfo.score_index]);
-	this.setXPieces(pinfo_json[PlayerInfo.xpieces_index]);
+	this.setNumXPieces(pinfo_json[PlayerInfo.num_xpieces_index]);
 }
 
 PlayerInfo.prototype.setScore = function(score) {
@@ -30,17 +30,17 @@ PlayerInfo.prototype.getScore = function() {
 	return this.score;
 }
 
-PlayerInfo.prototype.setXPieces = function(xpieces) {
-	this.x_pieces = xpieces;
+PlayerInfo.prototype.setNumXPieces = function(num_xpieces) {
+	this.num_x_pieces = num_xpieces;
 }
 
-PlayerInfo.prototype.getXPieces = function() {
-	return this.x_pieces;
+PlayerInfo.prototype.getNumXPieces = function() {
+	return this.num_x_pieces;
 }
 
 PlayerInfo.prototype.toArray = function() {
 	var arr = [];
 	arr.push(this.getScore());
-	arr.push(this.getXPieces());
+	arr.push(this.getNumXPieces());
 	return arr;
 }

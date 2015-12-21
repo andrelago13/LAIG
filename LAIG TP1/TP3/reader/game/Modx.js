@@ -124,7 +124,7 @@ Modx.prototype.displayRemainingXPiece = function(player, xPieceNum) {
 Modx.prototype.displayRemainingXPieces = function(player) {
 	if (player !== 1 && player !== 2) return;
 
-	for(var i = 0; i < Modx.numXPiecesPerPlayer; ++i) {
+	for(var i = 0; i < this.getGame().getPlayerInfo(player).getNumXPieces(); ++i) {
 		this.displayRemainingXPiece(player, i);
 	}
 }
