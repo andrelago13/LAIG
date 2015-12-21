@@ -17,9 +17,11 @@ PieceAnimation.prototype.getMatrix = function(t) {
 	
 	if (t > this.span) t = this.span;
 	
+	// Elliptic parametric equations
 	var s = Math.PI * t / this.span;
 	var x = 0.5 - this.a * Math.cos(s);
 	var y = this.b * Math.sin(s);
+	
 	var pos = vec3.lerp(vec3.create(), this.startPos, this.endPos, x);
 	vec3.add(pos, pos, [0, y, 0]);
 	mat4.translate(m, m, pos);

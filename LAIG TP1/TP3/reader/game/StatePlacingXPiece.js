@@ -1,7 +1,7 @@
 StatePlacingXPiece.prototype = Object.create(State.prototype);
 StatePlacingXPiece.prototype.constructor = StatePlacingXPiece;
 
-StatePlacingXPiece.totalAnimTime = 2;
+StatePlacingXPiece.totalAnimTime = 1;
 
 function StatePlacingXPiece(modx, coords, xPiece) {
 	this.init(modx);
@@ -20,7 +20,7 @@ function StatePlacingXPiece(modx, coords, xPiece) {
 	this.endPos = this.modx.calculateXPiecePos(coords[0], coords[1]);
 	this.xPiece = xPiece;
 	this.startAnimTime = this.modx.scene.getCurrTime();
-	this.animation = new PieceAnimation(0, StatePlacingXPiece.totalAnimTime, this.startPos, this.endPos, 3);
+	this.animation = new PieceAnimation(0, StatePlacingXPiece.totalAnimTime, this.startPos, this.endPos, 2);
 }
 
 StatePlacingXPiece.prototype.display = function(t) {
