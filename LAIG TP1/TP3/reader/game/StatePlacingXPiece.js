@@ -41,7 +41,7 @@ StatePlacingXPiece.prototype.display = function(t) {
 				this.modx.displayXPiece(x, y, xPiece);
 		}
 	}
-	this.modx.displayXPiece(this.coords[0], this.coords[1], this.xPiece);
+	this.modx.displayXPiece(this.coords[0], this.coords[1], this.xPiece, true);
 	this.displayMovingXPiece(t);
 }
 
