@@ -1,7 +1,7 @@
 StatePlacingXPiece.prototype = Object.create(State.prototype);
 StatePlacingXPiece.prototype.constructor = StatePlacingXPiece;
 
-StatePlacingXPiece.totalAnimTime = 0;
+StatePlacingXPiece.totalAnimTime = 2;
 
 function StatePlacingXPiece(modx, coords, xPiece) {
 	this.init(modx);
@@ -16,9 +16,11 @@ function StatePlacingXPiece(modx, coords, xPiece) {
 		})
 	});
 	this.coords = coords;
+	this.startPos = this.modx.calculateRemainingXPiecePos(xPiece, this.modx.getGame().getPlayerInfo(xPiece).getNumXPieces() - 1);
+	this.endPos = this.modx.calculateXPiecePos(coords[0], coords[1]);
 	this.xPiece = xPiece;
-	this.init(modx);
 	this.startAnimTime = this.modx.scene.getCurrTime();
+	this.animation = new PieceAnimation(0, StatePlacingXPiece.totalAnimTime, this.startPos, this.endPos, 3);
 }
 
 StatePlacingXPiece.prototype.display = function(t) {
@@ -40,4 +42,13 @@ StatePlacingXPiece.prototype.display = function(t) {
 		}
 	}
 	this.modx.displayXPiece(this.coords[0], this.coords[1], this.xPiece);
+	this.displayMovingXPiece(t);
+}
+
+StatePlacingXPiece.prototype.displayMovingXPiece = function(t) {
+	t = t - this.startAnimTime;
+	this.scene.pushMatrix();
+	this.scene.multMatrix(this.animation.getMatrix(t));
+	this.scene.graph.graphNodes["piece" + this.xPiece].display(0);
+	this.scene.popMatrix();
 }

@@ -15,6 +15,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js'
                'animation/Animation.js',
                'animation/LinearAnimation.js',
                'animation/CircularAnimation.js',
+               'animation/PieceAnimation.js', 
                'animation/AnimationSet.js',
                'primitives/Cylinder.js', 
                'primitives/Rectangle.js', 
