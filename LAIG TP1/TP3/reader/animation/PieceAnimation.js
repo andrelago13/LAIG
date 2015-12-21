@@ -23,7 +23,10 @@ PieceAnimation.prototype.getMatrix = function(t) {
 	var y = this.b * Math.sin(s);
 	
 	var pos = vec3.lerp(vec3.create(), this.startPos, this.endPos, x);
-	vec3.add(pos, pos, [0, y, 0]);
+	vec3.add(pos, pos, [0, y, 0])
 	mat4.translate(m, m, pos);
+	mat4.translate(m, m, [0.5, 0, 0.5]);
+	mat4.rotate(m, m, 2 * s, [1, 1, 1]);
+	mat4.translate(m, m, [-0.5, 0, -0.5]);
 	return m;
 }
