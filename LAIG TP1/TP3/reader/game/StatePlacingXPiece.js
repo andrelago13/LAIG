@@ -15,8 +15,12 @@ function StatePlacingXPiece(modx, coords, xPiece) {
 			s.modx.numJokersToPlace = s.numJokersToPlace;
 		})
 	});
+	this.playerXPieces = [];
+	this.playerXPieces[1] = this.modx.getGame().getPlayerInfo(1).getNumXPieces();
+	this.playerXPieces[2] = this.modx.getGame().getPlayerInfo(2).getNumXPieces();
+	this.playerXPieces[xPiece] -= 1;
 	this.coords = coords;
-	this.startPos = this.modx.calculateRemainingXPiecePos(xPiece, this.modx.getGame().getPlayerInfo(xPiece).getNumXPieces() - 1);
+	this.startPos = this.modx.calculateRemainingXPiecePos(xPiece, this.playerXPieces[xPiece]);
 	this.endPos = this.modx.calculateXPiecePos(coords[0], coords[1]);
 	this.xPiece = xPiece;
 	this.startAnimTime = this.modx.scene.getCurrTime();
@@ -24,11 +28,6 @@ function StatePlacingXPiece(modx, coords, xPiece) {
 }
 
 StatePlacingXPiece.prototype.display = function(t) {
-	if ((t - this.startAnimTime >= StatePlacingXPiece.totalAnimTime) && this.numJokersToPlace !== null)
-	{
-		this.modx.updateGame(this.newGame);
-		this.modx.setState(new StateWaitingForPlay(this.modx));
-	}
 	this.modx.displayBoard();
 	for (var y = 0; y < Board.size; y++)
 	{
@@ -43,6 +42,13 @@ StatePlacingXPiece.prototype.display = function(t) {
 	}
 	this.modx.displayXPiece(this.coords[0], this.coords[1], this.xPiece, true);
 	this.displayMovingXPiece(t);
+	this.displayRemainingXPieces(t);
+	
+	if ((t - this.startAnimTime >= StatePlacingXPiece.totalAnimTime) && this.numJokersToPlace !== null)
+	{
+		this.modx.updateGame(this.newGame);
+		this.modx.setState(new StateWaitingForPlay(this.modx));
+	}
 }
 
 StatePlacingXPiece.prototype.displayMovingXPiece = function(t) {
@@ -51,4 +57,12 @@ StatePlacingXPiece.prototype.displayMovingXPiece = function(t) {
 	this.scene.multMatrix(this.animation.getMatrix(t));
 	this.scene.graph.graphNodes["piece" + this.xPiece].display(0);
 	this.scene.popMatrix();
+}
+
+StatePlacingXPiece.prototype.displayRemainingXPieces = function(t) {
+	var game = this.modx.getGame();
+	for (var i = 0; i < this.playerXPieces[1]; i++)
+		this.modx.displayRemainingXPiece(1, i);
+	for (var i = 0; i < this.playerXPieces[2]; i++)
+		this.modx.displayRemainingXPiece(2, i);
 }
