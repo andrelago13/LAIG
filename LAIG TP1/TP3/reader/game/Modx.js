@@ -106,7 +106,7 @@ Modx.prototype.calculateRemainingXPiecePos = function(player, xPieceNum) {
 	case 1: res = vec3.fromValues(0.5, 0, 8.5);
 	return vec3.add(vec3.create(), res, vec3.fromValues(xPieceNum % Modx.xPieceBoxPiecesPerRow, 0, (xPieceNum / Modx.xPieceBoxPiecesPerRow) >> 0));
 	break;
-	case 2: res = vec3.fromValues(7.5, 0, -1.5);
+	case 2: res = vec3.fromValues(6.5, 0, -1.5);
 	return vec3.add(vec3.create(), res, vec3.fromValues(-(xPieceNum % Modx.xPieceBoxPiecesPerRow), 0, -(xPieceNum / Modx.xPieceBoxPiecesPerRow) >> 0));
 	break;
 	default: return null;
