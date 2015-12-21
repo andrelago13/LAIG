@@ -46,6 +46,6 @@ StateMovingJoker.prototype.displayMovingJoker = function(t) {
 	t = t - this.startAnimTime;
 	this.scene.pushMatrix();
 	this.scene.multMatrix(this.animation.getMatrix(t));
-	this.scene.graph.graphNodes["piece0"].display(0);
+	this.scene.graph.graphNodes["piece" + Modx.xPieceTypes.JOKER].display(0);
 	this.scene.popMatrix();
 }
