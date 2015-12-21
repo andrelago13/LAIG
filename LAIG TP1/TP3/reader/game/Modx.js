@@ -63,11 +63,14 @@ Modx.prototype.displayBoard = function() {
 	}
 }
 
+Modx.prototype.calculateXPiecePos = function(x, y) {
+	return vec3.fromValues(x, Modx.sPieceHeight * this.getGame().getBoard().get(x, y).getSPieces().length, y);
+}
+
 Modx.prototype.displayXPiece = function(x, y, type, hover) {
 	this.scene.pushMatrix();
-	var cell = this.getGame().getBoard().get(x, y);
-	var sPieces = cell.getSPieces();
-	this.scene.translate(x, Modx.sPieceHeight * sPieces.length, y);
+	var pos = this.calculateXPiecePos(x, y);
+	this.scene.translate(pos[0], pos[1], pos[2]);
 	var name = "piece" + type;
 	if (hover) name += "_hover";
 	this.scene.graph.graphNodes[name].display(0);
