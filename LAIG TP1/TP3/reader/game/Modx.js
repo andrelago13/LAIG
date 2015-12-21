@@ -4,8 +4,9 @@ Modx.xPieceTypes = {
 		PLAYER1: 1,
 		PLAYER2: 2,
 		HOVER: 0
-}
-
+};
+Modx.numXPiecesPerPlayer = 14;
+Modx.xPieceBoxPiecesPerRow = 7;
 Modx.sPieceHeight = 0.05;
 
 /**
@@ -98,35 +99,32 @@ Modx.prototype.nextPieceType = function() {
 	return (this.numJokersToPlace === 0) ? this.getGame().getCurrPlayer() : Modx.xPieceTypes.JOKER;
 }
 
-Modx.prototype.displayRemainingXPieces = function(player, numXpieces) {
-	this.scene.pushMatrix();
-	
-	var bsize = this.getGame().getBoard().size();
-	var name = "piece" + player;
-	var piece = this.scene.graph.graphNodes[name];
-	
-	if(player == 1) {
-		this.scene.translate(-0.5, 0, 8.5);
-		for(var cell = 1; cell <= numXpieces && cell <= 14; ++cell) {
-			this.scene.translate(1, 0, 0);
-			piece.display(0);
-			if(cell === 7) {
-				this.scene.translate(-7, 0, 1);
-			}
-		}
-	} else if (player == 2) {
-		this.scene.translate(7.5, 0, -1.5);
-		for(var cell = 1; cell <= numXpieces && cell <= 14; ++cell) {
-			this.scene.translate(-1, 0, 0);
-			piece.display(0);
-			if(cell === 7) {
-				this.scene.translate(7, 0, -1);
-			}
-		}
+Modx.prototype.calculateRemainingXPiecePos = function(player, xPieceNum) {
+	var res;
+	switch (player)
+	{
+	case 1: res = vec3.fromValues(0.5, 0, 8.5);
+	return vec3.add(vec3.create(), res, vec3.fromValues(xPieceNum % Modx.xPieceBoxPiecesPerRow, 0, (xPieceNum / Modx.xPieceBoxPiecesPerRow) >> 0));
+	break;
+	case 2: res = vec3.fromValues(7.5, 0, -1.5);
+	return vec3.add(vec3.create(), res, vec3.fromValues(-(xPieceNum % Modx.xPieceBoxPiecesPerRow), 0, -(xPieceNum / Modx.xPieceBoxPiecesPerRow) >> 0));
+	break;
+	default: return null;
 	}
-	
-	
-	
+}
+
+Modx.prototype.displayRemainingXPiece = function(player, xPieceNum) {
+	this.scene.pushMatrix();
+	var pos = this.calculateRemainingXPiecePos(player, xPieceNum);
+	this.scene.translate(pos[0], pos[1], pos[2]);
+	this.scene.graph.graphNodes["piece" + player].display(0);
 	this.scene.popMatrix();
-	
+}
+
+Modx.prototype.displayRemainingXPieces = function(player) {
+	if (player !== 1 && player !== 2) return;
+
+	for(var i = 0; i < Modx.numXPiecesPerPlayer; ++i) {
+		this.displayRemainingXPiece(player, i);
+	}
 }

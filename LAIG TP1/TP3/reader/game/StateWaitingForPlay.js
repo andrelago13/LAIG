@@ -61,10 +61,8 @@ StateWaitingForPlay.prototype.display = function(t) {
 	var board = this.modx.getGame().getBoard();
 	if (this.hovered !== null && board.get(this.hovered[0], this.hovered[1]).isValid())
 		this.modx.displayXPiece(this.hovered[0], this.hovered[1], this.modx.nextPieceType(), true);
-	var p1_pieces = this.modx.getGame().getPlayerInfo(1).getXPieces();
-	var p2_pieces = this.modx.getGame().getPlayerInfo(2).getXPieces();
-	this.modx.displayRemainingXPieces(1, p1_pieces);
-	this.modx.displayRemainingXPieces(2, p2_pieces);
+	this.modx.displayRemainingXPieces(1);
+	this.modx.displayRemainingXPieces(2);
 }
 
 StateWaitingForPlay.prototype.updatePicking = function ()
