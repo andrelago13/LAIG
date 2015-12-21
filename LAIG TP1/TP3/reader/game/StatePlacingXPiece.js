@@ -11,8 +11,8 @@ function StatePlacingXPiece(modx, coords, xPiece) {
 	this.modx.getGame().makePlay(modx, coords[0], coords[1], function(newGame) {
 		s.newGame = newGame;
 		s.modx.client.getRequestReply("num_jokers_to_place(" + newGame.toJSON() + ")", function(data) {
-			s.numJokersToPlace = parseInt(Reply.getText(data));
-			s.modx.numJokersToPlace = s.numJokersToPlace;
+			s.modx.numJokersToPlace = parseInt(Reply.getText(data));
+			s.numJokersToPlace = s.modx.numJokersToPlace;
 		})
 	});
 	this.playerXPieces = [];
