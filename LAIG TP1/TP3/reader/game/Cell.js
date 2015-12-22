@@ -35,7 +35,7 @@ Cell.prototype.getTopSPiece = function() {
 	if (this.sPieces.length === 0)
 		return null;
 	else
-		return sPieces[0];
+		return this.sPieces[0];
 }
 
 Cell.prototype.setXpiece = function(xPiece) {

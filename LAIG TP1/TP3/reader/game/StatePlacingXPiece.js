@@ -3,11 +3,10 @@ StatePlacingXPiece.prototype.constructor = StatePlacingXPiece;
 
 StatePlacingXPiece.totalAnimTime = 1;
 
-function StatePlacingXPiece(modx, coords, xPiece) {
+function StatePlacingXPiece(modx, moveID, coords, xPiece) {
 	this.init(modx);
 	this.newGame = null;
-	var s = this;
-	
+	this.moveID = moveID;
 	this.coords = coords;
 	this.startPos = this.modx.calculateRemainingXPiecePos(xPiece, this.modx.getNumOutsideXPieces(xPiece) - 1);
 	this.endPos = this.modx.calculateXPiecePos(coords[0], coords[1]);
@@ -35,9 +34,9 @@ StatePlacingXPiece.prototype.display = function(t) {
 	this.modx.displayRemainingXPieces(1);
 	this.modx.displayRemainingXPieces(2);
 	
-	if ((t - this.startAnimTime >= StatePlacingXPiece.totalAnimTime))
+	if ((t - this.startAnimTime >= StatePlacingXPiece.totalAnimTime) && this.modx.isPlayResponseReady())
 	{
-		this.modx.setState(new StateWaitingForPlay(this.modx));
+		this.modx.nextMove(this.moveID + 1);
 	}
 	else this.displayMovingXPiece(t);
 }

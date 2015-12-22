@@ -53,7 +53,7 @@ Modx.secondsToStr = function(time) {
 		} else {
 			result += "" + minutes_str[0] + minutes_str[1];
 		}
-		
+
 		return result;
 	}
 }
@@ -67,39 +67,41 @@ function Modx(scene) {
 	var modx = this;
 	this.client.getRequestReply("start_game(8,1)", function(game) { modx.start(game); });
 	this.gameHistory = [];
+	this.playsHistory = [];
 	this.scene = scene;
 	this.state = null;
 	this.numJokersToPlace = 0;
 	this.lastMoveEvent = null;
-	
+
 	this.numOutsideXPieces = [];
 	this.numOutsideXPieces[Modx.pieceTypes.JOKER] = 0;
 	this.numOutsideXPieces[Modx.pieceTypes.PLAYER1] = Modx.numXPiecesPerPlayer;
 	this.numOutsideXPieces[Modx.pieceTypes.PLAYER2] = Modx.numXPiecesPerPlayer;
-	
+
 	this.newGame = null;
-	
+	this.newPlays = null;
+
 	this.hudPlane = new Plane(this.scene, 10);
 	this.ooliteFont = new OoliteFont(this.scene);
-	
+
 	this.start_time = -1;
 };
 
 Modx.prototype.displayHUD = function(t) {
 	if(typeof this.state == 'undefined' || this.gameHistory.length <= 0)
 		return;
-	
+
 	if(this.start_time === -1 || t < this.start_time) {
 		this.start_time = t;
 		return;
 	}
-	
+
 	time_diff = Modx.secondsToStr(t - this.start_time);
-	
+
 	var background = this.ooliteFont.getBackgroundAppearance();
 	background.apply();
 	var text = this.ooliteFont.getAppearance();
-	
+
 	var game = this.getGame();
 	var p1_score = game.getPlayerInfo(1).getScoreString();
 	var p1_n1 = p1_score[0];
@@ -107,375 +109,375 @@ Modx.prototype.displayHUD = function(t) {
 	var p2_score = game.getPlayerInfo(2).getScoreString();
 	var p2_n1 = p2_score[0];
 	var p2_n2 = p2_score[1];
-	
+
 	// Top border
 	this.scene.pushMatrix();
-		this.scene.translate(0, 0.95, 0);
-		this.scene.scale(1, 0.05, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.translate(0, 0.95, 0);
+	this.scene.scale(1, 0.05, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
-	
+
 	// Top-left-margin
 	this.scene.pushMatrix();
-		this.scene.translate(0, 0.8, 0);
-		this.scene.scale(0.2, 0.2, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.translate(0, 0.8, 0);
+	this.scene.scale(0.2, 0.2, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
-	
+
 	// Top-right-margin
 	this.scene.pushMatrix();
-		this.scene.translate(0.8, 0.8, 0);
-		this.scene.scale(0.2, 0.2, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.translate(0.8, 0.8, 0);
+	this.scene.scale(0.2, 0.2, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
-	
+
 	// Mid border 1
 	this.scene.pushMatrix();
-		this.scene.translate(0, 0.75, 0);
-		this.scene.scale(1, 0.05, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.translate(0, 0.75, 0);
+	this.scene.scale(1, 0.05, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
-	
+
 	this.scene.setActiveShaderSimple(this.ooliteFont.getShader())
 	text.apply();
 	// M
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("M")});
-		this.scene.translate(0.2, 0.8, 0);
-		this.scene.scale(0.15, 0.2, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("M")});
+	this.scene.translate(0.2, 0.8, 0);
+	this.scene.scale(0.15, 0.2, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 	// o
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("o")});
-		this.scene.translate(0.35, 0.8, 0);
-		this.scene.scale(0.15, 0.2, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("o")});
+	this.scene.translate(0.35, 0.8, 0);
+	this.scene.scale(0.15, 0.2, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 	// d
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("d")});
-		this.scene.translate(0.5, 0.8, 0);
-		this.scene.scale(0.15, 0.2, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("d")});
+	this.scene.translate(0.5, 0.8, 0);
+	this.scene.scale(0.15, 0.2, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 	// X
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("X")});
-		this.scene.translate(0.65, 0.8, 0);
-		this.scene.scale(0.15, 0.2, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("X")});
+	this.scene.translate(0.65, 0.8, 0);
+	this.scene.scale(0.15, 0.2, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
-	
+
 	// Player 1
 
 	// P (1)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("P")});
-		this.scene.translate(0, 0.65, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("P")});
+	this.scene.translate(0, 0.65, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// l (1)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("l")});
-		this.scene.translate(0.09, 0.65, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("l")});
+	this.scene.translate(0.09, 0.65, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// a (1)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("a")});
-		this.scene.translate(0.18, 0.65, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("a")});
+	this.scene.translate(0.18, 0.65, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// y (1)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("y")});
-		this.scene.translate(0.27, 0.65, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("y")});
+	this.scene.translate(0.27, 0.65, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// e (1)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("e")});
-		this.scene.translate(0.36, 0.65, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("e")});
+	this.scene.translate(0.36, 0.65, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// r (1)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("r")});
-		this.scene.translate(0.45, 0.65, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("r")});
+	this.scene.translate(0.45, 0.65, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// 1 (1)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("1")});
-		this.scene.translate(0.54, 0.65, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("1")});
+	this.scene.translate(0.54, 0.65, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// : (1)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(":")});
-		this.scene.translate(0.63, 0.65, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(":")});
+	this.scene.translate(0.63, 0.65, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// " " (1)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
-		this.scene.translate(0.72, 0.65, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
+	this.scene.translate(0.72, 0.65, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// N1 (1)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("" + p1_n1)});
-		this.scene.translate(0.81, 0.65, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("" + p1_n1)});
+	this.scene.translate(0.81, 0.65, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// N2 (1)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("" + p1_n2)});
-		this.scene.translate(0.9, 0.65, 0);
-		this.scene.scale(0.1, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("" + p1_n2)});
+	this.scene.translate(0.9, 0.65, 0);
+	this.scene.scale(0.1, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
-	
+
 	// Player 2
 
 	// P (2)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("P")});
-		this.scene.translate(0, 0.55, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("P")});
+	this.scene.translate(0, 0.55, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// l (2)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("l")});
-		this.scene.translate(0.09, 0.55, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("l")});
+	this.scene.translate(0.09, 0.55, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// a (2)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("a")});
-		this.scene.translate(0.18, 0.55, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("a")});
+	this.scene.translate(0.18, 0.55, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// y (2)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("y")});
-		this.scene.translate(0.27, 0.55, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("y")});
+	this.scene.translate(0.27, 0.55, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// e (2)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("e")});
-		this.scene.translate(0.36, 0.55, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("e")});
+	this.scene.translate(0.36, 0.55, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// r (2)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("r")});
-		this.scene.translate(0.45, 0.55, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("r")});
+	this.scene.translate(0.45, 0.55, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// 2 (2)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("2")});
-		this.scene.translate(0.54, 0.55, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("2")});
+	this.scene.translate(0.54, 0.55, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// : (2)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(":")});
-		this.scene.translate(0.63, 0.55, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(":")});
+	this.scene.translate(0.63, 0.55, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// " " (2)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
-		this.scene.translate(0.72, 0.55, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
+	this.scene.translate(0.72, 0.55, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// N1 (2)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("" + p2_n1)});
-		this.scene.translate(0.81, 0.55, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("" + p2_n1)});
+	this.scene.translate(0.81, 0.55, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// N2 (2)
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("" + p2_n2)});
-		this.scene.translate(0.9, 0.55, 0);
-		this.scene.scale(0.1, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("" + p2_n2)});
+	this.scene.translate(0.9, 0.55, 0);
+	this.scene.scale(0.1, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
-	
+
 	// Time
 
 	// T
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("T")});
-		this.scene.translate(0, 0.45, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("T")});
+	this.scene.translate(0, 0.45, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// i
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("i")});
-		this.scene.translate(0.09, 0.45, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("i")});
+	this.scene.translate(0.09, 0.45, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// m
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("m")});
-		this.scene.translate(0.18, 0.45, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("m")});
+	this.scene.translate(0.18, 0.45, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// e
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("e")});
-		this.scene.translate(0.27, 0.45, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("e")});
+	this.scene.translate(0.27, 0.45, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// :
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(":")});
-		this.scene.translate(0.36, 0.45, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(":")});
+	this.scene.translate(0.36, 0.45, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// " "
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
-		this.scene.translate(0.45, 0.45, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
+	this.scene.translate(0.45, 0.45, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// D1
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[0])});
-		this.scene.translate(0.54, 0.45, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[0])});
+	this.scene.translate(0.54, 0.45, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// D2
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[1])});
-		this.scene.translate(0.63, 0.45, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[1])});
+	this.scene.translate(0.63, 0.45, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// :
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[2])});
-		this.scene.translate(0.72, 0.45, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[2])});
+	this.scene.translate(0.72, 0.45, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// D3
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[3])});
-		this.scene.translate(0.81, 0.45, 0);
-		this.scene.scale(0.09, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[3])});
+	this.scene.translate(0.81, 0.45, 0);
+	this.scene.scale(0.09, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 
 	// D4
 	this.scene.pushMatrix();
-		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[4])});
-		this.scene.translate(0.90, 0.45, 0);
-		this.scene.scale(0.1, 0.1, 1);
-		this.scene.translate(0.5, 0.5, 0);
-		this.hudPlane.display();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[4])});
+	this.scene.translate(0.90, 0.45, 0);
+	this.scene.scale(0.1, 0.1, 1);
+	this.scene.translate(0.5, 0.5, 0);
+	this.hudPlane.display();
 	this.scene.popMatrix();
 }
 
@@ -483,7 +485,20 @@ Modx.prototype.start = function(game) {
 	this.setState(new StateWaitingForPlay(this));
 	this.gameHistory = [];
 	this.gameHistory = [new Game(game)];
+	this.playsHistory = [];
+	this.newGame = null;
+	this.newPlay = null;
 	return this.getGame();
+}
+
+Modx.prototype.nextTurn = function() {
+	this.updateGame();
+	this.newGame = null;
+	this.newPlay = null;
+}
+
+Modx.prototype.isPlayResponseReady = function() {
+	return this.newGame && this.newPlay;
 }
 
 Modx.prototype.getGame = function() {
@@ -499,6 +514,46 @@ Modx.prototype.getGameFromLast = function(index) {
 Modx.prototype.updateGame = function() {
 	if (this.newGame !== null)
 		this.gameHistory.push(this.newGame);
+}
+
+Modx.prototype.getPlay = function() {
+	return this.playHistory[this.playHistory.length - 1];
+}
+
+Modx.prototype.updatePlay = function() {
+	if (this.newPlay !== null)
+		this.playHistory.push(this.newPlay);
+}
+
+Modx.prototype.nextMove = function(moveID) {
+	if (moveID === this.newPlay.length)
+	{
+		this.setState(new StateWaitingForPlay(this));
+		return;
+	}
+	var move = this.newPlay[moveID];
+	if (move[1]) // Place
+	{
+		switch (move[0])
+		{
+		case Modx.pieceTypes.JOKER:
+		case Modx.pieceTypes.PLAYER1:
+		case Modx.pieceTypes.PLAYER2:
+			this.setState(new StatePlacingXPiece(this, moveID, move[2], move[0]));
+			break;
+		case Modx.pieceTypes.SPIECE_P1:
+		case Modx.pieceTypes.SPIECE_P2:
+			// TODO
+			console.error("Unimplemented feature: placing spieces on the board.");
+			break;
+		}
+	}
+	else // Remove
+	{
+		// TODO
+		console.error("Unimplemented feature: removing pieces from the board.");
+	}
+	return;
 }
 
 Modx.prototype.setState = function(state) {

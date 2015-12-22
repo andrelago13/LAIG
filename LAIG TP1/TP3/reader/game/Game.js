@@ -137,7 +137,7 @@ Game.prototype.compare = function(coords, newGame) {
 	curr_piece = g2_board.get(coords[0], coords[1]);
 	
 	if(curr_piece.getXpiece() != Modx.pieceTypes.NONE) {	// Peça colocada sem ponto
-		result.push([curr_piece.getXpiece(), true, coords]);
+		result.push([this.getCurrPlayer(), true, coords]);
 	} else {												// Peça colocada com ponto
 		// Peça colocada
 		result.push([this.getCurrPlayer(), true, coords]);
@@ -153,7 +153,7 @@ Game.prototype.compare = function(coords, newGame) {
 				}
 				
 				if(g1_board.get(x, y).getTopSPiece() != g2_board.get(x, y).getTopSPiece()) {								// Base adicionada
-					added_bases.push([g2_board.get(x, y).getTopSPiece(), true, [x, y]]);
+					added_bases.push([g2_board.get(x, y).getTopSPiece() + Modx.pieceTypes.SPIECE_P1 - Modx.pieceTypes.PLAYER1, true, [x, y]]);
 				}
 			}
 		}
