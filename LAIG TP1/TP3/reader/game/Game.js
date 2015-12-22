@@ -122,6 +122,12 @@ Game.prototype.makePlay = function(modx, x, y, successHandler, errorHandler) {
 	});
 }
 
+/*
+[
+		[Modx.pieceTypes.PLAYER1, true, [4, 4]],
+		[Modx.pieceTypes.PLAYER1, false, [4, 4]]
+]
+ */
 Game.prototype.compare = function(coords, newGame) {
 	var result = [];
 	
@@ -138,3 +144,4 @@ Game.prototype.compare = function(coords, newGame) {
 
 
 
+	
