@@ -20,8 +20,9 @@ Interface.prototype.init = function(application) {
 	CGFinterface.prototype.init.call(this, application);
 	this.gui = new dat.GUI();
 	this.lights = this.gui.addFolder("Lights");
+	this.modxFolder = this.gui.addFolder("Play ModX");
 	
-	this.camera = this.gui.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
+	this.camera = this.modxFolder.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
 	var scene = this.scene;
 	this.camera.onChange(function(value) {
 		scene.oldCameraPosition = vec3.clone(scene.camera.position);
@@ -31,9 +32,17 @@ Interface.prototype.init = function(application) {
 		scene.cameraTotalAnimTime = 1;
 	});
 	
-	this.gui.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
+	this.modxFolder.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
 	this.derp = 0;
 	this.modx = null;
+	
+	this.modxFolder.open();
+    //this.gui.__ul.removeChild(this.lights.domElement.parentNode);
+
+	this.startGameFolder = this.gui.addFolder("Start ModX");
+	this.startGameFolder.add(this.scene, 'startGameDifficulty', this.scene.startGameDifficulties).name("Game Type");
+	this.startGameFolder.add(this.scene, "startGame").name("Start Game");
+	
 	return true;
 };
 

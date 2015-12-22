@@ -46,6 +46,12 @@ XMLscene.prototype.init = function (application) {
 	this.setActiveShader(this.shader);
 
 	this.modx = new Modx(this, application.interface);
+	
+	this.startGameDifficulty = '2 Players';
+	this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Hard CPU'];
+	this.startGameDifficulties['2 Players'] = 0;
+	this.startGameDifficulties['vs. Easy CPU'] = 1;
+	this.startGameDifficulties['vs. Hard CPU'] = 2;
 };
 
 XMLscene.prototype.getCurrTime = function() {
@@ -210,6 +216,10 @@ XMLscene.prototype.updateCameras = function(t) {
 		vec3.lerp(this.camera.position, this.oldCameraPosition, this.newCameraPosition, this.cameraAnimTime / this.cameraTotalAnimTime);
 		this.cameraAnimTime = t - this.cameraAnimStartTime;
 	}
+}
+
+XMLscene.prototype.startGame = function() {
+	console.log(this.startGameDifficulty);
 }
 
 /**
