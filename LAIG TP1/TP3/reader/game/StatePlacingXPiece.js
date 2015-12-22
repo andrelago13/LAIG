@@ -37,7 +37,7 @@ StatePlacingXPiece.prototype.display = function(t) {
 			this.modx.displaySPieces(x, y);
 			var cell = this.modx.getGame().getBoard().get(x, y);
 			var xPiece = cell.getXpiece();
-			if (xPiece !== Modx.xPieceTypes.NONE)
+			if (xPiece !== Modx.pieceTypes.NONE)
 				this.modx.displayXPiece(x, y, xPiece);
 		}
 	}
