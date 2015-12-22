@@ -6,25 +6,15 @@ StatePlacingXPiece.totalAnimTime = 1;
 function StatePlacingXPiece(modx, coords, xPiece) {
 	this.init(modx);
 	this.newGame = null;
-	this.numJokersToPlace = null;
 	var s = this;
-	this.modx.getGame().makePlay(modx, coords[0], coords[1], function(newGame) {
-		s.newGame = newGame;
-		s.modx.client.getRequestReply("num_jokers_to_place(" + newGame.toJSON() + ")", function(data) {
-			s.modx.numJokersToPlace = parseInt(Reply.getText(data));
-			s.numJokersToPlace = s.modx.numJokersToPlace;
-		})
-	});
-	this.playerXPieces = [];
-	this.playerXPieces[1] = this.modx.getGame().getPlayerInfo(1).getNumXPieces();
-	this.playerXPieces[2] = this.modx.getGame().getPlayerInfo(2).getNumXPieces();
-	this.playerXPieces[xPiece] -= 1;
+	
 	this.coords = coords;
-	this.startPos = this.modx.calculateRemainingXPiecePos(xPiece, this.playerXPieces[xPiece]);
+	this.startPos = this.modx.calculateRemainingXPiecePos(xPiece, this.modx.getNumOutsideXPieces(xPiece) - 1);
 	this.endPos = this.modx.calculateXPiecePos(coords[0], coords[1]);
 	this.xPiece = xPiece;
 	this.startAnimTime = this.modx.scene.getCurrTime();
 	this.animation = new PieceAnimation(0, StatePlacingXPiece.totalAnimTime, this.startPos, this.endPos, 2);
+	this.modx.decNumOutsideXPieces(xPiece);
 }
 
 StatePlacingXPiece.prototype.display = function(t) {
@@ -42,11 +32,11 @@ StatePlacingXPiece.prototype.display = function(t) {
 		}
 	}
 	this.modx.displayXPiece(this.coords[0], this.coords[1], this.xPiece, true);
-	this.displayRemainingXPieces(t);
+	this.modx.displayRemainingXPieces(1);
+	this.modx.displayRemainingXPieces(2);
 	
-	if ((t - this.startAnimTime >= StatePlacingXPiece.totalAnimTime) && this.numJokersToPlace !== null)
+	if ((t - this.startAnimTime >= StatePlacingXPiece.totalAnimTime))
 	{
-		this.modx.updateGame(this.newGame);
 		this.modx.setState(new StateWaitingForPlay(this.modx));
 	}
 	else this.displayMovingXPiece(t);
@@ -58,12 +48,4 @@ StatePlacingXPiece.prototype.displayMovingXPiece = function(t) {
 	this.scene.multMatrix(this.animation.getMatrix(t));
 	this.scene.graph.graphNodes["piece" + this.xPiece].display(0);
 	this.scene.popMatrix();
-}
-
-StatePlacingXPiece.prototype.displayRemainingXPieces = function(t) {
-	var game = this.modx.getGame();
-	for (var i = 0; i < this.playerXPieces[1]; i++)
-		this.modx.displayRemainingXPiece(1, i);
-	for (var i = 0; i < this.playerXPieces[2]; i++)
-		this.modx.displayRemainingXPiece(2, i);
 }
