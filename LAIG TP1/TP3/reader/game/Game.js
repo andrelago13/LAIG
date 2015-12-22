@@ -134,7 +134,11 @@ Game.prototype.compare = function(coords, newGame) {
 	var g1_board = this.getBoard().getBoard();
 	var g2_board = newGame.getBoard().getBoard();
 	
-	
+	curr_piece = g2_board.get(coods[0], coords[1]);
+	if(curr_piece.getXpiece != 0) {
+		result.push(Modx.pieceTypes[curr_piece.getXpiece]);
+	}
+	console.log("ola");
 }
 
 

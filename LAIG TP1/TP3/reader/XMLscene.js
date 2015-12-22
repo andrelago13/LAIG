@@ -133,7 +133,7 @@ XMLscene.prototype.initScenarios = function () {
 	var skyscenario = new AfternoonSkyScenario(this);
 
 	this.scenarioNames = [skyscenario.getName(), moonscenario.getName()];
-	this.scenarioName = this.scenarioNames[0];
+	this.scenarioName = this.scenarioNames[1];
 	this.scenarios = [];
 
 	this.scenarios[skyscenario.getName()] = skyscenario;
