@@ -71,7 +71,11 @@ function Modx(scene) {
 	this.state = null;
 	this.numJokersToPlace = 0;
 	this.lastMoveEvent = null;
-	this.numRemovedJokers = 0;
+	
+	this.numOutsideXPieces = [];
+	this.numOutsideXPieces[Modx.pieceTypes.JOKER] = 0;
+	this.numOutsideXPieces[Modx.pieceTypes.PLAYER1] = Modx.numXPiecesPerPlayer;
+	this.numOutsideXPieces[Modx.pieceTypes.PLAYER2] = Modx.numXPiecesPerPlayer;
 	
 	this.hudPlane = new Plane(this.scene, 10);
 	this.ooliteFont = new OoliteFont(this.scene);
@@ -551,16 +555,16 @@ Modx.prototype.onClick = function(event) {
 		this.state.onClick(event);
 }
 
-Modx.prototype.incNumRemovedJokers = function() {
-	this.numRemovedJokers++;
+Modx.prototype.incNumOutsideXPieces = function(type) {
+	this.numOutsideXPieces[type]++;
 }
 
-Modx.prototype.decNumRemovedJokers = function() {
-	this.numRemovedJokers--;
+Modx.prototype.decNumOutsideXPieces = function(type) {
+	this.numOutsideXPieces[type]--;
 }
 
-Modx.prototype.getNumRemovedJokers = function() {
-	return this.numRemovedJokers;
+Modx.prototype.getNumOutsideXPieces = function(type) {
+	return this.numOutsideXPieces[type];
 }
 
 Modx.prototype.nextPieceType = function() {
@@ -592,7 +596,7 @@ Modx.prototype.displayRemainingXPiece = function(player, xPieceNum) {
 Modx.prototype.displayRemainingXPieces = function(player) {
 	if (player !== 1 && player !== 2) return;
 
-	for(var i = 0; i < this.getGame().getPlayerInfo(player).getNumXPieces(); ++i) {
+	for(var i = 0; i < this.getNumOutsideXPieces(player); ++i) {
 		this.displayRemainingXPiece(player, i);
 	}
 }

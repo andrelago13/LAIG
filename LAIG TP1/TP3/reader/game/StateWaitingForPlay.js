@@ -35,7 +35,7 @@ StateWaitingForPlay.prototype.display = function(t) {
 		{
 			// Draw cell
 			if (this.modx.getGame().getBoard().get(x, y).getXpiece() === Modx.pieceTypes.NONE)
-				this.scene.registerForPick(y * Board.size + x, [x, y]);
+				this.scene.registerForPick(y * Board.size + x + 1 , [x, y]);
 			this.scene.graph.graphNodes["cell"].display(0);
 			this.scene.clearPickRegistration();
 			this.scene.translate(1, 0, 0);
