@@ -123,5 +123,18 @@ Game.prototype.makePlay = function(modx, x, y, successHandler, errorHandler) {
 }
 
 Game.prototype.compare = function(coords, newGame) {
+	var result = [];
+	
+	var g1_board = this.getBoard().getBoard();
+	var g2_board = newGame.getBoard().getBoard();
+	
 	
 }
+
+
+
+
+
+
+
+
