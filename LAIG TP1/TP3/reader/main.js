@@ -27,6 +27,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js'
                'primitives/Teapot.js', 
                'primitives/ReversedSphere.js', 
                'primitives/Skybox.js', 
+               'fonts/OoliteFont.js', 
                'robot/MyHalfSphere.js', 
                'robot/MyRobotWheel.js', 
                'robot/MyRobot.js', 
