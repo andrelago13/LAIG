@@ -123,5 +123,10 @@ Game.prototype.makePlay = function(modx, x, y, successHandler, errorHandler) {
 }
 
 Game.prototype.compare = function(coords, newGame) {
-	
+	/*
+	[
+ 		[Modx.pieceTypes.PLAYER1, true, [4, 4]],
+ 		[Modx.pieceTypes.PLAYER1, false, [4, 4]]
+	]
+	 */
 }
