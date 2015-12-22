@@ -47,17 +47,8 @@ XMLscene.prototype.init = function (application) {
 
 	this.modx = new Modx(this, application.interface);
 	
-	this.testplane = new Plane(this, 10);
-	this.testfontshader = new CGFshader(this.gl, "shaders/Font/font.vert", "shaders/Font/font.frag");
-	this.testfontshader.setUniformsValues({'dims': [16, 16]});
-	this.testappearance = new CGFappearance(this);
-	this.testappearance.setAmbient(0.3, 0.3, 0.3, 1);
-	this.testappearance.setDiffuse(0.7, 0.7, 0.7, 1);
-	this.testappearance.setSpecular(0.0, 0.0, 0.0, 1);	
-	this.testappearance.setShininess(120);
-	this.testfontTexture = new CGFtexture(this, "fonts/oolite-font.png");
-	this.testappearance.setTexture(this.testfontTexture);
-	this.testfontobj = new OoliteFont(this);
+	this.hudplane = new Plane(this, 10);
+	this.oolite_font = new OoliteFont(this);
 };
 
 XMLscene.prototype.getCurrTime = function() {
@@ -237,12 +228,12 @@ XMLscene.prototype.display = function () {
 	this.loadIdentity();
 
 	// Display game hud
-	/*this.setActiveShaderSimple(this.testfontshader);
-	this.pushMatrix();
-		this.testappearance.apply();
-		this.activeShader.setUniformsValues({'charCoords': this.testfontobj.getCharCoords("A")});
+	/*this.pushMatrix();
+		this.setActiveShaderSimple(this.oolite_font.getShader());	//this.setActiveShaderSimple(this.testfontshader);
+		this.oolite_font.getAppearance().apply();	//this.testappearance.apply();
+		this.activeShader.setUniformsValues({'charCoords': this.oolite_font.getCharCoords("A")});//this.activeShader.setUniformsValues({'charCoords': this.testfontobj.getCharCoords("A")});
 		this.translate(-3.3,1.4,-10);
-		this.testplane.display();
+		this.hudplane.display();
 	this.popMatrix();
 	this.setActiveShaderSimple(this.defaultShader);
 	this.defaultAppearance.apply();*/

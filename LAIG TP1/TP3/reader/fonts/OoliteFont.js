@@ -2,7 +2,15 @@ OoliteFont.prototype.constructor = OoliteFont;
 
 function OoliteFont(scene) {
 	this.scene = scene;
-	
+	this.shader = new CGFshader(scene.gl, "shaders/Font/font.vert", "shaders/Font/font.frag");
+	this.shader.setUniformsValues({'dims': [16, 16]});
+	this.appearance = new CGFappearance(scene);
+	this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
+	this.appearance.setDiffuse(0.7, 0.7, 0.7, 1);
+	this.appearance.setSpecular(0.0, 0.0, 0.0, 1);	
+	this.appearance.setShininess(120);
+	this.texture = new CGFtexture(scene, "fonts/oolite-font.png");
+	this.appearance.setTexture(this.texture);
 }
 
 OoliteFont.prototype.getCharCoords = function(char) {
@@ -150,4 +158,12 @@ OoliteFont.prototype.getCharCoords = function(char) {
 			return [15, 0];
 		}
 	}
+}
+
+OoliteFont.prototype.getAppearance = function() {
+	return this.appearance;
+}
+
+OoliteFont.prototype.getShader = function() {
+	return this.shader;
 }
