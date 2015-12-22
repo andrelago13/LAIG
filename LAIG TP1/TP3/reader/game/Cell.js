@@ -32,7 +32,7 @@ Cell.prototype.getSPieces = function() {
 }
 
 Cell.prototype.getTopSPiece = function() {
-	if (sPieces.length === 0)
+	if (this.sPieces.length === 0)
 		return null;
 	else
 		return sPieces[0];

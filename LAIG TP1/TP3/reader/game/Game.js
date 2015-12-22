@@ -130,15 +130,43 @@ Game.prototype.makePlay = function(modx, x, y, successHandler, errorHandler) {
  */
 Game.prototype.compare = function(coords, newGame) {
 	var result = [];
+	var g1_board = this.getBoard();
+	var g2_board = newGame.getBoard();
+	var board_size = g1_board.size();
 	
-	var g1_board = this.getBoard().getBoard();
-	var g2_board = newGame.getBoard().getBoard();
+	curr_piece = g2_board.get(coords[0], coords[1]);
 	
-	curr_piece = g2_board.get(coods[0], coords[1]);
-	if(curr_piece.getXpiece != 0) {
-		result.push(Modx.pieceTypes[curr_piece.getXpiece]);
+	if(curr_piece.getXpiece() != Modx.pieceTypes.NONE) {	// Peça colocada sem ponto
+		result.push([curr_piece.getXpiece(), true, coords]);
+	} else {												// Peça colocada com ponto
+		// Peça colocada
+		result.push([curr_piece.getXpiece(), true, coords]);
+		var removed_xpieces = [];
+		var added_bases = [];
+		
+		for(var x = 0; x < board_size; ++x) {
+			for(var y = 0; y < board_size; ++y) {
+				if((g1_board.get(x, y).getXpiece() != Modx.pieceTypes.NONE && g2_board.get(x, y).getXpiece() == Modx.pieceTypes.NONE)
+						|| (x == coords[0] && y == coords[1])){																// Peça removida do padrão
+					removed_xpieces.push([g1_board.get(x, y).getXpiece(), false, [x, y]]);
+				}
+				
+				if(g1_board.get(x, y).getTopSPiece() != g2_board.get(x, y).getTopSPiece()) {								// Base adicionada
+					added_bases.push([g2_board.get(x, y).getTopSPiece(), true, [x, y]]);
+				}
+			}
+		}
+		
+		for(var i = 0; i < removed_xpieces.length; ++i) {
+			result.push(removed_xpieces[i]);
+		}
+		
+		for(var i = 0; i < added_bases.length; ++i) {
+			result.push(added_bases[i]);
+		}
 	}
-	console.log("ola");
+	
+	return result;
 }
 
 
