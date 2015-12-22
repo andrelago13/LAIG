@@ -223,24 +223,14 @@ XMLscene.prototype.display = function () {
 	// Initialize Model-View matrix as identity (no transformation)
 	this.updateProjectionMatrix();
 	this.loadIdentity();
-
-//	// Display game hud
-//	if(this.ready) {
-//		this.pushMatrix();
-//			this.translate(-3.3,1,-10);
-//			this.modx.displayHUD();
-//		this.popMatrix();
-//		this.setActiveShaderSimple(this.defaultShader);
-//		this.defaultAppearance.apply();
-//	}
-
+	
+	this.setActiveShaderSimple(this.shader);
+	
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
 
 	// Draw axis
 	this.axis.display();
-
-	this.setDefaultAppearance();
 
 	this.updateCameras(this.currTime);
 	// ---- END Background, camera and axis setup
@@ -253,8 +243,7 @@ XMLscene.prototype.display = function () {
 
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
-		this.setActiveShaderSimple(this.shader);
-		this.graph.graphNodes["piece_boxes"].display(0);
+		this.setDefaultAppearance();
 		this.scenarios[this.scenarioName].display(this.currTime);
 		this.modx.display(this.currTime);
 	};
@@ -266,7 +255,6 @@ XMLscene.prototype.display = function () {
 			this.translate(-3.3,1,-10);
 			this.modx.displayHUD();
 		this.popMatrix();
-		this.setActiveShaderSimple(this.shader);
 		this.defaultAppearance.apply();
 	}
 };

@@ -29,6 +29,7 @@ function StatePlacingXPiece(modx, coords, xPiece) {
 
 StatePlacingXPiece.prototype.display = function(t) {
 	this.modx.displayBoard();
+	this.modx.displayXPieceBoxes();
 	for (var y = 0; y < Board.size; y++)
 	{
 		for (var x = 0; x < Board.size; x++)

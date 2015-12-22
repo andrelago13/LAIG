@@ -358,6 +358,10 @@ Modx.prototype.displayBoard = function() {
 	}
 }
 
+Modx.prototype.displayXPieceBoxes = function() {
+	this.scene.graph.graphNodes["piece_boxes"].display(0);
+}
+
 Modx.prototype.calculateXPiecePos = function(x, y) {
 	return vec3.fromValues(x, Modx.sPieceHeight * this.getGame().getBoard().get(x, y).getSPieces().length, y);
 }

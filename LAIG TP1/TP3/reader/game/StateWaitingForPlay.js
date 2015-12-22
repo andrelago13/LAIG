@@ -42,7 +42,8 @@ StateWaitingForPlay.prototype.display = function(t) {
 		}
 		this.scene.popMatrix();
 	}
-	this.scene.graph.graphNodes["board"].display(0);
+	this.modx.displayBoard();
+	this.modx.displayXPieceBoxes();
 	for (var y = 0; y < Board.size; y++)
 	{
 		for (var x = 0; x < Board.size; x++)
