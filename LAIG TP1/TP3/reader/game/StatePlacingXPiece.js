@@ -41,7 +41,6 @@ StatePlacingXPiece.prototype.display = function(t) {
 		}
 	}
 	this.modx.displayXPiece(this.coords[0], this.coords[1], this.xPiece, true);
-	this.displayMovingXPiece(t);
 	this.displayRemainingXPieces(t);
 	
 	if ((t - this.startAnimTime >= StatePlacingXPiece.totalAnimTime) && this.numJokersToPlace !== null)
@@ -49,6 +48,7 @@ StatePlacingXPiece.prototype.display = function(t) {
 		this.modx.updateGame(this.newGame);
 		this.modx.setState(new StateWaitingForPlay(this.modx));
 	}
+	else this.displayMovingXPiece(t);
 }
 
 StatePlacingXPiece.prototype.displayMovingXPiece = function(t) {
