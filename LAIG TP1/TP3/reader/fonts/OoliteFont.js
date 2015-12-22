@@ -11,6 +11,12 @@ function OoliteFont(scene) {
 	this.appearance.setShininess(120);
 	this.texture = new CGFtexture(scene, "fonts/oolite-font.png");
 	this.appearance.setTexture(this.texture);
+	
+	this.backgroundAppearance =  new CGFappearance(scene);
+	this.backgroundAppearance.setAmbient(0, 0, 0, 1);
+	this.backgroundAppearance.setDiffuse(0.7, 0.7, 0.7, 1);
+	this.backgroundAppearance.setSpecular(0.0, 0.0, 0.0, 1);	
+	this.backgroundAppearance.setShininess(120);
 }
 
 OoliteFont.prototype.getCharCoords = function(char) {
@@ -150,6 +156,8 @@ OoliteFont.prototype.getCharCoords = function(char) {
 		}
 	} else {
 		switch(char) {
+		case " ":
+			return [15, 0];
 		case ":":
 			return [10, 3];
 		case "!":
@@ -158,6 +166,10 @@ OoliteFont.prototype.getCharCoords = function(char) {
 			return [15, 0];
 		}
 	}
+}
+
+OoliteFont.prototype.getBackgroundAppearance = function() {
+	return this.backgroundAppearance;
 }
 
 OoliteFont.prototype.getAppearance = function() {

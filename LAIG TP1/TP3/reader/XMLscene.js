@@ -27,7 +27,7 @@ XMLscene.prototype.init = function (application) {
 	this.gl.depthFunc(this.gl.LESS);
 	this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 	this.gl.enable(this.gl.BLEND);
-	
+
 	this.defaultAppearance = new CGFappearance(this);
 
 	this.axis=new CGFaxis(this);
@@ -46,9 +46,6 @@ XMLscene.prototype.init = function (application) {
 	this.setActiveShader(this.shader);
 
 	this.modx = new Modx(this, application.interface);
-	
-	this.hudplane = new Plane(this, 10);
-	this.oolite_font = new OoliteFont(this);
 };
 
 XMLscene.prototype.getCurrTime = function() {
@@ -128,11 +125,11 @@ XMLscene.prototype.setInitials = function () {
 XMLscene.prototype.initScenarios = function () {
 	var moonscenario = new MoonLandingScenario(this);
 	var skyscenario = new AfternoonSkyScenario(this);
-	
+
 	this.scenarioNames = [skyscenario.getName(), moonscenario.getName()];
 	this.scenarioName = this.scenarioNames[0];
 	this.scenarios = [];
-	
+
 	this.scenarios[skyscenario.getName()] = skyscenario;
 	this.scenarios[moonscenario.getName()] = moonscenario;
 }
@@ -228,15 +225,14 @@ XMLscene.prototype.display = function () {
 	this.loadIdentity();
 
 	// Display game hud
-	/*this.pushMatrix();
-		this.setActiveShaderSimple(this.oolite_font.getShader());	//this.setActiveShaderSimple(this.testfontshader);
-		this.oolite_font.getAppearance().apply();	//this.testappearance.apply();
-		this.activeShader.setUniformsValues({'charCoords': this.oolite_font.getCharCoords("A")});//this.activeShader.setUniformsValues({'charCoords': this.testfontobj.getCharCoords("A")});
-		this.translate(-3.3,1.4,-10);
-		this.hudplane.display();
-	this.popMatrix();
-	this.setActiveShaderSimple(this.defaultShader);
-	this.defaultAppearance.apply();*/
+	if(this.ready) {
+		this.pushMatrix();
+			this.translate(-3.3,1,-10);
+			this.modx.displayHUD();
+		this.popMatrix();
+		this.setActiveShaderSimple(this.defaultShader);
+		this.defaultAppearance.apply();
+	}
 
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();

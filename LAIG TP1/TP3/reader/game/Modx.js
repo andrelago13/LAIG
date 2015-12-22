@@ -22,7 +22,302 @@ function Modx(scene) {
 	this.state = null;
 	this.numJokersToPlace = 0;
 	this.lastMoveEvent = null;
+	
+	this.hudPlane = new Plane(this.scene, 10);
+	this.ooliteFont = new OoliteFont(this.scene);
 };
+
+Modx.prototype.displayHUD = function() {
+	if(typeof this.state == 'undefined' || this.gameHistory.length <= 0)
+		return;
+	
+	var background = this.ooliteFont.getBackgroundAppearance();
+	background.apply();
+	var text = this.ooliteFont.getAppearance();
+	
+	var game = this.getGame();
+	var p1_score = game.getPlayerInfo(1).getScoreString();
+	var p1_n1 = p1_score[0];
+	var p1_n2 = p1_score[1];
+	var p2_score = game.getPlayerInfo(2).getScoreString();
+	var p2_n1 = p2_score[0];
+	var p2_n2 = p2_score[1];
+	
+	// Top border
+	this.scene.pushMatrix();
+		this.scene.translate(0, 0.95, 0);
+		this.scene.scale(1, 0.05, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+	
+	// Top-left-margin
+	this.scene.pushMatrix();
+		this.scene.translate(0, 0.8, 0);
+		this.scene.scale(0.2, 0.2, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+	
+	// Top-right-margin
+	this.scene.pushMatrix();
+		this.scene.translate(0.8, 0.8, 0);
+		this.scene.scale(0.2, 0.2, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+	
+	// Mid border 1
+	this.scene.pushMatrix();
+		this.scene.translate(0, 0.75, 0);
+		this.scene.scale(1, 0.05, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+	
+	this.scene.setActiveShaderSimple(this.ooliteFont.getShader())
+	text.apply();
+	// M
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("M")});
+		this.scene.translate(0.2, 0.8, 0);
+		this.scene.scale(0.15, 0.2, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+	// o
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("o")});
+		this.scene.translate(0.35, 0.8, 0);
+		this.scene.scale(0.15, 0.2, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+	// d
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("d")});
+		this.scene.translate(0.5, 0.8, 0);
+		this.scene.scale(0.15, 0.2, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+	// X
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("X")});
+		this.scene.translate(0.65, 0.8, 0);
+		this.scene.scale(0.15, 0.2, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+	
+	// Player 1
+
+	// P (1)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("P")});
+		this.scene.translate(0, 0.65, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// l (1)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("l")});
+		this.scene.translate(0.09, 0.65, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// a (1)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("a")});
+		this.scene.translate(0.18, 0.65, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// y (1)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("y")});
+		this.scene.translate(0.27, 0.65, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// e (1)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("e")});
+		this.scene.translate(0.36, 0.65, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// r (1)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("r")});
+		this.scene.translate(0.45, 0.65, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// 1 (1)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("1")});
+		this.scene.translate(0.54, 0.65, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// : (1)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(":")});
+		this.scene.translate(0.63, 0.65, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// " " (1)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
+		this.scene.translate(0.72, 0.65, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// N1 (1)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("" + p1_n1)});
+		this.scene.translate(0.81, 0.65, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// N2 (1)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("" + p1_n2)});
+		this.scene.translate(0.9, 0.65, 0);
+		this.scene.scale(0.1, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+	
+	// Player 2
+
+	// P (2)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("P")});
+		this.scene.translate(0, 0.55, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// l (2)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("l")});
+		this.scene.translate(0.09, 0.55, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// a (2)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("a")});
+		this.scene.translate(0.18, 0.55, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// y (2)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("y")});
+		this.scene.translate(0.27, 0.55, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// e (2)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("e")});
+		this.scene.translate(0.36, 0.55, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// r (2)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("r")});
+		this.scene.translate(0.45, 0.55, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// 2 (2)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("2")});
+		this.scene.translate(0.54, 0.55, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// : (2)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(":")});
+		this.scene.translate(0.63, 0.55, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// " " (2)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
+		this.scene.translate(0.72, 0.55, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// N1 (2)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("" + p2_n1)});
+		this.scene.translate(0.81, 0.55, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+
+	// N2 (2)
+	this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("" + p2_n2)});
+		this.scene.translate(0.9, 0.55, 0);
+		this.scene.scale(0.1, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+	this.scene.popMatrix();
+	
+	/*this.scene.setActiveShaderSimple(this.ooliteFont.getShader());
+	this.ooliteFont.getAppearance().apply();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("M")});
+	//this.scene.scale(1, 0.5, 1);
+	this.hudPlane.display();*/
+}
 
 Modx.prototype.start = function(game) {
 	this.setState(new StateWaitingForPlay(this));

@@ -30,6 +30,13 @@ PlayerInfo.prototype.getScore = function() {
 	return this.score;
 }
 
+PlayerInfo.prototype.getScoreString = function() {
+	if(this.score <= 9) {
+		return " " + this.score.toString();
+	}
+	return "" + this.score;
+}
+
 PlayerInfo.prototype.setNumXPieces = function(num_xpieces) {
 	this.num_x_pieces = num_xpieces;
 }
