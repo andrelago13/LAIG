@@ -28,6 +28,8 @@ XMLscene.prototype.init = function (application) {
 	this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 	this.gl.enable(this.gl.BLEND);
 
+	this.defaultAppearance = new CGFappearance(this);
+
 	this.axis=new CGFaxis(this);
 	this.initialTransform = mat4.create();
 	this.enableTextures(true);
@@ -123,11 +125,11 @@ XMLscene.prototype.setInitials = function () {
 XMLscene.prototype.initScenarios = function () {
 	var moonscenario = new MoonLandingScenario(this);
 	var skyscenario = new AfternoonSkyScenario(this);
-	
+
 	this.scenarioNames = [skyscenario.getName(), moonscenario.getName()];
 	this.scenarioName = this.scenarioNames[0];
 	this.scenarios = [];
-	
+
 	this.scenarios[skyscenario.getName()] = skyscenario;
 	this.scenarios[moonscenario.getName()] = moonscenario;
 }
@@ -221,6 +223,16 @@ XMLscene.prototype.display = function () {
 	// Initialize Model-View matrix as identity (no transformation)
 	this.updateProjectionMatrix();
 	this.loadIdentity();
+
+	// Display game hud
+	if(this.ready) {
+		this.pushMatrix();
+			this.translate(-3.3,1,-10);
+			this.modx.displayHUD();
+		this.popMatrix();
+		this.setActiveShaderSimple(this.defaultShader);
+		this.defaultAppearance.apply();
+	}
 
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
