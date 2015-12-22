@@ -3,6 +3,7 @@ StateWaitingForPlay.prototype.constructor = StateWaitingForPlay;
 
 function StateWaitingForPlay(modx) {
 	this.init(modx);
+	this.modx.updateGame();
 	this.hovered = null;
 	if (this.modx.lastMoveEvent !== null)
 	{
@@ -85,7 +86,11 @@ StateWaitingForPlay.prototype.updatePicking = function ()
 StateWaitingForPlay.prototype.onClick = function(event) {
 	if (this.hovered !== null)
 	{
+		var modx = this.modx;
 		this.modx.setState(new StatePlacingXPiece(this.modx, this.hovered, this.modx.nextPieceType()));
+		this.modx.getGame().makePlay(modx, this.hovered[0], this.hovered[1], function(newGame) {
+			modx.newGame = newGame;
+		});
 		this.scene.setPickEnabled(false);
 	}
 }

@@ -77,6 +77,8 @@ function Modx(scene) {
 	this.numOutsideXPieces[Modx.pieceTypes.PLAYER1] = Modx.numXPiecesPerPlayer;
 	this.numOutsideXPieces[Modx.pieceTypes.PLAYER2] = Modx.numXPiecesPerPlayer;
 	
+	this.newGame = null;
+	
 	this.hudPlane = new Plane(this.scene, 10);
 	this.ooliteFont = new OoliteFont(this.scene);
 	
@@ -488,8 +490,9 @@ Modx.prototype.getGame = function() {
 	return this.gameHistory[this.gameHistory.length - 1];
 }
 
-Modx.prototype.updateGame = function(newGame) {
-	this.gameHistory.push(newGame);
+Modx.prototype.updateGame = function() {
+	if (this.newGame !== null)
+		this.gameHistory.push(this.newGame);
 }
 
 Modx.prototype.setState = function(state) {
