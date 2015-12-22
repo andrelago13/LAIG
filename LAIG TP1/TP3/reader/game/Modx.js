@@ -1,8 +1,10 @@
-Modx.xPieceTypes = {
+Modx.pieceTypes = {
 		NONE: -1,
 		JOKER: 0,
 		PLAYER1: 1,
 		PLAYER2: 2,
+		SPIECE_P1: 3,
+		SPIECE_P2: 4,
 		HOVER: 0
 };
 Modx.numXPiecesPerPlayer = 14;
@@ -69,6 +71,7 @@ function Modx(scene) {
 	this.state = null;
 	this.numJokersToPlace = 0;
 	this.lastMoveEvent = null;
+	this.numRemovedJokers = 0;
 	
 	this.hudPlane = new Plane(this.scene, 10);
 	this.ooliteFont = new OoliteFont(this.scene);
@@ -509,6 +512,10 @@ Modx.prototype.displayBoard = function() {
 	}
 }
 
+Modx.prototype.displayXPieceBoxes = function() {
+	this.scene.graph.graphNodes["piece_boxes"].display(0);
+}
+
 Modx.prototype.calculateXPiecePos = function(x, y) {
 	return vec3.fromValues(x, Modx.sPieceHeight * this.getGame().getBoard().get(x, y).getSPieces().length, y);
 }
@@ -544,8 +551,20 @@ Modx.prototype.onClick = function(event) {
 		this.state.onClick(event);
 }
 
+Modx.prototype.incNumRemovedJokers = function() {
+	this.numRemovedJokers++;
+}
+
+Modx.prototype.decNumRemovedJokers = function() {
+	this.numRemovedJokers--;
+}
+
+Modx.prototype.getNumRemovedJokers = function() {
+	return this.numRemovedJokers;
+}
+
 Modx.prototype.nextPieceType = function() {
-	return (this.numJokersToPlace === 0) ? this.getGame().getCurrPlayer() : Modx.xPieceTypes.JOKER;
+	return (this.numJokersToPlace === 0) ? this.getGame().getCurrPlayer() : Modx.pieceTypes.JOKER;
 }
 
 Modx.prototype.calculateRemainingXPiecePos = function(player, xPieceNum) {
@@ -576,4 +595,8 @@ Modx.prototype.displayRemainingXPieces = function(player) {
 	for(var i = 0; i < this.getGame().getPlayerInfo(player).getNumXPieces(); ++i) {
 		this.displayRemainingXPiece(player, i);
 	}
+}
+
+Modx.prototype.calculateRemovedJokerPos = function(n) {
+	// TODO
 }

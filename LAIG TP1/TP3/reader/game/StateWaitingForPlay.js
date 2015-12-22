@@ -34,7 +34,7 @@ StateWaitingForPlay.prototype.display = function(t) {
 		for (var x = 0; x < Board.size; x++)
 		{
 			// Draw cell
-			if (this.modx.getGame().getBoard().get(x, y).getXpiece() === Modx.xPieceTypes.NONE)
+			if (this.modx.getGame().getBoard().get(x, y).getXpiece() === Modx.pieceTypes.NONE)
 				this.scene.registerForPick(y * Board.size + x, [x, y]);
 			this.scene.graph.graphNodes["cell"].display(0);
 			this.scene.clearPickRegistration();
@@ -42,7 +42,8 @@ StateWaitingForPlay.prototype.display = function(t) {
 		}
 		this.scene.popMatrix();
 	}
-	this.scene.graph.graphNodes["board"].display(0);
+	this.modx.displayBoard();
+	this.modx.displayXPieceBoxes();
 	for (var y = 0; y < Board.size; y++)
 	{
 		for (var x = 0; x < Board.size; x++)
@@ -53,7 +54,7 @@ StateWaitingForPlay.prototype.display = function(t) {
 			// Draw xPiece
 			var cell = this.modx.getGame().getBoard().get(x, y);
 			var xPiece = cell.getXpiece();
-			if (xPiece !== Modx.xPieceTypes.NONE)
+			if (xPiece !== Modx.pieceTypes.NONE)
 				this.modx.displayXPiece(x, y, xPiece);
 		}
 	}
