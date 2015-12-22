@@ -121,3 +121,7 @@ Game.prototype.makePlay = function(modx, x, y, successHandler, errorHandler) {
 			eh(newGame);
 	});
 }
+
+Game.prototype.compare = function(coords, newGame) {
+	
+}
