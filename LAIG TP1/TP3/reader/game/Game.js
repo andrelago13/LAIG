@@ -140,15 +140,16 @@ Game.prototype.compare = function(coords, newGame) {
 		result.push([curr_piece.getXpiece(), true, coords]);
 	} else {												// Peça colocada com ponto
 		// Peça colocada
-		result.push([curr_piece.getXpiece(), true, coords]);
+		result.push([this.getCurrPlayer(), true, coords]);
 		var removed_xpieces = [];
 		var added_bases = [];
 		
 		for(var x = 0; x < board_size; ++x) {
 			for(var y = 0; y < board_size; ++y) {
-				if((g1_board.get(x, y).getXpiece() != Modx.pieceTypes.NONE && g2_board.get(x, y).getXpiece() == Modx.pieceTypes.NONE)
-						|| (x == coords[0] && y == coords[1])){																// Peça removida do padrão
+				if((g1_board.get(x, y).getXpiece() != Modx.pieceTypes.NONE && g2_board.get(x, y).getXpiece() == Modx.pieceTypes.NONE)){			// Peça removida do padrão
 					removed_xpieces.push([g1_board.get(x, y).getXpiece(), false, [x, y]]);
+				} else if (x == coords[0] && y == coords[1]) {
+					removed_xpieces.push([this.getCurrPlayer(), false, [x, y]]);
 				}
 				
 				if(g1_board.get(x, y).getTopSPiece() != g2_board.get(x, y).getTopSPiece()) {								// Base adicionada
