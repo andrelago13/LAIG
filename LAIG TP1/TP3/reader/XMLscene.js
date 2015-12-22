@@ -264,7 +264,7 @@ XMLscene.prototype.display = function () {
 	if(this.ready) {
 		this.pushMatrix();
 			this.translate(-3.3,1,-10);
-			this.modx.displayHUD();
+			this.modx.displayHUD(this.currTime);
 		this.popMatrix();
 		this.setActiveShaderSimple(this.shader);
 		this.defaultAppearance.apply();
