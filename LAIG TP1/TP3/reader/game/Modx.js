@@ -489,6 +489,12 @@ Modx.prototype.start = function(game) {
 Modx.prototype.getGame = function() {
 	return this.gameHistory[this.gameHistory.length - 1];
 }
+Modx.prototype.getGameFromLast = function(index) {
+	length = this.gameHistory.length - 1;
+	if(index > length)
+		return null;
+	return this.gameHistory[length - index];
+}
 
 Modx.prototype.updateGame = function() {
 	if (this.newGame !== null)
