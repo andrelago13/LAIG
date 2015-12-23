@@ -1,9 +1,9 @@
-StateMovingXPiece.prototype = Object.create(State.prototype);
-StateMovingXPiece.prototype.constructor = StateMovingXPiece;
+StateMovingPiece.prototype = Object.create(State.prototype);
+StateMovingPiece.prototype.constructor = StateMovingPiece;
 
-StateMovingXPiece.totalAnimTime = 1;
+StateMovingPiece.totalAnimTime = 1;
 
-function StateMovingXPiece(modx, moveID, coords, xPiece, place) {
+function StateMovingPiece(modx, moveID, coords, xPiece, place) {
 	this.init(modx);
 	this.newGame = null;
 	this.moveID = moveID;
@@ -13,7 +13,7 @@ function StateMovingXPiece(modx, moveID, coords, xPiece, place) {
 
 	if (place)
 	{
-		this.dest = this.modx.calculateXPiecePos(coords[0], coords[1]);
+		this.dest = this.modx.calculateBoardPiecePos(coords[0], coords[1]);
 		var piece = this.modx.takeOutsidePiece(xPiece);
 		piece.move(this.dest);
 		this.modx.placeBoardPiece(piece, coords);
@@ -28,7 +28,7 @@ function StateMovingXPiece(modx, moveID, coords, xPiece, place) {
 	}
 }
 
-StateMovingXPiece.prototype.display = function(t) {
+StateMovingPiece.prototype.display = function(t) {
 	this.modx.displayBoard();
 	this.modx.displayXPieceBoxes();
 	this.modx.displayPieces(t);
@@ -38,10 +38,10 @@ StateMovingXPiece.prototype.display = function(t) {
 		this.modx.nextMove(this.moveID + 1);
 	}
 }
-StateMovingXPiece.prototype.isFinished = function(t) {
+StateMovingPiece.prototype.isFinished = function(t) {
 	if (!this.modx.isPlayResponseReady()) return false;
 	
 	var animTime = t - this.startAnimTime;
-	if (this.moveID === 0 || this.moveID == this.modx.newPlay.length - 1) return animTime >= StateMovingXPiece.totalAnimTime;
-	return animTime >= StateMovingXPiece.totalAnimTime / 3;
+	if (this.moveID === 0 || this.moveID == this.modx.newPlay.length - 1) return animTime >= StateMovingPiece.totalAnimTime;
+	return animTime >= StateMovingPiece.totalAnimTime / 3;
 }
