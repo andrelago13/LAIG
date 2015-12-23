@@ -15,6 +15,12 @@ Modx.numSPiecesPerPlayer = 18;
 Modx.xPieceBoxPiecesPerRow = 7;
 Modx.sPieceHeight = 0.05;
 
+Modx.playingGameState = {
+		WAIT_FOR_START: 0,
+		PLAYING: 1,
+		GAME_ENDED: 2
+}
+
 Modx.secondsToStr = function(time) {
 	if(time < 60) {
 		var t_str = time.toString();
@@ -89,6 +95,8 @@ function Modx(scene) {
 	this.start_time = -1;
 	this.createOutsidePieces();
 	this.createBoardPieces();
+	
+	this.playing = Modx.playingGameState.WAIT_FOR_START;
 };
 
 /**
@@ -577,6 +585,7 @@ Modx.prototype.start = function(game) {
 			}
 		}
 	}
+	this.playing = Modx.playingGameState.PLAYING;
 	return this.getGame();
 }
 
@@ -661,6 +670,8 @@ Modx.prototype.setState = function(state) {
 Modx.prototype.display = function(t) {
 	if (this.state !== null)
 		this.state.display(t);
+	if(typeof this.scene.scenarios != "undefined" && typeof this.scene.scenarioName != undefined && typeof this.scene.scenarios[this.scene.scenarioName] != "undefined")
+		this.scene.scenarios[this.scene.scenarioName].display(t, this.playing == Modx.playingGameState.PLAYING);
 }
 
 Modx.prototype.displayBoard = function() {

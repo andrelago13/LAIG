@@ -257,7 +257,6 @@ XMLscene.prototype.display = function () {
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
 		this.setDefaultAppearance();
-		this.scenarios[this.scenarioName].display(this.currTime);	// TODO apenas mostrar se jogo estiver a correr
 		this.modx.display(this.currTime);
 	};
 	this.loadIdentity();
