@@ -93,7 +93,7 @@ function Modx(scene) {
 
 /**
  * @param max_score max game score for each player (1 - 14)
- * @param mode 0 (SP - easy), 1 (SP - hard), 2 (2P)
+ * @param mode 0 (2P), 1 (SP - easy), 2 (SP - hard)
  */
 Modx.prototype.getNewGame = function(max_score, mode) {
 	if(typeof max_score != "number" || max_score < 1 || max_score > 14 || typeof mode != "number" || (mode != 0 && mode != 1 && mode != 2))

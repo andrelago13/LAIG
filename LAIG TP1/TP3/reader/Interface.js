@@ -19,8 +19,46 @@ Interface.prototype.constructor = Interface;
 Interface.prototype.init = function(application) {
 	CGFinterface.prototype.init.call(this, application);
 	this.gui = new dat.GUI();
-	this.lights = this.gui.addFolder("Lights");
-	this.modxFolder = this.gui.addFolder("Play ModX");
+	
+	return true;
+};
+
+Interface.prototype.addFolder = function(name) {
+	switch(name) {
+	case "Lights":
+		if(typeof this.lights == "undefined")
+			this.lights = this.gui.addFolder("Lights");	
+		return;
+	case "Play ModX":
+		if(typeof this.modxFolder == "undefined")
+			this.modxFolder = this.gui.addFolder("Play ModX");
+		return;
+	case "Start Game":
+		if(typeof this.startGameFolder == "undefined")
+			this.startGameFolder = this.gui.addFolder("Start Game");
+		return;
+	}
+}
+
+Interface.prototype.removeFolder = function(name) {
+	switch(name) {
+	case "Lights":
+		if(typeof this.lights != "undefined")
+			this.gui.__ul.removeChild(this.lights.domElement.parentNode);
+		return;
+	case "Play ModX":
+		if(typeof this.modxFolder != "undefined")
+			this.gui.__ul.removeChild(this.modxFolder.domElement.parentNode);
+		return;
+	case "Start Game":
+		if(typeof this.startGameFolder != "undefined")
+			this.gui.__ul.removeChild(this.startGameFolder.domElement.parentNode);			
+		return;
+	}
+}
+
+Interface.prototype.initPlayModX = function() {
+	this.addFolder("Play ModX");
 	
 	this.camera = this.modxFolder.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
 	var scene = this.scene;
@@ -37,14 +75,19 @@ Interface.prototype.init = function(application) {
 	this.modx = null;
 	
 	this.modxFolder.open();
-    //this.gui.__ul.removeChild(this.lights.domElement.parentNode);
+}
 
-	this.startGameFolder = this.gui.addFolder("Start ModX");
+Interface.prototype.initStartModX = function() {
+	this.addFolder("Start Game");
+
+	var max_score = this.startGameFolder.add(this.scene, 'startGameMaxScore', 1, 14, 1);
+	max_score.name("Max Game Score");
+	max_score.step(1);
 	this.startGameFolder.add(this.scene, 'startGameDifficulty', this.scene.startGameDifficulties).name("Game Type");
 	this.startGameFolder.add(this.scene, "startGame").name("Start Game");
 	
-	return true;
-};
+	this.startGameFolder.open();
+}
 
 Interface.prototype.addLightToggler = function(i, id){
 	this.lights.add(this.scene.lightStatus, i, this.scene.lightStatus[i]).name(id);

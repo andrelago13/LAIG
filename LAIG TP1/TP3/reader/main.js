@@ -43,6 +43,7 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js'
                'game/State.js',
                'game/StateWaitingForPlay.js', 
                'game/StateMovingPiece.js', 
+               'game/StateStartingGame.js', 
                'scenarios/Scenario.js', 
                'scenarios/MoonLandingScenario.js', 
                'scenarios/AfternoonSkyScenario.js', 
