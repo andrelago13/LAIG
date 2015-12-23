@@ -69,7 +69,6 @@ Modx.secondsToStr = function(time) {
 function Modx(scene) {
 	this.client = new Client();
 	var modx = this;
-	this.client.getRequestReply("start_game(8,1)", function(game) { modx.start(game); });
 	this.gameHistory = [];
 	this.playsHistory = [];
 	this.scene = scene;
@@ -91,6 +90,19 @@ function Modx(scene) {
 	this.createOutsidePieces();
 	this.createBoardPieces();
 };
+
+/**
+ * @param max_score max game score for each player (1 - 14)
+ * @param mode 0 (2P), 1 (SP - easy), 2 (SP - hard)
+ */
+Modx.prototype.getNewGame = function(max_score, mode) {
+	if(typeof max_score != "number" || max_score < 1 || max_score > 14 || typeof mode != "number" || (mode != 0 && mode != 1 && mode != 2))
+		return false;
+	
+	var modx = this;
+	this.client.getRequestReply("start_game(" + max_score + "," + mode + ")", function(game) { modx.start(game); });
+	return true;
+}
 
 Modx.prototype.createBoardPieces = function() {
 	for (var y = 0; y < Board.size; y++)
