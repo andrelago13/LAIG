@@ -702,12 +702,9 @@ Modx.prototype.onClick = function(event) {
 		this.state.onClick(event);
 }
 
-
-
 Modx.prototype.getNumOutsideXPieces = function(type) {
 	return this.outsidePieces[type].length;
 }
-
 
 Modx.prototype.nextPieceType = function() {
 	return (this.numJokersToPlace === 0) ? this.getGame().getCurrPlayer() : Modx.pieceTypes.JOKER;

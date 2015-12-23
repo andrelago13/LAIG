@@ -15,7 +15,7 @@ PieceAnimation.prototype.constructor = PieceAnimation;
 PieceAnimation.prototype.getMatrix = function(t) {
 	var m = mat4.create();
 	
-	if (t > this.span) t = this.span;
+	if (this.finished(t)) t = this.span;
 	
 	// Elliptic parametric equations
 	var s = Math.PI * t / this.span;
@@ -32,5 +32,5 @@ PieceAnimation.prototype.getMatrix = function(t) {
 }
 
 PieceAnimation.prototype.finished = function(t) {
-	return t > this.span;
+	return t >= this.span;
 }

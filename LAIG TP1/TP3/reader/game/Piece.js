@@ -21,9 +21,7 @@ Piece.prototype.display = function(t) {
 
 	this.scene.pushMatrix();
 
-	if (this.animation === null)
-		this.scene.translate(this.position[0], this.position[1], this.position[2]);
-	else
+	if (this.animation !== null)
 	{
 		var animTime = t - this.animStartTime;
 		if (this.animation.finished(animTime))
@@ -36,6 +34,9 @@ Piece.prototype.display = function(t) {
 		else
 			this.scene.multMatrix(this.animation.getMatrix(animTime));
 	}
+
+	if (this.animation === null)
+		this.scene.translate(this.position[0], this.position[1], this.position[2]);
 
 	var type = this.type;
 	var hover = (type === Modx.pieceTypes.HOVER_JOKER || type === Modx.pieceTypes.HOVER_P1 || type === Modx.pieceTypes.HOVER_P2);
