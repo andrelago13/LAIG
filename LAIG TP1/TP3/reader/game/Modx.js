@@ -11,6 +11,7 @@ Modx.pieceTypes = {
 };
 Modx.numJokers = 5;
 Modx.numXPiecesPerPlayer = 14;
+Modx.numSPiecesPerPlayer = 18;
 Modx.xPieceBoxPiecesPerRow = 7;
 Modx.sPieceHeight = 0.05;
 
@@ -144,9 +145,11 @@ Modx.prototype.createOutsidePieces = function() {
 	for (var i = 0; i < Modx.numSPiecesPerPlayer; i++)
 	{
 		this.pieces[Modx.pieceTypes.SPIECE_P1][i] = new Piece(this.scene, Modx.pieceTypes.SPIECE_P1);
-		this.outsidePieces[Modx.pieceTypes.SPIECE_P1] = this.pieces[Modx.pieceTypes.SPIECE_P1][i];
+		this.pieces[Modx.pieceTypes.SPIECE_P1][i].setPosition(this.calculateOutsideSPiecePos(Modx.pieceTypes.SPIECE_P1, i));
+		this.outsidePieces[Modx.pieceTypes.SPIECE_P1][i] = this.pieces[Modx.pieceTypes.SPIECE_P1][i];
 		this.pieces[Modx.pieceTypes.SPIECE_P2][i] = new Piece(this.scene, Modx.pieceTypes.SPIECE_P2);
-		this.outsidePieces[Modx.pieceTypes.SPIECE_P2] = this.pieces[Modx.pieceTypes.SPIECE_P2][i];
+		this.pieces[Modx.pieceTypes.SPIECE_P2][i].setPosition(this.calculateOutsideSPiecePos(Modx.pieceTypes.SPIECE_P2, i));
+		this.outsidePieces[Modx.pieceTypes.SPIECE_P2][i] = this.pieces[Modx.pieceTypes.SPIECE_P2][i];
 	}
 	this.pieces[Modx.pieceTypes.HOVER_JOKER] = [];
 	this.pieces[Modx.pieceTypes.HOVER_JOKER][0] = new Piece(this.scene, Modx.pieceTypes.HOVER_JOKER);
@@ -569,7 +572,7 @@ Modx.prototype.start = function(game) {
 			if (xPiece !== Modx.pieceTypes.NONE)
 			{
 				var piece = this.takeOutsidePiece(xPiece);
-				piece.setPosition(vec3.fromValues(x, 0, y));
+				piece.setPosition(this.calculateBoardPiecePos(x, y));
 				this.placeBoardPiece(piece, [x, y]);
 			}
 		}
@@ -643,12 +646,9 @@ Modx.prototype.nextMove = function(moveID) {
 	case Modx.pieceTypes.JOKER:
 	case Modx.pieceTypes.PLAYER1:
 	case Modx.pieceTypes.PLAYER2:
-		this.setState(new StateMovingXPiece(this, moveID, move[2], move[0], move[1]));
-		break;
 	case Modx.pieceTypes.SPIECE_P1:
 	case Modx.pieceTypes.SPIECE_P2:
-		// TODO
-		console.error("Unimplemented feature: moving spieces.");
+		this.setState(new StateMovingPiece(this, moveID, move[2], move[0], move[1]));
 		break;
 	}
 	return;
@@ -682,8 +682,14 @@ Modx.prototype.displayXPieceBoxes = function() {
 	this.scene.graph.graphNodes["piece_boxes"].display(0);
 }
 
-Modx.prototype.calculateXPiecePos = function(x, y) {
-	return vec3.fromValues(x, Modx.sPieceHeight * this.getGame().getBoard().get(x, y).getSPieces().length, y);
+Modx.prototype.calculateBoardPiecePos = function(x, y) {
+	var height = 0;
+	var cell = this.boardPieces[y][x];
+	for (var i = 0; i < cell.length; i++)
+	{
+		height += cell[i].getHeight();
+	}
+	return vec3.fromValues(x, height, y);
 }
 
 Modx.prototype.displayPieces = function(t) {
@@ -720,6 +726,23 @@ Modx.prototype.getNumOutsideXPieces = function(type) {
 
 Modx.prototype.nextPieceType = function() {
 	return (this.numJokersToPlace === 0) ? this.getGame().getCurrPlayer() : Modx.pieceTypes.JOKER;
+}
+
+Modx.prototype.calculateOutsideSPiecePos = function(type, xPieceNum) {
+	var res;
+	switch (type)
+	{
+	case Modx.pieceTypes.SPIECE_P1:
+		res = vec3.fromValues(7.5, 0, 9);
+		return vec3.add(vec3.create(), res, vec3.fromValues(0, 0.07 * xPieceNum, 0));
+		break;
+	case Modx.pieceTypes.SPIECE_P2:
+		res = vec3.fromValues(-0.5, 0, -2);
+		return vec3.add(vec3.create(), res, vec3.fromValues(0, 0.07 * xPieceNum, 0));
+		break;
+	default:
+		return null;
+	}
 }
 
 Modx.prototype.calculateOutsideXPiecePos = function(type, xPieceNum) {

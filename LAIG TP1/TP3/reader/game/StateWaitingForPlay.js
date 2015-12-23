@@ -60,7 +60,7 @@ StateWaitingForPlay.prototype.updatePicking = function ()
 			{
 				this.scene.setPickEnabled(false);
 				this.hovered = obj;
-				this.modx.getHoverPiece(this.modx.nextPieceType()).setPosition(vec3.fromValues(obj[0], 0, obj[1]));
+				this.modx.getHoverPiece(this.modx.nextPieceType()).setPosition(this.modx.calculateBoardPiecePos(obj[0], obj[1]));
 				this.modx.getHoverPiece(this.modx.nextPieceType()).setVisible(true);
 			}
 			this.scene.pickResults.splice(0,this.scene.pickResults.length);
@@ -72,7 +72,7 @@ StateWaitingForPlay.prototype.onClick = function(event) {
 	if (this.hovered !== null)
 	{
 		var s = this;
-		this.modx.setState(new StateMovingXPiece(s.modx, 0, this.hovered, this.modx.nextPieceType(), true));
+		this.modx.setState(new StateMovingPiece(s.modx, 0, this.hovered, this.modx.nextPieceType(), true));
 		this.modx.getGame().makePlay(this.modx, this.hovered[0], this.hovered[1], function(newGame) {
 			s.modx.newGame = newGame;
 			s.modx.newPlay = s.modx.getGame().compare(s.hovered, newGame);
