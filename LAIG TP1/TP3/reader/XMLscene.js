@@ -223,6 +223,8 @@ XMLscene.prototype.updateCameras = function(t) {
 
 XMLscene.prototype.startGame = function() {
 	this.modx.getNewGame(this.startGameMaxScore, this.startGameDifficulties[this.startGameDifficulty]);
+	this.graph.interface.removeFolder("Start Game");
+	this.graph.interface.initPlayModX();
 }
 
 /**
