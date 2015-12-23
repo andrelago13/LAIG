@@ -43,28 +43,10 @@ StateWaitingForPlay.prototype.display = function(t) {
 		}
 		this.scene.popMatrix();
 	}
-	this.modx.displayBoard();
-	this.modx.displayXPieceBoxes();
-	for (var y = 0; y < Board.size; y++)
-	{
-		for (var x = 0; x < Board.size; x++)
-		{
-			// Draw sPieces
-			this.modx.displaySPieces(x, y);
-			
-			// Draw xPiece
-			var cell = this.modx.getGame().getBoard().get(x, y);
-			var xPiece = cell.getXpiece();
-			if (xPiece !== Modx.pieceTypes.NONE)
-				this.modx.displayXPiece(x, y, xPiece);
-		}
-	}
 	this.updatePicking();
-	var board = this.modx.getGame().getBoard();
-	if (this.hovered !== null && board.get(this.hovered[0], this.hovered[1]).isValid())
-		this.modx.displayXPiece(this.hovered[0], this.hovered[1], this.modx.nextPieceType(), true);
-	this.modx.displayRemainingXPieces(1);
-	this.modx.displayRemainingXPieces(2);
+	this.scene.graph.graphNodes["board"].display(0);
+	this.modx.displayXPieceBoxes();
+	this.modx.displayPieces(t);
 }
 
 StateWaitingForPlay.prototype.updatePicking = function ()
@@ -72,11 +54,14 @@ StateWaitingForPlay.prototype.updatePicking = function ()
 	if (this.scene.pickMode == false) {
 		if (this.scene.pickResults != null && this.scene.pickResults.length > 0) {
 			this.hovered = null;
+			this.modx.getHoverPiece(this.modx.nextPieceType()).setVisible(false);
 			var obj = this.scene.pickResults[0][0];
 			if (obj)
 			{
 				this.scene.setPickEnabled(false);
 				this.hovered = obj;
+				this.modx.getHoverPiece(this.modx.nextPieceType()).setPosition(vec3.fromValues(obj[0], 0, obj[1]));
+				this.modx.getHoverPiece(this.modx.nextPieceType()).setVisible(true);
 			}
 			this.scene.pickResults.splice(0,this.scene.pickResults.length);
 		}		
@@ -87,7 +72,7 @@ StateWaitingForPlay.prototype.onClick = function(event) {
 	if (this.hovered !== null)
 	{
 		var s = this;
-		this.modx.setState(new StatePlacingXPiece(s.modx, 0, this.hovered, this.modx.nextPieceType()));
+		this.modx.setState(new StateMovingXPiece(s.modx, 0, this.hovered, this.modx.nextPieceType(), true));
 		this.modx.getGame().makePlay(this.modx, this.hovered[0], this.hovered[1], function(newGame) {
 			s.modx.newGame = newGame;
 			s.modx.newPlay = s.modx.getGame().compare(s.hovered, newGame);

@@ -30,3 +30,7 @@ PieceAnimation.prototype.getMatrix = function(t) {
 	mat4.translate(m, m, [-0.5, 0, -0.5]);
 	return m;
 }
+
+PieceAnimation.prototype.finished = function(t) {
+	return t > this.span;
+}

@@ -5,8 +5,11 @@ Modx.pieceTypes = {
 		PLAYER2: 2,
 		SPIECE_P1: 3,
 		SPIECE_P2: 4,
-		HOVER: 0
+		HOVER_JOKER: 5,
+		HOVER_P1: 6,
+		HOVER_P2: 7
 };
+Modx.numJokers = 5;
 Modx.numXPiecesPerPlayer = 14;
 Modx.xPieceBoxPiecesPerRow = 7;
 Modx.sPieceHeight = 0.05;
@@ -73,10 +76,9 @@ function Modx(scene) {
 	this.numJokersToPlace = 0;
 	this.lastMoveEvent = null;
 
-	this.numOutsideXPieces = [];
-	this.numOutsideXPieces[Modx.pieceTypes.JOKER] = 0;
-	this.numOutsideXPieces[Modx.pieceTypes.PLAYER1] = Modx.numXPiecesPerPlayer;
-	this.numOutsideXPieces[Modx.pieceTypes.PLAYER2] = Modx.numXPiecesPerPlayer;
+	this.pieces = [];
+	this.outsidePieces = [];
+	this.boardPieces = [];
 
 	this.newGame = null;
 	this.newPlays = null;
@@ -85,7 +87,65 @@ function Modx(scene) {
 	this.ooliteFont = new OoliteFont(this.scene);
 
 	this.start_time = -1;
+	this.createOutsidePieces();
+	this.createBoardPieces();
 };
+
+Modx.prototype.createBoardPieces = function() {
+	for (var y = 0; y < Board.size; y++)
+	{
+		this.boardPieces[y] = [];
+		for (var x = 0; x < Board.size; x++)
+		{
+			this.boardPieces[y][x] = [];
+		}
+	}
+}
+
+Modx.prototype.createOutsidePieces = function() {
+	this.pieces[Modx.pieceTypes.JOKER] = [];
+	this.outsidePieces[Modx.pieceTypes.JOKER] = [];
+	for (var i = 0; i < Modx.numJokers; i++)
+	{
+		this.pieces[Modx.pieceTypes.JOKER][i] = new Piece(this.scene, Modx.pieceTypes.JOKER);
+		this.outsidePieces[Modx.pieceTypes.JOKER][i] = this.pieces[Modx.pieceTypes.JOKER][i];
+	}
+
+	this.pieces[Modx.pieceTypes.PLAYER1] = [];
+	this.outsidePieces[Modx.pieceTypes.PLAYER1] = [];
+	this.pieces[Modx.pieceTypes.PLAYER2] = [];
+	this.outsidePieces[Modx.pieceTypes.PLAYER2] = [];
+	for (var i = 0; i < Modx.numXPiecesPerPlayer; i++)
+	{
+		this.pieces[Modx.pieceTypes.PLAYER1][i] = new Piece(this.scene, Modx.pieceTypes.PLAYER1);
+		this.pieces[Modx.pieceTypes.PLAYER1][i].setPosition(this.calculateOutsideXPiecePos(Modx.pieceTypes.PLAYER1, i));
+		this.outsidePieces[Modx.pieceTypes.PLAYER1][i] = this.pieces[Modx.pieceTypes.PLAYER1][i];
+		this.pieces[Modx.pieceTypes.PLAYER2][i] = new Piece(this.scene, Modx.pieceTypes.PLAYER2);
+		this.pieces[Modx.pieceTypes.PLAYER2][i].setPosition(this.calculateOutsideXPiecePos(Modx.pieceTypes.PLAYER2, i));
+		this.outsidePieces[Modx.pieceTypes.PLAYER2][i] = this.pieces[Modx.pieceTypes.PLAYER2][i];
+	}
+
+	this.pieces[Modx.pieceTypes.SPIECE_P1] = [];
+	this.outsidePieces[Modx.pieceTypes.SPIECE_P1] = [];
+	this.pieces[Modx.pieceTypes.SPIECE_P2] = [];
+	this.outsidePieces[Modx.pieceTypes.SPIECE_P2] = [];
+	for (var i = 0; i < Modx.numSPiecesPerPlayer; i++)
+	{
+		this.pieces[Modx.pieceTypes.SPIECE_P1][i] = new Piece(this.scene, Modx.pieceTypes.SPIECE_P1);
+		this.outsidePieces[Modx.pieceTypes.SPIECE_P1] = this.pieces[Modx.pieceTypes.SPIECE_P1][i];
+		this.pieces[Modx.pieceTypes.SPIECE_P2][i] = new Piece(this.scene, Modx.pieceTypes.SPIECE_P2);
+		this.outsidePieces[Modx.pieceTypes.SPIECE_P2] = this.pieces[Modx.pieceTypes.SPIECE_P2][i];
+	}
+	this.pieces[Modx.pieceTypes.HOVER_JOKER] = [];
+	this.pieces[Modx.pieceTypes.HOVER_JOKER][0] = new Piece(this.scene, Modx.pieceTypes.HOVER_JOKER);
+	this.pieces[Modx.pieceTypes.HOVER_JOKER][0].setVisible(false);
+	this.pieces[Modx.pieceTypes.HOVER_P1] = [];
+	this.pieces[Modx.pieceTypes.HOVER_P1][0] = new Piece(this.scene, Modx.pieceTypes.HOVER_P1);
+	this.pieces[Modx.pieceTypes.HOVER_P1][0].setVisible(false);
+	this.pieces[Modx.pieceTypes.HOVER_P2] = [];
+	this.pieces[Modx.pieceTypes.HOVER_P2][0] = new Piece(this.scene, Modx.pieceTypes.HOVER_P2);
+	this.pieces[Modx.pieceTypes.HOVER_P2][0].setVisible(false);
+}
 
 Modx.prototype.displayHUD = function(t) {
 	if(typeof this.state == 'undefined' || this.gameHistory.length <= 0)
@@ -488,6 +548,20 @@ Modx.prototype.start = function(game) {
 	this.playsHistory = [];
 	this.newGame = null;
 	this.newPlay = null;
+	var board = this.getGame().getBoard();
+	for (var y = 0; y < Board.size; y++)
+	{
+		for (var x = 0; x < Board.size; x++)
+		{
+			var xPiece = board.get(x, y).getXpiece();
+			if (xPiece !== Modx.pieceTypes.NONE)
+			{
+				var piece = this.takeOutsidePiece(xPiece);
+				piece.setPosition(vec3.fromValues(x, 0, y));
+				this.placeBoardPiece(piece, [x, y]);
+			}
+		}
+	}
 	return this.getGame();
 }
 
@@ -525,6 +599,26 @@ Modx.prototype.updatePlay = function() {
 		this.playHistory.push(this.newPlay);
 }
 
+Modx.prototype.takeOutsidePiece = function(type) {
+	return this.outsidePieces[type].pop();
+}
+
+Modx.prototype.takeBoardPiece = function(coords) {
+	return this.boardPieces[coords[1]][coords[0]].pop();
+}
+
+Modx.prototype.placeOutsidePiece = function(piece) {
+	this.outsidePieces[piece.getType()].push(piece);
+}
+
+Modx.prototype.placeBoardPiece = function(piece, coords) {
+	this.boardPieces[coords[1]][coords[0]].push(piece);
+}
+
+Modx.prototype.getHoverPiece = function(type) {
+	return this.pieces[type + (Modx.pieceTypes.HOVER_JOKER - Modx.pieceTypes.JOKER)][0];
+}
+
 Modx.prototype.nextMove = function(moveID) {
 	if (moveID === this.newPlay.length)
 	{
@@ -532,26 +626,18 @@ Modx.prototype.nextMove = function(moveID) {
 		return;
 	}
 	var move = this.newPlay[moveID];
-	if (move[1]) // Place
+	switch (move[0])
 	{
-		switch (move[0])
-		{
-		case Modx.pieceTypes.JOKER:
-		case Modx.pieceTypes.PLAYER1:
-		case Modx.pieceTypes.PLAYER2:
-			this.setState(new StatePlacingXPiece(this, moveID, move[2], move[0]));
-			break;
-		case Modx.pieceTypes.SPIECE_P1:
-		case Modx.pieceTypes.SPIECE_P2:
-			// TODO
-			console.error("Unimplemented feature: placing spieces on the board.");
-			break;
-		}
-	}
-	else // Remove
-	{
+	case Modx.pieceTypes.JOKER:
+	case Modx.pieceTypes.PLAYER1:
+	case Modx.pieceTypes.PLAYER2:
+		this.setState(new StateMovingXPiece(this, moveID, move[2], move[0], move[1]));
+		break;
+	case Modx.pieceTypes.SPIECE_P1:
+	case Modx.pieceTypes.SPIECE_P2:
 		// TODO
-		console.error("Unimplemented feature: removing pieces from the board.");
+		console.error("Unimplemented feature: moving spieces.");
+		break;
 	}
 	return;
 }
@@ -588,14 +674,11 @@ Modx.prototype.calculateXPiecePos = function(x, y) {
 	return vec3.fromValues(x, Modx.sPieceHeight * this.getGame().getBoard().get(x, y).getSPieces().length, y);
 }
 
-Modx.prototype.displayXPiece = function(x, y, type, hover) {
-	this.scene.pushMatrix();
-	var pos = this.calculateXPiecePos(x, y);
-	this.scene.translate(pos[0], pos[1], pos[2]);
-	var name = "piece" + type;
-	if (hover) name += "_hover";
-	this.scene.graph.graphNodes[name].display(0);
-	this.scene.popMatrix();
+Modx.prototype.displayPieces = function(t) {
+	for (var type in this.pieces) {
+		for (var i = 0; i < this.pieces[type].length; i++)
+			this.pieces[type][i].display(t);
+	}
 }
 
 Modx.prototype.displaySPieces = function(x, y) {
@@ -619,52 +702,49 @@ Modx.prototype.onClick = function(event) {
 		this.state.onClick(event);
 }
 
-Modx.prototype.incNumOutsideXPieces = function(type) {
-	this.numOutsideXPieces[type]++;
-}
 
-Modx.prototype.decNumOutsideXPieces = function(type) {
-	this.numOutsideXPieces[type]--;
-}
 
 Modx.prototype.getNumOutsideXPieces = function(type) {
-	return this.numOutsideXPieces[type];
+	return this.outsidePieces[type].length;
 }
+
 
 Modx.prototype.nextPieceType = function() {
 	return (this.numJokersToPlace === 0) ? this.getGame().getCurrPlayer() : Modx.pieceTypes.JOKER;
 }
 
-Modx.prototype.calculateRemainingXPiecePos = function(player, xPieceNum) {
+Modx.prototype.calculateOutsideXPiecePos = function(type, xPieceNum) {
 	var res;
-	switch (player)
+	switch (type)
 	{
-	case 1: res = vec3.fromValues(0.5, 0, 8.5);
-	return vec3.add(vec3.create(), res, vec3.fromValues(xPieceNum % Modx.xPieceBoxPiecesPerRow, 0, (xPieceNum / Modx.xPieceBoxPiecesPerRow) >> 0));
-	break;
-	case 2: res = vec3.fromValues(6.5, 0, -1.5);
-	return vec3.add(vec3.create(), res, vec3.fromValues(-(xPieceNum % Modx.xPieceBoxPiecesPerRow), 0, -(xPieceNum / Modx.xPieceBoxPiecesPerRow) >> 0));
-	break;
-	default: return null;
+	case Modx.pieceTypes.PLAYER1:
+		res = vec3.fromValues(0.5, 0, 8.5);
+		return vec3.add(vec3.create(), res, vec3.fromValues(xPieceNum % Modx.xPieceBoxPiecesPerRow, 0, (xPieceNum / Modx.xPieceBoxPiecesPerRow) >> 0));
+		break;
+	case Modx.pieceTypes.PLAYER2:
+		res = vec3.fromValues(6.5, 0, -1.5);
+		return vec3.add(vec3.create(), res, vec3.fromValues(-(xPieceNum % Modx.xPieceBoxPiecesPerRow), 0, -(xPieceNum / Modx.xPieceBoxPiecesPerRow) >> 0));
+		break;
+	case Modx.pieceTypes.JOKER:
+		res = vec3.fromValues(-1.5, 0, Board.size / 2 - 0.5);
+		return vec3.add(vec3.create(), res, vec3.fromValues(0, 0.3 * xPieceNum, 0));
+	default:
+		return null;
 	}
 }
 
-Modx.prototype.displayRemainingXPiece = function(player, xPieceNum) {
+Modx.prototype.displayOutsideXPiece = function(player, xPieceNum) {
 	this.scene.pushMatrix();
-	var pos = this.calculateRemainingXPiecePos(player, xPieceNum);
+	var pos = this.calculateOutsideXPiecePos(player, xPieceNum);
 	this.scene.translate(pos[0], pos[1], pos[2]);
 	this.scene.graph.graphNodes["piece" + player].display(0);
 	this.scene.popMatrix();
 }
 
-Modx.prototype.displayRemainingXPieces = function(player) {
+Modx.prototype.displayOutsideXPieces = function(player) {
 	if (player !== 1 && player !== 2) return;
 
 	for(var i = 0; i < this.getNumOutsideXPieces(player); ++i) {
-		this.displayRemainingXPiece(player, i);
+		this.displayOutsideXPiece(player, i);
 	}
-}
-
-Modx.prototype.calculateRemovedJokerPos = function(n) {
-	// TODO
 }
