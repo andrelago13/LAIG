@@ -13,13 +13,15 @@ function AfternoonSkyScenario(scene) {
 		                              "scenes/modx/textures/afternoon_sky/cubemap/sky_back.jpg"]);
 }
 
-AfternoonSkyScenario.prototype.display = function(t) {
+AfternoonSkyScenario.prototype.display = function(t, whole) {
 	this.scene.pushMatrix();
 	this.scene.rotate(t * 0.03, 0, 1, 0);
 	this.skybox.display(0);
 	this.scene.popMatrix();
-	if(typeof this.scene.graph != "undefined" && this.scene.graph.ready && typeof this.scene.graph.graphNodes != "undefined" && typeof this.scene.graph.graphNodes["afternoon_sky_scenario"] != "undefined" ) {
-		this.scene.graph.graphNodes["afternoon_sky_scenario"].display(t);
+	if(typeof whole == "undefined" || whole) {
+		if(typeof this.scene.graph != "undefined" && this.scene.graph.ready && typeof this.scene.graph.graphNodes != "undefined" && typeof this.scene.graph.graphNodes["afternoon_sky_scenario"] != "undefined" ) {
+			this.scene.graph.graphNodes["afternoon_sky_scenario"].display(t);
+		}	
 	}
 }
 

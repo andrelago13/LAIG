@@ -52,6 +52,7 @@ XMLscene.prototype.init = function (application) {
 	this.startGameDifficulties['2 Players'] = 0;
 	this.startGameDifficulties['vs. Easy CPU'] = 1;
 	this.startGameDifficulties['vs. Hard CPU'] = 2;
+	this.startGameMaxScore = 8;
 };
 
 XMLscene.prototype.getCurrTime = function() {
@@ -100,6 +101,7 @@ XMLscene.prototype.initLights = function () {
 		}
 		this.lights[i].setVisible(false);
 		this.lights[i].update();
+		this.graph.interface.addFolder("Lights");
 		this.graph.interface.addLightToggler(i, this.graph.lights[i]["id"]);
 	}
 };
@@ -192,6 +194,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.gl.clearColor(background["r"], background["g"], background["b"], background["a"]);
 	this.setInitials();
 	this.initLights();
+	this.graph.interface.initStartModX();
 	this.ready = true;
 	console.log("Press SPACE to reset the animations.");
 };
@@ -219,7 +222,9 @@ XMLscene.prototype.updateCameras = function(t) {
 }
 
 XMLscene.prototype.startGame = function() {
-	console.log(this.startGameDifficulty);
+	this.modx.getNewGame(this.startGameMaxScore, this.startGameDifficulties[this.startGameDifficulty]);
+	this.graph.interface.removeFolder("Start Game");
+	this.graph.interface.initPlayModX();
 }
 
 /**
@@ -254,7 +259,6 @@ XMLscene.prototype.display = function () {
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
 		this.setDefaultAppearance();
-		this.scenarios[this.scenarioName].display(this.currTime);
 		this.modx.display(this.currTime);
 	};
 	this.loadIdentity();
