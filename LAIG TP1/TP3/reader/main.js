@@ -70,7 +70,6 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'SceneNode.js'
 		// create and load graph, and associate it to scene. 
 		// Check console for loading errors
 		var myGraph = new MySceneGraph(filename, myScene, myInterface);
-
 		// start
 		app.run();
 	} else {
