@@ -33,8 +33,15 @@ StateMovingXPiece.prototype.display = function(t) {
 	this.modx.displayXPieceBoxes();
 	this.modx.displayPieces(t);
 
-	if ((t - this.startAnimTime >= StateMovingXPiece.totalAnimTime) && this.modx.isPlayResponseReady())
+	if (this.isFinished(t))
 	{
 		this.modx.nextMove(this.moveID + 1);
 	}
+}
+StateMovingXPiece.prototype.isFinished = function(t) {
+	if (!this.modx.isPlayResponseReady()) return false;
+	
+	var animTime = t - this.startAnimTime;
+	if (this.moveID === 0 || this.moveID == this.modx.newPlay.length - 1) return animTime >= StateMovingXPiece.totalAnimTime;
+	return animTime >= StateMovingXPiece.totalAnimTime / 3;
 }
