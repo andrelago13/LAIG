@@ -74,7 +74,7 @@ function Modx(scene) {
 	this.playsHistory = [];
 	this.scene = scene;
 	this.state = null;
-	this.numJokersToPlace = 0;
+	this.numJokersToPlace = 5;
 	this.lastMoveEvent = null;
 
 	this.pieces = [];
@@ -607,7 +607,10 @@ Modx.prototype.takeOutsidePiece = function(type) {
 }
 
 Modx.prototype.takeBoardPiece = function(coords) {
-	return this.boardPieces[coords[1]][coords[0]].pop();
+	var piece = this.boardPieces[coords[1]][coords[0]].pop();
+	if (piece.getType() === Modx.pieceTypes.JOKER)
+		this.numJokersToPlace++;
+	return piece;
 }
 
 Modx.prototype.placeOutsidePiece = function(piece) {
@@ -615,6 +618,8 @@ Modx.prototype.placeOutsidePiece = function(piece) {
 }
 
 Modx.prototype.placeBoardPiece = function(piece, coords) {
+	if (piece.getType() === Modx.pieceTypes.JOKER)
+		this.numJokersToPlace--;
 	this.boardPieces[coords[1]][coords[0]].push(piece);
 }
 
@@ -722,15 +727,16 @@ Modx.prototype.calculateOutsideSPiecePos = function(type, xPieceNum) {
 	{
 	case Modx.pieceTypes.SPIECE_P1:
 		res = vec3.fromValues(7.5, 0, 9);
-		return vec3.add(vec3.create(), res, vec3.fromValues(0, 0.07 * xPieceNum, 0));
 		break;
 	case Modx.pieceTypes.SPIECE_P2:
 		res = vec3.fromValues(-0.5, 0, -2);
-		return vec3.add(vec3.create(), res, vec3.fromValues(0, 0.07 * xPieceNum, 0));
 		break;
 	default:
 		return null;
 	}
+	res = vec3.add(vec3.create(), res, vec3.fromValues(0, 0.05 * xPieceNum, 0));
+	res = vec3.add(vec3.create(), res, vec3.fromValues((Math.random() - 0.5) * 0.03, 0, (Math.random() - 0.5) * 0.03)); // Random noise
+	return res;
 }
 
 Modx.prototype.calculateOutsideXPiecePos = function(type, xPieceNum) {
