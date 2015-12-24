@@ -693,11 +693,14 @@ Modx.prototype.nextMove = function(moveID) {
 
 Modx.prototype.setState = function(state) {
 	this.state = state;
+	if(!(this.state instanceof StateGameEnded) && typeof this.getGame() != "undefined") {
+		this.checkGameEnded();
+	}
 }
 
 Modx.prototype.display = function(t) {
 	if(typeof this.scene.scenarios != "undefined" && typeof this.scene.scenarioName != undefined && typeof this.scene.scenarios[this.scene.scenarioName] != "undefined")
-		this.scene.scenarios[this.scene.scenarioName].display(t, this.playing == Modx.playingGameState.PLAYING);
+		this.scene.scenarios[this.scene.scenarioName].display(t, this.playing == Modx.playingGameState.PLAYING || this.playing == Modx.playingGameState.GAME_ENDED);
 	if (this.state !== null)
 		this.state.display(t);
 }

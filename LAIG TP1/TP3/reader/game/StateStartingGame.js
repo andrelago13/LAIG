@@ -31,29 +31,6 @@ function StateStartingGame(modx) {
 	this.modx.scene.lights[5].setDiffuse(1, 1, 1, 1);
 	this.modx.scene.lights[5].setSpecular(1, 1, 1, 1);
 	this.modx.scene.lights[5].setVisible(false);
-	
-	/*
-	 * if(typeof this.graph.lights[i] == 'undefined')
-			continue;
-		this.modx.scene.lights[i].setPosition(this.graph.lights[i]["position"]["x"], this.graph.lights[i]["position"]["y"], this.graph.lights[i]["position"]["z"], this.graph.lights[i]["position"]["w"]);
-		this.modx.scene.lights[i].setAmbient(this.graph.lights[i]["ambient"]["r"],this.graph.lights[i]["ambient"]["g"],this.graph.lights[i]["ambient"]["b"],this.graph.lights[i]["ambient"]["a"]);
-		this.modx.scene.lights[i].setDiffuse(this.graph.lights[i]["diffuse"]["r"],this.graph.lights[i]["diffuse"]["g"],this.graph.lights[i]["diffuse"]["b"],this.graph.lights[i]["diffuse"]["a"]);
-		this.modx.scene.lights[i].setSpecular(this.graph.lights[i]["specular"]["r"],this.graph.lights[i]["specular"]["g"],this.graph.lights[i]["specular"]["b"],this.graph.lights[i]["specular"]["a"]);
-		if (this.graph.lights[i]["enable"])
-		{
-			this.modx.scene.lights[i].enable();
-			this.modx.scene.lightstatus[i] = true;
-		}
-		else
-		{
-			this.modx.scene.lights[i].disable();
-			this.modx.scene.lightstatus[i] = false;
-		}
-		this.modx.scene.lights[i].setVisible(false);
-		this.modx.scene.lights[i].update();
-		this.graph.interface.addFolder("Lights");
-		this.graph.interface.addLightToggler(i, this.graph.lights[i]["id"]);
-	 */
 }
 
 StateStartingGame.prototype.displayHUD = function(t) {

@@ -228,8 +228,9 @@ XMLscene.prototype.startGame = function() {
 }
 
 XMLscene.prototype.endGame = function() {
-	this.graph.interface.removeFolder("Play ModX");
-	this.graph.interface.initStartModX();	
+	// TODO waiting for reply to mail
+	//this.graph.interface.removeFolder("Play ModX");
+	//this.graph.interface.initStartModX();	
 }
 
 /**
@@ -264,7 +265,6 @@ XMLscene.prototype.display = function () {
 	// guarantees that the graph is only displayed when correctly loaded 
 	if (this.ready) {
 		this.setDefaultAppearance();
-		//console.log(this.modx.state);
 		this.modx.display(this.currTime);
 	};
 	this.loadIdentity();

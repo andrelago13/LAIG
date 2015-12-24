@@ -23,6 +23,20 @@ Interface.prototype.init = function(application) {
 	return true;
 };
 
+Interface.prototype.resetFolder = function(name) {
+	switch(name) {
+	case "Lights":
+		this.lights = this.gui.addFolder("Lights");	
+		return;
+	case "Play ModX":
+		this.modxFolder = this.gui.addFolder("Play ModX");
+		return;
+	case "Start Game":
+		this.startGameFolder = this.gui.addFolder("Start Game");
+		return;
+	}
+}
+
 Interface.prototype.addFolder = function(name) {
 	switch(name) {
 	case "Lights":
@@ -58,7 +72,7 @@ Interface.prototype.removeFolder = function(name) {
 }
 
 Interface.prototype.initPlayModX = function() {
-	this.addFolder("Play ModX");
+	this.resetFolder("Play ModX");
 	
 	this.camera = this.modxFolder.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
 	var scene = this.scene;
@@ -78,9 +92,9 @@ Interface.prototype.initPlayModX = function() {
 }
 
 Interface.prototype.initStartModX = function() {
-	this.addFolder("Start Game");
+	this.resetFolder("Start Game");
 
-	var max_score = this.startGameFolder.add(this.scene, 'startGameMaxScore', 1, 14, 1);
+	var max_score = this.startGameFolder.add(this.scene, 'startGameMaxScore', 5, 14, 1);
 	max_score.name("Max Game Score");
 	max_score.step(1);
 	this.startGameFolder.add(this.scene, 'startGameDifficulty', this.scene.startGameDifficulties).name("Game Type");
