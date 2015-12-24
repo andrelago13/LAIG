@@ -108,3 +108,9 @@ StateGameEnded.prototype.display = function(t) {
 StateGameEnded.prototype.isFinished = function(t) {
 	return this.anim_state == StateGameEnded.animState.ENDED;
 }
+
+StateGameEnded.prototype.terminate = function(newGame) {
+	this.anim_state = StateGameEnded.animState.ENDING;
+	this.animTime = -1;
+	this.newGame = newGame;
+}
