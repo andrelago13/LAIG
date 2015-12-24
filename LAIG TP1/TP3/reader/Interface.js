@@ -18,6 +18,18 @@ Interface.prototype.constructor = Interface;
  */
 Interface.prototype.init = function(application) {
 	CGFinterface.prototype.init.call(this, application);
+	
+	dat.GUI.prototype.removeFolder = function(name) {
+	    var folder = this.__folders[name];
+	    if (!folder) {
+	      return;
+	    }
+	    folder.close();
+	    this.__ul.removeChild(folder.domElement.parentNode);
+	    delete this.__folders[name];
+	    this.onResize();
+	  }
+
 	this.gui = new dat.GUI();
 	
 	return true;
@@ -58,15 +70,18 @@ Interface.prototype.removeFolder = function(name) {
 	switch(name) {
 	case "Lights":
 		if(typeof this.lights != "undefined")
-			this.gui.__ul.removeChild(this.lights.domElement.parentNode);
+			this.gui.removeFolder("Lights");
+			//this.gui.__ul.removeChild(this.lights.domElement.parentNode);
 		return;
 	case "Play ModX":
 		if(typeof this.modxFolder != "undefined")
-			this.gui.__ul.removeChild(this.modxFolder.domElement.parentNode);
+			this.gui.removeFolder("Play ModX");
+			//this.gui.__ul.removeChild(this.modxFolder.domElement.parentNode);
 		return;
 	case "Start Game":
 		if(typeof this.startGameFolder != "undefined")
-			this.gui.__ul.removeChild(this.startGameFolder.domElement.parentNode);			
+			this.gui.removeFolder("Start Game");
+			//this.gui.__ul.removeChild(this.startGameFolder.domElement.parentNode);			
 		return;
 	}
 }
