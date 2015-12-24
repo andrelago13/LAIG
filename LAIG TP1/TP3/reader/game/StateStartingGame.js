@@ -13,7 +13,7 @@ function StateStartingGame(modx) {
 	this.init(modx);
 	this.anim_state = StateStartingGame.animState.STARTING;
 	
-	this.hudPlane = new Plane(this.scene, 10);
+	this.hudPlane = new Plane(this.modx.scene, 10);
 	this.hudAppearance = new CGFappearance(modx.scene);
 	this.hudAppearance.setAmbient(1, 1, 1, 1);
 	this.hudAppearance.setDiffuse(1, 1, 1, 1);
