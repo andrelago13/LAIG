@@ -227,6 +227,12 @@ XMLscene.prototype.startGame = function() {
 	this.graph.interface.initPlayModX();
 }
 
+XMLscene.prototype.endGame = function() {
+	// TODO waiting for reply to mail
+	//this.graph.interface.removeFolder("Play ModX");
+	//this.graph.interface.initStartModX();	
+}
+
 /**
  * 
  */

@@ -114,11 +114,14 @@ Modx.prototype.getNewGame = function(max_score, mode) {
 
 Modx.prototype.checkGameEnded = function() {
 	this_temp = this;
-	this.client.getRequestReply("game_ended(" + this.getGame().toJSON() + ")", this_temp.checkGameEndedReponseHandler);
+	this.client.getRequestReply("game_ended(" + this.getGame().toJSON() + ")", function(data) { this_temp.checkGameEndedReponseHandler(data); });
 }
 
 Modx.prototype.checkGameEndedReponseHandler = function(data) {
-	console.log(data.target.responseText);
+	if(data.target.responseText == "yes") {
+		this.playing = Modx.playingGameState.GAME_ENDED;
+		this.setState(new StateGameEnded(this));
+	}
 }
 
 Modx.prototype.createBoardPieces = function() {
@@ -130,6 +133,12 @@ Modx.prototype.createBoardPieces = function() {
 			this.boardPieces[y][x] = [];
 		}
 	}
+}
+
+Modx.prototype.getWinner = function() {
+	if(this.playing != Modx.playingGameState.GAME_ENDED)
+		return -1;
+	return 1;	//	TODO
 }
 
 Modx.prototype.createOutsidePieces = function() {
@@ -684,11 +693,14 @@ Modx.prototype.nextMove = function(moveID) {
 
 Modx.prototype.setState = function(state) {
 	this.state = state;
+	if(!(this.state instanceof StateGameEnded) && typeof this.getGame() != "undefined") {
+		this.checkGameEnded();
+	}
 }
 
 Modx.prototype.display = function(t) {
 	if(typeof this.scene.scenarios != "undefined" && typeof this.scene.scenarioName != undefined && typeof this.scene.scenarios[this.scene.scenarioName] != "undefined")
-		this.scene.scenarios[this.scene.scenarioName].display(t, this.playing == Modx.playingGameState.PLAYING);
+		this.scene.scenarios[this.scene.scenarioName].display(t, this.playing == Modx.playingGameState.PLAYING || this.playing == Modx.playingGameState.GAME_ENDED);
 	if (this.state !== null)
 		this.state.display(t);
 }
