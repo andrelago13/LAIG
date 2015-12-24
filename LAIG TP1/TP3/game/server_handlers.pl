@@ -20,6 +20,8 @@ parse_input(num_jokers_to_place(Game), N) :-
         num_jokers_to_place(Board, N).
 parse_input(available_moves(Game), Moves) :- available_moves(Game, Moves).
 parse_input(available_moves(_), error).
+parse_input(game_ended(Game), yes) :- game_ended(Game), !.
+parse_input(game_ended(_), no).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%                                       Commands                                                  %%%%

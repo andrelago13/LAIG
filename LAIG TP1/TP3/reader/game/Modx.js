@@ -15,6 +15,12 @@ Modx.numSPiecesPerPlayer = 18;
 Modx.xPieceBoxPiecesPerRow = 7;
 Modx.sPieceHeight = 0.05;
 
+Modx.playingGameState = {
+		WAIT_FOR_START: 0,
+		PLAYING: 1,
+		GAME_ENDED: 2
+}
+
 Modx.secondsToStr = function(time) {
 	if(time < 60) {
 		var t_str = time.toString();
@@ -72,7 +78,7 @@ function Modx(scene) {
 	this.gameHistory = [];
 	this.playsHistory = [];
 	this.scene = scene;
-	this.state = null;
+	this.state = new StateStartingGame(this);
 	this.numJokersToPlace = 5;
 	this.lastMoveEvent = null;
 
@@ -89,6 +95,8 @@ function Modx(scene) {
 	this.start_time = -1;
 	this.createOutsidePieces();
 	this.createBoardPieces();
+
+	this.playing = Modx.playingGameState.WAIT_FOR_START;
 };
 
 /**
@@ -98,10 +106,19 @@ function Modx(scene) {
 Modx.prototype.getNewGame = function(max_score, mode) {
 	if(typeof max_score != "number" || max_score < 1 || max_score > 14 || typeof mode != "number" || (mode != 0 && mode != 1 && mode != 2))
 		return false;
-	
-	var modx = this;
-	this.client.getRequestReply("start_game(" + max_score + "," + mode + ")", function(game) { modx.start(game); });
+
+	var state = this.state;
+	this.client.getRequestReply("start_game(" + max_score + "," + mode + ")", function(game) { state.terminate(game); });
 	return true;
+}
+
+Modx.prototype.checkGameEnded = function() {
+	this_temp = this;
+	this.client.getRequestReply("game_ended(" + this.getGame().toJSON() + ")", this_temp.checkGameEndedReponseHandler);
+}
+
+Modx.prototype.checkGameEndedReponseHandler = function(data) {
+	console.log(data.target.responseText);
 }
 
 Modx.prototype.createBoardPieces = function() {
@@ -163,6 +180,11 @@ Modx.prototype.createOutsidePieces = function() {
 }
 
 Modx.prototype.displayHUD = function(t) {
+	if(typeof this.state.displayHUD == "function") {
+		this.state.displayHUD(t);
+		return;
+	}
+
 	if(typeof this.state == 'undefined' || this.gameHistory.length <= 0)
 		return;
 
@@ -577,6 +599,7 @@ Modx.prototype.start = function(game) {
 			}
 		}
 	}
+	this.playing = Modx.playingGameState.PLAYING;
 	return this.getGame();
 }
 
@@ -664,6 +687,8 @@ Modx.prototype.setState = function(state) {
 }
 
 Modx.prototype.display = function(t) {
+	if(typeof this.scene.scenarios != "undefined" && typeof this.scene.scenarioName != undefined && typeof this.scene.scenarios[this.scene.scenarioName] != "undefined")
+		this.scene.scenarios[this.scene.scenarioName].display(t, this.playing == Modx.playingGameState.PLAYING);
 	if (this.state !== null)
 		this.state.display(t);
 }

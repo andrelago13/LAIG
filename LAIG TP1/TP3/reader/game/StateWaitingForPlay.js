@@ -76,6 +76,7 @@ StateWaitingForPlay.prototype.onClick = function(event) {
 		this.modx.getGame().makePlay(this.modx, this.hovered[0], this.hovered[1], function(newGame) {
 			s.modx.newGame = newGame;
 			s.modx.newPlay = s.modx.getGame().compare(s.hovered, newGame);
+			s.modx.checkGameEnded();
 		});
 		this.scene.setPickEnabled(false);
 	}

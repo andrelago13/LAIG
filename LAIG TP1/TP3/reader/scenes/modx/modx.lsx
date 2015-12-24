@@ -7,7 +7,7 @@
 	    <rotation axis="y" angle="0" />                 		<!-- initial rotation 2 -->
 	    <rotation axis="z" angle="0" />                  		<!-- initial rotation 1 -->
 	    <scale sx="1" sy="1" sz="1" />                  	<!-- initial scaling -->
-	    <reference length="1" />                          		<!-- axis length; "0" means no axis-->
+	    <reference length="0" />                          		<!-- axis length; "0" means no axis-->
 	</INITIALS>
 	
 	
