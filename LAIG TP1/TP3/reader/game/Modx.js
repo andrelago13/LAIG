@@ -14,6 +14,7 @@ Modx.numXPiecesPerPlayer = 14;
 Modx.numSPiecesPerPlayer = 18;
 Modx.xPieceBoxPiecesPerRow = 7;
 Modx.sPieceHeight = 0.05;
+Modx.defaultPlayTimeout = 30;
 
 Modx.playingGameState = {
 		WAIT_FOR_START: 0,
@@ -21,7 +22,19 @@ Modx.playingGameState = {
 		GAME_ENDED: 2
 }
 
+Modx.endGameReason = {
+		NONE: 0,
+		P1_WIN_SCORE: 1,
+		P2_WIN_SCORE: 2,
+		P1_WIN_TIME: 3,
+		P2_WIN_TIME: 4,
+		CONNECTION_ERR: 5,
+		ERROR: 6
+}
+
 Modx.secondsToStr = function(time) {
+	if(time < 0 || typeof time == "undefined")
+		return "00:00";
 	if(time < 60) {
 		var t_str = time.toString();
 		if(time < 10)
@@ -73,11 +86,15 @@ Modx.secondsToStr = function(time) {
  * @constructor
  */
 function Modx(scene) {
+	this.scene = scene;
+	this.init();
+};
+
+Modx.prototype.init = function() {
 	this.client = new Client();
 	var modx = this;
 	this.gameHistory = [];
 	this.playsHistory = [];
-	this.scene = scene;
 	this.state = new StateStartingGame(this);
 	this.numJokersToPlace = 5;
 	this.lastMoveEvent = null;
@@ -97,7 +114,10 @@ function Modx(scene) {
 	this.createBoardPieces();
 
 	this.playing = Modx.playingGameState.WAIT_FOR_START;
-};
+	this.endReason = Modx.endGameReason.NONE;
+	
+	this.play_timeout = Modx.defaultPlayTimeout;
+}
 
 /**
  * @param max_score max game score for each player (1 - 14)
@@ -107,18 +127,70 @@ Modx.prototype.getNewGame = function(max_score, mode) {
 	if(typeof max_score != "number" || max_score < 1 || max_score > 14 || typeof mode != "number" || (mode != 0 && mode != 1 && mode != 2))
 		return false;
 
+	var this_t = this;
 	var state = this.state;
-	this.client.getRequestReply("start_game(" + max_score + "," + mode + ")", function(game) { state.terminate(game); });
+	this.client.getRequestReply("start_game(" + max_score + "," + mode + ")", function(game) { console.log(game), state.terminate(game); }, function(data) { 
+		this_t.endReason = Modx.endGameReason.CONNECTION_ERR;
+		this_t.setState(new StateGameEnded(this_t)); 
+	});
 	return true;
+}
+
+Modx.prototype.getPlayTimeout = function() {
+	return this.play_timeout;
+}
+
+Modx.prototype.setPlayTimeout = function(time) {
+	this.play_timeout = time;
+}
+
+Modx.prototype.undo = function() {
+	console.log("TODO: UNDO");	// TODO
+}
+
+Modx.prototype.gameMovie = function() {
+	console.log("TODO: GAME MOVIE");	// TODO
 }
 
 Modx.prototype.checkGameEnded = function() {
 	this_temp = this;
-	this.client.getRequestReply("game_ended(" + this.getGame().toJSON() + ")", this_temp.checkGameEndedReponseHandler);
+	this.client.getRequestReply("game_ended(" + this.getGame().toJSON() + ")", function(data) { this_temp.checkGameEndedReponseHandler(data); });
 }
 
 Modx.prototype.checkGameEndedReponseHandler = function(data) {
-	console.log(data.target.responseText);
+	if(data.target.responseText == "yes") {
+		this.playing = Modx.playingGameState.GAME_ENDED;
+		
+		if(this.getGame().getPlayerInfo(1).getScore() > this.getGame().getPlayerInfo(2).getScore()) {
+			this.endReason = Modx.endGameReason.P1_WIN_SCORE;
+		} else {
+			this.endReason = Modx.endGameReason.P2_WIN_SCORE;			
+		}
+		
+		this.setState(new StateGameEnded(this));
+	}
+}
+
+Modx.prototype.restart = function() {
+	var backup_timeout = this.play_timeout;
+	this.init();
+	this.play_timeout = backup_timeout;
+}
+
+Modx.prototype.checkPlayTimeout = function(start_time, curr_time) {
+	if(curr_time > start_time + this.play_timeout) {
+		var curr_p = this.getGame().getCurrPlayer();
+		if(curr_p == 1) {
+			this.endReason = Modx.endGameReason.P2_WIN_TIME;
+		} else {
+			this.endReason = Modx.endGameReason.P1_WIN_TIME;
+		}
+		this.setState(new StateGameEnded(this));
+	}
+}
+
+Modx.prototype.getEndReason = function() {
+	return this.endReason;
 }
 
 Modx.prototype.createBoardPieces = function() {
@@ -130,6 +202,12 @@ Modx.prototype.createBoardPieces = function() {
 			this.boardPieces[y][x] = [];
 		}
 	}
+}
+
+Modx.prototype.getWinner = function() {
+	if(this.playing != Modx.playingGameState.GAME_ENDED)
+		return -1;
+	return 1;	//	TODO
 }
 
 Modx.prototype.createOutsidePieces = function() {
@@ -193,7 +271,7 @@ Modx.prototype.displayHUD = function(t) {
 		return;
 	}
 
-	time_diff = Modx.secondsToStr(t - this.start_time);
+	time_diff = Modx.secondsToStr(this.play_timeout - (t - this.start_time));
 
 	var background = this.ooliteFont.getBackgroundAppearance();
 	background.apply();
@@ -684,11 +762,14 @@ Modx.prototype.nextMove = function(moveID) {
 
 Modx.prototype.setState = function(state) {
 	this.state = state;
+	if(!(this.state instanceof StateGameEnded) && typeof this.getGame() != "undefined") {
+		this.checkGameEnded();
+	}
 }
 
 Modx.prototype.display = function(t) {
 	if(typeof this.scene.scenarios != "undefined" && typeof this.scene.scenarioName != undefined && typeof this.scene.scenarios[this.scene.scenarioName] != "undefined")
-		this.scene.scenarios[this.scene.scenarioName].display(t, this.playing == Modx.playingGameState.PLAYING);
+		this.scene.scenarios[this.scene.scenarioName].display(t, this.playing == Modx.playingGameState.PLAYING || this.playing == Modx.playingGameState.GAME_ENDED);
 	if (this.state !== null)
 		this.state.display(t);
 }

@@ -53,6 +53,7 @@ XMLscene.prototype.init = function (application) {
 	this.startGameDifficulties['vs. Easy CPU'] = 1;
 	this.startGameDifficulties['vs. Hard CPU'] = 2;
 	this.startGameMaxScore = 8;
+	this.startGamePlayTimeout = 30;
 };
 
 XMLscene.prototype.getCurrTime = function() {
@@ -194,7 +195,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.gl.clearColor(background["r"], background["g"], background["b"], background["a"]);
 	this.setInitials();
 	this.initLights();
-	this.graph.interface.initStartModX();
+	this.graph.interface.initStartModX(false);
 	this.ready = true;
 	console.log("Press SPACE to reset the animations.");
 };
@@ -221,10 +222,26 @@ XMLscene.prototype.updateCameras = function(t) {
 	}
 }
 
+XMLscene.prototype.gameUndo = function() {
+	if(typeof this.modx != "undefined" && this.modx != null)
+		this.modx.undo();
+}
+
 XMLscene.prototype.startGame = function() {
 	this.modx.getNewGame(this.startGameMaxScore, this.startGameDifficulties[this.startGameDifficulty]);
 	this.graph.interface.removeFolder("Start Game");
 	this.graph.interface.initPlayModX();
+	this.modx.setPlayTimeout(this.startGamePlayTimeout);
+}
+
+XMLscene.prototype.endGame = function() {
+	this.graph.interface.removeFolder("Play ModX");
+	this.graph.interface.initStartModX(true);	
+}
+
+XMLscene.prototype.gameMovie = function() {
+	if(typeof this.modx != "undefined" && this.modx != null)
+		this.modx.gameMovie();
 }
 
 /**

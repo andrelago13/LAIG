@@ -17,13 +17,19 @@ function StateWaitingForPlay(modx) {
 			this_t.updated = true;
 			var positions = JSON.parse(prolog_reply.target.responseText);
 			var board = this_t.modx.getGame().getBoard();
+			console.log("here");
+			console.log(board);
 			board.setAllCellsValidity(false);
 			var size = positions.length;
 			for(var i = 0; i < size; ++i) {
 				board.get(positions[i][0], positions[i][1]).setValidValue(true);
 			}
+			console.log(this_t.modx.getGame().getBoard());
+			console.log(board);
 		})
 	}
+	
+	this.start_time = -1;
 }
 
 StateWaitingForPlay.prototype.display = function(t) {	
@@ -34,8 +40,9 @@ StateWaitingForPlay.prototype.display = function(t) {
 		this.scene.translate(0, 0, y);
 		for (var x = 0; x < Board.size; x++)
 		{
+			var cell_temp = this.modx.getGame().getBoard().get(x, y);
 			// Draw cell
-			if (this.modx.getGame().getBoard().get(x, y).getXpiece() === Modx.pieceTypes.NONE)
+			if (cell_temp.getXpiece() === Modx.pieceTypes.NONE && cell_temp.isValid())
 				this.scene.registerForPick(y * Board.size + x + 1 , [x, y]);
 			this.scene.graph.graphNodes["cell"].display(0);
 			this.scene.clearPickRegistration();
@@ -47,6 +54,11 @@ StateWaitingForPlay.prototype.display = function(t) {
 	this.scene.graph.graphNodes["board"].display(0);
 	this.modx.displayXPieceBoxes();
 	this.modx.displayPieces(t);
+	
+	if(this.start_time == -1 || t < this.start_time)
+		this.start_time = t;
+	else
+		this.modx.checkPlayTimeout(this.start_time, t);
 }
 
 StateWaitingForPlay.prototype.updatePicking = function ()
@@ -74,9 +86,9 @@ StateWaitingForPlay.prototype.onClick = function(event) {
 		var s = this;
 		this.modx.setState(new StateMovingPiece(s.modx, 0, this.hovered, this.modx.nextPieceType(), true));
 		this.modx.getGame().makePlay(this.modx, this.hovered[0], this.hovered[1], function(newGame) {
-			s.modx.newGame = newGame;
-			s.modx.newPlay = s.modx.getGame().compare(s.hovered, newGame);
-			s.modx.checkGameEnded();
+				s.modx.start_time = -1;
+				s.modx.newGame = newGame;
+				s.modx.newPlay = s.modx.getGame().compare(s.hovered, newGame);
 		});
 		this.scene.setPickEnabled(false);
 	}
