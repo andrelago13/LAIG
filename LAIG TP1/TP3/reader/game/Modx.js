@@ -86,11 +86,15 @@ Modx.secondsToStr = function(time) {
  * @constructor
  */
 function Modx(scene) {
+	this.scene = scene;
+	this.init();
+};
+
+Modx.prototype.init = function() {
 	this.client = new Client();
 	var modx = this;
 	this.gameHistory = [];
 	this.playsHistory = [];
-	this.scene = scene;
 	this.state = new StateStartingGame(this);
 	this.numJokersToPlace = 5;
 	this.lastMoveEvent = null;
@@ -113,7 +117,7 @@ function Modx(scene) {
 	this.endReason = Modx.endGameReason.NONE;
 	
 	this.play_timeout = Modx.defaultPlayTimeout;
-};
+}
 
 /**
  * @param max_score max game score for each player (1 - 14)
@@ -139,6 +143,12 @@ Modx.prototype.setPlayTimeout = function(time) {
 Modx.prototype.checkGameEnded = function() {
 	this_temp = this;
 	this.client.getRequestReply("game_ended(" + this.getGame().toJSON() + ")", function(data) { this_temp.checkGameEndedReponseHandler(data); });
+}
+
+Modx.prototype.restart = function() {
+	var backup_timeout = this.play_timeout;
+	this.init();
+	this.play_timeout = backup_timeout;
 }
 
 Modx.prototype.checkPlayTimeout = function(start_time, curr_time) {

@@ -113,7 +113,7 @@ Interface.prototype.initStartModX = function() {
 	max_score.name("Max Game Score");
 	max_score.step(1);
 	this.startGameFolder.add(this.scene, 'startGameDifficulty', this.scene.startGameDifficulties).name("Game Type");
-	var play_timeout = this.startGameFolder.add(this.scene, 'startGamePlayTimeout', 10, 120, 1);
+	var play_timeout = this.startGameFolder.add(this.scene, 'startGamePlayTimeout', 5, 120, 1);
 	play_timeout.name("Play Timeout");
 	play_timeout.step(1);
 	this.startGameFolder.add(this.scene, "startGame").name("Start Game");
