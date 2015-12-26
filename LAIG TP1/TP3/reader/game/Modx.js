@@ -127,8 +127,12 @@ Modx.prototype.getNewGame = function(max_score, mode) {
 	if(typeof max_score != "number" || max_score < 1 || max_score > 14 || typeof mode != "number" || (mode != 0 && mode != 1 && mode != 2))
 		return false;
 
+	var this_t = this;
 	var state = this.state;
-	this.client.getRequestReply("start_game(" + max_score + "," + mode + ")", function(game) { state.terminate(game); });
+	this.client.getRequestReply("start_game(" + max_score + "," + mode + ")", function(game) { console.log(game), state.terminate(game); }, function(data) { 
+		this_t.endReason = Modx.endGameReason.CONNECTION_ERR;
+		this_t.setState(new StateGameEnded(this_t)); 
+	});
 	return true;
 }
 
