@@ -96,7 +96,7 @@ Modx.prototype.init = function() {
 	this.gameHistory = [];
 	this.playsHistory = [];
 	this.state = new StateStartingGame(this);
-	this.numJokersToPlace = 5;
+	this.numJokersToPlace = Modx.numJokers;
 	this.lastMoveEvent = null;
 
 	this.pieces = [];
