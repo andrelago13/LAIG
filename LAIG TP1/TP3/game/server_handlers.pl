@@ -13,7 +13,7 @@ parse_input(make_play(Game, X, Y), NewGame) :-          % XPIECE PLAY
         place_xpiece(Game, [X, Y], Game1),
         end_play(Game1, NewGame).
 parse_input(make_play(Game, X, Y), NewGame) :-          % JOKER PLAY (mas falta verificar patterns)
-        place_xpiece(Game, [X, Y], NewGame).
+        place_joker(Game, [X, Y], NewGame).
 
 parse_input(num_jokers_to_place(Game), N) :-
         game_board(Game, Board),

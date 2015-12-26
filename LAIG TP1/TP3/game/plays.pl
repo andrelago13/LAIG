@@ -56,8 +56,10 @@ available_moves_aux_aux(Game, Width, Height, Board, Moves, New_moves) :-
 available_moves_coords(Game, Coords, Board, Moves, [Coords | Moves]):-
         num_jokers_to_place(Board, Jokers),
         Jokers > 0,
+        write(Coords),
         place_joker(Game, Coords, _), !.
 available_moves_coords(_, Coords, Board, Moves, [Coords | Moves]):-
+        num_jokers_to_place(Board, 0),
         board_xy(Board, Coords, Cell),
         cell_xpiece(Cell, -1), !.
 available_moves_coords(_, _, _, Moves, Moves).

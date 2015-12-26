@@ -17,11 +17,15 @@ function StateWaitingForPlay(modx) {
 			this_t.updated = true;
 			var positions = JSON.parse(prolog_reply.target.responseText);
 			var board = this_t.modx.getGame().getBoard();
+			console.log("here");
+			console.log(board);
 			board.setAllCellsValidity(false);
 			var size = positions.length;
 			for(var i = 0; i < size; ++i) {
 				board.get(positions[i][0], positions[i][1]).setValidValue(true);
 			}
+			console.log(this_t.modx.getGame().getBoard());
+			console.log(board);
 		})
 	}
 	
@@ -36,8 +40,9 @@ StateWaitingForPlay.prototype.display = function(t) {
 		this.scene.translate(0, 0, y);
 		for (var x = 0; x < Board.size; x++)
 		{
+			var cell_temp = this.modx.getGame().getBoard().get(x, y);
 			// Draw cell
-			if (this.modx.getGame().getBoard().get(x, y).getXpiece() === Modx.pieceTypes.NONE)
+			if (cell_temp.getXpiece() === Modx.pieceTypes.NONE && cell_temp.isValid())
 				this.scene.registerForPick(y * Board.size + x + 1 , [x, y]);
 			this.scene.graph.graphNodes["cell"].display(0);
 			this.scene.clearPickRegistration();
