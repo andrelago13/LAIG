@@ -222,6 +222,11 @@ XMLscene.prototype.updateCameras = function(t) {
 	}
 }
 
+XMLscene.prototype.gameUndo = function() {
+	if(typeof this.modx != "undefined" && this.modx != null)
+		this.modx.undo();
+}
+
 XMLscene.prototype.startGame = function() {
 	this.modx.getNewGame(this.startGameMaxScore, this.startGameDifficulties[this.startGameDifficulty]);
 	this.graph.interface.removeFolder("Start Game");

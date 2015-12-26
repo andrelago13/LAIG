@@ -140,9 +140,27 @@ Modx.prototype.setPlayTimeout = function(time) {
 	this.play_timeout = time;
 }
 
+Modx.prototype.undo = function() {
+	console.log("UNDO");	// TODO
+}
+
 Modx.prototype.checkGameEnded = function() {
 	this_temp = this;
 	this.client.getRequestReply("game_ended(" + this.getGame().toJSON() + ")", function(data) { this_temp.checkGameEndedReponseHandler(data); });
+}
+
+Modx.prototype.checkGameEndedReponseHandler = function(data) {
+	if(data.target.responseText == "yes") {
+		this.playing = Modx.playingGameState.GAME_ENDED;
+		
+		if(this.getGame().getPlayerInfo(1).getScore() > this.getGame().getPlayerInfo(2).getScore()) {
+			this.endReason = Modx.endGameReason.P1_WIN_SCORE;
+		} else {
+			this.endReason = Modx.endGameReason.P2_WIN_SCORE;			
+		}
+		
+		this.setState(new StateGameEnded(this));
+	}
 }
 
 Modx.prototype.restart = function() {
@@ -159,20 +177,6 @@ Modx.prototype.checkPlayTimeout = function(start_time, curr_time) {
 		} else {
 			this.endReason = Modx.endGameReason.P1_WIN_TIME;
 		}
-		this.setState(new StateGameEnded(this));
-	}
-}
-
-Modx.prototype.checkGameEndedReponseHandler = function(data) {
-	if(data.target.responseText == "yes") {
-		this.playing = Modx.playingGameState.GAME_ENDED;
-		
-		if(this.getGame().getPlayerInfo(1).getScore() > this.getGame().getPlayerInfo(2).getScore()) {
-			this.endReason = Modx.endGameReason.P1_WIN_SCORE;
-		} else {
-			this.endReason = Modx.endGameReason.P2_WIN_SCORE;			
-		}
-		
 		this.setState(new StateGameEnded(this));
 	}
 }

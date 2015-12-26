@@ -103,6 +103,8 @@ Interface.prototype.initPlayModX = function() {
 	this.derp = 0;
 	this.modx = null;
 	
+	this.modxFolder.add(this.scene, "gameUndo").name("UNDO");
+	
 	this.modxFolder.open();
 }
 
