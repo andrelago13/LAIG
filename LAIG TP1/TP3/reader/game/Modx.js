@@ -21,6 +21,16 @@ Modx.playingGameState = {
 		GAME_ENDED: 2
 }
 
+Modx.endGameReason = {
+		NONE: 0,
+		P1_WIN_SCORE: 1,
+		P2_WIN_SCORE: 2,
+		P1_WIN_TIME: 3,
+		P2_WIN_TIME: 4,
+		CONNECTION_ERR: 5,
+		ERROR: 6
+}
+
 Modx.secondsToStr = function(time) {
 	if(time < 60) {
 		var t_str = time.toString();
@@ -97,6 +107,7 @@ function Modx(scene) {
 	this.createBoardPieces();
 
 	this.playing = Modx.playingGameState.WAIT_FOR_START;
+	this.endReason = Modx.endGameReason.NONE;
 };
 
 /**
@@ -120,8 +131,19 @@ Modx.prototype.checkGameEnded = function() {
 Modx.prototype.checkGameEndedReponseHandler = function(data) {
 	if(data.target.responseText == "yes") {
 		this.playing = Modx.playingGameState.GAME_ENDED;
+		
+		if(this.getGame().getPlayerInfo(1).getScore() > this.getGame().getPlayerInfo(2).getScore()) {
+			this.endReason = Modx.endGameReason.P1_WIN_SCORE;
+		} else {
+			this.endReason = Modx.endGameReason.P2_WIN_SCORE;			
+		}
+		
 		this.setState(new StateGameEnded(this));
 	}
+}
+
+Modx.prototype.getEndReason = function() {
+	return this.endReason;
 }
 
 Modx.prototype.createBoardPieces = function() {

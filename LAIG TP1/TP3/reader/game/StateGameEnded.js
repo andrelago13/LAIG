@@ -24,7 +24,29 @@ function StateGameEnded(modx) {
 	this.hudAppearance.setDiffuse(1, 1, 1, 1);
 	this.hudAppearance.setSpecular(0.3, 0.3, 0.3, 1);	
 	this.hudAppearance.setShininess(120);
-	this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/player1wins_score.png"));
+	switch(this.modx.getEndReason()) {
+	case Modx.endGameReason.P1_WIN_SCORE:
+		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/player1wins_score.png"));
+		break;
+	case Modx.endGameReason.P2_WIN_SCORE:
+		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/player2wins_score.png"));
+		break;
+	case Modx.endGameReason.P1_WIN_TIME:
+		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/player1wins_timeout.png"));
+		break;
+	case Modx.endGameReason.P2_WIN_TIME:
+		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/player2wins_timeout.png"));
+		break;
+	case Modx.endGameReason.CONNECTION_ERR:
+		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/connect_error.png"));
+		break;
+	case Modx.endGameReason.ERROR:
+		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/error.png"));
+		break;
+	default:
+		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/player2wins_timeout.png"));
+		break;
+	}
 
 	this.modx.scene.lights[5].setPosition(2, 2, 1, 0);
 	this.modx.scene.lights[5].setAmbient(1, 1, 1, 1);

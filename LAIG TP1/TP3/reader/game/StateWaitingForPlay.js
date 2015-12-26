@@ -74,8 +74,13 @@ StateWaitingForPlay.prototype.onClick = function(event) {
 		var s = this;
 		this.modx.setState(new StateMovingPiece(s.modx, 0, this.hovered, this.modx.nextPieceType(), true));
 		this.modx.getGame().makePlay(this.modx, this.hovered[0], this.hovered[1], function(newGame) {
-			s.modx.newGame = newGame;
-			s.modx.newPlay = s.modx.getGame().compare(s.hovered, newGame);
+			if(newGame.target.responseText == "error" || newGame.target.responseText == "bad request") {
+				s.modx.endReason = Modx.endGameReason.CONNECTION_ERR;
+				s.modx.setState(new StateEndGame(s.modx));
+			} else {
+				s.modx.newGame = newGame;
+				s.modx.newPlay = s.modx.getGame().compare(s.hovered, newGame);
+			}
 		});
 		this.scene.setPickEnabled(false);
 	}
