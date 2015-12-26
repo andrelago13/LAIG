@@ -24,6 +24,8 @@ function StateWaitingForPlay(modx) {
 			}
 		})
 	}
+	
+	this.start_time = -1;
 }
 
 StateWaitingForPlay.prototype.display = function(t) {	
@@ -47,6 +49,11 @@ StateWaitingForPlay.prototype.display = function(t) {
 	this.scene.graph.graphNodes["board"].display(0);
 	this.modx.displayXPieceBoxes();
 	this.modx.displayPieces(t);
+	
+	if(this.start_time == -1 || t < this.start_time)
+		this.start_time = t;
+	else
+		this.modx.checkPlayTimeout(this.start_time, t);
 }
 
 StateWaitingForPlay.prototype.updatePicking = function ()
@@ -74,13 +81,9 @@ StateWaitingForPlay.prototype.onClick = function(event) {
 		var s = this;
 		this.modx.setState(new StateMovingPiece(s.modx, 0, this.hovered, this.modx.nextPieceType(), true));
 		this.modx.getGame().makePlay(this.modx, this.hovered[0], this.hovered[1], function(newGame) {
-			if(newGame.target.responseText == "error" || newGame.target.responseText == "bad request") {
-				s.modx.endReason = Modx.endGameReason.CONNECTION_ERR;
-				s.modx.setState(new StateEndGame(s.modx));
-			} else {
+				s.modx.start_time = -1;
 				s.modx.newGame = newGame;
 				s.modx.newPlay = s.modx.getGame().compare(s.hovered, newGame);
-			}
 		});
 		this.scene.setPickEnabled(false);
 	}

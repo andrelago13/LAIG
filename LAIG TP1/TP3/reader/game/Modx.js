@@ -14,6 +14,7 @@ Modx.numXPiecesPerPlayer = 14;
 Modx.numSPiecesPerPlayer = 18;
 Modx.xPieceBoxPiecesPerRow = 7;
 Modx.sPieceHeight = 0.05;
+Modx.defaultPlayTimeout = 30;
 
 Modx.playingGameState = {
 		WAIT_FOR_START: 0,
@@ -32,6 +33,8 @@ Modx.endGameReason = {
 }
 
 Modx.secondsToStr = function(time) {
+	if(time < 0 || typeof time == "undefined")
+		return "00:00";
 	if(time < 60) {
 		var t_str = time.toString();
 		if(time < 10)
@@ -108,6 +111,8 @@ function Modx(scene) {
 
 	this.playing = Modx.playingGameState.WAIT_FOR_START;
 	this.endReason = Modx.endGameReason.NONE;
+	
+	this.play_timeout = Modx.defaultPlayTimeout;
 };
 
 /**
@@ -123,9 +128,29 @@ Modx.prototype.getNewGame = function(max_score, mode) {
 	return true;
 }
 
+Modx.prototype.getPlayTimeout = function() {
+	return this.play_timeout;
+}
+
+Modx.prototype.setPlayTimeout = function(time) {
+	this.play_timeout = time;
+}
+
 Modx.prototype.checkGameEnded = function() {
 	this_temp = this;
 	this.client.getRequestReply("game_ended(" + this.getGame().toJSON() + ")", function(data) { this_temp.checkGameEndedReponseHandler(data); });
+}
+
+Modx.prototype.checkPlayTimeout = function(start_time, curr_time) {
+	if(curr_time > start_time + this.play_timeout) {
+		var curr_p = this.getGame().getCurrPlayer();
+		if(curr_p == 1) {
+			this.endReason = Modx.endGameReason.P2_WIN_TIME;
+		} else {
+			this.endReason = Modx.endGameReason.P1_WIN_TIME;
+		}
+		this.setState(new StateGameEnded(this));
+	}
 }
 
 Modx.prototype.checkGameEndedReponseHandler = function(data) {
@@ -224,7 +249,7 @@ Modx.prototype.displayHUD = function(t) {
 		return;
 	}
 
-	time_diff = Modx.secondsToStr(t - this.start_time);
+	time_diff = Modx.secondsToStr(this.play_timeout - (t - this.start_time));
 
 	var background = this.ooliteFont.getBackgroundAppearance();
 	background.apply();
