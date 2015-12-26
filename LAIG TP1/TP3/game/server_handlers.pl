@@ -7,12 +7,16 @@ parse_input(quit, goodbye).
 
 parse_input(start_game(X,Y), Game) :- start_game(Game, X, Y).
 
+parse_input(make_play(Game), NewGame) :-                % BOT PLAY
+        make_play_bot(Game, Game1),
+        end_play(Game1, NewGame).
+
 parse_input(make_play(Game, X, Y), NewGame) :-          % XPIECE PLAY
         game_board(Game, Board),
         num_jokers_to_place(Board, 0), !,
         place_xpiece(Game, [X, Y], Game1),
         end_play(Game1, NewGame).
-parse_input(make_play(Game, X, Y), NewGame) :-          % JOKER PLAY (mas falta verificar patterns)
+parse_input(make_play(Game, X, Y), NewGame) :-          % JOKER PLAY
         place_joker(Game, [X, Y], NewGame).
 
 parse_input(num_jokers_to_place(Game), N) :-
