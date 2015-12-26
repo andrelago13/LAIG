@@ -204,12 +204,6 @@ Modx.prototype.createBoardPieces = function() {
 	}
 }
 
-Modx.prototype.getWinner = function() {
-	if(this.playing != Modx.playingGameState.GAME_ENDED)
-		return -1;
-	return 1;	//	TODO
-}
-
 Modx.prototype.createOutsidePieces = function() {
 	this.pieces[Modx.pieceTypes.JOKER] = [];
 	this.outsidePieces[Modx.pieceTypes.JOKER] = [];
