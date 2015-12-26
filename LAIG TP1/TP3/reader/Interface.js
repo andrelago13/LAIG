@@ -108,7 +108,7 @@ Interface.prototype.initPlayModX = function() {
 	this.modxFolder.open();
 }
 
-Interface.prototype.initStartModX = function() {
+Interface.prototype.initStartModX = function(show_movie) {
 	this.resetFolder("Start Game");
 
 	var max_score = this.startGameFolder.add(this.scene, 'startGameMaxScore', 5, 14, 1);
@@ -119,6 +119,8 @@ Interface.prototype.initStartModX = function() {
 	play_timeout.name("Play Timeout");
 	play_timeout.step(1);
 	this.startGameFolder.add(this.scene, "startGame").name("Start Game");
+	if(typeof show_movie != "undefined" && show_movie)
+		this.startGameFolder.add(this.scene, "gameMovie").name("Game Movie");
 	
 	this.startGameFolder.open();
 }

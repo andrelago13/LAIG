@@ -141,7 +141,11 @@ Modx.prototype.setPlayTimeout = function(time) {
 }
 
 Modx.prototype.undo = function() {
-	console.log("UNDO");	// TODO
+	console.log("TODO: UNDO");	// TODO
+}
+
+Modx.prototype.gameMovie = function() {
+	console.log("TODO: GAME MOVIE");	// TODO
 }
 
 Modx.prototype.checkGameEnded = function() {

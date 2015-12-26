@@ -195,7 +195,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.gl.clearColor(background["r"], background["g"], background["b"], background["a"]);
 	this.setInitials();
 	this.initLights();
-	this.graph.interface.initStartModX();
+	this.graph.interface.initStartModX(false);
 	this.ready = true;
 	console.log("Press SPACE to reset the animations.");
 };
@@ -235,9 +235,13 @@ XMLscene.prototype.startGame = function() {
 }
 
 XMLscene.prototype.endGame = function() {
-	// TODO waiting for reply to mail
 	this.graph.interface.removeFolder("Play ModX");
-	this.graph.interface.initStartModX();	
+	this.graph.interface.initStartModX(true);	
+}
+
+XMLscene.prototype.gameMovie = function() {
+	if(typeof this.modx != "undefined" && this.modx != null)
+		this.modx.gameMovie();
 }
 
 /**
