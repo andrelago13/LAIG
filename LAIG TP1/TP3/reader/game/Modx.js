@@ -732,6 +732,24 @@ Modx.prototype.getPlay = function() {
 	return this.playHistory[this.playHistory.length - 1];
 }
 
+Modx.prototype.getBotPlay = function() {
+	var this_t = this;
+	this.client.getRequestReply("make_play(" + this.getGame().toJSON() + ")", function(data) { this_t.onBotPlayReceived(data); }, function(data) { 
+		this_t.endReason = Modx.endGameReason.CONNECTION_ERR;
+		this_t.setState(new StateGameEnded(this_t)); 
+	});
+}
+
+Modx.prototype.onBotPlayReceived = function(prolog_reply) {
+	var reply = JSON.parse(prolog_reply.target.responseText);
+	this.setState(new StateMovingPiece(this, 0, reply[1], this.nextPieceType(), true));
+	this.start_time = -1;
+	this.newGame = new Game();
+	this.newGame.parseGame(reply[0]);
+	this.newPlay = this.getGame().compare(reply[1], this.newGame);
+	this.updatePlay();
+}
+
 Modx.prototype.updatePlay = function() {
 	if (this.newPlay !== null)
 		this.playHistory.push(this.newPlay);

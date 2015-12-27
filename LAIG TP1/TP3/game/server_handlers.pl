@@ -7,8 +7,8 @@ parse_input(quit, goodbye).
 
 parse_input(start_game(X,Y), Game) :- start_game(Game, X, Y).
 
-parse_input(make_play(Game), NewGame) :-                % BOT PLAY
-        make_play_bot(Game, Game1),
+parse_input(make_play(Game), [NewGame, Move]) :-        % BOT PLAY
+        make_play_bot_return(Game, Game1, Move),
         end_play(Game1, NewGame).
 
 parse_input(make_play(Game, X, Y), NewGame) :-          % XPIECE PLAY

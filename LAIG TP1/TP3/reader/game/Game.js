@@ -32,8 +32,10 @@ function Game(game_reply) {
 	this.player_info = Game.defaultPlayerInfo;
 	this.setMaxScore(Game.defaultMaxScore);
 	this.setDifficulty(Game.defaultDifficulty);
-	var game_json = JSON.parse(Reply.getText(game_reply));
-	this.parseGame(game_json);
+	if(typeof game_reply != "undefined") {
+		var game_json = JSON.parse(Reply.getText(game_reply));
+		this.parseGame(game_json);		
+	}
 };
 Game.prototype.constructor=Game;
 
@@ -128,12 +130,6 @@ Game.prototype.makePlay = function(modx, x, y, successHandler, errorHandler) {
 	});
 }
 
-/*
-[
-		[Modx.pieceTypes.PLAYER1, true, [4, 4]],
-		[Modx.pieceTypes.PLAYER1, false, [4, 4]]
-]
- */
 Game.prototype.compare = function(coords, newGame) {
 	var result = [];
 	var g1_board = this.getBoard();

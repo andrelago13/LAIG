@@ -90,6 +90,18 @@ make_play_joker(Game, New_game) :-
         write('Invalid location! Please try again.'), nl,
         make_play_joker(Game, New_game).
 
+make_play_bot_return(Game, New_game, Move) :-
+        game_difficulty(Game, 1),
+        ai_bot_random(available_moves, Game, Move),
+        write('Bot played in position '), write(Move), nl,
+        place_xpiece(Game, Move, New_game).
+
+make_play_bot_return(Game, New_game, Move) :-
+        game_difficulty(Game, 2),
+        ai_bot_greedy(available_moves, place_xpiece, game_value, Game, Move),
+        write('Bot played in position '), write(Move), nl,
+        place_xpiece(Game, Move, New_game).
+
 make_play_bot(Game, New_game) :-
         game_difficulty(Game, 1),
         ai_bot_random(available_moves, Game, Move),
