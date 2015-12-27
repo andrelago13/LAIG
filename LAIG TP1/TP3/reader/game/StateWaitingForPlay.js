@@ -93,7 +93,6 @@ StateWaitingForPlay.prototype.onClick = function(event) {
 				s.modx.start_time = -1;
 				s.modx.newGame = newGame;
 				s.modx.newPlay = s.modx.getGame().compare(s.hovered, newGame);
-				console.log(s.modx.newPlay);
 				s.modx.updatePlay();
 		});
 		this.scene.setPickEnabled(false);

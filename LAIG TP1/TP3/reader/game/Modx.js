@@ -177,7 +177,8 @@ Modx.prototype.undo = function() {
 }
 
 Modx.prototype.gameMovie = function() {
-	console.log("TODO: GAME MOVIE");	// TODO
+	if (this.state instanceof StateGameEnded)
+		this.setState(new StateGameMovie(this));
 }
 
 Modx.prototype.checkGameEnded = function() {
@@ -681,7 +682,7 @@ Modx.prototype.displayHUD = function(t) {
 Modx.prototype.start = function(game) {
 	this.setState(new StateWaitingForPlay(this));
 	this.gameHistory = [];
-	this.gameHistory = [new Game(game)];
+	this.gameHistory = [game];
 	this.playHistory = [];
 	this.newGame = null;
 	this.newPlay = null;
