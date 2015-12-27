@@ -172,7 +172,6 @@ Modx.prototype.undo = function() {
 		}
 	}
 	if (placedAndRemoved) reversed.pop();
-	
 	this.newPlay = reversed;
 	this.nextMove(0);
 }
