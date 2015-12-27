@@ -17,15 +17,11 @@ function StateWaitingForPlay(modx) {
 			this_t.updated = true;
 			var positions = JSON.parse(prolog_reply.target.responseText);
 			var board = this_t.modx.getGame().getBoard();
-			console.log("here");
-			console.log(board);
 			board.setAllCellsValidity(false);
 			var size = positions.length;
 			for(var i = 0; i < size; ++i) {
 				board.get(positions[i][0], positions[i][1]).setValidValue(true);
 			}
-			console.log(this_t.modx.getGame().getBoard());
-			console.log(board);
 		})
 	}
 	
@@ -89,6 +85,8 @@ StateWaitingForPlay.prototype.onClick = function(event) {
 				s.modx.start_time = -1;
 				s.modx.newGame = newGame;
 				s.modx.newPlay = s.modx.getGame().compare(s.hovered, newGame);
+				console.log(s.modx.newPlay);
+				s.modx.updatePlay();
 		});
 		this.scene.setPickEnabled(false);
 	}
