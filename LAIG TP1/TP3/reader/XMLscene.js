@@ -294,9 +294,5 @@ XMLscene.prototype.setCameraByName = function(name) {
 	if(typeof name == "undefined" || typeof this.cameraNames[name] == "undefined")
 		return;
 	
-	this.oldCameraPosition = vec3.clone(this.camera.position);
-	this.newCameraPosition = vec3.clone(this.cameraPositions[this.cameraNames[name]]);
-	this.cameraAnimTime = 0;
-	this.cameraAnimStartTime = this.currTime;
-	this.cameraTotalAnimTime = 1;
+	this.graph.interface.camera.setValue(name);
 }

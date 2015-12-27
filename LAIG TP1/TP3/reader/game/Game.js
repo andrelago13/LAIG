@@ -15,6 +15,12 @@ Game.defaultPlayerInfo = [];
 Game.defaultMaxScore = 0;
 Game.defaultDifficulty = 0;
 
+Game.difficultyType = {
+		VERSUS: 0,
+		CPU_EASY: 1,
+		CPU_HARD: 2
+}
+
 /**
  * Game
  * @param game prolog game representation as list

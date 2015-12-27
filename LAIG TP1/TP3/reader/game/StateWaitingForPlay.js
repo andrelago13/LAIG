@@ -11,9 +11,10 @@ function StateWaitingForPlay(modx) {
 		this.scene.onPick(this.modx.lastMoveEvent);
 	}
 
-	if(typeof this.modx.getGame() != 'undefined') {
+	var curr_game = this.modx.getGame();
+	if(typeof curr_game != 'undefined') {
 		var this_t = this;
-		this.modx.client.getRequestReply("available_moves(" + this.modx.getGame().toJSON() + ")", function(prolog_reply) {
+		this.modx.client.getRequestReply("available_moves(" + curr_game.toJSON() + ")", function(prolog_reply) {
 			this_t.updated = true;
 			var positions = JSON.parse(prolog_reply.target.responseText);
 			var board = this_t.modx.getGame().getBoard();
@@ -23,6 +24,13 @@ function StateWaitingForPlay(modx) {
 				board.get(positions[i][0], positions[i][1]).setValidValue(true);
 			}
 		})
+		
+		if(curr_game.getDifficulty() == Game.difficultyType.VERSUS) {
+			if(curr_game.getCurrPlayer() == 1)
+				this.modx.scene.setCameraByName("Player 1");
+			else
+				this.modx.scene.setCameraByName("Player 2");
+		}
 	}
 	
 	this.start_time = -1;

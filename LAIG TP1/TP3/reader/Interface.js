@@ -92,7 +92,11 @@ Interface.prototype.initPlayModX = function() {
 	this.camera = this.modxFolder.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
 	var scene = this.scene;
 	this.camera.onChange(function(value) {
-		scene.setCameraByName(value);
+		scene.oldCameraPosition = vec3.clone(scene.camera.position);
+		scene.newCameraPosition = vec3.clone(scene.cameraPositions[scene.cameraNames[value]]);
+		scene.cameraAnimTime = 0;
+		scene.cameraAnimStartTime = scene.currTime;
+		scene.cameraTotalAnimTime = 1;
 	});
 	
 	this.modxFolder.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
