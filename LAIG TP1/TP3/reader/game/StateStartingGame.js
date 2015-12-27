@@ -72,7 +72,7 @@ StateStartingGame.prototype.displayHUD = function(t) {
 		if(t > this.animTime + this.animEndDuration) {
 			this.anim_state = StateStartingGame.animState.ENDED;
 			this.modx.scene.scale(0, 0, 1);
-			this.modx.start(this.newGame);
+			this.modx.start(new Game(this.newGame));
 			this.modx.scene.lights[5].disable();
 			this.modx.scene.lights[5].update();
 		} else {

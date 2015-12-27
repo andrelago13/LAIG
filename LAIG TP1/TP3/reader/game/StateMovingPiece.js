@@ -35,14 +35,12 @@ StateMovingPiece.prototype.display = function(t) {
 	this.modx.displayXPieceBoxes();
 	this.modx.displayPieces(t);
 	
-	if (this.isFinished(t))
+	if (this.isFinished(t) && this.modx.isPlayResponseReady())
 	{
 		this.modx.nextMove(this.moveID + 1);
 	}
 }
 StateMovingPiece.prototype.isFinished = function(t) {
-	if (!this.modx.isPlayResponseReady()) return false;
-	
 	var animTime = t - this.startAnimTime;
 	if ((this.place && this.moveID === 0) || this.moveID == this.modx.newPlay.length - 1) return animTime >= StateMovingPiece.totalAnimTime;
 	return animTime >= StateMovingPiece.totalAnimTime / 3;

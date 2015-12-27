@@ -46,7 +46,7 @@ XMLscene.prototype.init = function (application) {
 	this.setActiveShader(this.shader);
 
 	this.modx = new Modx(this, application.interface);
-	
+
 	this.startGameDifficulty = '2 Players';
 	this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Hard CPU'];
 	this.startGameDifficulties['2 Players'] = 0;
@@ -241,7 +241,10 @@ XMLscene.prototype.endGame = function() {
 
 XMLscene.prototype.gameMovie = function() {
 	if(typeof this.modx != "undefined" && this.modx != null)
+	{
+		// TODO change interface
 		this.modx.gameMovie();
+	}
 }
 
 /**
@@ -255,9 +258,9 @@ XMLscene.prototype.display = function () {
 	// Initialize Model-View matrix as identity (no transformation)
 	this.updateProjectionMatrix();
 	this.loadIdentity();
-	
+
 	this.setActiveShaderSimple(this.shader);
-	
+
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
 
@@ -283,8 +286,8 @@ XMLscene.prototype.display = function () {
 	// Display game hud
 	if(this.ready) {
 		this.pushMatrix();
-			this.translate(-3.3,1,-10);
-			this.modx.displayHUD(this.currTime);
+		this.translate(-3.3,1,-10);
+		this.modx.displayHUD(this.currTime);
 		this.popMatrix();
 		this.defaultAppearance.apply();
 	}
@@ -293,6 +296,6 @@ XMLscene.prototype.display = function () {
 XMLscene.prototype.setCameraByName = function(name) {
 	if(typeof name == "undefined" || typeof this.cameraNames[name] == "undefined")
 		return;
-	
+
 	this.graph.interface.camera.setValue(name);
 }
