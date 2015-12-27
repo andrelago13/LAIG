@@ -102,7 +102,6 @@ Interface.prototype.initPlayModX = function() {
 	this.modxFolder.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
 	this.derp = 0;
 	this.modx = null;
-	
 	this.modxFolder.add(this.scene, "gameUndo").name("UNDO");
 	
 	this.modxFolder.open();

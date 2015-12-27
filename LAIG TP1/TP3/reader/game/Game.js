@@ -1,6 +1,6 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////		NON STATIC MEMBERS	       ///////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////NON STATIC MEMBERS	       ///////////////////////////////////////////
+
 
 Game.board_index = 0;
 Game.curr_player_index = 1;
@@ -133,17 +133,18 @@ Game.prototype.compare = function(coords, newGame) {
 	var g1_board = this.getBoard();
 	var g2_board = newGame.getBoard();
 	var board_size = g1_board.size();
-	
+
 	curr_piece = g2_board.get(coords[0], coords[1]);
-	
-	if(curr_piece.getXpiece() != Modx.pieceTypes.NONE) {	// Peça colocada sem ponto
-		result.push([this.getCurrPlayer(), true, coords]);
-	} else {												// Peça colocada com ponto
-		// Peça colocada
-		result.push([this.getCurrPlayer(), true, coords]);
+
+	if(curr_piece.getXpiece() !== Modx.pieceTypes.NONE) {	// Peça colocada sem ponto
+		result.push([curr_piece.getXpiece(), true, coords]); // Peça colocada
+	}
+	else	// Peça colocada com ponto
+	{
+		result.push([this.getCurrPlayer(), true, coords]); // Peça colocada
 		var removed_xpieces = [];
 		var added_bases = [];
-		
+
 		for(var x = 0; x < board_size; ++x) {
 			for(var y = 0; y < board_size; ++y) {
 				if((g1_board.get(x, y).getXpiece() != Modx.pieceTypes.NONE && g2_board.get(x, y).getXpiece() == Modx.pieceTypes.NONE)){			// Peça removida do padrão
@@ -151,22 +152,22 @@ Game.prototype.compare = function(coords, newGame) {
 				} else if (x == coords[0] && y == coords[1]) {
 					removed_xpieces.push([this.getCurrPlayer(), false, [x, y]]);
 				}
-				
+
 				if(g1_board.get(x, y).getTopSPiece() != g2_board.get(x, y).getTopSPiece()) {								// Base adicionada
 					added_bases.push([g2_board.get(x, y).getTopSPiece() + Modx.pieceTypes.SPIECE_P1 - Modx.pieceTypes.PLAYER1, true, [x, y]]);
 				}
 			}
 		}
-		
+
 		for(var i = 0; i < removed_xpieces.length; ++i) {
 			result.push(removed_xpieces[i]);
 		}
-		
+
 		for(var i = 0; i < added_bases.length; ++i) {
 			result.push(added_bases[i]);
 		}
 	}
-	
+	console.log("result: ", result);
 	return result;
 }
 
@@ -177,4 +178,4 @@ Game.prototype.compare = function(coords, newGame) {
 
 
 
-	
+

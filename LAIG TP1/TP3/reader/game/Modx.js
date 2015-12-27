@@ -94,7 +94,7 @@ Modx.prototype.init = function() {
 	this.client = new Client();
 	var modx = this;
 	this.gameHistory = [];
-	this.playsHistory = [];
+	this.playHistory = [];
 	this.state = new StateStartingGame(this);
 	this.numJokersToPlace = Modx.numJokers;
 	this.lastMoveEvent = null;
@@ -104,7 +104,7 @@ Modx.prototype.init = function() {
 	this.boardPieces = [];
 
 	this.newGame = null;
-	this.newPlays = null;
+	this.newPlay = null;
 
 	this.hudPlane = new Plane(this.scene, 10);
 	this.ooliteFont = new OoliteFont(this.scene);
@@ -115,7 +115,7 @@ Modx.prototype.init = function() {
 
 	this.playing = Modx.playingGameState.WAIT_FOR_START;
 	this.endReason = Modx.endGameReason.NONE;
-	
+
 	this.play_timeout = Modx.defaultPlayTimeout;
 }
 
@@ -145,7 +145,36 @@ Modx.prototype.setPlayTimeout = function(time) {
 }
 
 Modx.prototype.undo = function() {
-	console.log("TODO: UNDO");	// TODO
+	if (!(this.state instanceof StateWaitingForPlay)) return;
+	if (this.playHistory.length === 0) return;
+	var play = this.playHistory.pop();
+	this.gameHistory.pop();
+	this.newGame = this.gameHistory.pop();
+	console.log(play);
+
+	// Save first place, later we will check if it is placed and removed, in which case we won't place it at all
+	var firstPlace = play[0];
+	var placedAndRemoved = false;
+
+	// Reverse actions
+	var reversed = [];
+	for (var i = 0; i < play.length; i++)
+	{
+		var p = play[play.length - 1 - i];
+		if (p[0] === firstPlace[0] && p[1] === !firstPlace[1] && p[2][0] === firstPlace[2][0] && p[2][1] === firstPlace[2][1])
+		{
+			placedAndRemoved = true;
+		}
+		else
+		{
+			reversed.push(p);
+			reversed[reversed.length - 1][1] = !reversed[reversed.length - 1][1]; // place = !place
+		}
+	}
+	if (placedAndRemoved) reversed.pop();
+	
+	this.newPlay = reversed;
+	this.nextMove(0);
 }
 
 Modx.prototype.gameMovie = function() {
@@ -160,13 +189,13 @@ Modx.prototype.checkGameEnded = function() {
 Modx.prototype.checkGameEndedReponseHandler = function(data) {
 	if(data.target.responseText == "yes") {
 		this.playing = Modx.playingGameState.GAME_ENDED;
-		
+
 		if(this.getGame().getPlayerInfo(1).getScore() > this.getGame().getPlayerInfo(2).getScore()) {
 			this.endReason = Modx.endGameReason.P1_WIN_SCORE;
 		} else {
 			this.endReason = Modx.endGameReason.P2_WIN_SCORE;			
 		}
-		
+
 		this.setState(new StateGameEnded(this));
 	}
 }
@@ -660,7 +689,7 @@ Modx.prototype.start = function(game) {
 	this.setState(new StateWaitingForPlay(this));
 	this.gameHistory = [];
 	this.gameHistory = [new Game(game)];
-	this.playsHistory = [];
+	this.playHistory = [];
 	this.newGame = null;
 	this.newPlay = null;
 	var board = this.getGame().getBoard();
@@ -737,7 +766,10 @@ Modx.prototype.placeBoardPiece = function(piece, coords) {
 }
 
 Modx.prototype.getHoverPiece = function(type) {
-	return this.pieces[type + (Modx.pieceTypes.HOVER_JOKER - Modx.pieceTypes.JOKER)][0];
+	if (type !== Modx.pieceTypes.JOKER && type !== Modx.pieceTypes.PLAYER1 && type !== Modx.pieceTypes.PLAYER2)
+		return null;
+	else
+		return this.pieces[type + (Modx.pieceTypes.HOVER_JOKER - Modx.pieceTypes.JOKER)][0];
 }
 
 Modx.prototype.nextMove = function(moveID) {
@@ -746,6 +778,7 @@ Modx.prototype.nextMove = function(moveID) {
 		this.setState(new StateWaitingForPlay(this));
 		return;
 	}
+
 	var move = this.newPlay[moveID];
 	switch (move[0])
 	{
@@ -831,13 +864,30 @@ Modx.prototype.onClick = function(event) {
 		this.state.onClick(event);
 }
 
-Modx.prototype.getNumOutsideXPieces = function(type) {
+
+Modx.prototype.getNumOutsidePieces = function(type) {
 	return this.outsidePieces[type].length;
 }
 
 Modx.prototype.nextPieceType = function() {
 	return (this.numJokersToPlace === 0) ? this.getGame().getCurrPlayer() : Modx.pieceTypes.JOKER;
 }
+
+Modx.prototype.calculateOutsidePiecePos = function(type, xPieceNum) {
+	switch (type)
+	{
+	case Modx.pieceTypes.JOKER:
+	case Modx.pieceTypes.PLAYER1:
+	case Modx.pieceTypes.PLAYER2:
+		return this.calculateOutsideXPiecePos(type, xPieceNum);
+	case Modx.pieceTypes.SPIECE_P1:
+	case Modx.pieceTypes.SPIECE_P2:
+		return this.calculateOutsideSPiecePos(type, xPieceNum);
+	default:
+		return null;
+	}
+}
+
 
 Modx.prototype.calculateOutsideSPiecePos = function(type, xPieceNum) {
 	var res;
