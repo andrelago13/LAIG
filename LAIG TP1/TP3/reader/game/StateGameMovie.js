@@ -16,6 +16,7 @@ function StateGameMovie(modx) {
 	this.currentPlay = 0;
 	this.currentMove = 0;
 	this.lastAnimTime = this.modx.scene.getCurrTime();
+	this.modx.scene.setCameraByName("Top");
 }
 
 StateGameMovie.prototype.display = function(t) {
@@ -27,7 +28,6 @@ StateGameMovie.prototype.display = function(t) {
 
 	if (this.isFinished(t))
 	{
-		console.log("finished");
 		this.modx.setState(new StateGameEnded(this.modx));
 	}
 	else if ((this.currentMove > 1 && timeDiff >= StateMovingPiece.totalAnimTime / 3) || timeDiff >= StateMovingPiece.totalAnimTime)

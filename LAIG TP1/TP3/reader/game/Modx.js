@@ -187,6 +187,9 @@ Modx.prototype.checkGameEnded = function() {
 }
 
 Modx.prototype.checkGameEndedReponseHandler = function(data) {
+	if((this.state instanceof StateGameMovie) || (this.state instanceof StateGameEnded))
+		return;
+	
 	if(data.target.responseText == "yes") {
 		this.playing = Modx.playingGameState.GAME_ENDED;
 
@@ -812,7 +815,7 @@ Modx.prototype.nextMove = function(moveID) {
 
 Modx.prototype.setState = function(state) {
 	this.state = state;
-	if(!(state instanceof StateGameMovie) && !(state instanceof StateGameEnded) && typeof this.getGame() != "undefined") {
+	if(!(this.state instanceof StateGameMovie) && !(this.state instanceof StateGameEnded) && typeof this.getGame() != "undefined") {
 		this.checkGameEnded();
 	}
 }
