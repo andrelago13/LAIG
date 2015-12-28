@@ -47,6 +47,13 @@
 	</TEXTURES>
 	
 	<MATERIALS>
+	    <MATERIAL id="plastic_red">                                
+	        <shininess value="20" />
+	        <specular r="0.5" g="0" b="0" a="1" />        <!-- specular reflection -->
+	        <diffuse r="1" g="0" b="0" a="1" />         <!-- diffuse reflection -->
+	        <ambient r="0.5" g="0" b="0" a="1" />         <!-- ambient reflection -->
+	        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+	    </MATERIAL>
 	    <MATERIAL id="plastic_transparent">                                
 	        <shininess value="20" />
 	        <specular r="0.5" g="0.5" b="0.5" a="1" />        <!-- specular reflection -->
@@ -100,6 +107,7 @@
 	    <LEAF id="sphere" type="sphere" args="1 40 40" />
 		<LEAF id="terrain" type="terrain" texture="textures/terrain-t.png" heightmap="textures/terrain-hm.png" />
 		<LEAF id="cylinder" type="cylinder" args="1 0.5 0.5 1 50" />
+		<LEAF id="donut" type="cylinder" args="0 0.5 0.3 1 50" />
 		<LEAF id="half_cylinder" type="cylinder" args="1 0.5 0.5 1 20 1" />
 		<LEAF id="circle" type="cylinder" args="0 0.5 0 1 50" />
 		<LEAF id="half_circle" type="cylinder" args="0 0.5 0 1 20 1" />
@@ -139,6 +147,7 @@
 				<DESCENDANT id="afternoon_sky_scenario"/>
 				<DESCENDANT id="moon_landing_scenario"/>
 				<DESCENDANT id="cell" />
+				<DESCENDANT id="invalid_cell_marker" />
 				<DESCENDANT id="piece_boxes" />
 			</DESCENDANTS>
 		</NODE>
@@ -1109,6 +1118,47 @@
 						<!--			////////////////////////////////////////////////////////////////////////////////////////////////////
 																		PIECES AND BASES
 						-->				////////////////////////////////////////////////////////////////////////////////////////////////////
+	    
+		<NODE id="invalid_cell_marker">
+			<MATERIAL id="plastic_red" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0.5" y="0" z="0.5" />
+			<SCALE sx="0.8" sy="1" sz="0.8" />
+			<TRANSLATION x="-0.5" y="0" z="-0.5" />
+			
+			<DESCENDANTS>
+				<DESCENDANT id="invalid_cell_marker_rect" />
+				<DESCENDANT id="invalid_cell_marker_top" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="invalid_cell_marker_top">
+			<MATERIAL id="plastic_red" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0.5" y="0.25" z="0.5" />
+			<ROTATION axis="x" angle="90"/>
+			
+			<DESCENDANTS>
+				<DESCENDANT id="donut" />
+			</DESCENDANTS>
+		</NODE>
+	    
+		<NODE id="invalid_cell_marker_rect">
+			<MATERIAL id="plastic_red" />
+			<TEXTURE id="null" />
+			
+			<TRANSLATION x="0.2" y="0.2499" z="0.2" />
+			<ROTATION axis="y" angle="-45" />
+			<SCALE sx="0.9" sy="1" sz="0.2" />
+			<TRANSLATION x="0.5" y="0" z="0" />
+			<ROTATION axis="x" angle="-90"/>
+			
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle" />
+			</DESCENDANTS>
+		</NODE>
 	    
 		<NODE id="base">
 			<MATERIAL id="null" />
