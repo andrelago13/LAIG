@@ -692,9 +692,12 @@ Modx.prototype.displayHUD = function(t, show_time) {
 }
 
 Modx.prototype.start = function(game) {
-	this.setState(new StateWaitingForPlay(this));
 	this.gameHistory = [];
-	this.gameHistory = [game];
+	if(game instanceof Game)
+		this.gameHistory = [game];
+	else
+		this.gameHistory = [new Game(game)];
+	this.setState(new StateWaitingForPlay(this));
 	this.playHistory = [];
 	this.newGame = null;
 	this.newPlay = null;
