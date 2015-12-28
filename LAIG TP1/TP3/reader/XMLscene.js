@@ -157,7 +157,7 @@ XMLscene.prototype.initCameras = function () {
 
 	this.cameraPositions[0] = vec3.fromValues(Board.size / 2, 2 * Board.size, 2.5 * Board.size + Board.size / 2);
 	this.cameraPositions[1] = vec3.fromValues(Board.size / 2, 2 * Board.size, -2.5 * Board.size + Board.size / 2);
-	this.cameraPositions[2] = vec3.fromValues(Board.size / 2, 4.5 * Board.size, Board.size / 2);
+	this.cameraPositions[2] = vec3.fromValues(Board.size / 2 + 0.1, 4.5 * Board.size, Board.size / 2);
 
 	this.oldCameraPosition = vec3.clone(this.cameraPositions[0]);
 	this.newCameraPosition = vec3.clone(this.cameraPositions[0]);
@@ -214,12 +214,50 @@ XMLscene.prototype.updateLights = function(){
 }
 
 XMLscene.prototype.updateCameras = function(t) {
-	// TODO special case for when changing between Player 1 and Player 2 cameras
 	if(this.cameraAnimTime < this.cameraTotalAnimTime)
 	{
-		vec3.lerp(this.camera.position, this.oldCameraPosition, this.newCameraPosition, this.cameraAnimTime / this.cameraTotalAnimTime);
+		var s = this.cameraAnimTime / this.cameraTotalAnimTime;
+		/* C = camera, T = target, P = plane closest
+		 * r = radius, h = height, d = distance
+		 * 
+		 *  P_r_C
+		 *  |  /
+		 * h| /d
+		 *  |/
+		 *  T
+		 */
+		var Pi = vec3.clone(this.camera.target);
+		Pi[1] = this.oldCameraPosition[1];
+		var Pf = vec3.clone(this.camera.target);
+		Pf[1] = this.newCameraPosition[1];
+		var P = vec3.lerp(vec3.create(), Pi, Pf, s);
+		var PCi = vec3.sub(vec3.create(), this.oldCameraPosition, Pi);
+		var PCf = vec3.sub(vec3.create(), this.newCameraPosition, Pf);
+		var angle = 0;
+		if (vec3.length(PCi) > 0 && vec3.length(PCf) > 0)
+		{
+			var dotProduct = vec3.dot(PCi, PCf);
+			var angle = Math.acos(dotProduct / (vec3.length(PCi) * vec3.length(PCf))) * s;
+			var crossProduct = vec3.cross(vec3.create(), PCi, PCf);
+			if (vec3.dot(CGFcameraAxis.Y, crossProduct) > 0) angle = -angle;
+		}
+		var angleCos = Math.cos(angle);
+		var angleSin = Math.sin(angle);
+		var r = this.lerp(vec3.length(PCi), vec3.length(PCf), s);
+		var PC = vec3.fromValues(PCi[0] * angleCos - PCi[2] * angleSin, PCi[1], PCi[0] * angleSin + PCi[2] * angleCos);
+		PC = vec3.scale(vec3.create(), vec3.normalize(vec3.create(), PC), r);
+		var C = vec3.add(vec3.create(), P, PC);
+		console.log(PCi, PCf, angle);
+
+		this.camera.position = C;
+
 		this.cameraAnimTime = t - this.cameraAnimStartTime;
 	}
+	else this.camera.position = vec3.clone(this.newCameraPosition);
+}
+
+XMLscene.prototype.lerp = function(a, b, t) {
+	return a * (1.0 - t) + (b * t);
 }
 
 XMLscene.prototype.gameUndo = function() {
