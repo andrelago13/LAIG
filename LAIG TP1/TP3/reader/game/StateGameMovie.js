@@ -19,6 +19,10 @@ function StateGameMovie(modx) {
 	this.modx.scene.setCameraByName("Top");
 }
 
+StateGameMovie.prototype.displayHUD = function(t) {
+	this.modx.displayHUDprimitives(t, false);
+}
+
 StateGameMovie.prototype.display = function(t) {
 	this.modx.displayBoard();
 	this.modx.displayXPieceBoxes();

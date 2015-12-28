@@ -283,12 +283,7 @@ Modx.prototype.createOutsidePieces = function() {
 	this.pieces[Modx.pieceTypes.HOVER_P2][0].setVisible(false);
 }
 
-Modx.prototype.displayHUD = function(t) {
-	if(typeof this.state.displayHUD == "function") {
-		this.state.displayHUD(t);
-		return;
-	}
-
+Modx.prototype.displayHUDprimitives = function(t, show_time) {
 	if(typeof this.state == 'undefined' || this.gameHistory.length <= 0)
 		return;
 
@@ -302,6 +297,10 @@ Modx.prototype.displayHUD = function(t) {
 	var background = this.ooliteFont.getBackgroundAppearance();
 	background.apply();
 	var text = this.ooliteFont.getAppearance();
+
+	this.scene.setActiveShaderSimple(this.ooliteFont.getShader());
+	text.apply();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
 
 	var game = this.getGame();
 	var p1_score = game.getPlayerInfo(1).getScoreString();
@@ -342,9 +341,6 @@ Modx.prototype.displayHUD = function(t) {
 	this.scene.translate(0.5, 0.5, 0);
 	this.hudPlane.display();
 	this.scene.popMatrix();
-
-	this.scene.setActiveShaderSimple(this.ooliteFont.getShader())
-	text.apply();
 	// M
 	this.scene.pushMatrix();
 	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("M")});
@@ -579,107 +575,120 @@ Modx.prototype.displayHUD = function(t) {
 	this.scene.translate(0.5, 0.5, 0);
 	this.hudPlane.display();
 	this.scene.popMatrix();
+	
+	if(typeof show_time == "undefined" || show_time) {
 
-	// Time
+		// Time
 
-	// T
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("T")});
-	this.scene.translate(0, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// T
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("T")});
+		this.scene.translate(0, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// i
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("i")});
-	this.scene.translate(0.09, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// i
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("i")});
+		this.scene.translate(0.09, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// m
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("m")});
-	this.scene.translate(0.18, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// m
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("m")});
+		this.scene.translate(0.18, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// e
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("e")});
-	this.scene.translate(0.27, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// e
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("e")});
+		this.scene.translate(0.27, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// :
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(":")});
-	this.scene.translate(0.36, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// :
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(":")});
+		this.scene.translate(0.36, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// " "
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
-	this.scene.translate(0.45, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// " "
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
+		this.scene.translate(0.45, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// D1
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[0])});
-	this.scene.translate(0.54, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// D1
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[0])});
+		this.scene.translate(0.54, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// D2
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[1])});
-	this.scene.translate(0.63, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// D2
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[1])});
+		this.scene.translate(0.63, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// :
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[2])});
-	this.scene.translate(0.72, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// :
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[2])});
+		this.scene.translate(0.72, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// D3
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[3])});
-	this.scene.translate(0.81, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// D3
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[3])});
+		this.scene.translate(0.81, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// D4
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[4])});
-	this.scene.translate(0.90, 0.45, 0);
-	this.scene.scale(0.1, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// D4
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[4])});
+		this.scene.translate(0.90, 0.45, 0);
+		this.scene.scale(0.1, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
+
+	}
+}
+
+Modx.prototype.displayHUD = function(t, show_time) {
+	if(typeof this.state.displayHUD == "function") {
+		this.state.displayHUD(t);
+		return;
+	}
+
+	this.displayHUDprimitives(t, show_time);
 }
 
 Modx.prototype.start = function(game) {
