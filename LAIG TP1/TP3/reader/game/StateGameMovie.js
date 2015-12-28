@@ -7,6 +7,7 @@ function StateGameMovie(modx) {
 	this.init(modx);
 	this.games = this.modx.gameHistory.slice(0);
 	this.plays = this.modx.playHistory.slice(0);
+	this.play_backup = this.modx.playHistory.slice(0);
 	this.modx.pieces = [];
 	this.modx.outsidePieces = [];
 	this.modx.boardPieces = [];
@@ -32,6 +33,7 @@ StateGameMovie.prototype.display = function(t) {
 
 	if (this.isFinished(t))
 	{
+		this.modx.playHistory = this.play_backup;
 		this.modx.setState(new StateGameEnded(this.modx));
 	}
 	else if ((this.currentMove > 1 && timeDiff >= StateMovingPiece.totalAnimTime / 3) || timeDiff >= StateMovingPiece.totalAnimTime)
