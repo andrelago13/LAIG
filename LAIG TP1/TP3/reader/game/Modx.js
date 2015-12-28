@@ -743,12 +743,17 @@ Modx.prototype.getBotPlay = function() {
 
 Modx.prototype.onBotPlayReceived = function(prolog_reply) {
 	var reply = JSON.parse(prolog_reply.target.responseText);
-	this.setState(new StateMovingPiece(this, 0, reply[1], this.nextPieceType(), true));
-	this.start_time = -1;
-	this.newGame = new Game();
-	this.newGame.parseGame(reply[0]);
-	this.newPlay = this.getGame().compare(reply[1], this.newGame);
-	this.updatePlay();
+	if(reply[1].length != 0) {
+		this.setState(new StateMovingPiece(this, 0, reply[1], this.nextPieceType(), true));
+		this.start_time = -1;
+		this.newGame = new Game();
+		this.newGame.parseGame(reply[0]);
+		this.newPlay = this.getGame().compare(reply[1], this.newGame);
+		this.updatePlay();		
+	} else {
+		this_t.endReason = Modx.endGameReason.P1_WIN_SCORE;
+		this.setState(new StateGameEnded(this));
+	}
 }
 
 Modx.prototype.updatePlay = function() {
