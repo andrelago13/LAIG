@@ -807,7 +807,10 @@ Modx.prototype.getHoverPiece = function(type) {
 Modx.prototype.nextMove = function(moveID) {
 	if (moveID === this.newPlay.length)
 	{
-		this.setState(new StateWaitingForPlay(this));
+		if(this.playing == Modx.playingGameState.GAME_ENDED)
+			this.setState(new StateGameEnded(this));
+		else
+			this.setState(new StateWaitingForPlay(this));
 		return;
 	}
 
