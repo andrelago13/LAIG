@@ -27,6 +27,7 @@ StateGameMovie.prototype.display = function(t) {
 
 	if (this.isFinished(t))
 	{
+		console.log("finished");
 		this.modx.setState(new StateGameEnded(this.modx));
 	}
 	else if ((this.currentMove > 1 && timeDiff >= StateMovingPiece.totalAnimTime / 3) || timeDiff >= StateMovingPiece.totalAnimTime)

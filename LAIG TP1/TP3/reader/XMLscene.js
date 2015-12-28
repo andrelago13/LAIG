@@ -247,7 +247,6 @@ XMLscene.prototype.updateCameras = function(t) {
 		var PC = vec3.fromValues(PCi[0] * angleCos - PCi[2] * angleSin, PCi[1], PCi[0] * angleSin + PCi[2] * angleCos);
 		PC = vec3.scale(vec3.create(), vec3.normalize(vec3.create(), PC), r);
 		var C = vec3.add(vec3.create(), P, PC);
-		console.log(PCi, PCf, angle);
 
 		this.camera.position = C;
 
@@ -280,7 +279,8 @@ XMLscene.prototype.endGame = function() {
 XMLscene.prototype.gameMovie = function() {
 	if(typeof this.modx != "undefined" && this.modx != null)
 	{
-		// TODO change interface
+		this.graph.interface.removeFolder("Start Game");
+		this.graph.interface.initGameMovie();	
 		this.modx.gameMovie();
 	}
 }

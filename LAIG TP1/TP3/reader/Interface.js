@@ -29,6 +29,14 @@ Interface.prototype.init = function(application) {
 	    delete this.__folders[name];
 	    this.onResize();
 	  }
+	
+	dat.GUI.prototype.folderExists = function(name) {
+	    var folder = this.__folders[name];
+	    if (!folder) {
+	      return false;
+	    }
+	    return true;
+	  }
 
 	this.gui = new dat.GUI();
 	
@@ -36,57 +44,63 @@ Interface.prototype.init = function(application) {
 };
 
 Interface.prototype.resetFolder = function(name) {
-	switch(name) {
-	case "Lights":
-		this.lights = this.gui.addFolder("Lights");	
-		return;
-	case "Play ModX":
-		this.modxFolder = this.gui.addFolder("Play ModX");
-		return;
-	case "Start Game":
-		this.startGameFolder = this.gui.addFolder("Start Game");
-		return;
+	if(name == "Lights" || name == "Play ModX" || name == "Start Game" || name == "Game Movie") {
+		this.removeFolder(name);
+		this.addFolder(name);
 	}
 }
 
 Interface.prototype.addFolder = function(name) {
 	switch(name) {
 	case "Lights":
-		if(typeof this.lights == "undefined")
-			this.lights = this.gui.addFolder("Lights");	
+		if(!this.gui.folderExists(name))
+			this.lights = this.gui.addFolder(name);	
 		return;
 	case "Play ModX":
-		if(typeof this.modxFolder == "undefined")
-			this.modxFolder = this.gui.addFolder("Play ModX");
+		if(!this.gui.folderExists(name))
+			this.modxFolder = this.gui.addFolder(name);
 		return;
 	case "Start Game":
-		if(typeof this.startGameFolder == "undefined")
-			this.startGameFolder = this.gui.addFolder("Start Game");
+		if(!this.gui.folderExists(name))
+			this.startGameFolder = this.gui.addFolder(name);
 		return;
+	case "Game Movie":
+		if(!this.gui.folderExists(name))
+			this.gameMovieFolder = this.gui.addFolder(name);
+		return;
+	}
+}
+
+Interface.prototype.resetFolders = function() {
+	var names = ["Play ModX", "Start Game", "Game Movie"];
+	for(var i = 0; i < names.length; ++i) {
+		this.removeFolder(names[i]);
 	}
 }
 
 Interface.prototype.removeFolder = function(name) {
 	switch(name) {
 	case "Lights":
-		if(typeof this.lights != "undefined")
-			this.gui.removeFolder("Lights");
-			//this.gui.__ul.removeChild(this.lights.domElement.parentNode);
+		if(this.gui.folderExists(name))
+			this.lights = this.gui.removeFolder(name);	
 		return;
 	case "Play ModX":
-		if(typeof this.modxFolder != "undefined")
-			this.gui.removeFolder("Play ModX");
-			//this.gui.__ul.removeChild(this.modxFolder.domElement.parentNode);
+		if(this.gui.folderExists(name))
+			this.modxFolder = this.gui.removeFolder(name);
 		return;
 	case "Start Game":
-		if(typeof this.startGameFolder != "undefined")
-			this.gui.removeFolder("Start Game");
-			//this.gui.__ul.removeChild(this.startGameFolder.domElement.parentNode);			
+		if(this.gui.folderExists(name))
+			this.startGameFolder = this.gui.removeFolder(name);
+		return;
+	case "Game Movie":
+		if(this.gui.folderExists(name))
+			this.gameMovieFolder = this.gui.removeFolder(name);
 		return;
 	}
 }
 
 Interface.prototype.initPlayModX = function() {
+	this.resetFolders();
 	this.resetFolder("Play ModX");
 	
 	this.camera = this.modxFolder.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
@@ -108,6 +122,7 @@ Interface.prototype.initPlayModX = function() {
 }
 
 Interface.prototype.initStartModX = function(show_movie) {
+	this.resetFolders();
 	this.resetFolder("Start Game");
 
 	var max_score = this.startGameFolder.add(this.scene, 'startGameMaxScore', 5, 14, 1);
@@ -122,6 +137,23 @@ Interface.prototype.initStartModX = function(show_movie) {
 		this.startGameFolder.add(this.scene, "gameMovie").name("Game Movie");
 	
 	this.startGameFolder.open();
+}
+
+Interface.prototype.initGameMovie = function() {
+	this.resetFolders();
+	this.resetFolder("Game Movie");
+	
+	this.camera = this.gameMovieFolder.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
+	var scene = this.scene;
+	this.camera.onChange(function(value) {
+		scene.oldCameraPosition = vec3.clone(scene.camera.position);
+		scene.newCameraPosition = vec3.clone(scene.cameraPositions[scene.cameraNames[value]]);
+		scene.cameraAnimTime = 0;
+		scene.cameraAnimStartTime = scene.currTime;
+		scene.cameraTotalAnimTime = 1;
+	});
+	
+	this.gameMovieFolder.open();
 }
 
 Interface.prototype.addLightToggler = function(i, id){

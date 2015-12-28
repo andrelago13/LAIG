@@ -812,7 +812,7 @@ Modx.prototype.nextMove = function(moveID) {
 
 Modx.prototype.setState = function(state) {
 	this.state = state;
-	if(!(this.state instanceof StateGameEnded) && typeof this.getGame() != "undefined") {
+	if(!(state instanceof StateGameMovie) && !(state instanceof StateGameEnded) && typeof this.getGame() != "undefined") {
 		this.checkGameEnded();
 	}
 }
