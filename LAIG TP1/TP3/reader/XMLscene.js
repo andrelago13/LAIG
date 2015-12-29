@@ -102,7 +102,6 @@ XMLscene.prototype.initLights = function () {
 		}
 		this.lights[i].setVisible(false);
 		this.lights[i].update();
-		this.graph.interface.addFolder("Lights");
 		this.graph.interface.addLightToggler(i, this.graph.lights[i]["id"]);
 	}
 };

@@ -18,7 +18,7 @@
 	
 	
 	<LIGHTS>
-	    <LIGHT id="main">                                    <!-- light identifier -->
+	    <LIGHT id="Main Light">                                    <!-- light identifier -->
 	        <enable value ="1" />                         <!-- enable/disable -->
 	        <position x="4" y="5" z="4" w="1" />       <!-- light position -->
 	        <ambient r="0.1" g="0.1" b="0.1" a="1" />        <!-- ambient component -->

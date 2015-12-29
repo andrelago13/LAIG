@@ -40,6 +40,8 @@ Interface.prototype.init = function(application) {
 
 	this.gui = new dat.GUI();
 	
+	this.initScenario();
+	
 	return true;
 };
 
@@ -99,6 +101,10 @@ Interface.prototype.removeFolder = function(name) {
 	}
 }
 
+Interface.prototype.initScenario = function() {
+	this.gui.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
+}
+
 Interface.prototype.initPlayModX = function() {
 	this.resetFolders();
 	this.resetFolder("Play ModX");
@@ -113,7 +119,6 @@ Interface.prototype.initPlayModX = function() {
 		scene.cameraTotalAnimTime = 1;
 	});
 	
-	this.modxFolder.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
 	this.derp = 0;
 	this.modx = null;
 	this.modxFolder.add(this.scene, "gameUndo").name("UNDO");
@@ -157,7 +162,7 @@ Interface.prototype.initGameMovie = function() {
 }
 
 Interface.prototype.addLightToggler = function(i, id){
-	this.lights.add(this.scene.lightStatus, i, this.scene.lightStatus[i]).name(id);
+	this.gui.add(this.scene.lightStatus, i, this.scene.lightStatus[i]).name(id);
 }
 
 Interface.prototype.processKeyDown = function(event) {
