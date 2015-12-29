@@ -135,10 +135,12 @@ make_play(Game, New_game) :-
         make_play(Game, New_game).
 
 end_play(Game, New_game) :-
+        end_play_patterns(Game, Game1),
+        game_next_player(Game1, New_game).
+end_play_patterns(Game, New_game) :-
         check_patterns(Game, New_scores),
         convert_patterns_to_score(Game, New_scores, Game1),
-        game_update_scores(Game1, Game2),
-        game_next_player(Game2, New_game).
+        game_update_scores(Game1, New_game).
         
         
 read_coords([X, Y]) :-
