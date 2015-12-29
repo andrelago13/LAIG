@@ -178,8 +178,8 @@ Modx.prototype.undo = function() {
 }
 
 Modx.prototype.gameMovie = function() {
-	if (this.state instanceof StateGameEnded)
-		this.setState(new StateGameMovie(this));
+	//if (this.state instanceof StateGameEnded)
+	this.setState(new StateGameMovie(this));
 }
 
 Modx.prototype.checkGameEnded = function() {
@@ -708,7 +708,8 @@ Modx.prototype.start = function(game) {
 		this.gameHistory = [game];
 	else
 		this.gameHistory = [new Game(game)];
-	this.setState(new StateWaitingForPlay(this));
+	if(!(this.state instanceof StateGameMovie) && !(this.state instanceof StateGameEnded))
+		this.setState(new StateWaitingForPlay(this));
 	this.playHistory = [];
 	this.newGame = null;
 	this.newPlay = null;
@@ -768,6 +769,9 @@ Modx.prototype.getBotPlay = function() {
 }
 
 Modx.prototype.onBotPlayReceived = function(prolog_reply) {
+	if((this.state instanceof StateGameEnded) || (this.state instanceof StateGameMovie) || (this.state instanceof StateStartingGame))
+		return;
+	
 	var reply = JSON.parse(prolog_reply.target.responseText);
 	if(reply[1].length == 2) {
 		this.setState(new StateMovingPiece(this, 0, reply[1], this.nextPieceType(), true));
@@ -852,7 +856,10 @@ Modx.prototype.nextMove = function(moveID) {
 }
 
 Modx.prototype.setState = function(state) {
+	var prev_state = this.state;
 	this.state = state;
+	if((prev_state instanceof StateGameMovie) || (prev_state instanceof StateGameEnded))
+		return;
 	if(!(this.state instanceof StateStartingGame) && !(this.state instanceof StateGameMovie) && !(this.state instanceof StateGameEnded) && typeof this.getGame() != "undefined") {
 		this.checkGameEnded();
 	}
