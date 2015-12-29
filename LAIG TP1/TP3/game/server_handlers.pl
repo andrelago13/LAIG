@@ -11,15 +11,20 @@ parse_input(make_play(Game), [Game, []]) :-        % BOT PLAY
         game_ended(Game).
 parse_input(make_play(Game), [NewGame, Move]) :-
         make_play_bot_return(Game, Game1, Move),
-        end_play(Game1, NewGame).
+        xpiece_play_end(Game1, NewGame).
 
 parse_input(make_play(Game, X, Y), NewGame) :-          % XPIECE PLAY
-        game_board(Game, Board),
-        num_jokers_to_place(Board, 0), !,
         place_xpiece(Game, [X, Y], Game1),
-        end_play(Game1, NewGame).
-parse_input(make_play(Game, X, Y), NewGame) :-          % JOKER PLAY
-        place_joker(Game, [X, Y], NewGame).
+        xpiece_play_end(Game1, NewGame).
+xpiece_play_end(Game, NewGame) :-
+        end_play_patterns(Game, Game1),
+        game_board(Game1, Board),
+        num_jokers_to_place(Board, NumJokers),
+        xpiece_play_end(Game1, NumJokers, NewGame).
+xpiece_play_end(Game, 0, NewGame) :-
+        !,
+        game_next_player(Game, NewGame).
+xpiece_play_end(Game, _, Game).
 
 parse_input(num_jokers_to_place(Game), N) :-
         game_board(Game, Board),

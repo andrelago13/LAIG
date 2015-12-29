@@ -81,7 +81,8 @@ play_botvbot(Game) :-
 make_play_joker(Game, New_game) :-
         game_board(Game, Board),
         num_jokers_to_place(Board, Jokers),
-        ask_for_jokers(Jokers),
+        game_player(Game, Player),
+        ask_for_jokers(Player, Jokers),
         read_coords(Coords),
         place_xpiece(Game, Coords, New_game1), !,
         game_next_player(New_game1, New_game).
@@ -134,10 +135,12 @@ make_play(Game, New_game) :-
         make_play(Game, New_game).
 
 end_play(Game, New_game) :-
+        end_play_patterns(Game, Game1),
+        game_next_player(Game1, New_game).
+end_play_patterns(Game, New_game) :-
         check_patterns(Game, New_scores),
         convert_patterns_to_score(Game, New_scores, Game1),
-        game_update_scores(Game1, Game2),
-        game_next_player(Game2, New_game).
+        game_update_scores(Game1, New_game).
         
         
 read_coords([X, Y]) :-

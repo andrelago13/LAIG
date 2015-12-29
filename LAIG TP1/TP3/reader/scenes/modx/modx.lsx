@@ -1137,7 +1137,7 @@
 			<MATERIAL id="plastic_red" />
 			<TEXTURE id="null" />
 			
-			<TRANSLATION x="0.5" y="0.25" z="0.5" />
+			<TRANSLATION x="0.5" y="0.001" z="0.5" />
 			<ROTATION axis="x" angle="90"/>
 			
 			<DESCENDANTS>
@@ -1149,7 +1149,7 @@
 			<MATERIAL id="plastic_red" />
 			<TEXTURE id="null" />
 			
-			<TRANSLATION x="0.2" y="0.2499" z="0.2" />
+			<TRANSLATION x="0.2" y="0.0009" z="0.2" />
 			<ROTATION axis="y" angle="-45" />
 			<SCALE sx="0.9" sy="1" sz="0.2" />
 			<TRANSLATION x="0.5" y="0" z="0" />
