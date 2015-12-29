@@ -14,12 +14,13 @@ parse_input(make_play(Game), [NewGame, Move]) :-
         end_play(Game1, NewGame).
 
 parse_input(make_play(Game, X, Y), NewGame) :-          % XPIECE PLAY
-        game_board(Game, Board),
-        num_jokers_to_place(Board, 0), !,
         place_xpiece(Game, [X, Y], Game1),
-        end_play(Game1, NewGame).
-parse_input(make_play(Game, X, Y), NewGame) :-          % JOKER PLAY
-        place_joker(Game, [X, Y], NewGame).
+        game_board(Game1, Board),
+        num_jokers_to_place(Board, NumJokers),
+        xpiece_play_end(Game1, NumJokers, NewGame).
+xpiece_play_end(Game, 0, NewGame) :-
+        end_play(Game, NewGame).
+xpiece_play_end(Game, N, Game) :- N > 0.
 
 parse_input(num_jokers_to_place(Game), N) :-
         game_board(Game, Board),

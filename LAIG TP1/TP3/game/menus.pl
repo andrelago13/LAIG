@@ -82,10 +82,12 @@ ask_difficulty(Diff) :-
 order1_1vbot([make_play, make_play_bot]).
 order2_1vbot([make_play_bot, make_play]).
 
-ask_for_jokers(Num) :-
+ask_for_jokers(Player, Num) :-
         write(Num),
         ask_for_jokers_aux(Num),
-        write(' must be placed. Please indicate the joker\'s location.'), nl.
+        write(' must be placed. Player '),
+        write(Player),
+        write(', please indicate the joker\'s location.'), nl.
 
 ask_for_jokers_aux(Num) :-
         Num is 1,

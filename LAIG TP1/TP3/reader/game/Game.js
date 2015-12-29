@@ -169,7 +169,6 @@ Game.prototype.compare = function(coords, newGame) {
 			result.push(added_bases[i]);
 		}
 	}
-	console.log("result: ", result);
 	return result;
 }
 

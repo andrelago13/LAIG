@@ -81,7 +81,8 @@ play_botvbot(Game) :-
 make_play_joker(Game, New_game) :-
         game_board(Game, Board),
         num_jokers_to_place(Board, Jokers),
-        ask_for_jokers(Jokers),
+        game_player(Game, Player),
+        ask_for_jokers(Player, Jokers),
         read_coords(Coords),
         place_xpiece(Game, Coords, New_game1), !,
         game_next_player(New_game1, New_game).

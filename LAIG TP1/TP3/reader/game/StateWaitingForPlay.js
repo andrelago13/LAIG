@@ -26,6 +26,7 @@ function StateWaitingForPlay(modx) {
 		})
 
 		if(curr_game.getDifficulty() == Game.difficultyType.VERSUS) {
+			console.log("Current player: " + curr_game.getCurrPlayer(), curr_game.toJSON());
 			if(curr_game.getCurrPlayer() == 1)
 				this.modx.scene.setCameraByName("Player 1");
 			else {
