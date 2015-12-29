@@ -60,7 +60,8 @@ StateWaitingForPlay.prototype.display = function(t) {
 			var cell_temp = curr_game.getBoard().get(x, y);
 			// Draw cell
 			if (cell_temp.getXpiece() === Modx.pieceTypes.NONE && cell_temp.isValid() && 
-					((curr_game.getDifficulty() != Game.difficultyType.VERSUS && curr_game.getCurrPlayer() == 1) || (curr_game.getDifficulty() == Game.difficultyType.VERSUS)))
+					((curr_game.getDifficulty() != Game.difficultyType.VERSUS && curr_game.getCurrPlayer() == 1) || (curr_game.getDifficulty() == Game.difficultyType.VERSUS)) &&
+					(curr_game.getDifficulty() != Game.difficultyType.BOTvsBOT))
 				this.scene.registerForPick(y * Board.size + x + 1 , [x, y]);
 			else if (cell_temp.getXpiece() === Modx.pieceTypes.NONE && !cell_temp.isValid()) {
 				this.scene.graph.graphNodes["invalid_cell_marker"].display(0);
