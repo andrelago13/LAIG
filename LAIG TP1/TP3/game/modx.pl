@@ -101,6 +101,11 @@ make_play_bot_return(Game, New_game, Move) :-
         ai_bot_greedy(available_moves, place_xpiece, game_value, Game, Move),
         place_xpiece(Game, Move, New_game).
 
+make_play_bot_return(Game, New_game, Move) :-
+        game_difficulty(Game, 3),
+        ai_bot_greedy(available_moves, place_xpiece, game_value, Game, Move),
+        place_xpiece(Game, Move, New_game).
+
 make_play_bot(Game, New_game) :-
         game_difficulty(Game, 1),
         ai_bot_random(available_moves, Game, Move),

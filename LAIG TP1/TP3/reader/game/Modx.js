@@ -29,7 +29,8 @@ Modx.endGameReason = {
 		P1_WIN_TIME: 3,
 		P2_WIN_TIME: 4,
 		CONNECTION_ERR: 5,
-		ERROR: 6
+		ERROR: 6,
+		TIE_GAME: 7
 }
 
 Modx.secondsToStr = function(time) {
@@ -124,7 +125,7 @@ Modx.prototype.init = function() {
  * @param mode 0 (2P), 1 (SP - easy), 2 (SP - hard)
  */
 Modx.prototype.getNewGame = function(max_score, mode) {
-	if(typeof max_score != "number" || max_score < 1 || max_score > 14 || typeof mode != "number" || (mode != 0 && mode != 1 && mode != 2))
+	if(typeof max_score != "number" || max_score < 1 || max_score > 14 || typeof mode != "number" || (mode != 0 && mode != 1 && mode != 2 && mode != 3))
 		return false;
 
 	var this_t = this;
@@ -177,8 +178,8 @@ Modx.prototype.undo = function() {
 }
 
 Modx.prototype.gameMovie = function() {
-	if (this.state instanceof StateGameEnded)
-		this.setState(new StateGameMovie(this));
+	//if (this.state instanceof StateGameEnded)
+	this.setState(new StateGameMovie(this));
 }
 
 Modx.prototype.checkGameEnded = function() {
@@ -187,13 +188,26 @@ Modx.prototype.checkGameEnded = function() {
 }
 
 Modx.prototype.checkGameEndedReponseHandler = function(data) {
+	console.log("check game ended");
+	if((this.state instanceof StateGameMovie) || (this.state instanceof StateGameEnded))
+		return;
+	
 	if(data.target.responseText == "yes") {
+		console.log("check game ended 2");
 		this.playing = Modx.playingGameState.GAME_ENDED;
+		
+		winner = this.getGame().getWinner();
 
-		if(this.getGame().getPlayerInfo(1).getScore() > this.getGame().getPlayerInfo(2).getScore()) {
+		switch(winner) {
+		case 1:
 			this.endReason = Modx.endGameReason.P1_WIN_SCORE;
-		} else {
-			this.endReason = Modx.endGameReason.P2_WIN_SCORE;			
+			break;
+		case 2:
+			this.endReason = Modx.endGameReason.P2_WIN_SCORE;
+			break;
+		default:
+			this.endReason = Modx.endGameReason.TIE_GAME;
+			break;
 		}
 
 		this.setState(new StateGameEnded(this));
@@ -280,12 +294,7 @@ Modx.prototype.createOutsidePieces = function() {
 	this.pieces[Modx.pieceTypes.HOVER_P2][0].setVisible(false);
 }
 
-Modx.prototype.displayHUD = function(t) {
-	if(typeof this.state.displayHUD == "function") {
-		this.state.displayHUD(t);
-		return;
-	}
-
+Modx.prototype.displayHUDprimitives = function(t, show_time) {
 	if(typeof this.state == 'undefined' || this.gameHistory.length <= 0)
 		return;
 
@@ -299,6 +308,10 @@ Modx.prototype.displayHUD = function(t) {
 	var background = this.ooliteFont.getBackgroundAppearance();
 	background.apply();
 	var text = this.ooliteFont.getAppearance();
+
+	this.scene.setActiveShaderSimple(this.ooliteFont.getShader());
+	text.apply();
+	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
 
 	var game = this.getGame();
 	var p1_score = game.getPlayerInfo(1).getScoreString();
@@ -339,9 +352,6 @@ Modx.prototype.displayHUD = function(t) {
 	this.scene.translate(0.5, 0.5, 0);
 	this.hudPlane.display();
 	this.scene.popMatrix();
-
-	this.scene.setActiveShaderSimple(this.ooliteFont.getShader())
-	text.apply();
 	// M
 	this.scene.pushMatrix();
 	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("M")});
@@ -576,113 +586,130 @@ Modx.prototype.displayHUD = function(t) {
 	this.scene.translate(0.5, 0.5, 0);
 	this.hudPlane.display();
 	this.scene.popMatrix();
+	
+	if(typeof show_time == "undefined" || show_time) {
 
-	// Time
+		// Time
 
-	// T
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("T")});
-	this.scene.translate(0, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// T
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("T")});
+		this.scene.translate(0, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// i
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("i")});
-	this.scene.translate(0.09, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// i
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("i")});
+		this.scene.translate(0.09, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// m
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("m")});
-	this.scene.translate(0.18, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// m
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("m")});
+		this.scene.translate(0.18, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// e
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("e")});
-	this.scene.translate(0.27, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// e
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords("e")});
+		this.scene.translate(0.27, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// :
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(":")});
-	this.scene.translate(0.36, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// :
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(":")});
+		this.scene.translate(0.36, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// " "
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
-	this.scene.translate(0.45, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// " "
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(" ")});
+		this.scene.translate(0.45, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// D1
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[0])});
-	this.scene.translate(0.54, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// D1
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[0])});
+		this.scene.translate(0.54, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// D2
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[1])});
-	this.scene.translate(0.63, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// D2
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[1])});
+		this.scene.translate(0.63, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// :
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[2])});
-	this.scene.translate(0.72, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// :
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[2])});
+		this.scene.translate(0.72, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// D3
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[3])});
-	this.scene.translate(0.81, 0.45, 0);
-	this.scene.scale(0.09, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// D3
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[3])});
+		this.scene.translate(0.81, 0.45, 0);
+		this.scene.scale(0.09, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
 
-	// D4
-	this.scene.pushMatrix();
-	this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[4])});
-	this.scene.translate(0.90, 0.45, 0);
-	this.scene.scale(0.1, 0.1, 1);
-	this.scene.translate(0.5, 0.5, 0);
-	this.hudPlane.display();
-	this.scene.popMatrix();
+		// D4
+		this.scene.pushMatrix();
+		this.scene.activeShader.setUniformsValues({'charCoords': this.ooliteFont.getCharCoords(time_diff[4])});
+		this.scene.translate(0.90, 0.45, 0);
+		this.scene.scale(0.1, 0.1, 1);
+		this.scene.translate(0.5, 0.5, 0);
+		this.hudPlane.display();
+		this.scene.popMatrix();
+
+	}
+}
+
+Modx.prototype.displayHUD = function(t, show_time) {
+	if(typeof this.state.displayHUD == "function") {
+		this.state.displayHUD(t);
+		return;
+	}
+
+	this.displayHUDprimitives(t, show_time);
 }
 
 Modx.prototype.start = function(game) {
-	this.setState(new StateWaitingForPlay(this));
 	this.gameHistory = [];
-	this.gameHistory = [game];
+	if(game instanceof Game)
+		this.gameHistory = [game];
+	else
+		this.gameHistory = [new Game(game)];
+	if(!(this.state instanceof StateGameMovie) && !(this.state instanceof StateGameEnded))
+		this.setState(new StateWaitingForPlay(this));
 	this.playHistory = [];
 	this.newGame = null;
 	this.newPlay = null;
@@ -742,17 +769,32 @@ Modx.prototype.getBotPlay = function() {
 }
 
 Modx.prototype.onBotPlayReceived = function(prolog_reply) {
+	if((this.state instanceof StateGameEnded) || (this.state instanceof StateGameMovie) || (this.state instanceof StateStartingGame))
+		return;
+	
 	var reply = JSON.parse(prolog_reply.target.responseText);
-	if(reply[1].length != 0) {
+	if(reply[1].length == 2) {
 		this.setState(new StateMovingPiece(this, 0, reply[1], this.nextPieceType(), true));
 		this.start_time = -1;
 		this.newGame = new Game();
 		this.newGame.parseGame(reply[0]);
 		this.newPlay = this.getGame().compare(reply[1], this.newGame);
 		this.updatePlay();		
-	} else {
-		this_t.endReason = Modx.endGameReason.P1_WIN_SCORE;
-		this.setState(new StateGameEnded(this));
+	} else  {
+		winner = this.getGame().getWinner();
+		switch(winner) {
+		case 1:
+			this.endReason = Modx.endGameReason.P1_WIN_SCORE;
+			break;
+		case 2:
+			this.endReason = Modx.endGameReason.P2_WIN_SCORE;
+			break;
+		default:
+			this.endReason = Modx.endGameReason.TIE_GAME;
+			break;
+		}
+		if(!(this.state instanceof StateGameEnded) && !(this.state instanceof StateGameMovie))
+			this.setState(new StateGameEnded(this));
 	}
 }
 
@@ -792,7 +834,10 @@ Modx.prototype.getHoverPiece = function(type) {
 Modx.prototype.nextMove = function(moveID) {
 	if (moveID === this.newPlay.length)
 	{
-		this.setState(new StateWaitingForPlay(this));
+		if(this.playing == Modx.playingGameState.GAME_ENDED)
+			this.setState(new StateGameEnded(this));
+		else
+			this.setState(new StateWaitingForPlay(this));
 		return;
 	}
 
@@ -811,8 +856,11 @@ Modx.prototype.nextMove = function(moveID) {
 }
 
 Modx.prototype.setState = function(state) {
+	var prev_state = this.state;
 	this.state = state;
-	if(!(this.state instanceof StateGameEnded) && typeof this.getGame() != "undefined") {
+	if((prev_state instanceof StateGameMovie) || (prev_state instanceof StateGameEnded))
+		return;
+	if(!(this.state instanceof StateStartingGame) && !(this.state instanceof StateGameMovie) && !(this.state instanceof StateGameEnded) && typeof this.getGame() != "undefined") {
 		this.checkGameEnded();
 	}
 }

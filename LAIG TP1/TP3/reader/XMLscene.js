@@ -48,10 +48,11 @@ XMLscene.prototype.init = function (application) {
 	this.modx = new Modx(this, application.interface);
 
 	this.startGameDifficulty = '2 Players';
-	this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Hard CPU'];
+	this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Hard CPU', 'CPU vs. CPU'];
 	this.startGameDifficulties['2 Players'] = 0;
 	this.startGameDifficulties['vs. Easy CPU'] = 1;
 	this.startGameDifficulties['vs. Hard CPU'] = 2;
+	this.startGameDifficulties['CPU vs. CPU'] = 3;
 	this.startGameMaxScore = 8;
 	this.startGamePlayTimeout = 30;
 };
@@ -102,7 +103,6 @@ XMLscene.prototype.initLights = function () {
 		}
 		this.lights[i].setVisible(false);
 		this.lights[i].update();
-		this.graph.interface.addFolder("Lights");
 		this.graph.interface.addLightToggler(i, this.graph.lights[i]["id"]);
 	}
 };
@@ -264,6 +264,12 @@ XMLscene.prototype.gameUndo = function() {
 		this.modx.undo();
 }
 
+XMLscene.prototype.gameRestart = function() {
+	this.modx.endReason = Modx.endGameReason.TIE_GAME;
+	this.modx.setState(new StateGameEnded(this.modx));
+	this.graph.interface.initStartModX(true);
+}
+
 XMLscene.prototype.startGame = function() {
 	this.modx.getNewGame(this.startGameMaxScore, this.startGameDifficulties[this.startGameDifficulty]);
 	this.graph.interface.removeFolder("Start Game");
@@ -276,10 +282,17 @@ XMLscene.prototype.endGame = function() {
 	this.graph.interface.initStartModX(true);	
 }
 
+XMLscene.prototype.gameEndMovie = function() {
+	this.graph.interface.initStartModX(true);
+	this.modx.playHistory = this.modx.state.play_backup;
+	this.modx.setState(new StateGameEnded(this.modx));
+}
+
 XMLscene.prototype.gameMovie = function() {
 	if(typeof this.modx != "undefined" && this.modx != null)
 	{
-		// TODO change interface
+		this.graph.interface.removeFolder("Start Game");
+		this.graph.interface.initGameMovie();	
 		this.modx.gameMovie();
 	}
 }

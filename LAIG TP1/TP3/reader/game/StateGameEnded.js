@@ -43,6 +43,9 @@ function StateGameEnded(modx) {
 	case Modx.endGameReason.ERROR:
 		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/error.png"));
 		break;
+	case Modx.endGameReason.TIE_GAME:
+		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/tie_game.png"));
+		break;
 	default:
 		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/player2wins_timeout.png"));
 		break;
@@ -55,9 +58,14 @@ function StateGameEnded(modx) {
 	this.modx.scene.lights[5].setVisible(false);
 	
 	this.modx.scene.endGame();
+	
+	this.modx.pieces[Modx.pieceTypes.HOVER_JOKER][0].setVisible(false);
+	this.modx.pieces[Modx.pieceTypes.HOVER_P1][0].setVisible(false);
+	this.modx.pieces[Modx.pieceTypes.HOVER_P2][0].setVisible(false);
 }
 
 StateGameEnded.prototype.displayHUD = function(t) {
+	
 	if(this.anim_state != StateGameEnded.animState.ENDING) {
 		this.modx.scene.lights[5].enable();
 		this.modx.scene.lights[5].update();
@@ -109,6 +117,8 @@ StateGameEnded.prototype.displayHUD = function(t) {
 		this.hudPlane.display();
 		this.modx.scene.popMatrix();
 	}
+
+	this.modx.displayHUDprimitives(t, false);
 }
 
 StateGameEnded.prototype.display = function(t) {
@@ -125,7 +135,7 @@ StateGameEnded.prototype.display = function(t) {
 	}
 	this.scene.graph.graphNodes["board"].display(0);
 	this.modx.displayXPieceBoxes();
-	this.modx.displayPieces(t);	// TODO fix ghost piece
+	this.modx.displayPieces(t);
 }
 
 StateGameEnded.prototype.isFinished = function(t) {
