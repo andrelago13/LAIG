@@ -122,6 +122,7 @@ Interface.prototype.initPlayModX = function() {
 	this.derp = 0;
 	this.modx = null;
 	this.modxFolder.add(this.scene, "gameUndo").name("UNDO");
+	this.modxFolder.add(this.scene, "gameRestart").name("End game");
 	
 	this.modxFolder.open();
 }
@@ -157,6 +158,7 @@ Interface.prototype.initGameMovie = function() {
 		scene.cameraAnimStartTime = scene.currTime;
 		scene.cameraTotalAnimTime = 1;
 	});
+	this.gameMovieFolder.add(this.scene, "gameEndMovie").name("End movie");
 	
 	this.gameMovieFolder.open();
 }

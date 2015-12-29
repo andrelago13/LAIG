@@ -264,6 +264,11 @@ XMLscene.prototype.gameUndo = function() {
 		this.modx.undo();
 }
 
+XMLscene.prototype.gameRestart = function() {
+	this.modx.setState(new StateStartingGame(this.modx));
+	this.graph.interface.initStartModX();
+}
+
 XMLscene.prototype.startGame = function() {
 	this.modx.getNewGame(this.startGameMaxScore, this.startGameDifficulties[this.startGameDifficulty]);
 	this.graph.interface.removeFolder("Start Game");
@@ -274,6 +279,11 @@ XMLscene.prototype.startGame = function() {
 XMLscene.prototype.endGame = function() {
 	this.graph.interface.removeFolder("Play ModX");
 	this.graph.interface.initStartModX(true);	
+}
+
+XMLscene.prototype.gameEndMovie = function() {
+	this.graph.interface.initStartModX(true);
+	this.modx.setState(new StateGameEnded(this.modx));
 }
 
 XMLscene.prototype.gameMovie = function() {
