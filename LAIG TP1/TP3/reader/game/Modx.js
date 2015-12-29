@@ -188,10 +188,12 @@ Modx.prototype.checkGameEnded = function() {
 }
 
 Modx.prototype.checkGameEndedReponseHandler = function(data) {
+	console.log("check game ended");
 	if((this.state instanceof StateGameMovie) || (this.state instanceof StateGameEnded))
 		return;
 	
 	if(data.target.responseText == "yes") {
+		console.log("check game ended 2");
 		this.playing = Modx.playingGameState.GAME_ENDED;
 		
 		winner = this.getGame().getWinner();
@@ -787,7 +789,8 @@ Modx.prototype.onBotPlayReceived = function(prolog_reply) {
 			this.endReason = Modx.endGameReason.TIE_GAME;
 			break;
 		}
-		this.setState(new StateGameEnded(this));
+		if(!(this.state instanceof StateGameEnded) && !(this.state instanceof StateGameMovie))
+			this.setState(new StateGameEnded(this));
 	}
 }
 
