@@ -29,7 +29,8 @@ Modx.endGameReason = {
 		P1_WIN_TIME: 3,
 		P2_WIN_TIME: 4,
 		CONNECTION_ERR: 5,
-		ERROR: 6
+		ERROR: 6,
+		TIE_GAME: 7
 }
 
 Modx.secondsToStr = function(time) {
@@ -124,7 +125,7 @@ Modx.prototype.init = function() {
  * @param mode 0 (2P), 1 (SP - easy), 2 (SP - hard)
  */
 Modx.prototype.getNewGame = function(max_score, mode) {
-	if(typeof max_score != "number" || max_score < 1 || max_score > 14 || typeof mode != "number" || (mode != 0 && mode != 1 && mode != 2))
+	if(typeof max_score != "number" || max_score < 1 || max_score > 14 || typeof mode != "number" || (mode != 0 && mode != 1 && mode != 2 && mode != 3))
 		return false;
 
 	var this_t = this;
@@ -192,11 +193,19 @@ Modx.prototype.checkGameEndedReponseHandler = function(data) {
 	
 	if(data.target.responseText == "yes") {
 		this.playing = Modx.playingGameState.GAME_ENDED;
+		
+		winner = this.getGame().getWinner();
 
-		if(this.getGame().getPlayerInfo(1).getScore() > this.getGame().getPlayerInfo(2).getScore()) {
+		switch(winner) {
+		case 1:
 			this.endReason = Modx.endGameReason.P1_WIN_SCORE;
-		} else {
-			this.endReason = Modx.endGameReason.P2_WIN_SCORE;			
+			break;
+		case 2:
+			this.endReason = Modx.endGameReason.P2_WIN_SCORE;
+			break;
+		default:
+			this.endReason = Modx.endGameReason.TIE_GAME;
+			break;
 		}
 
 		this.setState(new StateGameEnded(this));
@@ -758,15 +767,26 @@ Modx.prototype.getBotPlay = function() {
 
 Modx.prototype.onBotPlayReceived = function(prolog_reply) {
 	var reply = JSON.parse(prolog_reply.target.responseText);
-	if(reply[1].length != 0) {
+	if(reply[1].length == 2) {
 		this.setState(new StateMovingPiece(this, 0, reply[1], this.nextPieceType(), true));
 		this.start_time = -1;
 		this.newGame = new Game();
 		this.newGame.parseGame(reply[0]);
 		this.newPlay = this.getGame().compare(reply[1], this.newGame);
 		this.updatePlay();		
-	} else {
-		this_t.endReason = Modx.endGameReason.P1_WIN_SCORE;
+	} else  {
+		winner = this.getGame().getWinner();
+		switch(winner) {
+		case 1:
+			this.endReason = Modx.endGameReason.P1_WIN_SCORE;
+			break;
+		case 2:
+			this.endReason = Modx.endGameReason.P2_WIN_SCORE;
+			break;
+		default:
+			this.endReason = Modx.endGameReason.TIE_GAME;
+			break;
+		}
 		this.setState(new StateGameEnded(this));
 	}
 }

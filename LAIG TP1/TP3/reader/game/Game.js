@@ -18,7 +18,8 @@ Game.defaultDifficulty = 0;
 Game.difficultyType = {
 		VERSUS: 0,
 		CPU_EASY: 1,
-		CPU_HARD: 2
+		CPU_HARD: 2,
+		BOTvsBOT: 3
 }
 
 /**
@@ -62,6 +63,18 @@ Game.prototype.getBoard = function() {
 
 Game.prototype.setBoard = function(board) {
 	this.board = board;
+}
+
+Game.prototype.getWinner = function() {
+	var p1_info = this.getPlayerInfo(1);
+	var p2_info = this.getPlayerInfo(2);
+	
+	if(p1_info.getScore() > p2_info.getScore())
+		return 1;
+	else if (p1_info.getScore() < p2_info.getScore())
+		return 2;
+	
+	return 0;
 }
 
 Game.prototype.getCurrPlayer = function() {

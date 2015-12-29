@@ -48,10 +48,11 @@ XMLscene.prototype.init = function (application) {
 	this.modx = new Modx(this, application.interface);
 
 	this.startGameDifficulty = '2 Players';
-	this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Hard CPU'];
+	this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Hard CPU', 'CPU vs. CPU'];
 	this.startGameDifficulties['2 Players'] = 0;
 	this.startGameDifficulties['vs. Easy CPU'] = 1;
 	this.startGameDifficulties['vs. Hard CPU'] = 2;
+	this.startGameDifficulties['CPU vs. CPU'] = 3;
 	this.startGameMaxScore = 8;
 	this.startGamePlayTimeout = 30;
 };

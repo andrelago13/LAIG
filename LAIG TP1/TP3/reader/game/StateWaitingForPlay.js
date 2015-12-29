@@ -31,6 +31,10 @@ function StateWaitingForPlay(modx) {
 			} else {
 				this.modx.scene.setCameraByName("Player 2");
 			}
+		} else if (curr_game.getDifficulty() == Game.difficultyType.BOTvsBOT) {
+			this.modx.scene.setCameraByName("Top");
+			this.modx.getBotPlay();
+			
 		} else {
 			if(curr_game.getCurrPlayer() == 1)
 				this.modx.scene.setCameraByName("Player 1");

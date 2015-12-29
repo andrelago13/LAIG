@@ -43,6 +43,9 @@ function StateGameEnded(modx) {
 	case Modx.endGameReason.ERROR:
 		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/error.png"));
 		break;
+	case Modx.endGameReason.TIE_GAME:
+		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/tie_game.png"));
+		break;
 	default:
 		this.hudAppearance.setTexture(new CGFtexture(modx.scene, "game/resources/player2wins_timeout.png"));
 		break;
