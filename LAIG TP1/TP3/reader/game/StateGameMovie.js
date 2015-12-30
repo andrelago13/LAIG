@@ -17,7 +17,8 @@ function StateGameMovie(modx) {
 	this.currentPlay = 0;
 	this.currentMove = 0;
 	this.lastAnimTime = this.modx.scene.getCurrTime();
-	this.modx.scene.setCameraByName("Top");
+	if(this.modx.scene.automaticCamera)
+		this.modx.scene.setCameraByName("Top");
 }
 
 StateGameMovie.prototype.displayHUD = function(t) {

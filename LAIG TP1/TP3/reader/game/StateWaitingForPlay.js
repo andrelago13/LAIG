@@ -26,19 +26,23 @@ function StateWaitingForPlay(modx) {
 		})
 
 		if(curr_game.getDifficulty() == Game.difficultyType.VERSUS) {
-			if(curr_game.getCurrPlayer() == 1) {
-				this.modx.scene.setCameraByName("Player 1");
-			} else {
-				this.modx.scene.setCameraByName("Player 2");
+			if(this.modx.scene.automaticCamera) {
+				if(curr_game.getCurrPlayer() == 1) {
+					this.modx.scene.setCameraByName("Player 1");
+				} else {
+					this.modx.scene.setCameraByName("Player 2");
+				}
 			}
 		} else if (curr_game.getDifficulty() == Game.difficultyType.BOTvsBOT) {
-			this.modx.scene.setCameraByName("Top");
+			if(this.modx.scene.automaticCamera)
+				this.modx.scene.setCameraByName("Top");
 			this.modx.getBotPlay();
 			
 		} else {
-			if(curr_game.getCurrPlayer() == 1)
-				this.modx.scene.setCameraByName("Player 1");
-			else {
+			if(curr_game.getCurrPlayer() == 1) {
+				if(this.modx.scene.automaticCamera)
+					this.modx.scene.setCameraByName("Player 1");
+			} else {
 				this.modx.getBotPlay();
 			}
 		}

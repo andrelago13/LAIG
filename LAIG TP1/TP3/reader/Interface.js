@@ -103,6 +103,7 @@ Interface.prototype.removeFolder = function(name) {
 
 Interface.prototype.initScenario = function() {
 	this.gui.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
+	this.gui.add(this.scene, 'automaticCamera').name("Automatic Camera");
 }
 
 Interface.prototype.initPlayModX = function() {

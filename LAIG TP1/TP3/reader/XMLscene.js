@@ -55,6 +55,8 @@ XMLscene.prototype.init = function (application) {
 	this.startGameDifficulties['CPU vs. CPU'] = 3;
 	this.startGameMaxScore = 8;
 	this.startGamePlayTimeout = 30;
+	
+	this.automaticCamera = true;
 };
 
 XMLscene.prototype.getCurrTime = function() {
