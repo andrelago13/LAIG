@@ -53,7 +53,7 @@ XMLscene.prototype.init = function (application) {
 	this.startGameDifficulties['vs. Easy CPU'] = 1;
 	this.startGameDifficulties['vs. Hard CPU'] = 2;
 	this.startGameDifficulties['CPU vs. CPU'] = 3;
-	this.startGameMaxScore = 8;
+	this.startGameMaxScore = 10;
 	this.startGamePlayTimeout = 30;
 	
 	this.automaticCamera = true;

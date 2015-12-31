@@ -57,6 +57,7 @@ StateGameMovie.prototype.makeMove = function(move) {
 	{
 		this.dest = this.modx.calculateBoardPiecePos(coords[0], coords[1]);
 		var piece = this.modx.takeOutsidePiece(xPiece);
+		console.log("xPiece: ", xPiece);
 		piece.move(this.dest);
 		this.modx.placeBoardPiece(piece, coords);
 	}
