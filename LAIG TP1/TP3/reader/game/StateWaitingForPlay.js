@@ -55,6 +55,9 @@ function StateWaitingForPlay(modx) {
 StateWaitingForPlay.prototype.display = function(t) {	
 	this.scene.setPickEnabled(true);
 	var curr_game = this.modx.getGame();
+	
+	// Draw pickable objects
+	this.scene.setDefaultAppearance();
 	for (var y = 0; y < Board.size; y++)
 	{
 		this.scene.pushMatrix();
@@ -62,15 +65,10 @@ StateWaitingForPlay.prototype.display = function(t) {
 		for (var x = 0; x < Board.size; x++)
 		{
 			var cell_temp = curr_game.getBoard().get(x, y);
-			// Draw cell
 			if (cell_temp.getXpiece() === Modx.pieceTypes.NONE && cell_temp.isValid() && 
 					((curr_game.getDifficulty() != Game.difficultyType.VERSUS && curr_game.getCurrPlayer() == 1) || (curr_game.getDifficulty() == Game.difficultyType.VERSUS)) &&
 					(curr_game.getDifficulty() != Game.difficultyType.BOTvsBOT))
 				this.scene.registerForPick(y * Board.size + x + 1 , [x, y]);
-			else if (cell_temp.getXpiece() === Modx.pieceTypes.NONE && !cell_temp.isValid()) {
-				this.scene.graph.graphNodes["invalid_cell_marker"].display(0);
-				this.scene.defaultAppearance.apply();
-			}
 			this.scene.graph.graphNodes["cell"].display(0);
 			this.scene.clearPickRegistration();
 			this.scene.translate(1, 0, 0);
@@ -78,6 +76,24 @@ StateWaitingForPlay.prototype.display = function(t) {
 		this.scene.popMatrix();
 	}
 	this.updatePicking();
+	
+	// Draw invalid cell markers
+	for (var y = 0; y < Board.size; y++)
+	{
+		for (var x = 0; x < Board.size; x++)
+		{
+			var cell_temp = curr_game.getBoard().get(x, y);
+			if (cell_temp.getXpiece() === Modx.pieceTypes.NONE && !cell_temp.isValid()) {
+				var pos = this.modx.calculateBoardPiecePos(x, y);
+				this.scene.pushMatrix();
+				this.scene.translate(pos[0], pos[1], pos[2]);
+				this.scene.graph.graphNodes["invalid_cell_marker"].display(0);
+				this.scene.popMatrix();
+			}
+		}
+	}
+	
+	this.scene.setDefaultAppearance();
 	this.scene.graph.graphNodes["board"].display(0);
 	this.modx.displayXPieceBoxes();
 	this.modx.displayPieces(t);

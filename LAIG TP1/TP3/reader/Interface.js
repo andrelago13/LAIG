@@ -131,7 +131,6 @@ Interface.prototype.initPlayModX = function() {
 Interface.prototype.initStartModX = function(show_movie) {
 	this.resetFolders();
 	this.resetFolder("Start Game");
-
 	var max_score = this.startGameFolder.add(this.scene, 'startGameMaxScore', 5, 30, 1);
 	max_score.name("Max Game Score");
 	max_score.step(1);

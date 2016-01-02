@@ -199,7 +199,6 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.initLights();
 	this.graph.interface.initStartModX(false);
 	this.ready = true;
-	console.log("Press SPACE to reset the animations.");
 };
 
 /**
@@ -219,7 +218,7 @@ XMLscene.prototype.updateCameras = function(t) {
 	if(this.cameraAnimTime < this.cameraTotalAnimTime)
 	{
 		var s = this.cameraAnimTime / this.cameraTotalAnimTime;
-		/* C = camera, T = target, P = plane closest
+		/* C = camera, T = target, P = camera y-plane closest point to target
 		 * r = radius, h = height, d = distance
 		 * 
 		 *  P_r_C

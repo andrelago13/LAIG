@@ -122,18 +122,7 @@ StateGameEnded.prototype.displayHUD = function(t) {
 }
 
 StateGameEnded.prototype.display = function(t) {
-	for (var y = 0; y < Board.size; y++)
-	{
-		this.scene.pushMatrix();
-		this.scene.translate(0, 0, y);
-		for (var x = 0; x < Board.size; x++)
-		{
-			this.scene.graph.graphNodes["cell"].display(0);
-			this.scene.translate(1, 0, 0);
-		}
-		this.scene.popMatrix();
-	}
-	this.scene.graph.graphNodes["board"].display(0);
+	this.modx.displayBoard();
 	this.modx.displayXPieceBoxes();
 	this.modx.displayPieces(t);
 }

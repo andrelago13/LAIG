@@ -873,6 +873,7 @@ Modx.prototype.display = function(t) {
 }
 
 Modx.prototype.displayBoard = function() {
+	this.scene.setDefaultAppearance();
 	this.scene.graph.graphNodes["board"].display(0);
 	for (var y = 0; y < Board.size; y++)
 	{
