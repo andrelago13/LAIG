@@ -13,18 +13,6 @@ function StateWaitingForPlay(modx) {
 
 	var curr_game = this.modx.getGame();
 	if(typeof curr_game != 'undefined') {
-		var this_t = this;
-		this.modx.client.getRequestReply("available_moves(" + curr_game.toJSON() + ")", function(prolog_reply) {
-			this_t.updated = true;
-			var positions = JSON.parse(prolog_reply.target.responseText);
-			var board = this_t.modx.getGame().getBoard();
-			board.setAllCellsValidity(false);
-			var size = positions.length;
-			for(var i = 0; i < size; ++i) {
-				board.get(positions[i][0], positions[i][1]).setValidValue(true);
-			}
-		})
-
 		if(curr_game.getDifficulty() == Game.difficultyType.VERSUS) {
 			if(this.modx.scene.automaticCamera) {
 				if(curr_game.getCurrPlayer() == 1) {
@@ -133,6 +121,17 @@ StateWaitingForPlay.prototype.onClick = function(event) {
 			s.modx.newGame = newGame;
 			s.modx.newPlay = s.modx.getGame().compare(s.hovered, newGame);
 			s.modx.updatePlay();
+			
+			s.modx.client.getRequestReply("available_moves(" + newGame.toJSON() + ")", function(prolog_reply) {
+				s.updated = true;
+				var positions = JSON.parse(prolog_reply.target.responseText);
+				var board = newGame.getBoard();
+				board.setAllCellsValidity(false);
+				var size = positions.length;
+				for(var i = 0; i < size; ++i) {
+					board.get(positions[i][0], positions[i][1]).setValidValue(true);
+				}
+			})
 		});
 		this.scene.setPickEnabled(false);
 	}

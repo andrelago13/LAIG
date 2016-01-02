@@ -130,7 +130,7 @@ Modx.prototype.getNewGame = function(max_score, mode) {
 
 	var this_t = this;
 	var state = this.state;
-	this.client.getRequestReply("start_game(" + max_score + "," + mode + ")", function(game) { console.log(game), state.terminate(game); }, function(data) { 
+	this.client.getRequestReply("start_game(" + max_score + "," + mode + ")", function(game) { state.terminate(game); }, function(data) { 
 		this_t.endReason = Modx.endGameReason.CONNECTION_ERR;
 		this_t.setState(new StateGameEnded(this_t)); 
 	});
