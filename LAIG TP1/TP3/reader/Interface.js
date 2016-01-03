@@ -122,10 +122,14 @@ Interface.prototype.initPlayModX = function() {
 	
 	this.derp = 0;
 	this.modx = null;
-	this.modxFolder.add(this.scene, "gameUndo").name("UNDO");
 	this.modxFolder.add(this.scene, "gameRestart").name("End game");
 	
 	this.modxFolder.open();
+}
+
+Interface.prototype.addUndo = function() {
+	if(typeof this.modxFolder != "undefined")
+		this.modxFolder.add(this.scene, "gameUndo").name("UNDO");
 }
 
 Interface.prototype.initStartModX = function(show_movie) {

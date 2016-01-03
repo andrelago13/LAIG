@@ -272,10 +272,14 @@ XMLscene.prototype.gameRestart = function() {
 }
 
 XMLscene.prototype.startGame = function() {
-	this.modx.getNewGame(this.startGameMaxScore, this.startGameDifficulties[this.startGameDifficulty]);
 	this.graph.interface.removeFolder("Start Game");
 	this.graph.interface.initPlayModX();
+	this.modx.getNewGame(this.startGameMaxScore, this.startGameDifficulties[this.startGameDifficulty]);
 	this.modx.setPlayTimeout(this.startGamePlayTimeout);
+}
+
+XMLscene.prototype.addUndo = function() {
+	this.graph.interface.addUndo();
 }
 
 XMLscene.prototype.endGame = function() {

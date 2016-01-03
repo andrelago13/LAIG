@@ -728,6 +728,12 @@ Modx.prototype.start = function(game) {
 		}
 	}
 	this.playing = Modx.playingGameState.PLAYING;
+	
+	var type = this.getGame().getDifficulty();
+	if(type != Game.difficultyType.BOTvsBOT) {
+		this.scene.addUndo();
+	}
+	
 	return this.getGame();
 }
 
