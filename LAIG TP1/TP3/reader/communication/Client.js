@@ -41,7 +41,9 @@ Client.prototype.getRequestReply = function (requestString, onSuccess, onError) 
 	request.onerror = onError || Client.defaultErrorHandler;
 
 	request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+	console.info("sending");
 	request.send();
+	console.info("sent");
 }
 
 Client.prototype.getPort = function () {

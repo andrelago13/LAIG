@@ -147,32 +147,41 @@ Modx.prototype.setPlayTimeout = function(time) {
 
 Modx.prototype.undo = function() {
 	if (!(this.state instanceof StateWaitingForPlay)) return;
-	if (this.playHistory.length === 0) return;
-	var play = this.playHistory.pop();
-	this.gameHistory.pop();
-	this.newGame = this.gameHistory.pop();
-	console.log(play);
-
-	// Save first place, later we will check if it is placed and removed, in which case we won't place it at all
-	var firstPlace = play[0];
-	var placedAndRemoved = false;
-
-	// Reverse actions
+	var numTimesToUndo = 2;
+	var game = this.getGame();
+	if (game.getDifficulty() === Game.difficultyType.BOTvsBOT)
+		numTimesToUndo = 0;
+	else if (game.getDifficulty() === Game.difficultyType.VERSUS || game.getCurrPlayer() === 2)
+		numTimesToUndo = 1;
 	var reversed = [];
-	for (var i = 0; i < play.length; i++)
+	console.log("numTimesToUndo", numTimesToUndo);
+	for (var i = 0; i < numTimesToUndo; i++)
 	{
-		var p = play[play.length - 1 - i];
-		if (p[0] === firstPlace[0] && p[1] === !firstPlace[1] && p[2][0] === firstPlace[2][0] && p[2][1] === firstPlace[2][1])
+		if (this.playHistory.length === 0) return;
+		var play = this.playHistory.pop();
+		this.gameHistory.pop();
+
+		// Save first place, later we will check if it is placed and removed, in which case we won't place it at all
+		var firstPlace = play[0];
+		var placedAndRemoved = false;
+
+		// Reverse actions
+		for (var j = 0; j < play.length; j++)
 		{
-			placedAndRemoved = true;
+			var p = play[play.length - 1 - j];
+			if (p[0] === firstPlace[0] && p[1] === !firstPlace[1] && p[2][0] === firstPlace[2][0] && p[2][1] === firstPlace[2][1])
+			{
+				placedAndRemoved = true;
+			}
+			else
+			{
+				reversed.push(p);
+				reversed[reversed.length - 1][1] = !reversed[reversed.length - 1][1]; // place = !place
+			}
 		}
-		else
-		{
-			reversed.push(p);
-			reversed[reversed.length - 1][1] = !reversed[reversed.length - 1][1]; // place = !place
-		}
+		if (placedAndRemoved) reversed.pop();
 	}
-	if (placedAndRemoved) reversed.pop();
+	this.newGame = this.gameHistory.pop();
 	this.newPlay = reversed;
 	this.nextMove(0);
 }
@@ -191,11 +200,11 @@ Modx.prototype.checkGameEndedReponseHandler = function(data) {
 	console.log("check game ended");
 	if((this.state instanceof StateGameMovie) || (this.state instanceof StateGameEnded))
 		return;
-	
+
 	if(data.target.responseText == "yes") {
 		console.log("check game ended 2");
 		this.playing = Modx.playingGameState.GAME_ENDED;
-		
+
 		winner = this.getGame().getWinner();
 
 		switch(winner) {
@@ -207,7 +216,7 @@ Modx.prototype.checkGameEndedReponseHandler = function(data) {
 			break;
 		default:
 			this.endReason = Modx.endGameReason.TIE_GAME;
-			break;
+		break;
 		}
 
 		this.setState(new StateGameEnded(this));
@@ -586,7 +595,7 @@ Modx.prototype.displayHUDprimitives = function(t, show_time) {
 	this.scene.translate(0.5, 0.5, 0);
 	this.hudPlane.display();
 	this.scene.popMatrix();
-	
+
 	if(typeof show_time == "undefined" || show_time) {
 
 		// Time
@@ -771,7 +780,7 @@ Modx.prototype.getBotPlay = function() {
 Modx.prototype.onBotPlayReceived = function(prolog_reply) {
 	if((this.state instanceof StateGameEnded) || (this.state instanceof StateGameMovie) || (this.state instanceof StateStartingGame))
 		return;
-	
+
 	var reply = JSON.parse(prolog_reply.target.responseText);
 	if(reply[1].length == 2) {
 		this.setState(new StateMovingPiece(this, 0, reply[1], this.nextPieceType(), true));
@@ -791,7 +800,7 @@ Modx.prototype.onBotPlayReceived = function(prolog_reply) {
 			break;
 		default:
 			this.endReason = Modx.endGameReason.TIE_GAME;
-			break;
+		break;
 		}
 		if(!(this.state instanceof StateGameEnded) && !(this.state instanceof StateGameMovie))
 			this.setState(new StateGameEnded(this));
