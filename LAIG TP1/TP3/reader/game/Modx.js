@@ -121,6 +121,7 @@ Modx.prototype.init = function() {
 }
 
 /**
+ * makes a prolog request to start a new game
  * @param max_score max game score for each player (1 - 14)
  * @param mode 0 (2P), 1 (SP - easy), 2 (SP - hard)
  */
@@ -145,6 +146,9 @@ Modx.prototype.setPlayTimeout = function(time) {
 	this.play_timeout = time;
 }
 
+/**
+ * Goes back one play
+ */
 Modx.prototype.undo = function() {
 	if (!(this.state instanceof StateWaitingForPlay)) return;
 	if (this.playHistory.length === 0) return;
@@ -177,11 +181,17 @@ Modx.prototype.undo = function() {
 	this.nextMove(0);
 }
 
+/**
+ * Initializes the game movie
+ */
 Modx.prototype.gameMovie = function() {
 	//if (this.state instanceof StateGameEnded)
 	this.setState(new StateGameMovie(this));
 }
 
+/**
+ * Makes a prolog request to check if the game has ended
+ */
 Modx.prototype.checkGameEnded = function() {
 	this_temp = this;
 	this.client.getRequestReply("game_ended(" + this.getGame().toJSON() + ")", function(data) { this_temp.checkGameEndedReponseHandler(data); }, function(data) { 
@@ -190,6 +200,9 @@ Modx.prototype.checkGameEnded = function() {
 	});
 }
 
+/**
+ * If the request reply says the game has ended, changes the game state
+ */
 Modx.prototype.checkGameEndedReponseHandler = function(data) {
 	if((this.state instanceof StateGameMovie) || (this.state instanceof StateGameEnded))
 		return;
@@ -216,12 +229,18 @@ Modx.prototype.checkGameEndedReponseHandler = function(data) {
 	}
 }
 
+/**
+ * Restarts the game, getting a new one with a prolog request
+ */
 Modx.prototype.restart = function() {
 	var backup_timeout = this.play_timeout;
 	this.init();
 	this.play_timeout = backup_timeout;
 }
 
+/**
+ * Checks if the play timeout has been reached
+ */
 Modx.prototype.checkPlayTimeout = function(start_time, curr_time) {
 	if(curr_time > start_time + this.play_timeout) {
 		var curr_p = this.getGame().getCurrPlayer();
@@ -768,6 +787,9 @@ Modx.prototype.getPlay = function() {
 	return this.playHistory[this.playHistory.length - 1];
 }
 
+/**
+ * Gets a bot play via prolog request
+ */
 Modx.prototype.getBotPlay = function() {
 	var this_t = this;
 	this.client.getRequestReply("make_play(" + this.getGame().toJSON() + ")", function(data) { this_t.onBotPlayReceived(data); }, function(data) { 
@@ -776,6 +798,9 @@ Modx.prototype.getBotPlay = function() {
 	});
 }
 
+/**
+ * Makes the actual bot play received
+ */
 Modx.prototype.onBotPlayReceived = function(prolog_reply) {
 	if((this.state instanceof StateGameEnded) || (this.state instanceof StateGameMovie) || (this.state instanceof StateStartingGame))
 		return;
