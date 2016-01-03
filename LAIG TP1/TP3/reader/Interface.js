@@ -45,6 +45,9 @@ Interface.prototype.init = function(application) {
 	return true;
 };
 
+/**
+ * Removes a folder if it exists, creating it again
+ */
 Interface.prototype.resetFolder = function(name) {
 	if(name == "Lights" || name == "Play ModX" || name == "Start Game" || name == "Game Movie") {
 		this.removeFolder(name);
@@ -73,6 +76,9 @@ Interface.prototype.addFolder = function(name) {
 	}
 }
 
+/**
+ * Removes all folders
+ */
 Interface.prototype.resetFolders = function() {
 	var names = ["Play ModX", "Start Game", "Game Movie"];
 	for(var i = 0; i < names.length; ++i) {
@@ -101,11 +107,17 @@ Interface.prototype.removeFolder = function(name) {
 	}
 }
 
+/**
+ * Initiates the scenario changing interface
+ */
 Interface.prototype.initScenario = function() {
 	this.gui.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
 	this.gui.add(this.scene, 'automaticCamera').name("Automatic Camera");
 }
 
+/**
+ * Initiates the interface when the game is being played
+ */
 Interface.prototype.initPlayModX = function() {
 	this.resetFolders();
 	this.resetFolder("Play ModX");
@@ -127,11 +139,17 @@ Interface.prototype.initPlayModX = function() {
 	this.modxFolder.open();
 }
 
+/**
+ * Adds the undo button to the play game folder
+ */
 Interface.prototype.addUndo = function() {
 	if(typeof this.modxFolder != "undefined")
 		this.modxFolder.add(this.scene, "gameUndo").name("UNDO");
 }
 
+/**
+ * Inititates the interface for starting the game
+ */
 Interface.prototype.initStartModX = function(show_movie) {
 	this.resetFolders();
 	this.resetFolder("Start Game");
@@ -149,6 +167,9 @@ Interface.prototype.initStartModX = function(show_movie) {
 	this.startGameFolder.open();
 }
 
+/**
+ * Initiates the interface for the game movie
+ */
 Interface.prototype.initGameMovie = function() {
 	this.resetFolders();
 	this.resetFolder("Game Movie");
@@ -167,6 +188,9 @@ Interface.prototype.initGameMovie = function() {
 	this.gameMovieFolder.open();
 }
 
+/**
+ * Adds a light toggler, allowing to choose which lights are on
+ */
 Interface.prototype.addLightToggler = function(i, id){
 	this.gui.add(this.scene.lightStatus, i, this.scene.lightStatus[i]).name(id);
 }
