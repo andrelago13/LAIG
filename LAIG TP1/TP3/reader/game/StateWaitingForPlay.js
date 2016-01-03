@@ -131,6 +131,9 @@ StateWaitingForPlay.prototype.onClick = function(event) {
 				for(var i = 0; i < size; ++i) {
 					board.get(positions[i][0], positions[i][1]).setValidValue(true);
 				}
+			}, function(data) { 
+				this_t.endReason = Modx.endGameReason.CONNECTION_ERR;
+				this_t.setState(new StateGameEnded(this_t)); 
 			})
 		});
 		this.scene.setPickEnabled(false);
