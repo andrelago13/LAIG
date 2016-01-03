@@ -184,11 +184,13 @@ Modx.prototype.gameMovie = function() {
 
 Modx.prototype.checkGameEnded = function() {
 	this_temp = this;
-	this.client.getRequestReply("game_ended(" + this.getGame().toJSON() + ")", function(data) { this_temp.checkGameEndedReponseHandler(data); });
+	this.client.getRequestReply("game_ended(" + this.getGame().toJSON() + ")", function(data) { this_temp.checkGameEndedReponseHandler(data); }, function(data) { 
+		this_temp.endReason = Modx.endGameReason.CONNECTION_ERR;
+		this_temp.setState(new StateGameEnded(this_temp)); 
+	});
 }
 
 Modx.prototype.checkGameEndedReponseHandler = function(data) {
-	console.log("check game ended");
 	if((this.state instanceof StateGameMovie) || (this.state instanceof StateGameEnded))
 		return;
 	
